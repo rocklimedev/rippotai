@@ -12,14 +12,14 @@ const CTA = () => {
           rel="noopener noreferrer"
           aria-label="Contact via WhatsApp"
         >
-          <FaWhatsapp size={40} />
+          <FaWhatsapp size={40} color="white" />
         </a>
         <a
           href="tel:+1234567890"
           className="cta-icon phone"
           aria-label="Call us"
         >
-          <FaPhone size={40} />
+          <FaPhone size={40} color="white" />
         </a>
       </div>
       <Link

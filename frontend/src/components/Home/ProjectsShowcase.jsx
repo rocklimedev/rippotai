@@ -90,9 +90,9 @@ const ProjectsShowcase = () => {
               alt={project.title}
               style={{ height: "100%", width: "100%" }}
             />
-            <div className="project-overlay-text">
+            {/* <div className="project-overlay-text">
               <p>{project.title}</p>
-            </div>
+            </div> */}
           </div>
         ))}
       </Masonry>
