@@ -123,18 +123,19 @@ header.scrolled .search-icon:hover {
 .search-box input:focus {
   border-color: var(--accent-color);
 }
-
 /* Hero Slider */
 .hero {
   text-align: center;
   padding: 0;
   position: relative;
-  min-height: 100vh;
+  min-height: 100vh; /* Full viewport height */
+  height: calc(100vh - 50px); /* Subtract header height (adjust if different) */
+  overflow: hidden; /* Prevent overflow issues */
 }
 
 .swiper-container {
   width: 100%;
-  height: 100%;
+  height: 100%; /* Full height of .hero */
 }
 
 .hero-image {
@@ -384,10 +385,10 @@ header.scrolled .search-icon:hover {
 /* Contact Us Button */
 .cta-contact {
   position: fixed;
-  top: 50%;
-  left: 0;
-  transform: translateY(-50%) rotate(-90deg);
-  background: #007bff;
+  top: 50%; /* Vertically center */
+  right: 17PX; /* Fix to the right edge */
+  transform: translateY(-50%) rotate(-90deg); /* Maintain vertical orientation */
+  background: var(--primary-color); /* Use primary color (#1a3c34) */
   color: var(--white);
   padding: var(--spacing-sm) var(--spacing-md);
   text-decoration: none;
@@ -396,15 +397,28 @@ header.scrolled .search-icon:hover {
   text-transform: uppercase;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   z-index: 2000;
-  transform-origin: left center;
-  width: 150px;
+  transform-origin: right center; /* Rotate around the right edge */
+  width: 150px; /* Vertical rectangle width */
+  height: 50px; /* Match icon height for consistency */
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cta-contact:hover {
-  background: #0056b3;
+  background: #0f2c28; /* Darker shade of primary color */
 }
 
+/* Responsive Adjustment */
+@media (max-width: 768px) {
+  .cta-contact {
+    top: 40%; /* Adjust vertical position for smaller screens */
+    width: 120px;
+    height: 40px;
+    font-size: 14px;
+  }
+}
 /* Footer Styling */
 .footer {
   background-color: var(--primary-color);

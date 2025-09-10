@@ -22,7 +22,11 @@ const CTA = () => {
           <FaPhone size={40} />
         </a>
       </div>
-      <Link to="/contact" className="cta-contact">
+      <Link
+        to="/contact"
+        className="cta-contact"
+        aria-label="Go to contact page"
+      >
         Contact Us
       </Link>
     </>
