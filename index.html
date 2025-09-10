@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Architectural Firm</title>
+    <link rel="stylesheet" href="./style.css" />
+    <!-- Swiper.js CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/swiper/swiper-bundle.min.css"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <img src="./images/logo.png" alt="" />
+      </div>
+      <nav>
+        <ul>
+          <li><a href="/about">About</a></li>
+          <li><a href="/projects">Project</a></li>
+          <li><a href="/contact">Contact</a></li>
+          <li><a href="/career">Career</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Hero Section with Slider -->
+    <section class="hero">
+      <div class="swiper-container">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <img
+              src="../images/main-banner.jpg"
+              alt="Hero Image 1"
+              class="hero-image"
+            />
+          </div>
+          <div class="swiper-slide">
+            <img
+              src="../images/main-banner-2.jpg"
+              alt="Hero Image 2"
+              class="hero-image"
+            />
+          </div>
+          <div class="swiper-slide">
+            <img
+              src="../images/main-banner-3.jpg"
+              alt="Hero Image 3"
+              class="hero-image"
+            />
+          </div>
+        </div>
+        <!-- Add Pagination -->
+        <div class="swiper-pagination"></div>
+        <!-- Add Navigation -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      </div>
+    </section>
+
+    <section class="who-we-are">
+      <div class="who-we-are-container">
+        <div class="who-we-are-text">
+          <h3>Who are we</h3>
+          <p>
+            We design timeless spaces blending creativity and functionality.
+          </p>
+        </div>
+        <div class="who-we-are-image">
+          <img src="./images/who-we-are.jpg" alt="Who we are" />
+        </div>
+      </div>
+    </section>
+
+    <section class="projects-showcase">
+      <h2>Projects Showcase</h2>
+      <div class="bento-grid">
+        <div
+          class="bento-item"
+          data-details="Project 1: A modern office complex with sustainable design. Completed: 2024. Location: Mumbai."
+        >
+          <img src="./images/project-img.png" alt="Project 1" />
+          <p>Project 1</p>
+        </div>
+        <div
+          class="bento-item"
+          data-details="Project 2: Luxury resort with a focus on nature. Completed: 2023. Location: Goa."
+        >
+          <img src="./images/project-img-two.png" alt="Project 2" />
+          <p>Project 2</p>
+        </div>
+        <div
+          class="bento-item"
+          data-details="Project 3: Cultural center with innovative architecture. Completed: 2022. Location: Delhi."
+        >
+          <img src="./images/project-img-three.png" alt="Project 3" />
+          <p>Project 3</p>
+        </div>
+        <div
+          class="bento-item"
+          data-details="Project 4: Residential tower with green spaces. Completed: 2025. Location: Bangalore."
+        >
+          <img src="./images/project-img-four.png" alt="Project 4" />
+          <p>Project 4</p>
+        </div>
+        <div
+          class="bento-item"
+          data-details="Project 5: Commercial plaza with unique facade. Completed: 2024. Location: Hyderabad."
+        >
+          <img src="./images/project-img-five.png" alt="Project 5" />
+          <p>Project 5</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Overlay for Project Details -->
+    <div class="project-overlay" id="projectOverlay">
+      <div class="overlay-content">
+        <span class="close-btn">&times;</span>
+        <h3 id="projectTitle"></h3>
+        <p id="projectDetails"></p>
+      </div>
+    </div>
+
+    <!-- Sticky CTAs -->
+    <div class="cta-container">
+      <a
+        href="https://wa.me/1234567890"
+        class="cta-icon whatsapp"
+        target="_blank"
+      >
+        <img src="./images/whatsapp-icon.png" alt="WhatsApp" />
+      </a>
+      <a href="tel:+1234567890" class="cta-icon phone">
+        <img src="./images/phone-icon.png" alt="Phone" />
+      </a>
+    </div>
+    <!-- Contact Us CTA on Left Side -->
+    <a href="/contact" class="cta-contact">Contact Us</a>
+    <footer class="footer">
+      <div class="footer-top">
+        <div class="container">
+          <div class="row">
+            <div class="col-xl-3 col-lg-3 col-md-3 col-12 mb-5 mb-md-0">
+              <div class="footer-logo text-center text-md-start">
+                <a href="https://rippotaiarchitecture.com/">
+                  <img
+                    src="./images/footer-logo.png"
+                    class="img-fluid"
+                    alt="Footer Logo"
+                  />
+                </a>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-6">
+              <div class="footer-link">
+                <ul class="list-inline mb-0">
+                  <li><a href="/about">About</a></li>
+                  <li><a href="/projects">Projects</a></li>
+                  <li><a href="/contact">Contact</a></li>
+                  <li><a href="/career">Career</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container">
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 mx-auto">
+              <ul class="list-inline text-center mb-0">
+                <li>
+                  &copy; 2025. All Rights Reserved <span>Rocklime Media</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- Swiper.js Script -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+      // Header Scroll Effect (unchanged)
+      window.addEventListener("scroll", function () {
+        const header = document.querySelector("header");
+        if (window.scrollY > 50) {
+          header.classList.add("scrolled");
+        } else {
+          header.classList.remove("scrolled");
+        }
+      });
+
+      // Initialize Swiper (unchanged)
+      const swiper = new Swiper(".swiper-container", {
+        loop: true,
+        autoplay: { delay: 5000, disableOnInteraction: false },
+        pagination: { el: ".swiper-pagination", clickable: true },
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+      });
+
+      // Project Overlay Functionality
+      const bentoItems = document.querySelectorAll(".bento-item");
+      const overlay = document.getElementById("projectOverlay");
+      const closeBtn = document.querySelector(".close-btn");
+      const projectTitle = document.getElementById("projectTitle");
+      const projectDetails = document.getElementById("projectDetails");
+
+      bentoItems.forEach((item) => {
+        item.addEventListener("click", () => {
+          const details = item.getAttribute("data-details");
+          const title = item.querySelector("p").textContent;
+          projectTitle.textContent = title;
+          projectDetails.textContent = details;
+          overlay.style.display = "block";
+        });
+      });
+
+      closeBtn.addEventListener("click", () => {
+        overlay.style.display = "none";
+      });
+
+      window.addEventListener("click", (event) => {
+        if (event.target === overlay) {
+          overlay.style.display = "none";
+        }
+      });
+    </script>
+  </body>
+</html>
