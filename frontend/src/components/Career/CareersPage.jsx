@@ -1,57 +1,51 @@
 import React, { useState } from "react";
-
+import {
+  useGetJobsQuery,
+  useCreateApplicationMutation,
+} from "../../api/rippotaiApi";
 const CareersPage = () => {
   const [formStatus, setFormStatus] = useState(null);
   const [selectedJob, setSelectedJob] = useState(null);
 
-  const jobs = [
-    {
-      id: 1,
-      title: "Senior Architect",
-      category: "Architecture",
-      location: "Melbourne, VIC",
-      description:
-        "Lead innovative residential and commercial projects, overseeing design and execution.",
-      details:
-        "Requires 7+ years of experience, proficiency in AutoCAD and Revit, and a passion for sustainable design.",
-    },
-    {
-      id: 2,
-      title: "Interior Designer",
-      category: "Interiors",
-      location: "Sydney, NSW",
-      description:
-        "Create bespoke interior spaces that blend aesthetics with functionality.",
-      details:
-        "Requires 5+ years of experience, expertise in 3D modeling, and a strong portfolio.",
-    },
-    {
-      id: 3,
-      title: "Furniture Designer",
-      category: "Furniture",
-      location: "Brisbane, QLD",
-      description:
-        "Design custom furniture pieces inspired by the cube concept.",
-      details:
-        "Requires 3+ years of experience, knowledge of materials, and creative design skills.",
-    },
-  ];
+  // Fetch jobs using the useGetJobsQuery hook
+  const {
+    data: jobs = [],
+    error,
+    isLoading,
+  } = useGetJobsQuery(selectedJob ? { category: selectedJob } : {});
+
+  // Use the createApplication mutation
+  const [createApplication, { isLoading: isSubmitting }] =
+    useCreateApplicationMutation();
 
   const categories = ["All", "Architecture", "Interiors", "Furniture"];
 
-  const filteredJobs = selectedJob
-    ? jobs.filter((job) => job.category === selectedJob)
-    : jobs;
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Simulate form submission (replace with actual API call)
-    setFormStatus({
-      type: "success",
-      message: "Your application has been submitted successfully!",
-    });
-    e.target.reset();
-    setTimeout(() => setFormStatus(null), 5000);
+    const formData = new FormData(e.target);
+    const applicationData = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      position: formData.get("position"),
+      resume: formData.get("resume"),
+      coverLetter: formData.get("cover-letter"),
+    };
+
+    try {
+      await createApplication(applicationData).unwrap();
+      setFormStatus({
+        type: "success",
+        message: "Your application has been submitted successfully!",
+      });
+      e.target.reset();
+      setTimeout(() => setFormStatus(null), 5000);
+    } catch (err) {
+      setFormStatus({
+        type: "error",
+        message: "Failed to submit application. Please try again.",
+      });
+      setTimeout(() => setFormStatus(null), 5000);
+    }
   };
 
   return (
@@ -116,9 +110,15 @@ const CareersPage = () => {
             ))}
           </div>
           <div className="job-list mt-3">
-            {filteredJobs.length > 0 ? (
-              filteredJobs.map((job) => (
-                <div className="job-item" key={job.id}>
+            {isLoading ? (
+              <p>Loading jobs...</p>
+            ) : error ? (
+              <p className="no-jobs">
+                Error loading jobs. Please try again later.
+              </p>
+            ) : jobs.length > 0 ? (
+              jobs.map((job) => (
+                <div className="job-item" key={job._id}>
                   <h3>{job.title}</h3>
                   <p className="job-meta">
                     <i className="fas fa-map-marker-alt"></i> {job.location}
@@ -223,7 +223,7 @@ const CareersPage = () => {
                   >
                     <option value="">Select a position</option>
                     {jobs.map((job) => (
-                      <option key={job.id} value={job.title}>
+                      <option key={job._id} value={job.title}>
                         {job.title}
                       </option>
                     ))}
@@ -261,8 +261,12 @@ const CareersPage = () => {
                     {formStatus.message}
                   </div>
                 )}
-                <button type="submit" className="form-submit-button">
-                  Submit Application
+                <button
+                  type="submit"
+                  className="form-submit-button"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Submitting..." : "Submit Application"}
                 </button>
               </form>
             </div>

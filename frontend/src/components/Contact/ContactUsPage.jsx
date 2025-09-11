@@ -1,19 +1,35 @@
 import React, { useState } from "react";
+import { useCreateQueryMutation } from "../../api/rippotaiApi";
 
 const ContactUsPage = () => {
-  const [formStatus, setFormStatus] = useState(null); // State for form submission feedback
+  const [formStatus, setFormStatus] = useState(null);
+  const [createQuery, { isLoading: isSubmitting }] = useCreateQueryMutation();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Simulate form submission (replace with actual API call)
-    setFormStatus({
-      type: "success",
-      message: "Your message has been sent successfully!",
-    });
-    // Reset form
-    e.target.reset();
-    // Clear status after 5 seconds
-    setTimeout(() => setFormStatus(null), 5000);
+    const formData = new FormData(e.target);
+    const queryData = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      phone: formData.get("phone") || "", // Optional field
+      message: formData.get("message"),
+    };
+
+    try {
+      await createQuery(queryData).unwrap();
+      setFormStatus({
+        type: "success",
+        message: "Your message has been sent successfully!",
+      });
+      e.target.reset();
+      setTimeout(() => setFormStatus(null), 5000);
+    } catch (err) {
+      setFormStatus({
+        type: "error",
+        message: "Failed to send message. Please try again.",
+      });
+      setTimeout(() => setFormStatus(null), 5000);
+    }
   };
 
   return (
@@ -110,8 +126,12 @@ const ContactUsPage = () => {
                         {formStatus.message}
                       </div>
                     )}
-                    <button type="submit" className="form-submit-button">
-                      Send Message
+                    <button
+                      type="submit"
+                      className="form-submit-button"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? "Sending..." : "Send Message"}
                     </button>
                   </form>
                 </div>

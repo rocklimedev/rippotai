@@ -1,9 +1,18 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
+import { API_URL } from "../store/config";
 export const rippotaiApi = createApi({
   reducerPath: "rippotaiApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api" }), // Update for production
+  baseQuery: fetchBaseQuery({ baseUrl: API_URL }), // Update for production
   endpoints: (builder) => ({
+    // Add to the endpoints in rippotaiApi
+    createQuery: builder.mutation({
+      query: ({ name, email, phone, message }) => ({
+        url: "/queries",
+        method: "POST",
+        body: { name, email, phone, message },
+      }),
+      invalidatesTags: [{ type: "Queries", id: "LIST" }],
+    }),
     // Queries Endpoints
     getQueries: builder.query({
       query: () => "/queries",
@@ -14,7 +23,6 @@ export const rippotaiApi = createApi({
     getProjects: builder.query({
       query: (category) => ({
         url: "/projects",
-        params: category ? { category } : {},
       }),
       providesTags: (result) =>
         result
@@ -80,7 +88,6 @@ export const rippotaiApi = createApi({
     getJobs: builder.query({
       query: (category) => ({
         url: "/careers/jobs",
-        params: category ? { category } : {},
       }),
       providesTags: (result) =>
         result
@@ -156,6 +163,7 @@ export const rippotaiApi = createApi({
 
 export const {
   // Queries
+  useCreateQueryMutation,
   useGetQueriesQuery,
   // Projects
   useGetProjectsQuery,
