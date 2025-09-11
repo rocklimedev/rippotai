@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import footerLogo from "../../assets/images/footer-logo.png";
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
   return (
     <>
       <footer className="footer">
@@ -47,7 +48,15 @@ const Footer = () => {
             <div className="col-xl-12 col-lg-12 col-md-12 mx-auto">
               <ul className="list-inline text-center mb-0">
                 <li>
-                  &copy; 2025. All Rights Reserved <span>Rocklime Media</span>
+                  &copy; {currentYear}. All Rights Reserved{" "}
+                  <a
+                    href="https://www.rocklime.com/"
+                    className="rocklime-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Rocklime
+                  </a>
                 </li>
               </ul>
             </div>

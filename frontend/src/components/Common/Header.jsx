@@ -22,7 +22,9 @@ const Header = () => {
   return (
     <header className={isScrolled ? "scrolled" : ""}>
       <div className="logo">
-        <img src={logo} alt="Logo" />
+        <Link to="/">
+          <img src={logo} alt="Logo" />
+        </Link>
       </div>
       <nav>
         <ul>
