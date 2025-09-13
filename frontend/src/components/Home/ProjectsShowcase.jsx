@@ -82,22 +82,20 @@ const ProjectsShowcase = () => {
           <div
             key={index}
             className="bento-item"
-            style={{ height: project.height }} // Ensure height is applied
+            style={{ height: project.height }}
             onClick={() => handleProjectClick(project)}
           >
             <img
               src={project.image}
               alt={project.title}
-              style={{ height: "100%", width: "100%" }}
+              style={{ height: "100%", width: "100%", objectFit: "cover" }}
             />
-            {/* <div className="project-overlay-text">
-              <p>{project.title}</p>
-            </div> */}
+            <div className="project-overlay-text">{project.title}</div>
           </div>
         ))}
       </Masonry>
       {selectedProject && (
-        <div className="project-overlay" onClick={handleCloseOverlay}>
+        <div className="project-overlay active" onClick={handleCloseOverlay}>
           <div className="overlay-content" onClick={(e) => e.stopPropagation()}>
             <span className="close-btn" onClick={handleCloseOverlay}>
               &times;

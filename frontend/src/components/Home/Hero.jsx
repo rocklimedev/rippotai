@@ -4,8 +4,8 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import banner1 from "../../assets/images/main-banner.jpg";
-import banner2 from "../../assets/images/main-banner.jpg";
-import banner3 from "../../assets/images/main-banner.jpg";
+import banner2 from "../../assets/images/banner_home_2.jpg";
+import banner3 from "../../assets/images/banner_home_3.jpg";
 
 const Hero = () => {
   return (

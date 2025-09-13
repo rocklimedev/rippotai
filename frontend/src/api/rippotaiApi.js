@@ -1,19 +1,25 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_URL } from "../store/config";
+
 export const rippotaiApi = createApi({
   reducerPath: "rippotaiApi",
-  baseQuery: fetchBaseQuery({ baseUrl: API_URL }), // Update for production
+  baseQuery: fetchBaseQuery({
+    baseUrl: API_URL,
+    prepareHeaders: (headers) => {
+      headers.set("Content-Type", "application/json");
+      return headers;
+    },
+  }),
   endpoints: (builder) => ({
-    // Add to the endpoints in rippotaiApi
+    // Queries Endpoints
     createQuery: builder.mutation({
-      query: ({ name, email, phone, message }) => ({
+      query: ({ name, email, subject, message }) => ({
         url: "/queries",
         method: "POST",
-        body: { name, email, phone, message },
+        body: { name, email, subject, message },
       }),
       invalidatesTags: [{ type: "Queries", id: "LIST" }],
     }),
-    // Queries Endpoints
     getQueries: builder.query({
       query: () => "/queries",
       providesTags: ["Queries"],
@@ -43,8 +49,8 @@ export const rippotaiApi = createApi({
         formData.append("category", category);
         formData.append("description", description);
         formData.append("details", details);
-        if (image) formData.append("image", image); // File input
-        if (images) images.forEach((img) => formData.append("images[]", img)); // Multiple images
+        if (image) formData.append("image", image);
+        if (images) images.forEach((img) => formData.append("images[]", img));
         return {
           url: "/projects",
           method: "POST",
@@ -139,7 +145,7 @@ export const rippotaiApi = createApi({
         formData.append("email", email);
         formData.append("position", position);
         formData.append("coverLetter", coverLetter);
-        if (resume) formData.append("resume", resume); // File input
+        if (resume) formData.append("resume", resume);
         return {
           url: "/careers/apply",
           method: "POST",
@@ -162,22 +168,18 @@ export const rippotaiApi = createApi({
 });
 
 export const {
-  // Queries
   useCreateQueryMutation,
   useGetQueriesQuery,
-  // Projects
   useGetProjectsQuery,
   useGetProjectByIdQuery,
   useCreateProjectMutation,
   useUpdateProjectMutation,
   useDeleteProjectMutation,
-  // Jobs
   useGetJobsQuery,
   useGetJobByIdQuery,
   useCreateJobMutation,
   useUpdateJobMutation,
   useDeleteJobMutation,
-  // Applications
   useCreateApplicationMutation,
   useGetApplicationsQuery,
 } = rippotaiApi;

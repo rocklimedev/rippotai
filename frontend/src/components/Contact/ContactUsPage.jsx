@@ -9,11 +9,29 @@ const ContactUsPage = () => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const queryData = {
-      name: formData.get("name"),
-      email: formData.get("email"),
-      phone: formData.get("phone") || "", // Optional field
-      message: formData.get("message"),
+      name: formData.get("name")?.trim(),
+      email: formData.get("email")?.trim(),
+      subject: formData.get("subject")?.trim(),
+      message: formData.get("message")?.trim(),
     };
+
+    // Client-side validation
+    if (
+      !queryData.name ||
+      !queryData.email ||
+      !queryData.subject ||
+      !queryData.message
+    ) {
+      setFormStatus({
+        type: "error",
+        message: "Please fill out all required fields.",
+      });
+      setTimeout(() => setFormStatus(null), 5000);
+      return;
+    }
+
+    // Log the payload for debugging
+    console.log("Sending queryData:", queryData);
 
     try {
       await createQuery(queryData).unwrap();
@@ -24,9 +42,14 @@ const ContactUsPage = () => {
       e.target.reset();
       setTimeout(() => setFormStatus(null), 5000);
     } catch (err) {
+      const errorMessage =
+        err?.data?.message ||
+        err?.data?.error ||
+        "Failed to send message. Please try again.";
+      console.error("Error response:", err); // Log error for debugging
       setFormStatus({
         type: "error",
-        message: "Failed to send message. Please try again.",
+        message: errorMessage,
       });
       setTimeout(() => setFormStatus(null), 5000);
     }
@@ -96,14 +119,16 @@ const ContactUsPage = () => {
                       />
                     </div>
                     <div className="form-group">
-                      <label htmlFor="phone" className="form-label">
-                        Phone (Optional)
+                      <label htmlFor="subject" className="form-label">
+                        Subject
                       </label>
                       <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
+                        type="text"
+                        id="subject"
+                        name="subject"
                         className="form-input"
+                        required
+                        aria-required="true"
                       />
                     </div>
                     <div className="form-group">
@@ -122,6 +147,7 @@ const ContactUsPage = () => {
                     {formStatus && (
                       <div
                         className={`form-alert form-alert-${formStatus.type}`}
+                        role="alert"
                       >
                         {formStatus.message}
                       </div>
@@ -158,18 +184,21 @@ const ContactUsPage = () => {
                     <a
                       href="https://instagram.com/rippotai"
                       className="social-icon instagram"
+                      aria-label="Follow us on Instagram"
                     >
                       <i className="fab fa-instagram"></i>
                     </a>
                     <a
                       href="https://linkedin.com/company/rippotai"
                       className="social-icon linkedin"
+                      aria-label="Follow us on LinkedIn"
                     >
                       <i className="fab fa-linkedin"></i>
                     </a>
                     <a
                       href="https://pinterest.com/rippotai"
                       className="social-icon pinterest"
+                      aria-label="Follow us on Pinterest"
                     >
                       <i className="fab fa-pinterest"></i>
                     </a>

@@ -14,27 +14,25 @@ import CareersPage from "./components/Career/CareersPage";
 function App() {
   return (
     <Router>
-      <div className="App">
-        <Header />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <Hero />
-                <WhoWeAre />
-                <ProjectsShowcase />
-                <CTA />
-              </>
-            }
-          />
-          <Route path="/about" element={<AboutUsPage />} />
-          <Route path="/projects" element={<ProjectsPage />} />
-          <Route path="/contact" element={<ContactUsPage />} />
-          <Route path="/career" element={<CareersPage />} />
-        </Routes>
-        <Footer />
-      </div>
+      <Header />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <Hero />
+              <WhoWeAre />
+              <ProjectsShowcase />
+              <CTA />
+            </>
+          }
+        />
+        <Route path="/about" element={<AboutUsPage />} />
+        <Route path="/projects" element={<ProjectsPage />} />
+        <Route path="/contact" element={<ContactUsPage />} />
+        <Route path="/career" element={<CareersPage />} />
+      </Routes>
+      <Footer />
     </Router>
   );
 }
