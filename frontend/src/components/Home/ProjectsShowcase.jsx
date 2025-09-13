@@ -1,46 +1,48 @@
-import { useState } from "react";
-import Masonry from "react-masonry-css"; // Ensure this is installed
-import project1 from "../../assets/images/project-img.png";
-import project2 from "../../assets/images/project-img-two.png";
-import project3 from "../../assets/images/project-img-three.png";
-import project4 from "../../assets/images/project-img-four.png";
-import project5 from "../../assets/images/project-img-five.png";
+import React, { useState } from "react";
+import Masonry from "react-masonry-css";
 
 const projects = [
   {
-    title: "Project 1",
-    image: project1,
-    details:
-      "Project 1: A modern office complex with sustainable design. Completed: 2024. Location: Mumbai.",
+    type: "image",
+    title: "Cultural Heritage Pavilion",
+    src: "/assets/projects/building1.jpg",
     height: "500px",
+    details: "Culture India Exhibit",
   },
   {
-    title: "Project 2",
-    image: project2,
-    details:
-      "Project 2: Luxury resort with a focus on nature. Completed: 2023. Location: Goa.",
-    height: "250px",
+    type: "image",
+    title: "Architectural Facade",
+    src: "/assets/projects/detail1.jpg",
+    height: "240px",
+    details: "Intricate Brick Design",
   },
   {
-    title: "Project 3",
-    image: project3,
-    details:
-      "Project 3: Cultural center with innovative architecture. Completed: 2022. Location: Delhi.",
-    height: "250px",
+    type: "image",
+    title: "Sublime Exterior",
+    src: "/assets/projects/exterior1.jpg",
+    height: "240px",
+    details: "Daylight Perspective",
   },
   {
-    title: "Project 4",
-    image: project4,
-    details:
-      "Project 4: Residential tower with green spaces. Completed: 2025. Location: Bangalore.",
-    height: "350px",
+    type: "text",
+    title: "Award-Winning Retail",
+    details: "Sunita Shekhawat Flagship Store",
+    height: "200px",
+    bgColor: "#f8f1e9",
   },
   {
-    title: "Project 5",
-    image: project5,
-    details:
-      "Project 5: Commercial plaza with unique facade. Completed: 2024. Location: Hyderabad.",
-    height: "350px",
+    type: "image",
+    title: "Nighttime Elegance",
+    src: "/assets/projects/building3.jpg",
+    height: "300px",
+    details: "Illuminated Architectural View",
+  },
+  {
+    type: "image",
+    title: "Luxury Retail Pavilion",
+    src: "/assets/projects/building2.jpg",
+    height: "400px",
+    details: "Winner | Retail<br>Sunita Shekhawat Flagship Store",
   },
 ];
 
@@ -51,15 +53,15 @@ const ProjectsShowcase = () => {
     setSelectedProject(project);
   };
 
-  const handleCloseOverlay = () => {
+  const handleCloseOverlay = (e) => {
+    e.stopPropagation();
     setSelectedProject(null);
   };
 
-  // Masonry breakpoint columns
   const breakpointColumnsObj = {
-    default: 3, // 3 columns by default
-    1100: 2, // 2 columns at 1100px and below
-    700: 1, // 1 column at 700px and below
+    default: 2,
+    1100: 1,
+    700: 1,
   };
 
   return (
@@ -67,12 +69,11 @@ const ProjectsShowcase = () => {
       <div className="intro-text">
         <h3>Asna Architectural Firm</h3>
         <p>
-          We are an interdisciplinary team that aspires to craft spaces that
-          address the emerging future of work, leisure, and living, and the
-          manner in which we build. Recognized among the 100 Best Architecture
-          Firms in the World.
+          Pioneers in crafting visionary spaces for the future of work, leisure,
+          and living. Recognized among the 100 Best Architecture Firms globally.
         </p>
       </div>
+
       <Masonry
         breakpointCols={breakpointColumnsObj}
         className="bento-grid"
@@ -81,19 +82,33 @@ const ProjectsShowcase = () => {
         {projects.map((project, index) => (
           <div
             key={index}
-            className="bento-item"
-            style={{ height: project.height }}
+            className={`bento-item ${project.type}`}
+            style={{
+              height: project.height,
+              backgroundColor: project.bgColor || "transparent",
+            }}
             onClick={() => handleProjectClick(project)}
           >
-            <img
-              src={project.image}
-              alt={project.title}
-              style={{ height: "100%", width: "100%", objectFit: "cover" }}
-            />
-            <div className="project-overlay-text">{project.title}</div>
+            {project.type === "image" && (
+              <img
+                src={project.src}
+                alt={project.title}
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              />
+            )}
+            {project.type === "text" && (
+              <div className="text-block">
+                <h4>{project.title}</h4>
+                <p dangerouslySetInnerHTML={{ __html: project.details }} />
+              </div>
+            )}
+            {project.type === "image" && (
+              <div className="project-overlay-text">{project.title}</div>
+            )}
           </div>
         ))}
       </Masonry>
+
       {selectedProject && (
         <div className="project-overlay active" onClick={handleCloseOverlay}>
           <div className="overlay-content" onClick={(e) => e.stopPropagation()}>
@@ -101,7 +116,11 @@ const ProjectsShowcase = () => {
               &times;
             </span>
             <h3>{selectedProject.title}</h3>
-            <p>{selectedProject.details}</p>
+            {selectedProject.details && (
+              <p
+                dangerouslySetInnerHTML={{ __html: selectedProject.details }}
+              />
+            )}
           </div>
         </div>
       )}
