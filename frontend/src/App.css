@@ -303,7 +303,7 @@ header.scrolled .search-icon:focus {
 }
 
 .who-we-are-image {
-  flex: 1;
+
   text-align: right;
   padding: var(--spacing-md); /* Add padding to create gap around the image */
 }
