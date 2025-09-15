@@ -928,7 +928,7 @@ header.scrolled .search-icon:focus {
 .about-hero {
   position: relative;
   min-height: 60vh;
-  background: url("./assets/images/about.jpg") no-repeat center center/cover;
+  background: url("./assets/images/banner-img.png") no-repeat center center/cover;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1340,7 +1340,7 @@ header.scrolled .search-icon:focus {
 .contact-hero {
   position: relative;
   min-height: 50vh;
-  background: url("./assets/images/contact.jpg") no-repeat center center/cover;
+  background: url("./assets/images/kitchen_set02.png") no-repeat center center/cover;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1724,7 +1724,7 @@ header.scrolled .search-icon:focus {
 .projects-hero {
   position: relative;
   min-height: 50vh;
-  background: url("./assets/images/about-main.jpg") no-repeat center center/cover;
+  background: url("./assets/images/office interior.png") no-repeat center center/cover;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2127,7 +2127,7 @@ header.scrolled .search-icon:focus {
 .careers-hero {
   position: relative;
   min-height: 50vh;
-  background: url("./assets/images/career.jpg") no-repeat center center/cover;
+  background: url("./assets/images/interior_set02.png") no-repeat center center/cover;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -1,25 +1,31 @@
 import React, { useState } from "react";
 import Masonry from "react-masonry-css";
-
+import interior from "../../assets/images/INTERIOR 01.jpg";
+import interior2 from "../../assets/images/INTERIOR 02.jpg";
+import interiorset2 from "../../assets/images/interior_set02.png";
+import kitchen from "../../assets/images/kitchen.jpg";
+import kitchenset2 from "../../assets/images/kitchen_set02.png";
+import officeinterior from "../../assets/images/office interior.png";
+import wardrobe from "../../assets/images/wadrobe.png";
 const projects = [
   {
     type: "image",
     title: "Cultural Heritage Pavilion",
-    src: "/assets/projects/building1.jpg",
+    src: interior,
     height: "500px",
     details: "Culture India Exhibit",
   },
   {
     type: "image",
     title: "Architectural Facade",
-    src: "/assets/projects/detail1.jpg",
+    src: interior2,
     height: "240px",
     details: "Intricate Brick Design",
   },
   {
     type: "image",
     title: "Sublime Exterior",
-    src: "/assets/projects/exterior1.jpg",
+    src: interiorset2,
     height: "240px",
     details: "Daylight Perspective",
   },
@@ -33,14 +39,30 @@ const projects = [
   {
     type: "image",
     title: "Nighttime Elegance",
-    src: "/assets/projects/building3.jpg",
+    src: kitchen,
     height: "300px",
     details: "Illuminated Architectural View",
   },
   {
     type: "image",
     title: "Luxury Retail Pavilion",
-    src: "/assets/projects/building2.jpg",
+    src: kitchenset2,
+    height: "400px",
+    details: "Winner | Retail<br>Sunita Shekhawat Flagship Store",
+  },
+
+  {
+    type: "image",
+    title: "Luxury Retail Pavilion",
+    src: officeinterior,
+    height: "400px",
+    details: "Winner | Retail<br>Sunita Shekhawat Flagship Store",
+  },
+
+  {
+    type: "image",
+    title: "Luxury Retail Pavilion",
+    src: wardrobe,
     height: "400px",
     details: "Winner | Retail<br>Sunita Shekhawat Flagship Store",
   },
@@ -66,14 +88,6 @@ const ProjectsShowcase = () => {
 
   return (
     <section className="projects-showcase">
-      <div className="intro-text">
-        <h3>Asna Architectural Firm</h3>
-        <p>
-          Pioneers in crafting visionary spaces for the future of work, leisure,
-          and living. Recognized among the 100 Best Architecture Firms globally.
-        </p>
-      </div>
-
       <Masonry
         breakpointCols={breakpointColumnsObj}
         className="bento-grid"
