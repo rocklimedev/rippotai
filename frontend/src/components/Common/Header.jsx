@@ -7,21 +7,25 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const location = useLocation(); // Get current route
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768); // ✅ detect screen size
+  const location = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === "Escape") {
-        setIsSearchOpen(false);
-      }
+      if (e.key === "Escape") setIsSearchOpen(false);
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
@@ -37,7 +41,6 @@ const Header = () => {
     setIsSearchOpen(false);
   };
 
-  // Determine if on homepage
   const isHomePage = location.pathname === "/";
 
   return (
@@ -51,6 +54,7 @@ const Header = () => {
           <img src={logo} alt="Logo" />
         </Link>
       </div>
+
       <nav className={isMenuOpen ? "open" : ""}>
         <ul>
           <li>
@@ -73,24 +77,29 @@ const Header = () => {
               Careers
             </Link>
           </li>
-          <li>
-            <button
-              className="search-icon"
-              onClick={toggleSearch}
-              aria-label="Toggle search"
-            >
-              <FaSearch size={20} />
-            </button>
-          </li>
         </ul>
       </nav>
+
+      {/* Search Toggle */}
       <button
-        className="menu-toggle"
-        onClick={toggleMenu}
-        aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+        className="search-icon"
+        onClick={toggleSearch}
+        aria-label="Toggle search"
       >
-        {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+        <FaSearch size={20} />
       </button>
+
+      {/* ✅ Conditionally Render Menu Toggle Only On Mobile */}
+      {isMobile && (
+        <button
+          className="menu-toggle"
+          onClick={toggleMenu}
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+        >
+          {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+        </button>
+      )}
+
       {isSearchOpen && (
         <div className="search-box">
           <input
