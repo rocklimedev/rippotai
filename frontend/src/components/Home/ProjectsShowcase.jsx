@@ -1,25 +1,25 @@
 import React, { useState } from "react";
-import interior from "../../assets/images/INTERIOR 01.jpg";
-import interior2 from "../../assets/images/INTERIOR 02.jpg";
-import interiorset2 from "../../assets/images/interior_set02.png";
-import kitchen from "../../assets/images/kitchen.jpg";
-import kitchenset2 from "../../assets/images/kitchen_set02.png";
-import officeinterior from "../../assets/images/office interior.png";
-import wardrobe from "../../assets/images/wadrobe.png";
-
+import lawyer from "../../assets/images/projects/03 Lawyer's Office/Office renders/MAIN 1.png";
+import banga from "../../assets/images/projects/02 C1- Banga Residence/op-1/op-1 v1.png";
+import kohli from "../../assets/images/projects/05 Mr. Kohli's Residence/RENDERS/VIEW/LR 3.png";
+import gk from "../../assets/images/projects/14 D-54 GK RENOVATION/render/L2.png";
+import gkm53 from "../../assets/images/projects/15_GK M-53/floor/LR3.png";
+import gurugram from "../../assets/images/projects/21_Gurugram/Renders/Scene 12_1.png";
+import pitampura from "../../assets/images/projects/7_KP-18 Pitampura Residence/Facade/OP 3/1.png";
 const projects = [
-  { type: "image", title: "Cultural Heritage Pavilion", src: interior },
-  { type: "image", title: "Architectural Facade", src: interior2 },
-  { type: "image", title: "Sublime Exterior", src: interiorset2 },
+  { type: "image", title: "Luxury Retail Pavilion", src: pitampura },
+
+  { type: "image", title: "Architectural Facade", src: banga },
+  { type: "image", title: "Sublime Exterior", src: kohli },
   {
     type: "text",
     title: "Award-Winning Retail",
     details: "Sunita Shekhawat Flagship Store",
   },
-  { type: "image", title: "Nighttime Elegance", src: kitchen },
-  { type: "image", title: "Luxury Retail Pavilion", src: kitchenset2 },
-  { type: "image", title: "Luxury Retail Pavilion", src: officeinterior },
-  { type: "image", title: "Luxury Retail Pavilion", src: wardrobe },
+  { type: "image", title: "Nighttime Elegance", src: gk },
+  { type: "image", title: "Luxury Retail Pavilion", src: gkm53 },
+  { type: "image", title: "Luxury Retail Pavilion", src: gurugram },
+  { type: "image", title: "Cultural Heritage Pavilion", src: lawyer },
 ];
 
 const ProjectsShowcase = () => {

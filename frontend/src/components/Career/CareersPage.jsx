@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import {
-  useGetJobsQuery,
-  useCreateApplicationMutation,
-} from "../../api/rippotaiApi";
+import { Link } from "react-router-dom"; // Add react-router-dom for navigation
+import { useGetJobsQuery } from "../../api/rippotaiApi";
+
 const CareersPage = () => {
-  const [formStatus, setFormStatus] = useState(null);
   const [selectedJob, setSelectedJob] = useState(null);
 
   // Fetch jobs using the useGetJobsQuery hook
@@ -14,39 +12,7 @@ const CareersPage = () => {
     isLoading,
   } = useGetJobsQuery(selectedJob ? { category: selectedJob } : {});
 
-  // Use the createApplication mutation
-  const [createApplication, { isLoading: isSubmitting }] =
-    useCreateApplicationMutation();
-
   const categories = ["All", "Architecture", "Interiors", "Furniture"];
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const applicationData = {
-      name: formData.get("name"),
-      email: formData.get("email"),
-      position: formData.get("position"),
-      resume: formData.get("resume"),
-      coverLetter: formData.get("cover-letter"),
-    };
-
-    try {
-      await createApplication(applicationData).unwrap();
-      setFormStatus({
-        type: "success",
-        message: "Your application has been submitted successfully!",
-      });
-      e.target.reset();
-      setTimeout(() => setFormStatus(null), 5000);
-    } catch (err) {
-      setFormStatus({
-        type: "error",
-        message: "Failed to submit application. Please try again.",
-      });
-      setTimeout(() => setFormStatus(null), 5000);
-    }
-  };
 
   return (
     <div className="careers-page">
@@ -58,9 +24,9 @@ const CareersPage = () => {
             Shape the future of design with Rippotai Architecture, where
             innovation meets harmony.
           </p>
-          <a href="#job-listings" className="cta-button">
+          <Link to="#job-listings" className="cta-button">
             Explore Opportunities
-          </a>
+          </Link>
         </div>
       </section>
 
@@ -125,9 +91,12 @@ const CareersPage = () => {
                   </p>
                   <p>{job.description}</p>
                   <p className="job-details">{job.details}</p>
-                  <a href="#application-form" className="cta-button apply-btn">
+                  <Link
+                    to={`/careers/apply?job=${encodeURIComponent(job.title)}`} // Pass job title as query param
+                    className="cta-button apply-btn"
+                  >
                     Apply Now
-                  </a>
+                  </Link>
                 </div>
               ))
             ) : (
@@ -173,102 +142,6 @@ const CareersPage = () => {
                   growth.
                 </p>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Application Form Section */}
-      <section className="careers-application" id="application-form">
-        <div className="custom-container">
-          <h2 className="text-center">Apply Now</h2>
-          <div className="custom-row">
-            <div className="custom-col-8 custom-col-offset-2">
-              <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                  <label htmlFor="name" className="form-label">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    className="form-input"
-                    required
-                    aria-required="true"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="email" className="form-label">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    className="form-input"
-                    required
-                    aria-required="true"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="position" className="form-label">
-                    Position
-                  </label>
-                  <select
-                    id="position"
-                    name="position"
-                    className="form-input"
-                    required
-                  >
-                    <option value="">Select a position</option>
-                    {jobs.map((job) => (
-                      <option key={job._id} value={job.title}>
-                        {job.title}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label htmlFor="resume" className="form-label">
-                    Resume/CV
-                  </label>
-                  <input
-                    type="file"
-                    id="resume"
-                    name="resume"
-                    className="form-input"
-                    accept=".pdf,.doc,.docx"
-                    required
-                    aria-required="true"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="cover-letter" className="form-label">
-                    Cover Letter
-                  </label>
-                  <textarea
-                    id="cover-letter"
-                    name="cover-letter"
-                    className="form-input"
-                    rows="5"
-                    required
-                    aria-required="true"
-                  ></textarea>
-                </div>
-                {formStatus && (
-                  <div className={`form-alert form-alert-${formStatus.type}`}>
-                    {formStatus.message}
-                  </div>
-                )}
-                <button
-                  type="submit"
-                  className="form-submit-button"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? "Submitting..." : "Submit Application"}
-                </button>
-              </form>
             </div>
           </div>
         </div>

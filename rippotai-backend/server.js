@@ -31,8 +31,16 @@ const corsOptions = {
   allowedHeaders: ["Content-Type", "Authorization"],
 };
 app.use(cors(corsOptions));
-app.use(express.json());
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// Conditionally apply JSON parsing middleware
+app.use((req, res, next) => {
+  if (req.is("multipart/form-data")) {
+    return next(); // Skip JSON parsing for multipart/form-data requests
+  }
+  express.json()(req, res, next); // Apply JSON parsing for other requests
+});
+
+app.use("/uploads", express.static(path.join(__dirname, "Uploads")));
 
 // Routes
 app.use("/api/queries", require("./routes/queries"));

@@ -4,16 +4,22 @@ const ApplicationsController = require("../controller/applicationController");
 const multer = require("multer");
 const path = require("path");
 
-// Multer setup for resume uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, process.env.UPLOAD_DIR);
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024 }, // Limit to 5MB
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = [
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ];
+    if (allowedTypes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only PDF, DOC, and DOCX files are allowed"));
+    }
   },
 });
-const upload = multer({ storage });
 
 router.get("/jobs", ApplicationsController.getAllJobs);
 router.post("/jobs", ApplicationsController.createJob);

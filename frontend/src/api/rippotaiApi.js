@@ -5,8 +5,11 @@ export const rippotaiApi = createApi({
   reducerPath: "rippotaiApi",
   baseQuery: fetchBaseQuery({
     baseUrl: API_URL,
-    prepareHeaders: (headers) => {
-      headers.set("Content-Type", "application/json");
+    prepareHeaders: (headers, { endpoint }) => {
+      // Skip Content-Type for createApplication to allow browser to set multipart/form-data
+      if (endpoint !== "createApplication") {
+        headers.set("Content-Type", "application/json");
+      }
       return headers;
     },
   }),
