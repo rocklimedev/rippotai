@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import footerLogo from "../../assets/images/footer-logo.png";
-
+import Typewriter from "./TypeWriter";
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
     <>
       <footer className="footer">
+        <Typewriter showContactUs={true} />
         <div className="footer-top">
           <div className="container">
             <div className="row">

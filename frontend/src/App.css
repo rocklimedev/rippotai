@@ -34,9 +34,9 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: var(--primary-color);
   padding: var(--spacing-sm) var(--spacing-md);
   position: fixed;
+  background: transparent;
   top: 0;
   left: 0;
   width: 100%;
@@ -216,12 +216,6 @@ nav ul li a:hover {
   color: var(--white);
   opacity: 0.85;
 }
-
-.who-we-are {
-  width: 100vw;
-  margin: 0;
-}
-
 .who-we-are {
   width: 100vw;
   margin: 0;
@@ -278,6 +272,35 @@ nav ul li a:hover {
   display: block;
 }
 
+/* Slider image styling */
+.founder-slider-img {
+  border-radius: 8px;
+  object-fit: cover;
+  max-height: 400px; /* Adjust as needed */
+}
+
+/* Hide slick arrows and dots */
+.slick-prev,
+.slick-next,
+.slick-dots {
+  display: none !important; /* Completely hide arrows and dots */
+}
+
+/* Blinking effect for active slide */
+.slick-slide.slick-active .slider-item {
+  animation: blink 1.5s infinite; /* Apply blinking animation */
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7; /* Adjust opacity for subtle blinking effect */
+  }
+}
+
 /* Responsive layout */
 @media (max-width: 900px) {
   .who-we-are-container {
@@ -290,6 +313,11 @@ nav ul li a:hover {
   .who-we-are-image img {
     width: 100%;
     max-width: 350px;
+    margin: 0 auto;
+  }
+
+  .founder-slider-img {
+    max-width: 350px; /* Ensure slider images scale down on mobile */
     margin: 0 auto;
   }
 }
@@ -921,20 +949,22 @@ nav ul li a:hover {
 
 /* About Page Wrapper */
 .about-page {
-  padding-top: 70px; /* Offset for fixed header */
+  padding-top: 0; /* Remove padding-top to allow hero to start at the top */
   background-color: var(--light-bg);
 }
 
-/* Hero Section */
 .about-hero {
   position: relative;
   min-height: 60vh;
-  background: url("./assets/images/banner-img.png") no-repeat center center/cover;
+  background: url("./assets/images/banners/about_main_banner.jpg") no-repeat center center/cover;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   color: var(--white);
+  margin-top: 0; /* Explicitly set to 0 to avoid any default margins */
+  padding-top: 0; /* Ensure no padding pushes content down */
+  top: 0; /* Align to the top of the viewport */
 }
 
 .hero-overlay {
@@ -947,8 +977,7 @@ nav ul li a:hover {
   font-size: 48px;
   font-weight: 600;
   margin-bottom: var(--spacing-sm);
-      color: var(--white);
-
+  color: var(--white);
 }
 
 .about-hero p {
@@ -1333,7 +1362,7 @@ nav ul li a:hover {
 
 /* Contact Page Wrapper */
 .contact-page {
-  padding-top: 70px; /* Offset for fixed header */
+  padding-top: 0;
   background-color: var(--light-bg);
 }
 
@@ -1341,13 +1370,15 @@ nav ul li a:hover {
 .contact-hero {
   position: relative;
   min-height: 50vh;
-  background: url("./assets/images/kitchen_set02.png") no-repeat center center/cover;
+  background: url("./assets/images/banners/kitchen_set02.png") no-repeat center center/cover;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
     color: var(--white);
-
+  margin-top: 0; /* Explicitly set to 0 to avoid any default margins */
+  padding-top: 0; /* Ensure no padding pushes content down */
+  top: 0; /* Align to the top of the viewport */
 }
 
 .hero-overlay {
@@ -1717,7 +1748,7 @@ nav ul li a:hover {
 
 /* Projects Page Wrapper */
 .projects-page {
-  padding-top: 70px; /* Offset for fixed header */
+  padding-top: 0;
   background-color: var(--light-bg);
 }
 
@@ -1725,13 +1756,15 @@ nav ul li a:hover {
 .projects-hero {
   position: relative;
   min-height: 50vh;
-  background: url("./assets/images/office interior.png") no-repeat center center/cover;
+  background: url("./assets/images/banners/projects_main_banner.jpg") no-repeat center center/cover;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
     color: var(--white);
-
+  margin-top: 0; /* Explicitly set to 0 to avoid any default margins */
+  padding-top: 0; /* Ensure no padding pushes content down */
+  top: 0; /* Align to the top of the viewport */
 }
 
 .hero-overlay {
@@ -1765,6 +1798,60 @@ nav ul li a:hover {
 
 .cta-button:hover {
   background-color: #b88c14; /* Darker accent color */
+  transform: scale(1.05);
+}
+/* Projects Page Wrapper */
+.projects-page {
+  padding-top: 0;
+  background-color: var(--light-bg);
+}
+
+/* Hero Section */
+.projects-hero {
+  position: relative;
+  min-height: 50vh;
+  background: url("./assets/images/banners/projects_main_banner.jpg") no-repeat center center/cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--white);
+  margin-top: 0;
+  padding-top: 0;
+  top: 0;
+}
+
+.hero-overlay {
+  background: rgba(0, 0, 0, 0.5);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+}
+
+.projects-hero h1 {
+  font-size: 40px;
+  font-weight: 600;
+  margin-bottom: var(--spacing-sm);
+}
+
+.projects-hero p {
+  font-size: 18px;
+  max-width: 600px;
+  margin: 0 auto var(--spacing-md);
+}
+
+.cta-button {
+  display: inline-block;
+  background-color: var(--accent-color);
+  color: var(--white);
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-decoration: none;
+  border-radius: var(--border-radius);
+  font-weight: bold;
+  transition: var(--transition);
+}
+
+.cta-button:hover {
+  background-color: #b88c14;
   transform: scale(1.05);
 }
 
@@ -1821,18 +1908,18 @@ nav ul li a:hover {
 
 /* Project Grid */
 .project-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: var(--spacing-md);
+  background-color: #000; /* Match the black background from the image */
 }
 
 .project-details {
   position: relative;
   overflow: hidden;
   border-radius: var(--border-radius);
-  background-color: var(--gray-bg);
   cursor: pointer;
-  transition: var(--transition);
+  transition: transform 0.3s;
 }
 
 .project-img {
@@ -1840,34 +1927,39 @@ nav ul li a:hover {
   height: 300px;
   object-fit: cover;
   display: block;
-  transition: opacity 0.3s;
 }
 
 .project-overlay {
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.6);
-  padding: var(--spacing-sm) var(--spacing-md);
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6); /* Black overlay */
   color: var(--white);
-  opacity: 0.8;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-sm);
+  opacity: 0; /* Hidden by default */
   transition: opacity 0.3s;
 }
 
 .project-overlay h5 {
   font-size: 20px;
   margin-bottom: var(--spacing-sm);
+  text-align: center;
 }
 
 .project-overlay p {
   font-size: 14px;
   margin: 0;
+  text-align: center;
 }
 
-.project-details:hover .project-img,
 .project-details:hover .project-overlay {
-  opacity: 0.7;
+  opacity: 1; /* Show overlay on hover */
 }
 
 .project-details:hover {
@@ -2120,7 +2212,7 @@ nav ul li a:hover {
 
 /* Careers Page Wrapper */
 .careers-page {
-  padding-top: 70px; /* Offset for fixed header */
+  padding-top: 0;
   background-color: var(--light-bg);
 }
 
@@ -2128,12 +2220,14 @@ nav ul li a:hover {
 .careers-hero {
   position: relative;
   min-height: 50vh;
-  background: url("./assets/images/interior_set02.png") no-repeat center center/cover;
+  background: url("./assets/images/banners/career_main_banner.png") no-repeat center center/cover;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-
+  margin-top: 0; /* Explicitly set to 0 to avoid any default margins */
+  padding-top: 0; /* Ensure no padding pushes content down */
+  top: 0; /* Align to the top of the viewport */
 }
 
 .hero-overlay {
@@ -2505,7 +2599,7 @@ nav ul li a:hover {
 
 /* Careers Application Page Wrapper */
 .careers-application-page {
-  padding-top: 70px; /* Offset for fixed header */
+  padding-top: 0; /* Offset for fixed header */
   background-color: var(--light-bg);
 }
 
@@ -2513,12 +2607,16 @@ nav ul li a:hover {
 .application-hero {
   position: relative;
   min-height: 50vh;
-  background: url("./assets/images/interior_set02.png") no-repeat center center/cover;
+  background: url("./assets/images/banners/career_main_banner.png") no-repeat center center/cover;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   color: var(--white);
+
+    margin-top: 0; /* Explicitly set to 0 to avoid any default margins */
+  padding-top: 0; /* Ensure no padding pushes content down */
+  top: 0; /* Align to the top of the viewport */
 }
 
 .application-hero .hero-overlay {
@@ -2866,5 +2964,77 @@ nav ul li a:hover {
   }
   .custom-container {
     padding: 0 var(--spacing-sm);
+  }
+}
+/* Typewriter Effect Component */
+.typewriter-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-md);
+  color: var(--white);
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+  margin: var(--spacing-md) auto;
+  max-width: var(--max-width);
+}
+
+.typewriter-text {
+  font-size: 2rem; /* Matches tagline-heading size */
+  color: var(--white);
+  overflow: hidden; /* Hide overflow for typing effect */
+  border-right: 3px solid var(--accent-color); /* Blinking cursor */
+  white-space: nowrap; /* Keep text on one line */
+  letter-spacing: 1.5px;
+  display: inline-block; /* Ensure proper animation */
+}
+
+/* Keyframes for typing effect */
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Keyframes for erasing effect */
+@keyframes erasing {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0;
+  }
+}
+
+/* Keyframes for blinking cursor */
+@keyframes blink-cursor {
+  from, to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: var(--accent-color);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .typewriter-text {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .typewriter-text {
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+  }
+  .typewriter-container {
+    padding: var(--spacing-sm);
   }
 }

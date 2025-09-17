@@ -5,7 +5,6 @@ const ProjectsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedProject, setSelectedProject] = useState(null);
 
-  // Fetch projects using the useGetProjectsQuery hook
   const {
     data: projects,
     error,
@@ -15,7 +14,6 @@ const ProjectsPage = () => {
     { refetchOnMountOrArgChange: true }
   );
 
-  // Handle nested data or fallback to empty array
   const projectsArray = projects?.data || projects || [];
 
   console.log(
@@ -27,13 +25,7 @@ const ProjectsPage = () => {
     error
   );
 
-  const categories = [
-    "All",
-    "Residential",
-    "Commercial",
-    "Interiors",
-    "Furniture",
-  ];
+  const categories = ["All", "Residential", "Commercial"];
 
   const openProjectModal = (project) => {
     console.log("Selected project:", project);
@@ -44,24 +36,12 @@ const ProjectsPage = () => {
     setSelectedProject(null);
   };
 
-  // Base URL for images (update with your actual base URL)
   const baseImageUrl = "https://your-api.com/images/"; // Replace with actual URL
 
   return (
     <div className="projects-page">
       {/* Hero Section */}
-      <section className="projects-hero">
-        <div className="hero-overlay">
-          <h1>Our Portfolio</h1>
-          <p>
-            Discover how Rippotai Architecture shapes spaces with balance,
-            innovation, and harmony.
-          </p>
-          <a href="#project-grid" className="cta-button">
-            Explore Projects
-          </a>
-        </div>
-      </section>
+      <section className="projects-hero"></section>
 
       {/* Projects Section */}
       <section className="our-project-wrapper">
@@ -72,7 +52,7 @@ const ProjectsPage = () => {
                 <h2>Our Projects</h2>
                 <p>
                   Explore our diverse portfolio, from residential masterpieces
-                  to innovative furniture designs.
+                  to innovative product designs.
                 </p>
               </div>
             </div>

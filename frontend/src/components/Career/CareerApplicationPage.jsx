@@ -111,15 +111,7 @@ const CareersApplicationPage = () => {
   return (
     <div className="careers-application-page">
       {/* Hero Section */}
-      <section className="application-hero">
-        <div className="hero-overlay">
-          <h1>Apply to Shape the Future</h1>
-          <p>
-            Join Rippotai Architecture to create innovative, sustainable designs
-            that inspire and transform.
-          </p>
-        </div>
-      </section>
+      <section className="application-hero"></section>
 
       {/* Application Content Section */}
       <section className="application-content">

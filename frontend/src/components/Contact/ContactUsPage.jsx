@@ -58,17 +58,7 @@ const ContactUsPage = () => {
   return (
     <div className="contact-page">
       {/* Hero Section */}
-      <section className="contact-hero">
-        <div className="hero-overlay">
-          <h1>Let’s Create Something Extraordinary</h1>
-          <p>
-            Connect with Rippotai Architecture to bring your vision to life.
-          </p>
-          <a href="#contact-form" className="cta-button">
-            Get Started
-          </a>
-        </div>
-      </section>
+      <section className="contact-hero"></section>
 
       {/* Contact Section */}
       <section className="contact-wrapper">

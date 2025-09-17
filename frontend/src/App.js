@@ -1,3 +1,4 @@
+import React, { useEffect, useRef, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Common/Header";
 import Footer from "./components/Common/Footer";
@@ -8,7 +9,7 @@ import ProjectsPage from "./components/Projects/ProjectsPage";
 import CareersPage from "./components/Career/CareersPage";
 import Home from "./components/Home/Home";
 import CareersApplicationPage from "./components/Career/CareerApplicationPage";
-
+import CTA from "./components/Home/CTA";
 function App() {
   return (
     <Router>
@@ -21,6 +22,7 @@ function App() {
         <Route path="/career" element={<CareersPage />} />
         <Route path="/careers/apply" element={<CareersApplicationPage />} />
       </Routes>
+      <CTA />
       <Footer />
     </Router>
   );
