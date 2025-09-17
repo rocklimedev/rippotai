@@ -64,7 +64,7 @@ const Header = () => {
           </li>
           <li>
             <Link to="/projects" onClick={() => setIsMenuOpen(false)}>
-              Project
+              Projects
             </Link>
           </li>
           <li>

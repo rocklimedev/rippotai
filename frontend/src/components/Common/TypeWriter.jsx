@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Typewriter = ({ showContactUs = true }) => {
   const phrases = showContactUs
-    ? ["DISCUSS A PROJECT?", "CONTACT US"]
+    ? ["DISCUSS A PROJECT?", "CONTACT US", "STEP INSIDE"]
     : ["DISCUSS A PROJECT?"];
 
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
@@ -12,30 +13,26 @@ const Typewriter = ({ showContactUs = true }) => {
   // speeds (ms) - tweak these to taste
   const TYPING_SPEED = 100;
   const DELETING_SPEED = 50;
-  const PAUSE_AFTER_FULL = 1500; // pause after typing full phrase
-  const PAUSE_AFTER_DELETE = 500; // pause after fully deleted
+  const PAUSE_AFTER_FULL = 1500;
+  const PAUSE_AFTER_DELETE = 500;
 
   useEffect(() => {
     let timeoutId = null;
     const currentPhrase = phrases[currentPhraseIndex];
 
     if (!isDeleting && charIndex < currentPhrase.length) {
-      // type next character
       timeoutId = setTimeout(
         () => setCharIndex((prev) => prev + 1),
         TYPING_SPEED
       );
     } else if (!isDeleting && charIndex === currentPhrase.length) {
-      // finished typing -> wait then start deleting
       timeoutId = setTimeout(() => setIsDeleting(true), PAUSE_AFTER_FULL);
     } else if (isDeleting && charIndex > 0) {
-      // delete characters
       timeoutId = setTimeout(
         () => setCharIndex((prev) => prev - 1),
         DELETING_SPEED
       );
     } else if (isDeleting && charIndex === 0) {
-      // finished deleting -> move to next phrase and start typing
       timeoutId = setTimeout(() => {
         setIsDeleting(false);
         setCurrentPhraseIndex((prev) => (prev + 1) % phrases.length);
@@ -45,7 +42,6 @@ const Typewriter = ({ showContactUs = true }) => {
     return () => clearTimeout(timeoutId);
   }, [charIndex, isDeleting, currentPhraseIndex, phrases]);
 
-  // protect against phrase-array length changes (rare but safe)
   useEffect(() => {
     if (currentPhraseIndex >= phrases.length) {
       setCurrentPhraseIndex(0);
@@ -56,10 +52,41 @@ const Typewriter = ({ showContactUs = true }) => {
 
   const displayText = phrases[currentPhraseIndex].substring(0, charIndex);
 
+  // determine what link to render
+  const renderLinkedText = () => {
+    const phrase = phrases[currentPhraseIndex];
+
+    if (phrase === "DISCUSS A PROJECT?") {
+      return (
+        <a
+          href="https://wa.me/919999999999" // replace with your WhatsApp number
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:underline"
+        >
+          {displayText}
+        </a>
+      );
+    } else if (phrase === "CONTACT US") {
+      return (
+        <Link to="/contact-us" className="hover:underline">
+          {displayText}
+        </Link>
+      );
+    } else if (phrase === "STEP INSIDE") {
+      return (
+        <Link to="/careers" className="hover:underline">
+          {displayText}
+        </Link>
+      );
+    }
+    return displayText;
+  };
+
   return (
     <section className="typewriter-container">
       <div className="typewriter-text" aria-live="polite">
-        {displayText}
+        {renderLinkedText()}
       </div>
     </section>
   );

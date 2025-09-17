@@ -308,7 +308,6 @@ nav ul li a:hover {
 }
 
 .projects-showcase {
-  padding: var(--spacing-lg) var(--spacing-md);
   text-align: center;
   background-color: var(--background);
   position: relative;
@@ -380,9 +379,20 @@ nav ul li a:hover {
 }
 
 /* Hover effects */
+/* Existing hover effect */
 .bento-item:hover {
   transform: scale(1.02);
   box-shadow: var(--shadow);
+}
+
+/* Reset transform on click */
+.bento-item:active {
+  transform: scale(1); /* Reset scale to prevent zoom on click */
+}
+
+/* Ensure no zoom when overlay is active */
+.bento-item:has(.project-overlay.active) {
+  transform: none; /* Prevent any scaling when the overlay is active */
 }
 
 .bento-item:hover img {
@@ -2959,7 +2969,7 @@ nav ul li a:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: var(--spacing-md);
+padding: 120px;
   color: var(--white);
   font-family: 'Lato', sans-serif;
   font-weight: 300;
@@ -2972,7 +2982,7 @@ nav ul li a:hover {
 
 .typewriter-text {
   font-size: 2rem;
-  color: var(--white);
+  color: var(--primary-color);
   white-space: nowrap;
   overflow: hidden;
   display: inline-block;
@@ -2980,6 +2990,21 @@ nav ul li a:hover {
   padding-right: 6px;
   letter-spacing: 1.5px;
   animation: blink-cursor 0.75s step-end infinite;
+}
+
+/* Make links inside typewriter look nice */
+.typewriter-text a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+  font-weight: 400;
+}
+
+.typewriter-text a:hover {
+  color: var(--accent-color);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  letter-spacing: 2px; /* subtle hover animation */
 }
 
 /* cursor blink */

@@ -6,8 +6,8 @@ const Footer = () => {
 
   return (
     <>
+      <Typewriter showContactUs={true} />
       <footer className="footer">
-        <Typewriter showContactUs={true} />
         <div className="footer-top">
           <div className="container">
             <div className="row">
