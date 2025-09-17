@@ -169,30 +169,6 @@ const ContactUsPage = () => {
                     <i className="fas fa-envelope"></i>{" "}
                     <a href="mailto:info@rippotai.com">info@rippotai.com</a>
                   </p>
-                  <div className="social-links">
-                    <h4>Follow Us</h4>
-                    <a
-                      href="https://instagram.com/rippotai"
-                      className="social-icon instagram"
-                      aria-label="Follow us on Instagram"
-                    >
-                      <i className="fab fa-instagram"></i>
-                    </a>
-                    <a
-                      href="https://linkedin.com/company/rippotai"
-                      className="social-icon linkedin"
-                      aria-label="Follow us on LinkedIn"
-                    >
-                      <i className="fab fa-linkedin"></i>
-                    </a>
-                    <a
-                      href="https://pinterest.com/rippotai"
-                      className="social-icon pinterest"
-                      aria-label="Follow us on Pinterest"
-                    >
-                      <i className="fab fa-pinterest"></i>
-                    </a>
-                  </div>
                 </div>
                 <div className="map-container">
                   <h4>Find Us</h4>
@@ -203,27 +179,6 @@ const ContactUsPage = () => {
                     title="Rippotai Architecture Location"
                   ></iframe>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonial Section */}
-      <section className="contact-testimonial">
-        <div className="custom-container">
-          <h2 className="text-center">What Our Clients Say</h2>
-          <div className="custom-row">
-            <div className="custom-col-12">
-              <div className="testimonial">
-                <p>
-                  "Rippotai Architecture turned our vision into reality with
-                  unparalleled creativity and professionalism. Their team was a
-                  pleasure to work with!"
-                </p>
-                <p className="client-name">
-                  — Lisa Thompson, Commercial Client
-                </p>
               </div>
             </div>
           </div>

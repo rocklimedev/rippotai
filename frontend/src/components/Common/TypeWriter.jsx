@@ -1,67 +1,66 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Typewriter = ({ showContactUs = true }) => {
-  const typewriterRef = useRef(null);
-  const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
-  const [charIndex, setCharIndex] = useState(0);
-  const [isTyping, setIsTyping] = useState(true);
-
-  // Phrases to display, conditionally include "CONTACT US"
   const phrases = showContactUs
     ? ["DISCUSS A PROJECT?", "CONTACT US"]
     : ["DISCUSS A PROJECT?"];
 
+  const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  // speeds (ms) - tweak these to taste
+  const TYPING_SPEED = 100;
+  const DELETING_SPEED = 50;
+  const PAUSE_AFTER_FULL = 1500; // pause after typing full phrase
+  const PAUSE_AFTER_DELETE = 500; // pause after fully deleted
+
   useEffect(() => {
-    const typewriterElement = typewriterRef.current;
+    let timeoutId = null;
     const currentPhrase = phrases[currentPhraseIndex];
 
-    let timeout;
-
-    const type = () => {
-      typewriterElement.textContent = currentPhrase.substring(0, charIndex + 1);
-      typewriterElement.style.animation =
-        "typing 2s steps(20, end), blink-cursor 0.75s step-end infinite";
-
-      if (charIndex < currentPhrase.length) {
-        setCharIndex(charIndex + 1);
-        timeout = setTimeout(type, 100); // Typing speed: 100ms per character
-      } else {
-        setIsTyping(false);
-        typewriterElement.style.animation =
-          "blink-cursor 0.75s step-end infinite";
-        timeout = setTimeout(() => {
-          typewriterElement.style.animation =
-            "erasing 1s steps(20, end), blink-cursor 0.75s step-end infinite";
-          setTimeout(erase, 1000); // Wait 1s before erasing
-        }, 1500); // Pause 1.5s after typing
-      }
-    };
-
-    const erase = () => {
-      typewriterElement.textContent = currentPhrase.substring(0, charIndex);
-      if (charIndex > 0) {
-        setCharIndex(charIndex - 1);
-        timeout = setTimeout(erase, 50); // Erasing speed: 50ms per character
-      } else {
-        setIsTyping(true);
-        setCurrentPhraseIndex((currentPhraseIndex + 1) % phrases.length);
-        typewriterElement.style.animation =
-          "blink-cursor 0.75s step-end infinite";
-        timeout = setTimeout(type, 500); // Pause 0.5s before typing next phrase
-      }
-    };
-
-    if (isTyping) {
-      type();
+    if (!isDeleting && charIndex < currentPhrase.length) {
+      // type next character
+      timeoutId = setTimeout(
+        () => setCharIndex((prev) => prev + 1),
+        TYPING_SPEED
+      );
+    } else if (!isDeleting && charIndex === currentPhrase.length) {
+      // finished typing -> wait then start deleting
+      timeoutId = setTimeout(() => setIsDeleting(true), PAUSE_AFTER_FULL);
+    } else if (isDeleting && charIndex > 0) {
+      // delete characters
+      timeoutId = setTimeout(
+        () => setCharIndex((prev) => prev - 1),
+        DELETING_SPEED
+      );
+    } else if (isDeleting && charIndex === 0) {
+      // finished deleting -> move to next phrase and start typing
+      timeoutId = setTimeout(() => {
+        setIsDeleting(false);
+        setCurrentPhraseIndex((prev) => (prev + 1) % phrases.length);
+      }, PAUSE_AFTER_DELETE);
     }
 
-    // Cleanup timeout on unmount
-    return () => clearTimeout(timeout);
-  }, [charIndex, isTyping, currentPhraseIndex, phrases]);
+    return () => clearTimeout(timeoutId);
+  }, [charIndex, isDeleting, currentPhraseIndex, phrases]);
+
+  // protect against phrase-array length changes (rare but safe)
+  useEffect(() => {
+    if (currentPhraseIndex >= phrases.length) {
+      setCurrentPhraseIndex(0);
+      setCharIndex(0);
+      setIsDeleting(false);
+    }
+  }, [phrases.length, currentPhraseIndex]);
+
+  const displayText = phrases[currentPhraseIndex].substring(0, charIndex);
 
   return (
     <section className="typewriter-container">
-      <div className="typewriter-text" ref={typewriterRef}></div>
+      <div className="typewriter-text" aria-live="polite">
+        {displayText}
+      </div>
     </section>
   );
 };

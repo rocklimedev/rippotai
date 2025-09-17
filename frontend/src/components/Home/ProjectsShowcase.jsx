@@ -9,18 +9,17 @@ import pitampura from "../../assets/images/projects/7_KP-18 Pitampura Residence/
 
 const projects = [
   { type: "image", title: "Cultural Heritage Pavilion", src: lawyer },
-  // Top wide
-  { type: "image", title: "Architectural Facade", src: banga }, // Left mid
-  { type: "image", title: "Sublime Exterior", src: kohli }, // Left mid small
+  { type: "image", title: "Architectural Facade", src: banga },
+  { type: "image", title: "Sublime Exterior", src: kohli },
   {
     type: "text",
     title: "Award-Winning Retail",
     details: "Sunita Shekhawat Flagship Store",
-  }, // Center text block
-  { type: "image", title: "Nighttime Elegance", src: gk }, // Middle wide
-  { type: "image", title: "Luxury Retail Pavilion", src: gkm53 }, // Bottom-left big square
-  { type: "image", title: "Luxury Retail Pavilion", src: gurugram }, // Bottom-right small
-  { type: "image", title: "Luxury Retail Pavilion", src: pitampura }, // Tall right
+  },
+  { type: "image", title: "Nighttime Elegance", src: gk },
+  { type: "image", title: "Luxury Retail Pavilion", src: gkm53 },
+  { type: "image", title: "Luxury Retail Pavilion", src: gurugram },
+  { type: "image", title: "Luxury Retail Pavilion", src: pitampura },
 ];
 
 const ProjectsShowcase = () => {
@@ -42,6 +41,12 @@ const ProjectsShowcase = () => {
               <div className="text-block">
                 <h4>{project.title}</h4>
                 <p dangerouslySetInnerHTML={{ __html: project.details }} />
+              </div>
+            )}
+            {project.type === "image" && (
+              <div className="project-overlay">
+                <h5>{project.title}</h5>
+                {project.details && <p>{project.details}</p>}
               </div>
             )}
           </div>

@@ -272,32 +272,24 @@ nav ul li a:hover {
   display: block;
 }
 
-/* Slider image styling */
+/* Founder image styling */
 .founder-slider-img {
+  width: 400px;
+  max-height: 400px;
   border-radius: 8px;
   object-fit: cover;
-  max-height: 400px; /* Adjust as needed */
+  animation: blinkFade 0.5s ease-in-out;
 }
 
-/* Hide slick arrows and dots */
-.slick-prev,
-.slick-next,
-.slick-dots {
-  display: none !important; /* Completely hide arrows and dots */
-}
-
-/* Blinking effect for active slide */
-.slick-slide.slick-active .slider-item {
-  animation: blink 1.5s infinite; /* Apply blinking animation */
-}
-
-@keyframes blink {
-  0%,
+/* Blink animation for each change */
+@keyframes blinkFade {
+  0% {
+    opacity: 0;
+    transform: scale(1.02);
+  }
   100% {
     opacity: 1;
-  }
-  50% {
-    opacity: 0.7; /* Adjust opacity for subtle blinking effect */
+    transform: scale(1);
   }
 }
 
@@ -307,18 +299,11 @@ nav ul li a:hover {
     flex-direction: column;
     text-align: center;
     gap: 2rem;
-    padding: 0 var(--spacing-md);
-  }
-
-  .who-we-are-image img {
-    width: 100%;
-    max-width: 350px;
-    margin: 0 auto;
   }
 
   .founder-slider-img {
-    max-width: 350px; /* Ensure slider images scale down on mobile */
-    margin: 0 auto;
+    width: 100%;
+    max-width: 350px;
   }
 }
 
@@ -331,31 +316,25 @@ nav ul li a:hover {
 }
 
 .bento-grid {
-    display: grid
-;
-    grid-template-columns: repeat(4, 1fr);
-    /* grid-template-rows: 200px 150px 200px 200px; */
-    gap: 16px;
-    grid-template-areas:
-        "top top top tall"
-        "leftMid leftSmall text tall"
-        "middle middle middle tall"
-        "bigSquare bigSquare smallBottom smallBottom";
-    /* max-width: 1200px; */
-    margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  grid-template-areas:
+    "top top top tall"
+    "leftMid leftSmall text tall"
+    "middle middle middle tall"
+    "bigSquare bigSquare smallBottom smallBottom";
+  margin: 0 auto;
 }
 
 .item-1 { grid-area: top; }
 .item-2 { grid-area: leftMid; }
 .item-3 { grid-area: leftSmall; }
-.item-4 { grid-area: text; display:flex; align-items:center; justify-content:center; }
+.item-4 { grid-area: text; display: flex; align-items: center; justify-content: center; }
 .item-5 { grid-area: middle; }
 .item-6 { grid-area: bigSquare; }
 .item-7 { grid-area: smallBottom; }
 .item-8 { grid-area: tall; }
-
-/* The rest of your existing .bento-item styles remain the same */
-
 
 /* Bento item styling */
 .bento-item {
@@ -369,10 +348,10 @@ nav ul li a:hover {
 .bento-item img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Changed back to 'cover' for better filling, adjust as needed */
-  object-position: center; /* Ensures image is centered */
-  display: block; /* Removes any inline spacing issues */
-  border-radius: var(--border-radius); /* Match container */
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  border-radius: var(--border-radius);
 }
 
 /* Text block styling */
@@ -410,30 +389,45 @@ nav ul li a:hover {
   opacity: 0.85;
 }
 
-.bento-item:hover .project-overlay-text {
-  opacity: 1;
-  transform: translateY(-5px);
-}
-
-/* Overlay text */
-.project-overlay-text {
-  position: absolute;
-  bottom: var(--spacing-md);
-  left: var(--spacing-md);
-  color: var(--white);
-  font-size: 20px;
-  font-weight: 500;
-  background: rgba(92, 64, 51, 0.7);
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--border-radius);
-  transition: opacity 0.3s, transform 0.3s;
-  font-family: 'Lato', sans-serif;
-  opacity: 0; /* Hidden by default, shown on hover */
-}
-
-/* Project overlay */
+/* New overlay for hover */
 .project-overlay {
-  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6); /* Black overlay */
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-sm);
+  opacity: 0; /* Hidden by default */
+  transition: opacity 0.3s;
+}
+
+.bento-item:hover .project-overlay {
+  opacity: 1; /* Show overlay on hover */
+}
+
+.project-overlay h5 {
+  font-size: 20px;
+  margin-bottom: var(--spacing-sm);
+  text-align: center;
+  font-family: 'Lato', sans-serif;
+}
+
+.project-overlay p {
+  font-size: 14px;
+  margin: 0;
+  text-align: center;
+  font-family: 'Lato', sans-serif;
+}
+
+/* Project overlay (modal) */
+.project-overlay.active {
+  display: flex;
   position: fixed;
   top: 0;
   left: 0;
@@ -441,10 +435,6 @@ nav ul li a:hover {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.85);
   z-index: 1000;
-}
-
-.project-overlay.active {
-  display: flex;
   justify-content: center;
   align-items: center;
 }
@@ -518,7 +508,6 @@ nav ul li a:hover {
     margin: var(--spacing-md) auto;
   }
 }
-
 
 /* CTA Container (WhatsApp and Phone Icons) */
 .cta-container {
@@ -2966,7 +2955,6 @@ nav ul li a:hover {
     padding: 0 var(--spacing-sm);
   }
 }
-/* Typewriter Effect Component */
 .typewriter-container {
   display: flex;
   justify-content: center;
@@ -2983,58 +2971,28 @@ nav ul li a:hover {
 }
 
 .typewriter-text {
-  font-size: 2rem; /* Matches tagline-heading size */
+  font-size: 2rem;
   color: var(--white);
-  overflow: hidden; /* Hide overflow for typing effect */
-  border-right: 3px solid var(--accent-color); /* Blinking cursor */
-  white-space: nowrap; /* Keep text on one line */
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
+  border-right: 3px solid var(--accent-color); /* cursor */
+  padding-right: 6px;
   letter-spacing: 1.5px;
-  display: inline-block; /* Ensure proper animation */
+  animation: blink-cursor 0.75s step-end infinite;
 }
 
-/* Keyframes for typing effect */
-@keyframes typing {
-  from {
-    width: 0;
-  }
-  to {
-    width: 100%;
-  }
-}
-
-/* Keyframes for erasing effect */
-@keyframes erasing {
-  from {
-    width: 100%;
-  }
-  to {
-    width: 0;
-  }
-}
-
-/* Keyframes for blinking cursor */
+/* cursor blink */
 @keyframes blink-cursor {
-  from, to {
-    border-color: transparent;
-  }
-  50% {
-    border-color: var(--accent-color);
-  }
+  0%, 100% { border-color: transparent; }
+  50% { border-color: var(--accent-color); }
 }
 
-/* Responsive adjustments */
+/* Responsive */
 @media (max-width: 768px) {
-  .typewriter-text {
-    font-size: 1.5rem;
-  }
+  .typewriter-text { font-size: 1.5rem; }
 }
-
 @media (max-width: 576px) {
-  .typewriter-text {
-    font-size: 1.2rem;
-    letter-spacing: 1px;
-  }
-  .typewriter-container {
-    padding: var(--spacing-sm);
-  }
+  .typewriter-text { font-size: 1.2rem; letter-spacing: 1px; }
+  .typewriter-container { padding: var(--spacing-sm); }
 }
