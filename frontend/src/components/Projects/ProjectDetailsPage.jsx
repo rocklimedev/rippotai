@@ -1,6 +1,7 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { useGetProjectBySlugQuery } from "../../api/rippotaiApi";
+
 const ProjectDetailPage = () => {
   const { slug } = useParams();
   const { data: project, error, isLoading } = useGetProjectBySlugQuery(slug);
@@ -41,63 +42,85 @@ const ProjectDetailPage = () => {
     );
   }
 
-  const baseImageUrl = "https://static.cmtradingco.com/";
-
   return (
     <div className="project-detail-page">
+      {/* Hero Section (Banner) - Already aligned with mockup */}
       <section className="projects-hero"></section>
-      {/* Hero Section */}
-      <section
-        className="project-hero"
-        style={{
-          backgroundImage: `url(${baseImageUrl}${project.image})`,
-        }}
-      >
-        <div className="hero-overlay">
-          <h1>{project.title}</h1>
-          <p>{project.category}</p>
-        </div>
-      </section>
 
-      {/* Project Details Section */}
-      <section className="project-details-section">
+      {/* Project Info Section */}
+      <section className="project-info-section">
         <div className="custom-container">
           <div className="custom-row">
             <div className="custom-col-12">
-              <h2>{project.title}</h2>
-              <p className="project-description">{project.description}</p>
-              <p className="project-details">{project.details}</p>
+              <p>
+                <strong>Name of Project:</strong> {project.title}
+              </p>
+              <p>
+                <strong>Type:</strong> {project.category}
+              </p>
             </div>
-          </div>
-
-          {/* Gallery Section */}
-          {project.images?.length > 0 && (
-            <div className="project-gallery">
-              <h3>Project Gallery</h3>
-              <div className="gallery-grid">
-                {project.images.map((img, index) => (
-                  <img
-                    src={`${img}`}
-                    alt={`${project.title} - Image ${index + 1}`}
-                    key={index}
-                    className="gallery-image"
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* CTA and Navigation */}
-          <div className="project-actions">
-            <Link to="/contact" className="cta-button">
-              Contact Us for Similar Projects
-            </Link>
-            <Link to="/projects" className="back-button">
-              Back to Projects
-            </Link>
           </div>
         </div>
       </section>
+
+      {/* Wide Full-Length Banner Image */}
+      <section className="project-banner-image">
+        <div className="custom-container">
+          <img
+            src={`${project.image}`}
+            alt={`${project.title} Banner`}
+            className="full-width-image"
+          />
+        </div>
+      </section>
+
+      {/* Two Images and Details Section */}
+      <section className="project-two-image-section">
+        <div className="custom-container">
+          <div className="custom-row">
+            <div className="custom-col-6">
+              <p className="project-details">{project.details}</p>
+            </div>
+            <div className="custom-col-6">
+              <img
+                src={`${project.images?.[0] || "placeholder.png"}`}
+                alt={`${project.title} - Image 1`}
+                className="half-width-image"
+              />
+            </div>
+          </div>
+          <div className="custom-row">
+            <div className="custom-col-6">
+              <img
+                src={`${project.images?.[1] || "placeholder.png"}`}
+                alt={`${project.title} - Image 2`}
+                className="half-width-image"
+              />
+            </div>
+            <div className="custom-col-6">
+              <p className="project-description">{project.description}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Gallery Section (Bento Grid) */}
+      {project.images?.length > 2 && (
+        <section className="project-gallery">
+          <div className="custom-container">
+            <div className="gallery-grid">
+              {project.images.slice(2).map((img, index) => (
+                <img
+                  src={`${img}`}
+                  alt={`${project.title} - Image ${index + 3}`}
+                  key={index + 2}
+                  className="gallery-image"
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   );
 };

@@ -104,38 +104,6 @@ const ProjectsPage = () => {
           </div>
         </div>
       </section>
-
-      {/* Testimonial Section */}
-      <section className="projects-testimonial">
-        <div className="custom-container">
-          <h2 className="text-center">What Our Clients Say</h2>
-          <div className="custom-row">
-            <div className="custom-col-12">
-              <div className="testimonial">
-                <p>
-                  "Rippotai Architecture delivered a stunning commercial space
-                  that exceeded our expectations. Their attention to detail is
-                  unmatched."
-                </p>
-                <p className="client-name">
-                  — James Carter, CEO, Innovate Inc.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="projects-cta">
-        <div className="custom-container text-center">
-          <h2>Ready to Start Your Project?</h2>
-          <p>Contact Rippotai Architecture to bring your vision to life.</p>
-          <Link to="/contact" className="cta-button">
-            Get in Touch
-          </Link>
-        </div>
-      </section>
     </div>
   );
 };

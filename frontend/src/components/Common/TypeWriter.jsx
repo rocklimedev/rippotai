@@ -75,7 +75,7 @@ const Typewriter = ({ showContactUs = true }) => {
       );
     } else if (phrase === "STEP INSIDE") {
       return (
-        <Link to="/careers" className="hover:underline">
+        <Link to="/career" className="hover:underline">
           {displayText}
         </Link>
       );
