@@ -10,12 +10,21 @@ const seedProjects = async () => {
     await connectDB();
     console.log("Connected to MongoDB via connectDB");
 
-    // Clear existing projects
-    await Project.deleteMany({});
-    console.log("Existing projects deleted");
+    // Upsert projects from JSON
+    for (const projectData of projectsData) {
+      const { slug, ...updateData } = projectData;
+      await Project.findOneAndUpdate(
+        { slug }, // Find project by slug
+        { $set: updateData }, // Update fields (title, category, description, etc.)
+        {
+          upsert: true, // Insert if not found
+          new: true, // Return the updated document
+          runValidators: true, // Ensure schema validation
+        }
+      );
+      console.log(`Processed project: ${projectData.title} (slug: ${slug})`);
+    }
 
-    // Insert new projects from JSON
-    await Project.insertMany(projectsData);
     console.log("Projects seeded successfully");
 
     // Close the connection

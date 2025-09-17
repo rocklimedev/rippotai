@@ -3,8 +3,8 @@ import lawyer from "../../assets/images/projects/lawyers_office/MAIN 1.png";
 import banga from "../../assets/images/projects/02 C1- Banga Residence/op-1/op-1 v1.png";
 import kohli from "../../assets/images/projects/kohli/LR 3.png";
 import gk from "../../assets/images/projects/d54-gk/L2.png";
-import gkm53 from "../../assets/images/projects/15_GK M-53/floor/LR3.png";
-import gurugram from "../../assets/images/projects/21_Gurugram/Renders/Scene 12_1.png";
+import gkm53 from "../../assets/images/projects/gkm-53/banner.png";
+import gurugram from "../../assets/images/projects/gurugram/banner.png";
 import pitampura from "../../assets/images/projects/7_KP-18 Pitampura Residence/Facade/OP 3/1.png";
 
 const projects = [
