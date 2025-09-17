@@ -10,6 +10,7 @@ import CareersPage from "./components/Career/CareersPage";
 import Home from "./components/Home/Home";
 import CareersApplicationPage from "./components/Career/CareerApplicationPage";
 import CTA from "./components/Home/CTA";
+import ProjectDetailPage from "./components/Projects/ProjectDetailsPage";
 function App() {
   return (
     <Router>
@@ -18,6 +19,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutUsPage />} />
         <Route path="/projects" element={<ProjectsPage />} />
+        <Route path="/project/:slug" element={<ProjectDetailPage />} />
         <Route path="/contact" element={<ContactUsPage />} />
         <Route path="/career" element={<CareersPage />} />
         <Route path="/careers/apply" element={<CareersApplicationPage />} />

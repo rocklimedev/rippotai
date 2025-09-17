@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.get("/", ProjectsController.getAllProjects);
-router.get("/:id", ProjectsController.getProjectById);
+router.get("/:slug", ProjectsController.getProjectBySlug);
 router.post("/", upload.single("image"), ProjectsController.createProject);
 router.put("/:id", upload.single("image"), ProjectsController.updateProject);
 router.delete("/:id", ProjectsController.deleteProject);

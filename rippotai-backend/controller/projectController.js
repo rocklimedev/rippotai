@@ -11,9 +11,9 @@ exports.getAllProjects = async (req, res, next) => {
   }
 };
 
-exports.getProjectById = async (req, res, next) => {
+exports.getProjectBySlug = async (req, res, next) => {
   try {
-    const project = await Project.findById(req.params.id);
+    const project = await Project.findOne({ slug: req.params.slug });
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
     }
@@ -46,10 +46,10 @@ exports.updateProject = async (req, res, next) => {
   try {
     const { title, category, description, details, images } = req.body;
     const image = req.file ? req.file.path : req.body.image;
-    const project = await Project.findByIdAndUpdate(
-      req.params.id,
+    const project = await Project.findOneAndUpdate(
+      { slug: req.params.slug },
       { title, category, description, details, image, images },
-      { new: true }
+      { new: true, runValidators: true }
     );
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
@@ -62,7 +62,7 @@ exports.updateProject = async (req, res, next) => {
 
 exports.deleteProject = async (req, res, next) => {
   try {
-    const project = await Project.findByIdAndDelete(req.params.id);
+    const project = await Project.findOneAndDelete({ slug: req.params.slug });
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
     }

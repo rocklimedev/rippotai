@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useGetProjectsQuery } from "../../api/rippotaiApi";
+import { Link } from "react-router-dom"; // Import Link for navigation
 
 const ProjectsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedProject, setSelectedProject] = useState(null);
 
   const {
     data: projects,
@@ -27,16 +27,7 @@ const ProjectsPage = () => {
 
   const categories = ["All", "Residential", "Commercial"];
 
-  const openProjectModal = (project) => {
-    console.log("Selected project:", project);
-    setSelectedProject(project);
-  };
-
-  const closeProjectModal = () => {
-    setSelectedProject(null);
-  };
-
-  const baseImageUrl = "https://your-api.com/images/"; // Replace with actual URL
+  const baseImageUrl = "https://static.cmtradingco.com/"; // Use the correct base URL from projects.json
 
   return (
     <div className="projects-page">
@@ -86,14 +77,14 @@ const ProjectsPage = () => {
                 projectsArray.map((project) => (
                   <div
                     className="custom-col-4 custom-col-lg-6 custom-col-md-12 mt-5"
-                    key={project._id}
+                    key={project.slug} // Use slug instead of _id
                   >
-                    <div
+                    <Link
+                      to={`/project/${project.slug}`} // Link to project page using slug
                       className="project-details"
-                      onClick={() => openProjectModal(project)}
                     >
                       <img
-                        src={`${baseImageUrl}${project.image}`}
+                        src={`${project.image}`}
                         className="project-img"
                         alt={project.title}
                       />
@@ -101,7 +92,7 @@ const ProjectsPage = () => {
                         <h5>{project.title}</h5>
                         <p>{project.description}</p>
                       </div>
-                    </div>
+                    </Link>
                   </div>
                 ))
               ) : (
@@ -113,38 +104,6 @@ const ProjectsPage = () => {
           </div>
         </div>
       </section>
-
-      {/* Project Modal */}
-      {selectedProject && (
-        <div className="project-modal">
-          <div className="modal-content">
-            <span className="close-btn" onClick={closeProjectModal}>
-              &times;
-            </span>
-            <h3>{selectedProject.title}</h3>
-            <img
-              src={`${baseImageUrl}${selectedProject.image}`}
-              alt={selectedProject.title}
-              className="modal-image"
-            />
-            <p>{selectedProject.details}</p>
-            {selectedProject.images?.length > 0 && (
-              <div className="modal-gallery">
-                {selectedProject.images.map((img, index) => (
-                  <img
-                    src={`${baseImageUrl}${img}`}
-                    alt={`${selectedProject.title} ${index + 1}`}
-                    key={index}
-                  />
-                ))}
-              </div>
-            )}
-            <a href="/contact" className="cta-button">
-              Contact Us for Similar Projects
-            </a>
-          </div>
-        </div>
-      )}
 
       {/* Testimonial Section */}
       <section className="projects-testimonial">
@@ -172,9 +131,9 @@ const ProjectsPage = () => {
         <div className="custom-container text-center">
           <h2>Ready to Start Your Project?</h2>
           <p>Contact Rippotai Architecture to bring your vision to life.</p>
-          <a href="/contact" className="cta-button">
+          <Link to="/contact" className="cta-button">
             Get in Touch
-          </a>
+          </Link>
         </div>
       </section>
     </div>

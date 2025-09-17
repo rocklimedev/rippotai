@@ -41,9 +41,8 @@ export const rippotaiApi = createApi({
             ]
           : [{ type: "Projects", id: "LIST" }],
     }),
-    getProjectById: builder.query({
-      query: (id) => `/projects/${id}`,
-      providesTags: (result, error, id) => [{ type: "Projects", id }],
+    getProjectBySlug: builder.query({
+      query: (slug) => `projects/${slug}`,
     }),
     createProject: builder.mutation({
       query: ({ title, category, description, details, image, images }) => {
@@ -174,7 +173,7 @@ export const {
   useCreateQueryMutation,
   useGetQueriesQuery,
   useGetProjectsQuery,
-  useGetProjectByIdQuery,
+  useGetProjectBySlugQuery,
   useCreateProjectMutation,
   useUpdateProjectMutation,
   useDeleteProjectMutation,
