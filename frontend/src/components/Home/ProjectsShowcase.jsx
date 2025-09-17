@@ -6,20 +6,21 @@ import gk from "../../assets/images/projects/14 D-54 GK RENOVATION/render/L2.png
 import gkm53 from "../../assets/images/projects/15_GK M-53/floor/LR3.png";
 import gurugram from "../../assets/images/projects/21_Gurugram/Renders/Scene 12_1.png";
 import pitampura from "../../assets/images/projects/7_KP-18 Pitampura Residence/Facade/OP 3/1.png";
-const projects = [
-  { type: "image", title: "Luxury Retail Pavilion", src: pitampura },
 
-  { type: "image", title: "Architectural Facade", src: banga },
-  { type: "image", title: "Sublime Exterior", src: kohli },
+const projects = [
+  { type: "image", title: "Cultural Heritage Pavilion", src: lawyer },
+  // Top wide
+  { type: "image", title: "Architectural Facade", src: banga }, // Left mid
+  { type: "image", title: "Sublime Exterior", src: kohli }, // Left mid small
   {
     type: "text",
     title: "Award-Winning Retail",
     details: "Sunita Shekhawat Flagship Store",
-  },
-  { type: "image", title: "Nighttime Elegance", src: gk },
-  { type: "image", title: "Luxury Retail Pavilion", src: gkm53 },
-  { type: "image", title: "Luxury Retail Pavilion", src: gurugram },
-  { type: "image", title: "Cultural Heritage Pavilion", src: lawyer },
+  }, // Center text block
+  { type: "image", title: "Nighttime Elegance", src: gk }, // Middle wide
+  { type: "image", title: "Luxury Retail Pavilion", src: gkm53 }, // Bottom-left big square
+  { type: "image", title: "Luxury Retail Pavilion", src: gurugram }, // Bottom-right small
+  { type: "image", title: "Luxury Retail Pavilion", src: pitampura }, // Tall right
 ];
 
 const ProjectsShowcase = () => {
@@ -31,7 +32,7 @@ const ProjectsShowcase = () => {
         {projects.map((project, index) => (
           <div
             key={index}
-            className={`bento-item ${project.type}`}
+            className={`bento-item ${project.type} item-${index + 1}`}
             onClick={() => setSelectedProject(project)}
           >
             {project.type === "image" && (

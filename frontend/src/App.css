@@ -303,42 +303,31 @@ nav ul li a:hover {
 }
 
 .bento-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 200px;
-  gap: 16px;
-  max-width: 1200px; /* Added to constrain grid width for better alignment */
-  margin: 0 auto; /* Center the grid */
+    display: grid
+;
+    grid-template-columns: repeat(4, 1fr);
+    /* grid-template-rows: 200px 150px 200px 200px; */
+    gap: 16px;
+    grid-template-areas:
+        "top top top tall"
+        "leftMid leftSmall text tall"
+        "middle middle middle tall"
+        "bigSquare bigSquare smallBottom smallBottom";
+    /* max-width: 1200px; */
+    margin: 0 auto;
 }
 
-/* Grid item spans */
-.bento-item:nth-child(1) {
-  grid-column: span 2;
-  grid-row: span 2;
-} /* Big square */
-.bento-item:nth-child(2) {
-  grid-column: span 2;
-} /* Wide rectangle */
-.bento-item:nth-child(3) {
-  grid-column: span 1;
-} /* Vertical rectangle */
-.bento-item:nth-child(4) {
-  grid-column: span 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-} /* Text block */
-.bento-item:nth-child(5) {
-  grid-column: span 2;
-  grid-row: span 2;
-} /* Large horizontal rectangle */
-.bento-item:nth-child(6),
-.bento-item:nth-child(7) {
-  grid-column: span 1;
-} /* Two equal squares */
-.bento-item:nth-child(8) {
-  grid-column: span 2;
-} /* Bottom wide rectangle */
+.item-1 { grid-area: top; }
+.item-2 { grid-area: leftMid; }
+.item-3 { grid-area: leftSmall; }
+.item-4 { grid-area: text; display:flex; align-items:center; justify-content:center; }
+.item-5 { grid-area: middle; }
+.item-6 { grid-area: bigSquare; }
+.item-7 { grid-area: smallBottom; }
+.item-8 { grid-area: tall; }
+
+/* The rest of your existing .bento-item styles remain the same */
+
 
 /* Bento item styling */
 .bento-item {
