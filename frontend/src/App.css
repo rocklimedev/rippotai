@@ -383,7 +383,7 @@ nav ul li a:hover {
 /* Inner container to create side margins */
 .who-we-are-container {
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   justify-content: space-between;
   gap: 5rem;
   max-width: 1400px; /* limits content width */
