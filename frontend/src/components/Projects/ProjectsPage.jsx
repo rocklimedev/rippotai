@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useGetProjectsQuery } from "../../api/rippotaiApi";
-import { Link } from "react-router-dom"; // Import Link for navigation
+import { Link } from "react-router-dom";
 
 const ProjectsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -26,8 +26,6 @@ const ProjectsPage = () => {
   );
 
   const categories = ["All", "Residential", "Commercial"];
-
-  const baseImageUrl = "https://static.cmtradingco.com/"; // Use the correct base URL from projects.json
 
   return (
     <div className="projects-page">
@@ -77,10 +75,10 @@ const ProjectsPage = () => {
                 projectsArray.map((project) => (
                   <div
                     className="custom-col-4 custom-col-lg-6 custom-col-md-12 mt-5"
-                    key={project.slug} // Use slug instead of _id
+                    key={project.slug}
                   >
                     <Link
-                      to={`/project/${project.slug}`} // Link to project page using slug
+                      to={`/project/${project.slug}`}
                       className="project-details"
                     >
                       <img
@@ -90,7 +88,16 @@ const ProjectsPage = () => {
                       />
                       <div className="project-overlay">
                         <h5>{project.title}</h5>
-                        <p>{project.description}</p>
+                        <p className="project-type">{project.category}</p>
+                        <p className="project-description">
+                          {project.description}
+                        </p>
+                        <Link
+                          to={`/project/${project.slug}`}
+                          className="view-project-btn"
+                        >
+                          View Project
+                        </Link>
                       </div>
                     </Link>
                   </div>

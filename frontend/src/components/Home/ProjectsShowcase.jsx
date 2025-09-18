@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import lawyer from "../../assets/images/projects/lawyers_office/MAIN 1.png";
 import banga from "../../assets/images/projects/02 C1- Banga Residence/op-1/op-1 v1.png";
 import kohli from "../../assets/images/projects/kohli/LR 3.png";
@@ -8,23 +8,58 @@ import gurugram from "../../assets/images/projects/gurugram/banner.png";
 import pitampura from "../../assets/images/projects/7_KP-18 Pitampura Residence/Facade/OP 3/1.png";
 
 const projects = [
-  { type: "image", title: "Cultural Heritage Pavilion", src: lawyer },
-  { type: "image", title: "Architectural Facade", src: banga },
-  { type: "image", title: "Sublime Exterior", src: kohli },
+  {
+    type: "image",
+    title: "Cultural Heritage Pavilion",
+    src: lawyer,
+    details: "sfddsfsdfsdfsdfSDfsdafsadf",
+    slug: "cultural-heritage",
+  },
+  {
+    type: "image",
+    title: "Architectural Facade",
+    src: banga,
+    slug: "architectural-facade",
+  },
+  {
+    type: "image",
+    title: "Sublime Exterior",
+    src: kohli,
+    slug: "sublime-exterior",
+  },
   {
     type: "text",
     title: "Award-Winning Retail",
     details: "Sunita Shekhawat Flagship Store",
+    slug: "award-winning-retail",
   },
-  { type: "image", title: "Nighttime Elegance", src: gk },
-  { type: "image", title: "Luxury Retail Pavilion", src: gkm53 },
-  { type: "image", title: "Luxury Retail Pavilion", src: gurugram },
-  { type: "image", title: "Luxury Retail Pavilion", src: pitampura },
+  {
+    type: "image",
+    title: "Nighttime Elegance",
+    src: gk,
+    slug: "nighttime-elegance",
+  },
+  {
+    type: "image",
+    title: "Luxury Retail Pavilion",
+    src: gkm53,
+    slug: "luxury-retail-1",
+  },
+  {
+    type: "image",
+    title: "Luxury Retail Pavilion",
+    src: gurugram,
+    slug: "luxury-retail-2",
+  },
+  {
+    type: "image",
+    title: "Luxury Retail Pavilion",
+    src: pitampura,
+    slug: "luxury-retail-3",
+  },
 ];
 
 const ProjectsShowcase = () => {
-  const [selectedProject, setSelectedProject] = useState(null);
-
   return (
     <section className="projects-showcase">
       <div className="bento-grid">
@@ -32,7 +67,6 @@ const ProjectsShowcase = () => {
           <div
             key={index}
             className={`bento-item ${project.type} item-${index + 1}`}
-            onClick={() => setSelectedProject(project)}
           >
             {project.type === "image" && (
               <img src={project.src} alt={project.title} />
@@ -40,6 +74,7 @@ const ProjectsShowcase = () => {
             {project.type === "text" && (
               <div className="text-block">
                 <h4>{project.title}</h4>
+                <span>{project.category}</span>
                 <p dangerouslySetInnerHTML={{ __html: project.details }} />
               </div>
             )}
@@ -47,33 +82,17 @@ const ProjectsShowcase = () => {
               <div className="project-overlay">
                 <h5>{project.title}</h5>
                 {project.details && <p>{project.details}</p>}
+                <a
+                  href={`/project/${project.slug}`}
+                  className="view-project-btn"
+                >
+                  View Project
+                </a>
               </div>
             )}
           </div>
         ))}
       </div>
-
-      {selectedProject && (
-        <div
-          className="project-overlay active"
-          onClick={() => setSelectedProject(null)}
-        >
-          <div className="overlay-content" onClick={(e) => e.stopPropagation()}>
-            <span
-              className="close-btn"
-              onClick={() => setSelectedProject(null)}
-            >
-              &times;
-            </span>
-            <h3>{selectedProject.title}</h3>
-            {selectedProject.details && (
-              <p
-                dangerouslySetInnerHTML={{ __html: selectedProject.details }}
-              />
-            )}
-          </div>
-        </div>
-      )}
     </section>
   );
 };

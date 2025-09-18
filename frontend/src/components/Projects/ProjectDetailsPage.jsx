@@ -1,10 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useGetProjectBySlugQuery } from "../../api/rippotaiApi";
 
 const ProjectDetailPage = () => {
   const { slug } = useParams();
   const { data: project, error, isLoading } = useGetProjectBySlugQuery(slug);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+  // Open modal with the clicked image
+  const openModal = (index) => {
+    setSelectedImageIndex(index);
+    setIsModalOpen(true);
+  };
+
+  // Close modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  // Navigate to previous image
+  const prevImage = () => {
+    setSelectedImageIndex((prev) =>
+      prev === 0 ? project.images.length - 1 : prev - 1
+    );
+  };
+
+  // Navigate to next image
+  const nextImage = () => {
+    setSelectedImageIndex((prev) =>
+      prev === project.images.length - 1 ? 0 : prev + 1
+    );
+  };
 
   if (isLoading) {
     return (
@@ -44,7 +71,7 @@ const ProjectDetailPage = () => {
 
   return (
     <div className="project-detail-page">
-      {/* Hero Section (Banner) - Already aligned with mockup */}
+      {/* Hero Section (Banner) */}
       <section className="projects-hero"></section>
 
       {/* Project Info Section */}
@@ -70,6 +97,8 @@ const ProjectDetailPage = () => {
             src={`${project.image}`}
             alt={`${project.title} Banner`}
             className="full-width-image"
+            onClick={() => openModal(0)} // Open modal for banner image
+            style={{ cursor: "pointer" }}
           />
         </div>
       </section>
@@ -86,6 +115,8 @@ const ProjectDetailPage = () => {
                 src={`${project.images?.[0] || "placeholder.png"}`}
                 alt={`${project.title} - Image 1`}
                 className="half-width-image"
+                onClick={() => openModal(1)} // Open modal for first image
+                style={{ cursor: "pointer" }}
               />
             </div>
           </div>
@@ -95,6 +126,8 @@ const ProjectDetailPage = () => {
                 src={`${project.images?.[1] || "placeholder.png"}`}
                 alt={`${project.title} - Image 2`}
                 className="half-width-image"
+                onClick={() => openModal(2)} // Open modal for second image
+                style={{ cursor: "pointer" }}
               />
             </div>
             <div className="custom-col-6">
@@ -115,11 +148,41 @@ const ProjectDetailPage = () => {
                   alt={`${project.title} - Image ${index + 3}`}
                   key={index + 2}
                   className="gallery-image"
+                  onClick={() => openModal(index + 3)} // Open modal for gallery images
+                  style={{ cursor: "pointer" }}
                 />
               ))}
             </div>
           </div>
         </section>
+      )}
+
+      {/* Modal Gallery */}
+      {isModalOpen && (
+        <div className="modal-gallery">
+          <div className="modal-overlay" onClick={closeModal}></div>
+          <div className="modal-content">
+            <img
+              src={`${project.images[selectedImageIndex] || project.image}`}
+              alt={`${project.title} - Image ${selectedImageIndex + 1}`}
+              className="modal-image"
+            />
+            <div className="modal-toolbar">
+              <button onClick={prevImage} className="modal-nav-button">
+                &larr; Prev
+              </button>
+              <span>
+                {selectedImageIndex + 1} / {project.images?.length || 1}
+              </span>
+              <button onClick={nextImage} className="modal-nav-button">
+                Next &rarr;
+              </button>
+              <button onClick={closeModal} className="modal-close-button">
+                &times;
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import footerLogo from "../../assets/images/footer-logo.png";
 import Typewriter from "./TypeWriter";
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
@@ -12,29 +13,32 @@ const Footer = () => {
           <div className="container">
             <div className="row">
               {/* Logo Section */}
-              <div className="col-xl-3 col-lg-3 col-md-3 col-12 mb-5 mb-md-0">
+              <div className="col-xl-3 col-lg-3 col-md-6 col-12 mb-4 mb-md-0">
                 <div className="footer-logo text-center text-md-start">
-                  <a href="https://rippotaiarchitecture.com/">
+                  <a
+                    href="https://rippotaiarchitecture.com/"
+                    aria-label="Rippotai Architecture Home"
+                  >
                     <img
                       src={footerLogo}
                       className="img-fluid"
-                      alt="Footer Logo"
+                      alt="Rippotai Architecture Logo"
                     />
                   </a>
                 </div>
               </div>
 
               {/* Navigation Links */}
-              <div className="col-xl-3 col-lg-3 col-md-3 col-6">
+              <div className="col-xl-2 col-lg-3 col-md-6 col-6 mb-4 mb-md-0">
                 <div className="footer-link">
-                  <ul className="list-inline mb-0">
+                  <h5 className="footer-title">Quick Links</h5>
+                  <ul className="list-unstyled">
                     <li>
                       <Link to="/about">About Us</Link>
                     </li>
                     <li>
                       <Link to="/projects">Projects</Link>
                     </li>
-
                     <li>
                       <Link to="/contact">Contact</Link>
                     </li>
@@ -45,18 +49,40 @@ const Footer = () => {
                 </div>
               </div>
 
+              {/* Categories Section */}
+              <div className="col-xl-2 col-lg-3 col-md-6 col-6 mb-4 mb-md-0">
+                <div className="footer-categories">
+                  <h5 className="footer-title">Categories</h5>
+                  <ul className="list-unstyled">
+                    <li>
+                      <Link to="/categories/residential">Residential</Link>
+                    </li>
+                    <li>
+                      <Link to="/categories/commercial">Commercial</Link>
+                    </li>
+                    <li>
+                      <Link to="/categories/interior">Interior Design</Link>
+                    </li>
+                    <li>
+                      <Link to="/categories/landscape">Landscape</Link>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
               {/* Contact Information */}
-              <div className="col-xl-3 col-lg-3 col-md-3 col-6">
+              <div className="col-xl-3 col-lg-3 col-md-6 col-12 mb-4 mb-md-0">
                 <div className="footer-contact">
                   <h5 className="footer-title">Get in Touch</h5>
                   <ul className="list-unstyled">
                     <li>
                       <i className="fas fa-map-marker-alt me-2"></i>
-                      123 Design Street, Architecture City, AC 12345
+                      487/64 Peeragarhi, National Market, New Delhi, Delhi
+                      110087
                     </li>
                     <li>
                       <i className="fas fa-phone-alt me-2"></i>
-                      <a href="tel:+1234567890">+1 (234) 567-890</a>
+                      <a href="tel:+919711169727">+91 97111 69727</a>
                     </li>
                     <li>
                       <i className="fas fa-envelope me-2"></i>
@@ -68,16 +94,17 @@ const Footer = () => {
                 </div>
               </div>
 
-              {/* Newsletter Subscription */}
-              <div className="col-xl-3 col-lg-3 col-md-3 col-12">
+              {/* Social Media & Newsletter */}
+              <div className="col-xl-2 col-lg-3 col-md-6 col-12">
                 <div className="footer-social">
-                  <h6>Follow Us</h6>
-                  <ul className="list-inline mb-0">
+                  <h5 className="footer-title">Follow Us</h5>
+                  <ul className="list-inline mb-3">
                     <li className="list-inline-item">
                       <a
                         href="https://facebook.com"
                         target="_blank"
                         rel="noopener noreferrer"
+                        aria-label="Facebook"
                       >
                         <i className="fab fa-facebook-f"></i>
                       </a>
@@ -87,6 +114,7 @@ const Footer = () => {
                         href="https://twitter.com"
                         target="_blank"
                         rel="noopener noreferrer"
+                        aria-label="Twitter"
                       >
                         <i className="fab fa-twitter"></i>
                       </a>
@@ -96,6 +124,7 @@ const Footer = () => {
                         href="https://instagram.com"
                         target="_blank"
                         rel="noopener noreferrer"
+                        aria-label="Instagram"
                       >
                         <i className="fab fa-instagram"></i>
                       </a>
@@ -105,6 +134,7 @@ const Footer = () => {
                         href="https://linkedin.com"
                         target="_blank"
                         rel="noopener noreferrer"
+                        aria-label="LinkedIn"
                       >
                         <i className="fab fa-linkedin-in"></i>
                       </a>
@@ -115,26 +145,24 @@ const Footer = () => {
             </div>
           </div>
         </div>
-      </footer>
 
-      {/* Footer Bottom */}
+        {/* Footer Bottom */}
+      </footer>
       <div className="footer-bottom">
         <div className="container">
           <div className="row">
-            <div className="col-xl-12 col-lg-12 col-md-12 mx-auto">
-              <ul className="list-inline text-center mb-0">
-                <li>
-                  &copy; {currentYear}. All Rights Reserved{" "}
-                  <a
-                    href="https://www.rocklime.com/"
-                    className="rocklime-link"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Rocklime
-                  </a>{" "}
-                </li>
-              </ul>
+            <div className="col-12">
+              <p className="text-center mb-0">
+                &copy; {currentYear}. All Rights Reserved | Designed by
+                <a
+                  href="https://www.rocklime.com/"
+                  className="rocklime-link ms-1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Rocklime
+                </a>
+              </p>
             </div>
           </div>
         </div>
