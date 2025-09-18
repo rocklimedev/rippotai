@@ -1,5 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import Header from "./components/Common/Header";
 import Footer from "./components/Common/Footer";
 import "./App.css";
@@ -14,10 +19,19 @@ import ProjectDetailPage from "./components/Projects/ProjectDetailsPage";
 import Error404 from "./components/Error/Error404";
 import Error403 from "./components/Error/Error403";
 import Error500 from "./components/Error/Error500";
-function App() {
+
+function AppWrapper() {
+  const location = useLocation();
+
+  // List of error routes where we should hide header, footer, and CTA
+  const errorRoutes = ["/*", "/403", "/500"];
+  const isErrorPage =
+    errorRoutes.includes(location.pathname) || location.pathname === "/*"; // fallback for 404 wildcard
+
   return (
-    <Router>
-      <Header />
+    <>
+      {!isErrorPage && <Header />}
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutUsPage />} />
@@ -26,12 +40,21 @@ function App() {
         <Route path="/contact" element={<ContactUsPage />} />
         <Route path="/career" element={<CareersPage />} />
         <Route path="/careers/apply" element={<CareersApplicationPage />} />
-        <Route path="/404" element={<Error404 />} />
+        <Route path="/*" element={<Error404 />} />
         <Route path="/403" element={<Error403 />} />
         <Route path="/500" element={<Error500 />} />
       </Routes>
-      <CTA />
-      <Footer />
+
+      {!isErrorPage && <CTA />}
+      {!isErrorPage && <Footer />}
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppWrapper />
     </Router>
   );
 }

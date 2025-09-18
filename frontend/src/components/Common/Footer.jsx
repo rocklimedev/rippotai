@@ -101,7 +101,7 @@ const Footer = () => {
                   <ul className="list-inline mb-3">
                     <li className="list-inline-item">
                       <a
-                        href="https://facebook.com"
+                        href="https://www.facebook.com/rippotaiarchitecture"
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="Facebook"
@@ -111,17 +111,7 @@ const Footer = () => {
                     </li>
                     <li className="list-inline-item">
                       <a
-                        href="https://twitter.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label="Twitter"
-                      >
-                        <i className="fab fa-twitter"></i>
-                      </a>
-                    </li>
-                    <li className="list-inline-item">
-                      <a
-                        href="https://instagram.com"
+                        href="https://www.instagram.com/rippotai/"
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="Instagram"
@@ -131,7 +121,7 @@ const Footer = () => {
                     </li>
                     <li className="list-inline-item">
                       <a
-                        href="https://linkedin.com"
+                        href="https://www.linkedin.com/company/rippotaiarchitecture/"
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="LinkedIn"
