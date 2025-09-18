@@ -3418,3 +3418,183 @@ padding: 120px;
     gap: 10px;
   }
 }
+/* Error Pages Styling */
+.error-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--light-bg);
+  font-family: 'Lato', sans-serif;
+  color: var(--text-color);
+  text-align: center;
+  padding: var(--spacing-md);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Error Container */
+.error-container {
+  max-width: 600px;
+  width: 100%;
+  padding: var(--spacing-lg);
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 10;
+}
+
+/* Error Code (e.g., 404, 500) */
+.error-code {
+  font-size: 6rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-sm);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Error Message */
+.error-message {
+  font-size: 1.5rem;
+  color: var(--text-color);
+  margin-bottom: var(--spacing-md);
+  line-height: 1.4;
+}
+
+/* Error Description */
+.error-description {
+  font-size: 1rem;
+  color: var(--text-color);
+  opacity: 0.8;
+  margin-bottom: var(--spacing-lg);
+  line-height: 1.6;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Error CTA Button */
+.error-cta {
+  display: inline-block;
+  background-color: var(--accent-color);
+  color: var(--white);
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-decoration: none;
+  border-radius: var(--border-radius);
+  font-weight: bold;
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+.error-cta:hover {
+  background-color: #b88c14; /* Darker accent color */
+  transform: scale(1.05);
+}
+
+.error-cta:active {
+  transform: scale(1);
+}
+
+/* Error Image (Optional Illustration) */
+.error-image {
+  max-width: 300px;
+  height: auto;
+  margin: 0 auto var(--spacing-md);
+  display: block;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+
+.error-image:hover {
+  transform: scale(1.05);
+}
+
+/* Specific Error Page Styles */
+.error-404 .error-code {
+  color: var(--primary-color);
+}
+
+.error-403 .error-code {
+  color: #c62828; /* Red for forbidden */
+}
+
+.error-500 .error-code {
+  color: #6c757d; /* Gray for server error */
+}
+
+/* Background Decorative Element (Optional) */
+.error-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(26, 60, 52, 0.1), rgba(212, 160, 23, 0.1));
+  z-index: 1;
+  opacity: 0.5;
+}
+
+/* Animation for Error Code */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.error-code {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .error-code {
+    font-size: 4rem;
+  }
+
+  .error-message {
+    font-size: 1.25rem;
+  }
+
+  .error-description {
+    font-size: 0.9rem;
+  }
+
+  .error-container {
+    padding: var(--spacing-md);
+  }
+
+  .error-image {
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 576px) {
+  .error-code {
+    font-size: 3rem;
+  }
+
+  .error-message {
+    font-size: 1rem;
+  }
+
+  .error-description {
+    font-size: 0.875rem;
+  }
+
+  .error-cta {
+    padding: var(--spacing-sm);
+    font-size: 0.9rem;
+  }
+
+  .error-container {
+    padding: var(--spacing-sm);
+  }
+
+  .error-image {
+    max-width: 150px;
+  }
+}
