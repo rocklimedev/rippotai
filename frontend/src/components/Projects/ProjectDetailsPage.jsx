@@ -72,7 +72,9 @@ const ProjectDetailPage = () => {
   return (
     <div className="project-detail-page">
       {/* Hero Section (Banner) */}
-      <section className="projects-hero"></section>
+      <section className="project-hero">
+        <img src={project.image} alt="" />
+      </section>
 
       {/* Project Info Section */}
       <section className="project-info-section">
@@ -91,17 +93,17 @@ const ProjectDetailPage = () => {
       </section>
 
       {/* Wide Full-Length Banner Image */}
-      <section className="project-banner-image">
+      {/* <section className="project-banner-image">
         <div className="custom-container">
           <img
             src={`${project.image}`}
             alt={`${project.title} Banner`}
             className="full-width-image"
-            onClick={() => openModal(0)} // Open modal for banner image
+            onClick={() => openModal(0)}
             style={{ cursor: "pointer" }}
           />
         </div>
-      </section>
+      </section> */}
 
       {/* Two Images and Details Section */}
       <section className="project-two-image-section">
