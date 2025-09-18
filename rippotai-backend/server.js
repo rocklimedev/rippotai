@@ -25,6 +25,8 @@ const corsOptions = {
     "https://dashboard-rocklime.vercel.app",
     "https://cmtradingco.vercel.app",
     "https://dashboard-cmtradingco.vercel.app",
+    "https://rippotaiarchitecture.com",
+    "https://rippotai.vercel.app",
   ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
