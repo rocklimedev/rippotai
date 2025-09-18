@@ -6,7 +6,7 @@ import banner1 from "../../assets/images/banners/INTERIOR 01.jpg";
 import banner2 from "../../assets/images/banners/Living Area03.jpg";
 import banner3 from "../../assets/images/banners/kitchen_set02.png";
 import banner4 from "../../assets/images/banners/main-banner.jpg";
-import founderImg from "../../assets/images/founder.jpg";
+import founderImg from "../../assets/images/founder.png";
 import companyImg from "../../assets/images/logo.png";
 import ProjectsShowcase from "./ProjectsShowcase";
 import CTA from "./CTA";
