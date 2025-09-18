@@ -43,20 +43,6 @@ const ProjectsPage = () => {
           (project) => project.category === selectedCategory
         );
 
-  // Log for debugging
-  console.log(
-    "Projects:",
-    projectsArray,
-    "Filtered Projects:",
-    filteredProjects,
-    "Categories:",
-    categories,
-    "Loading:",
-    isLoading,
-    "Error:",
-    error
-  );
-
   return (
     <div className="projects-page">
       {/* Hero Section */}
