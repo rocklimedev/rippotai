@@ -6,7 +6,7 @@ const CTA = () => {
     <>
       <div className="cta-container">
         <a
-          href="https://wa.me/1234567890"
+          href="https://wa.me/+918882830560"
           className="cta-icon whatsapp"
           target="_blank"
           rel="noopener noreferrer"
@@ -15,7 +15,7 @@ const CTA = () => {
           <FaWhatsapp size={22} color="white" />
         </a>
         <a
-          href="tel:+1234567890"
+          href="tel:+918882830560"
           className="cta-icon phone"
           aria-label="Call us"
         >

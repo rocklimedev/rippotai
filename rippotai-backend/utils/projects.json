@@ -1,54 +1,20 @@
 [
   {
-    "title": "G KM 53 Renovation",
+    "title": "Pitampura residence",
     "category": "Residential",
     "description": "A contemporary renovation of a South Delhi home, reimagining interiors with natural light, open spaces, and clean lines.",
     "details": "This project was a complete overhaul of an existing residence, where we restructured internal spaces to create a seamless flow between the living, dining, and outdoor areas. The design uses a muted material palette of stone, wood, and glass to bring warmth and sophistication while maximizing daylight penetration. Bespoke furniture and custom storage solutions were integrated to optimize space without compromising aesthetics.",
-    "image": "https://static.cmtradingco.com/rippotai_projects/d54-gk/banner.png",
+    "image": "https://static.cmtradingco.com/rippotai_projects/pitampura_residence/banner.png",
     "images": [
-      "https://static.cmtradingco.com/rippotai_projects/d54-gk/1.png",
-      "https://static.cmtradingco.com/rippotai_projects/d54-gk/2.png",
-      "https://static.cmtradingco.com/rippotai_projects/d54-gk/3.png",
-      "https://static.cmtradingco.com/rippotai_projects/d54-gk/4.png",
-      "https://static.cmtradingco.com/rippotai_projects/d54-gk/5.png",
-      "https://static.cmtradingco.com/rippotai_projects/d54-gk/6.png",
-      "https://static.cmtradingco.com/rippotai_projects/d54-gk/7.png"
+      "https://static.cmtradingco.com/rippotai_projects/pitampura_residence/1.png",
+      "https://static.cmtradingco.com/rippotai_projects/pitampura_residence/2.png",
+      "https://static.cmtradingco.com/rippotai_projects/pitampura_residence/3.png",
+      "https://static.cmtradingco.com/rippotai_projects/pitampura_residence/4.png",
+      "https://static.cmtradingco.com/rippotai_projects/pitampura_residence/5.png",
+      "https://static.cmtradingco.com/rippotai_projects/pitampura_residence/6.png",
+      "https://static.cmtradingco.com/rippotai_projects/pitampura_residence/7.png",
+      "https://static.cmtradingco.com/rippotai_projects/pitampura_residence/8.png"
     ],
-    "slug": "d54-gk"
-  },
-  {
-    "title": "Kohli's Residence",
-    "category": "Residential",
-    "description": "A modern villa designed with a focus on luxury, openness, and indoor-outdoor harmony.",
-    "details": "This residence was conceived as a private retreat, blending contemporary architecture with subtle traditional undertones. Expansive glass openings connect the interior to landscaped gardens, creating a constant dialogue between inside and outside. The interiors feature minimal, clutter-free spaces enhanced by accent lighting and natural textures, while a central courtyard ensures cross-ventilation and a sense of calm throughout the home.",
-    "image": "https://static.cmtradingco.com/rippotai_projects/kohli/banner.png",
-    "images": [
-      "https://static.cmtradingco.com/rippotai_projects/kohli/1.png",
-      "https://static.cmtradingco.com/rippotai_projects/kohli/2.png",
-      "https://static.cmtradingco.com/rippotai_projects/kohli/3.png",
-      "https://static.cmtradingco.com/rippotai_projects/kohli/4.png",
-      "https://static.cmtradingco.com/rippotai_projects/kohli/5.png",
-      "https://static.cmtradingco.com/rippotai_projects/kohli/6.png",
-      "https://static.cmtradingco.com/rippotai_projects/kohli/7.png",
-      "https://static.cmtradingco.com/rippotai_projects/kohli/8.png"
-    ],
-    "slug": "kohli"
-  },
-  {
-    "title": "Lawyer's Office",
-    "category": "Commercial",
-    "description": "A sleek and functional corporate office designed for a boutique law firm.",
-    "details": "This workspace was designed to balance professionalism with comfort. The layout provides privacy for client meetings while allowing collaborative zones for team discussions. The design uses glass partitions, warm wood finishes, and subtle lighting to create a refined yet approachable atmosphere. Acoustic treatment and ergonomic furniture ensure the space remains quiet and conducive to focused work.",
-    "image": "https://static.cmtradingco.com/rippotai_projects/lawyers_office/banner.png",
-    "images": [
-      "https://static.cmtradingco.com/rippotai_projects/lawyers_office/1.png",
-      "https://static.cmtradingco.com/rippotai_projects/lawyers_office/2.png",
-      "https://static.cmtradingco.com/rippotai_projects/lawyers_office/3.png",
-      "https://static.cmtradingco.com/rippotai_projects/lawyers_office/4.png",
-      "https://static.cmtradingco.com/rippotai_projects/lawyers_office/5.png",
-      "https://static.cmtradingco.com/rippotai_projects/lawyers_office/6.png",
-      "https://static.cmtradingco.com/rippotai_projects/lawyers_office/7.png"
-    ],
-    "slug": "lawyers_office"
+    "slug": "pitampura_residence"
   }
 ]

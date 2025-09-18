@@ -1,31 +1,61 @@
-import React, { useState } from "react";
-import { useGetProjectsQuery } from "../../api/rippotaiApi";
+import React, { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
+import { useGetProjectsQuery } from "../../api/rippotaiApi";
 
 const ProjectsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
+
+  // Construct query parameters for the API
+  const queryParams =
+    selectedCategory !== "All" ? { category: selectedCategory } : {};
 
   const {
     data: projects,
     error,
     isLoading,
-  } = useGetProjectsQuery(
-    selectedCategory !== "All" ? { category: selectedCategory } : {},
-    { refetchOnMountOrArgChange: true }
-  );
+  } = useGetProjectsQuery(queryParams, {
+    refetchOnMountOrArgChange: true,
+  });
 
-  const projectsArray = projects?.data || projects || [];
+  // Normalize projects data to ensure it's always an array
+  const projectsArray = Array.isArray(projects?.data)
+    ? projects.data
+    : Array.isArray(projects)
+    ? projects
+    : [];
 
+  // Derive unique categories from projects and include "All"
+  const categories = useMemo(() => {
+    const uniqueCategories = [
+      "All",
+      ...new Set(
+        projectsArray.map((project) => project.category).filter(Boolean)
+      ),
+    ];
+    return uniqueCategories;
+  }, [projectsArray]);
+
+  // Client-side filtering to ensure correct projects are displayed
+  const filteredProjects =
+    selectedCategory === "All"
+      ? projectsArray
+      : projectsArray.filter(
+          (project) => project.category === selectedCategory
+        );
+
+  // Log for debugging
   console.log(
     "Projects:",
     projectsArray,
+    "Filtered Projects:",
+    filteredProjects,
+    "Categories:",
+    categories,
     "Loading:",
     isLoading,
     "Error:",
     error
   );
-
-  const categories = ["All", "Residential", "Commercial"];
 
   return (
     <div className="projects-page">
@@ -49,17 +79,23 @@ const ProjectsPage = () => {
 
           {/* Category Filters */}
           <div className="project-filters mt-3" id="project-grid">
-            {categories.map((category) => (
-              <button
-                key={category}
-                className={`filter-btn ${
-                  selectedCategory === category ? "active" : ""
-                }`}
-                onClick={() => setSelectedCategory(category)}
-              >
-                {category}
-              </button>
-            ))}
+            {isLoading ? (
+              <p>Loading categories...</p>
+            ) : categories.length > 1 ? (
+              categories.map((category) => (
+                <button
+                  key={category}
+                  className={`filter-btn ${
+                    selectedCategory === category ? "active" : ""
+                  }`}
+                  onClick={() => setSelectedCategory(category)}
+                >
+                  {category}
+                </button>
+              ))
+            ) : (
+              <p>No categories available.</p>
+            )}
           </div>
 
           {/* Project Grid */}
@@ -69,31 +105,40 @@ const ProjectsPage = () => {
                 <p>Loading projects...</p>
               ) : error ? (
                 <p className="no-projects">
-                  Error: {error.message || "Failed to load projects."}
+                  Error:{" "}
+                  {error?.message ||
+                    error?.toString() ||
+                    "Failed to load projects."}
                 </p>
-              ) : projectsArray.length > 0 ? (
-                projectsArray.map((project) => (
+              ) : filteredProjects.length > 0 ? (
+                filteredProjects.map((project) => (
                   <div
                     className="custom-col-4 custom-col-lg-6 custom-col-md-12 mt-5"
                     key={project.slug}
                   >
                     <Link
-                      to={`/project/${project.slug}`}
+                      to={`/project/${
+                        project.slug
+                      }?category=${encodeURIComponent(project.category)}`}
                       className="project-details"
                     >
                       <img
-                        src={`${project.image}`}
+                        src={project.image || "/placeholder-image.jpg"}
                         className="project-img"
-                        alt={project.title}
+                        alt={project.title || "Project image"}
                       />
                       <div className="project-overlay">
-                        <h5>{project.title}</h5>
-                        <p className="project-type">{project.category}</p>
+                        <h5>{project.title || "Untitled Project"}</h5>
+                        <p className="project-type">
+                          {project.category || "Uncategorized"}
+                        </p>
                         <p className="project-description">
-                          {project.description}
+                          {project.description || "No description available."}
                         </p>
                         <Link
-                          to={`/project/${project.slug}`}
+                          to={`/project/${
+                            project.slug
+                          }?category=${encodeURIComponent(project.category)}`}
                           className="view-project-btn"
                         >
                           View Project

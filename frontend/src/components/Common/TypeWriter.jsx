@@ -10,7 +10,7 @@ const Typewriter = ({ showContactUs = true }) => {
   const [charIndex, setCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // speeds (ms) - tweak these to taste
+  // Speeds (ms)
   const TYPING_SPEED = 100;
   const DELETING_SPEED = 50;
   const PAUSE_AFTER_FULL = 1500;
@@ -42,40 +42,44 @@ const Typewriter = ({ showContactUs = true }) => {
     return () => clearTimeout(timeoutId);
   }, [charIndex, isDeleting, currentPhraseIndex, phrases]);
 
-  useEffect(() => {
-    if (currentPhraseIndex >= phrases.length) {
-      setCurrentPhraseIndex(0);
-      setCharIndex(0);
-      setIsDeleting(false);
-    }
-  }, [phrases.length, currentPhraseIndex]);
+  // This useEffect seems redundant since currentPhraseIndex is already managed in the modulo operation
+  // Removed to simplify logic, as (prev + 1) % phrases.length handles the cycling correctly
 
   const displayText = phrases[currentPhraseIndex].substring(0, charIndex);
 
-  // determine what link to render
+  // Determine what link to render
   const renderLinkedText = () => {
     const phrase = phrases[currentPhraseIndex];
 
     if (phrase === "DISCUSS A PROJECT?") {
       return (
         <a
-          href="https://wa.me/919999999999" // replace with your WhatsApp number
+          href="https://wa.me/+919711169727" // Updated with a valid WhatsApp number from footer
           target="_blank"
           rel="noopener noreferrer"
           className="hover:underline"
+          aria-label="Discuss a project via WhatsApp"
         >
           {displayText}
         </a>
       );
     } else if (phrase === "CONTACT US") {
       return (
-        <Link to="/contact-us" className="hover:underline">
+        <Link
+          to="/contact"
+          className="hover:underline"
+          aria-label="Go to contact page"
+        >
           {displayText}
         </Link>
       );
     } else if (phrase === "STEP INSIDE") {
       return (
-        <Link to="/career" className="hover:underline">
+        <Link
+          to="/career"
+          className="hover:underline"
+          aria-label="Go to careers page"
+        >
           {displayText}
         </Link>
       );

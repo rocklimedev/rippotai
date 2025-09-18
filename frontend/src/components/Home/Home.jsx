@@ -1,8 +1,7 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination } from "swiper/modules"; // Removed Navigation
+import { Autoplay } from "swiper/modules"; // Removed Pagination
 import "swiper/css";
-import "swiper/css/pagination";
 import banner1 from "../../assets/images/banners/INTERIOR 01.jpg";
 import banner2 from "../../assets/images/banners/Living Area03.jpg";
 import banner3 from "../../assets/images/banners/kitchen_set02.png";
@@ -18,10 +17,9 @@ const Home = () => {
       {/* Hero Section */}
       <section className="hero">
         <Swiper
-          modules={[Autoplay, Pagination]} // Removed Navigation here
+          modules={[Autoplay]} // Removed Pagination module
           loop={true}
           autoplay={{ delay: 5000, disableOnInteraction: false }}
-          pagination={{ clickable: true }}
           className="swiper-container"
         >
           <SwiperSlide>

@@ -158,22 +158,24 @@ const ContactUsPage = () => {
                 <div className="contact-info">
                   <h4>Our Office</h4>
                   <p>
-                    <i className="fas fa-map-marker-alt"></i> 123 Cube Street,
-                    Melbourne, VIC 3000, Australia
+                    <i className="fas fa-map-marker-alt"></i> 487/64 Peeragarhi,
+                    National Market, New Delhi, Delhi 110087
                   </p>
                   <p>
                     <i className="fas fa-phone"></i>{" "}
-                    <a href="tel:+61312345678">+61 3 1234 5678</a>
+                    <a href="tel:+918882830560">+918882830560</a>
                   </p>
                   <p>
                     <i className="fas fa-envelope"></i>{" "}
-                    <a href="mailto:info@rippotai.com">info@rippotai.com</a>
+                    <a href="mailto:rippotaiarchitecture@gmail.com">
+                      rippotaiarchitecture@gmail.com
+                    </a>
                   </p>
                 </div>
                 <div className="map-container">
                   <h4>Find Us</h4>
                   <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.9220205218063!2d144.963057815316!3d-37.81621497975132!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d47612ab14f%3A0x2f7b1b8a8f6a5e5c!2sFederation%20Square!5e0!3m2!1sen!2sin!4v1645689512580!5m2!1sen!2sin"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3500.5354254122253!2d77.08848767603958!3d28.673625982212307!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d059c1dcee7b1%3A0xf8ad055853364b99!2sRippotai%20Architecture!5e0!3m2!1sen!2sin!4v1758172267097!5m2!1sen!2sin"
                     allowFullScreen=""
                     loading="lazy"
                     title="Rippotai Architecture Location"

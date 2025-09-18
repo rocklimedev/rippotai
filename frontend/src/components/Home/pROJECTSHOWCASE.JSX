@@ -2,6 +2,7 @@ import React from "react";
 import { useGetProjectsQuery } from "../../api/rippotaiApi";
 
 const ProjectsShowcase = () => {
+  // Fetch all projects
   const { data: projects, isLoading, isError, error } = useGetProjectsQuery();
 
   if (isLoading) {
@@ -21,21 +22,15 @@ const ProjectsShowcase = () => {
     return <section className="projects-showcase">No projects found</section>;
   }
 
-  // Limit to 7 projects
-  const limitedProjects = projects.slice(0, 7);
-
   return (
     <section className="projects-showcase">
       <div className="bento-grid">
-        {limitedProjects.map((project, index) => (
+        {projects.map((project, index) => (
           <div
-            key={project.slug}
+            key={project.slug} // Use slug for uniqueness
             className={`bento-item ${project.type || "image"} item-${
               index + 1
-            }`}
-            style={{
-              gridArea: `item${index + 1}`,
-            }}
+            }`} // Fallback to "image" if type is undefined
           >
             {project.type === "text" ? (
               <div className="text-block">
@@ -53,7 +48,6 @@ const ProjectsShowcase = () => {
                   src={project.image}
                   alt={project.title}
                   className="project-image"
-                  style={{ width: "100%" }} // Consistent sizing
                 />
                 <div className="project-overlay">
                   <h5>{project.title}</h5>

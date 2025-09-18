@@ -82,12 +82,12 @@ const Footer = () => {
                     </li>
                     <li>
                       <i className="fas fa-phone-alt me-2"></i>
-                      <a href="tel:+919711169727">+91 97111 69727</a>
+                      <a href="tel:+918882830560">+918882830560</a>
                     </li>
                     <li>
                       <i className="fas fa-envelope me-2"></i>
-                      <a href="mailto:info@rippotaiarchitecture.com">
-                        info@rippotaiarchitecture.com
+                      <a href="mailto:rippotaiarchitecture@gmail.com">
+                        rippotaiarchitecture@gmail.com
                       </a>
                     </li>
                   </ul>

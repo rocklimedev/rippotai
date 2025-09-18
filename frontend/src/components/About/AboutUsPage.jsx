@@ -58,9 +58,12 @@ const AboutUsPage = () => {
               <h3>AR. Sagar Chhabra</h3>
               <span>Founder</span>
               <p>
-                John Rippotai, a visionary architect with over 20 years of
-                experience, founded Rippotai Architecture to create spaces that
-                inspire and endure.
+                founded Rippotai Architecture in June 2023, after gaining
+                diverse experience in luxury residential projects, furniture
+                design, and interiors. He previously worked at Studio Grey
+                Matter, Mangrove Collective, Studio Lotus and 1 Decimal Studio.
+                Inspired by Japanese minimalism, his firm focuses on innovative
+                designs from concept to delivery.
               </p>
             </div>
             <div className="who-we-are-image founder-slider">
