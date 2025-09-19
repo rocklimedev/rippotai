@@ -1,13 +1,16 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules"; // Removed Pagination
+import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import banner1 from "../../assets/images/banners/INTERIOR 01.jpg";
 import banner2 from "../../assets/images/banners/Living Area03.jpg";
 import banner3 from "../../assets/images/banners/kitchen_set02.png";
 import banner4 from "../../assets/images/banners/main-banner.jpg";
+import banner1Mobile from "../../assets/images/banners/mobile/5.png"; // Add mobile images
+import banner2Mobile from "../../assets/images/banners/mobile/2.jpg";
+import banner3Mobile from "../../assets/images/banners/mobile/3.jpg";
+import banner4Mobile from "../../assets/images/banners/mobile/4.jpg";
 import founderImg from "../../assets/images/founder.png";
-import companyImg from "../../assets/images/logo.png";
 import ProjectsShowcase from "./ProjectsShowcase";
 import CTA from "./CTA";
 
@@ -17,22 +20,70 @@ const Home = () => {
       {/* Hero Section */}
       <section className="hero">
         <Swiper
-          modules={[Autoplay]} // Removed Pagination module
+          modules={[Autoplay]}
           loop={true}
           autoplay={{ delay: 5000, disableOnInteraction: false }}
           className="swiper-container"
         >
           <SwiperSlide>
-            <img src={banner1} alt="Hero Image 1" className="hero-image" />
+            <picture>
+              <source
+                srcSet={banner1Mobile}
+                media="(max-width: 768px)"
+                alt="Hero Image 1 Mobile"
+              />
+              <img
+                src={banner1}
+                alt="Hero Image 1"
+                className="hero-image"
+                loading="lazy" // Optimize loading
+              />
+            </picture>
           </SwiperSlide>
           <SwiperSlide>
-            <img src={banner2} alt="Hero Image 2" className="hero-image" />
+            <picture>
+              <source
+                srcSet={banner2Mobile}
+                media="(max-width: 768px)"
+                alt="Hero Image 2 Mobile"
+              />
+              <img
+                src={banner2}
+                alt="Hero Image 2"
+                className="hero-image"
+                loading="lazy"
+              />
+            </picture>
           </SwiperSlide>
           <SwiperSlide>
-            <img src={banner3} alt="Hero Image 3" className="hero-image" />
+            <picture>
+              <source
+                srcSet={banner3Mobile}
+                media="(max-width: 768px)"
+                alt="Hero Image 3 Mobile"
+              />
+              <img
+                src={banner3}
+                alt="Hero Image 3"
+                className="hero-image"
+                loading="lazy"
+              />
+            </picture>
           </SwiperSlide>
           <SwiperSlide>
-            <img src={banner4} alt="Hero Image 4" className="hero-image" />
+            <picture>
+              <source
+                srcSet={banner4Mobile}
+                media="(max-width: 768px)"
+                alt="Hero Image 4 Mobile"
+              />
+              <img
+                src={banner4}
+                alt="Hero Image 4"
+                className="hero-image"
+                loading="lazy"
+              />
+            </picture>
           </SwiperSlide>
         </Swiper>
       </section>
@@ -57,6 +108,7 @@ const Home = () => {
               <img
                 src={founderImg}
                 alt="John Rippotai, Founder of Rippotai Architecture"
+                loading="lazy"
               />
             </div>
           </div>

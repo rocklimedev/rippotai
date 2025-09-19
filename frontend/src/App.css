@@ -385,14 +385,12 @@ nav ul li a:hover {
     height: 40px;
   }
 }
-
-
 /* Hero Slider */
 .hero {
   text-align: center;
   padding: 0;
   position: relative;
-  min-height: 80vh; /* Reduced for smaller screens */
+  min-height: 60vh; /* Further reduced for mobile */
   height: calc(100vh - var(--header-height, 60px)); /* Dynamic header height */
   overflow: hidden;
 }
@@ -405,36 +403,51 @@ nav ul li a:hover {
 .hero-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; /* Ensures images cover the slide without distortion */
   display: block;
 }
 
-.swiper-pagination-bullet {
-  background: var(--white);
-  opacity: 0.7;
-  width: 10px; /* Explicit size for accessibility */
-  height: 10px;
-  margin: 0 4px;
+/* Hide pagination and navigation on mobile */
+@media (max-width: 768px) {
+  .hero {
+    min-height: 50vh; /* Adjust height for mobile */
+  }
+
+  .swiper-pagination,
+  .swiper-button-prev,
+  .swiper-button-next {
+    display: none; /* Hide pagination and navigation buttons on mobile */
+  }
 }
 
-.swiper-pagination-bullet-active {
-  background: var(--accent-color);
-}
+/* Desktop-specific styles */
+@media (min-width: 769px) {
+  .swiper-pagination-bullet {
+    background: var(--white);
+    opacity: 0.7;
+    width: 10px;
+    height: 10px;
+    margin: 0 4px;
+  }
 
-.swiper-button-prev,
-.swiper-button-next {
-  color: var(--white);
-  opacity: 0.7;
-  width: 44px; /* Accessible touch target */
-  height: 44px;
-  transition: opacity 0.3s ease; /* Specific transition */
-}
+  .swiper-pagination-bullet-active {
+    background: var(--accent-color);
+  }
 
-.swiper-button-prev:hover,
-.swiper-button-next:hover {
-  opacity: 1;
-}
+  .swiper-button-prev,
+  .swiper-button-next {
+    color: var(--white);
+    opacity: 0.7;
+    width: 44px;
+    height: 44px;
+    transition: opacity 0.3s ease;
+  }
 
+  .swiper-button-prev:hover,
+  .swiper-button-next:hover {
+    opacity: 1;
+  }
+}
 
 /* Who We Are Section */
 .who-we-are {
@@ -800,7 +813,7 @@ nav ul li a:hover {
 
 .cta-icon.whatsapp,
 .cta-icon.phone {
-  background-color: var(--phone-color);
+  background-color: var(--primary-color);
 }
 
 .cta-icon svg {
@@ -811,7 +824,7 @@ nav ul li a:hover {
 .cta-contact {
   position: fixed;
   top: 50%;
-  right: 0;
+right: 17px;
   transform: translateY(-50%) rotate(-90deg);
   background: var(--primary-color);
   color: var(--white);

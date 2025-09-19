@@ -58,16 +58,10 @@ const Footer = () => {
                     <h5 className="footer-title">Categories</h5>
                     <ul className="list-unstyled">
                       <li>
-                        <Link to="/categories/residential">Residential</Link>
+                        <Link to="#">Residential</Link>
                       </li>
                       <li>
-                        <Link to="/categories/commercial">Commercial</Link>
-                      </li>
-                      <li>
-                        <Link to="/categories/interior">Interior Design</Link>
-                      </li>
-                      <li>
-                        <Link to="/categories/landscape">Landscape</Link>
+                        <Link to="#">Commercial</Link>
                       </li>
                     </ul>
                   </div>
