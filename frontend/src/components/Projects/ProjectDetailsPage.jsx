@@ -136,8 +136,9 @@ const ProjectDetailPage = () => {
                   src={`${img}`}
                   alt={`${project.title} - Image ${index + 3}`}
                   key={index}
-                  className={`gallery-image item-${index + 1}`}
-                  style={{ gridArea: `item${index + 1}`, cursor: "pointer" }}
+                  className={`gallery-image ${
+                    index === 0 ? "large-image" : ""
+                  }`} // Make first image larger
                   onClick={() => openModal(index + 2)}
                 />
               ))}

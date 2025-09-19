@@ -99,38 +99,31 @@ const ProjectsPage = () => {
               ) : filteredProjects.length > 0 ? (
                 filteredProjects.map((project) => (
                   <div
-                    className="custom-col-4 custom-col-lg-6 custom-col-md-12 mt-5"
+                    className="custom-col-4 custom-col-lg-6 custom-col-md-12 mt-5 project-details"
                     key={project.slug}
                   >
-                    <Link
-                      to={`/project/${
-                        project.slug
-                      }?category=${encodeURIComponent(project.category)}`}
-                      className="project-details"
-                    >
-                      <img
-                        src={project.image || "/placeholder-image.jpg"}
-                        className="project-img"
-                        alt={project.title || "Project image"}
-                      />
-                      <div className="project-overlay">
-                        <h5>{project.title || "Untitled Project"}</h5>
-                        <p className="project-type">
-                          {project.category || "Uncategorized"}
-                        </p>
-                        <p className="project-description">
-                          {project.description || "No description available."}
-                        </p>
-                        <Link
-                          to={`/project/${
-                            project.slug
-                          }?category=${encodeURIComponent(project.category)}`}
-                          className="view-project-btn"
-                        >
-                          View Project
-                        </Link>
-                      </div>
-                    </Link>
+                    <img
+                      src={project.image || "/placeholder-image.jpg"}
+                      className="project-img"
+                      alt={project.title || "Project image"}
+                    />
+                    <div className="project-overlay">
+                      <h5>{project.title || "Untitled Project"}</h5>
+                      <p className="project-type">
+                        {project.category || "Uncategorized"}
+                      </p>
+                      <p className="project-description">
+                        {project.description || "No description available."}
+                      </p>
+                      <Link
+                        to={`/project/${
+                          project.slug
+                        }?category=${encodeURIComponent(project.category)}`}
+                        className="view-project-btn"
+                      >
+                        View Project
+                      </Link>
+                    </div>
                   </div>
                 ))
               ) : (
