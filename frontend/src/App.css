@@ -1,33 +1,33 @@
-/* Import Lato Light from Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
+/* Import Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
 @import url("https://fonts.cdnfonts.com/css/neuropol-2");
-/* Import Font Awesome for icons (used in Values section) */
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css");
 
 /* CSS Variables for Consistency */
 :root {
-  --primary-color: #1a3c34;
-  --accent-color: #d4a017;
-  --text-color: #333;
-  --light-bg: #f9f9f9;
-  --gray-bg: #f0f0f0;
-  --white: #fff;
+  --primary-color: #1a3c34; /* Deep green for sophistication */
+  --accent-color: #d4a017; /* Warm gold for elegance */
+  --text-color: #333333; /* Neutral dark for readability */
+  --light-bg: #f8f8f8; /* Soft off-white for background */
+  --gray-bg: #e8ecef; /* Light gray for section contrast */
+  --white: #ffffff;
   --transition: all 0.3s ease;
-  --spacing-sm: 10px;
-  --spacing-md: 20px;
-  --spacing-lg: 40px;
-  --max-width: 1200px;
+  --spacing-sm: 12px;
+  --spacing-md: 24px;
+  --spacing-lg: 48px;
+  --max-width: 1280px; /* Wider for modern displays */
   --font-size-base: 16px;
-  --border-radius: 10px;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 body {
   margin: 0;
   font-family: 'Lato', sans-serif;
-  font-weight: 300;
+  font-weight: 400;
   color: var(--text-color);
   background-color: var(--light-bg);
-  overflow-x: hidden; /* Prevent horizontal overflow */
+  overflow-x: hidden;
 }
 header {
   display: flex;
@@ -471,12 +471,11 @@ nav ul li a:hover {
   max-width: 1200px;
   margin: 0 auto;
   grid-template-areas:
-    "item1 item1 item2 item2"
+    "item1 item1 item2 item-text"
     "item3 item3 item4 item4"
     "item5 item5 item6 item6"
     "item7 item7 item7 item7";
 }
-
 
 .item-1 { grid-area: item1; }
 .item-2 { grid-area: item2; }
@@ -485,6 +484,7 @@ nav ul li a:hover {
 .item-5 { grid-area: item5; }
 .item-6 { grid-area: item6; }
 .item-7 { grid-area: item7; }
+.item-text { grid-area: item-text; }
 
 /* Bento item styling */
 .bento-item {
@@ -492,7 +492,6 @@ nav ul li a:hover {
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
 
 .bento-item:hover {
   box-shadow: var(--shadow);
@@ -550,10 +549,10 @@ nav ul li a:hover {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start; /* Align content to the left */
-  padding: var(--spacing-sm); /* Adjusted padding for left alignment */
+  padding: var(--spacing-sm);
   opacity: 0;
   transition: opacity 0.3s ease;
-  text-align: left; /* Ensure text is left-aligned */
+  text-align: left;
 }
 
 .bento-item:hover .project-overlay {
@@ -569,8 +568,8 @@ nav ul li a:hover {
 .project-overlay .project-category {
   margin-bottom: var(--spacing-sm);
   font-family: 'Lato', sans-serif;
-      margin-top: -9px;
-    font-size: 1rem;
+  margin-top: -9px;
+  font-size: 1rem;
 }
 
 .project-overlay p {
@@ -586,23 +585,22 @@ nav ul li a:hover {
   background-color: var(--primary-color);
   color: var(--white);
   text-decoration: none;
-
   font-family: 'Lato', sans-serif;
   font-size: 1rem;
   transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Added box-shadow */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .view-project-btn:hover,
 .view-project-btn:focus {
   background-color: var(--accent-color);
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Slightly stronger shadow on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .view-project-btn:active {
   transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Reset shadow on click */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Responsive adjustments */
@@ -611,6 +609,7 @@ nav ul li a:hover {
     grid-template-columns: repeat(2, 1fr);
     grid-template-areas:
       "item1 item2"
+      "item-text item-text"
       "item3 item4"
       "item5 item6"
       "item7 item7";
@@ -623,145 +622,7 @@ nav ul li a:hover {
     grid-template-areas:
       "item1"
       "item2"
-      "item3"
-      "item4"
-      "item5"
-      "item6"
-      "item7";
-    gap: 8px;
-  }
-
-  .bento-item {
-    min-height: 150px;
-  }
-}
-/* Bento item styling */
-.bento-item {
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.bento-item:hover {
-  box-shadow: var(--shadow);
-}
-
-.bento-item:focus-within {
-  box-shadow: var(--shadow);
-}
-
-/* Image styling */
-.bento-item img {
-  width: 100%;
-  height: 100%; /* Ensures image fills the container */
-  object-fit: cover; /* Maintains aspect ratio while filling */
-  object-position: center;
-  display: block;
-}
-
-/* Text block styling */
-.bento-item.text {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: var(--spacing-md);
-  background-color: var(--white);
-}
-
-.text-block h4 {
-  color: var(--primary-color);
-  font-size: 1.25rem;
-  margin-bottom: var(--spacing-sm);
-  font-family: 'Lato', sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.text-block p {
-  color: var(--text-color);
-  font-size: 1rem;
-  font-family: 'Lato', sans-serif;
-  line-height: 1.5;
-}
-
-/* Project overlay */
-.project-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-  color: var(--white);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: var(--spacing-md);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.bento-item:hover .project-overlay {
-  opacity: 1;
-}
-
-.project-overlay h5 {
-  font-size: 1.25rem;
-  margin-bottom: var(--spacing-sm);
-  text-align: center;
-  font-family: 'Lato', sans-serif;
-}
-
-.project-overlay p {
-  font-size: 0.875rem;
-  margin: 0;
-  text-align: center;
-  font-family: 'Lato', sans-serif;
-}
-
-/* View Project Button */
-.view-project-btn {
-  display: inline-block;
-  padding: var(--spacing-sm) var(--spacing-md);
-  background-color: var(--primary-color);
-  color: var(--white);
-  text-decoration: none;
- 
-  font-family: 'Lato', sans-serif;
-  font-size: 1rem;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.view-project-btn:hover,
-.view-project-btn:focus {
-  background-color: var(--accent-color);
-  transform: translateY(-2px);
-}
-
-.view-project-btn:active {
-  transform: translateY(0);
-}
-
-/* Responsive adjustments */
-@media (max-width: 1024px) {
-  .bento-grid {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-areas:
-      "item1 item2"
-      "item3 item4"
-      "item5 item6"
-      "item7 item7";
-  }
-}
-
-@media (max-width: 768px) {
-  .bento-grid {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "item1"
-      "item2"
+      "item-text"
       "item3"
       "item4"
       "item5"
@@ -2353,70 +2214,86 @@ nav ul li a:hover {
   margin-left: 16.6666%;
 }
 
+
 /* Careers Page Wrapper */
 .careers-page {
   padding-top: 0;
   background-color: var(--light-bg);
 }
 
+/* Custom Container */
+.custom-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
 /* Hero Section */
 .careers-hero {
   position: relative;
-  min-height: 50vh;
+  min-height: 60vh;
   background: url("./assets/images/banners/career_main_banner.png") no-repeat center center/cover;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  margin-top: 0; /* Explicitly set to 0 to avoid any default margins */
-  padding-top: 0; /* Ensure no padding pushes content down */
-  top: 0; /* Align to the top of the viewport */
+  margin-top: 0;
+  padding: var(--spacing-lg) 0;
 }
 
 .hero-overlay {
-  background: rgba(0, 0, 0, 0.5); /* Dark overlay for readability */
+  background: rgba(0, 0, 0, 0.6); /* Slightly darker overlay */
   padding: var(--spacing-lg);
   border-radius: var(--border-radius);
+  max-width: 700px;
 }
 
 .careers-hero h1 {
-  font-size: 40px;
-  font-weight: 600;
+  font-family: 'Lato', sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--white);
   margin-bottom: var(--spacing-sm);
+  line-height: 1.2;
 }
 
 .careers-hero p {
   font-size: 18px;
+  color: var(--white);
   max-width: 600px;
   margin: 0 auto var(--spacing-md);
+  line-height: 1.6;
 }
 
 .cta-button {
   display: inline-block;
   background-color: var(--accent-color);
   color: var(--white);
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-lg);
   text-decoration: none;
   border-radius: var(--border-radius);
-  font-weight: bold;
+  font-weight: 700;
+  font-size: 16px;
   transition: var(--transition);
 }
 
 .cta-button:hover {
-  background-color: #b88c14; /* Darker accent color */
-  transform: scale(1.05);
+  background-color: #b88c14; /* Darker gold */
+  transform: translateY(-2px);
 }
 
 /* Culture Section */
 .careers-culture {
   padding: var(--spacing-lg) var(--spacing-md);
   background-color: var(--white);
+  text-align: center;
 }
 
 .careers-culture .heading h2 {
+  font-family: 'Lato', sans-serif;
   font-size: 36px;
   color: var(--primary-color);
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
 }
 
 .careers-culture .heading p {
@@ -2424,10 +2301,18 @@ nav ul li a:hover {
   color: var(--text-color);
   max-width: 800px;
   margin: 0 auto;
+  line-height: 1.6;
 }
 
-.mt-2 {
-  margin-top: var(--spacing-md);
+.culture-content {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.culture-content p {
+  font-size: 16px;
+  color: var(--text-color);
+  line-height: 1.8;
 }
 
 /* Job Listings Section */
@@ -2437,22 +2322,25 @@ nav ul li a:hover {
 }
 
 .careers-jobs h2 {
+  font-family: 'Lato', sans-serif;
   font-size: 36px;
   color: var(--primary-color);
   margin-bottom: var(--spacing-lg);
 }
 
 .job-filters {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
   margin-bottom: var(--spacing-lg);
 }
 
 .filter-btn {
-  background: none;
+  background: var(--white);
   border: 1px solid var(--primary-color);
   color: var(--primary-color);
   padding: var(--spacing-sm) var(--spacing-md);
-  margin: 0 var(--spacing-sm);
   border-radius: var(--border-radius);
   font-size: 16px;
   cursor: pointer;
@@ -2463,6 +2351,7 @@ nav ul li a:hover {
 .filter-btn.active {
   background-color: var(--primary-color);
   color: var(--white);
+  transform: translateY(-2px);
 }
 
 .job-list {
@@ -2475,16 +2364,17 @@ nav ul li a:hover {
   padding: var(--spacing-md);
   margin-bottom: var(--spacing-md);
   border-radius: var(--border-radius);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--box-shadow);
   transition: var(--transition);
 }
 
 .job-item:hover {
-
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
 .job-item h3 {
+  font-family: 'Lato', sans-serif;
   font-size: 24px;
   color: var(--primary-color);
   margin-bottom: var(--spacing-sm);
@@ -2494,17 +2384,19 @@ nav ul li a:hover {
   font-size: 16px;
   color: var(--accent-color);
   margin-bottom: var(--spacing-sm);
+  display: flex;
+  align-items: center;
 }
 
 .job-item .job-meta i {
   margin-right: var(--spacing-sm);
-  width: 20px; /* For alignment */
 }
 
 .job-item p {
   font-size: 16px;
   color: var(--text-color);
   margin-bottom: var(--spacing-sm);
+  line-height: 1.6;
 }
 
 .job-item .job-details {
@@ -2513,13 +2405,14 @@ nav ul li a:hover {
 }
 
 .job-item .apply-btn {
-  margin-top: var(--spacing-sm);
+  margin-top: var(--spacing-md);
 }
 
 .no-jobs {
   text-align: center;
-  font-size: 16px;
+  font-size: 18px;
   color: var(--text-color);
+  padding: var(--spacing-md);
 }
 
 /* Benefits Section */
@@ -2530,106 +2423,39 @@ nav ul li a:hover {
 }
 
 .careers-benefits h2 {
+  font-family: 'Lato', sans-serif;
   font-size: 36px;
   margin-bottom: var(--spacing-lg);
+  text-align: center;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-md);
+  max-width: var(--max-width);
+  margin: 0 auto;
 }
 
 .benefit-item {
   text-align: center;
-  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-md);
 }
 
 .benefit-item i {
-  font-size: 40px;
+  font-size: 48px;
   color: var(--accent-color);
   margin-bottom: var(--spacing-sm);
 }
 
 .benefit-item h3 {
-  font-size: 24px;
+  font-size: 22px;
   margin-bottom: var(--spacing-sm);
 }
 
 .benefit-item p {
   font-size: 16px;
-  max-width: 300px;
-  margin: 0 auto;
-}
-
-/* Application Form Section */
-.careers-application {
-  padding: var(--spacing-lg) var(--spacing-md);
-  background-color: var(--white);
-}
-
-.careers-application h2 {
-  font-size: 36px;
-  color: var(--primary-color);
-  margin-bottom: var(--spacing-lg);
-}
-
-.careers-application .form-label {
-  font-size: 16px;
-  color: var(--primary-color);
-  font-weight: 600;
-  margin-bottom: var(--spacing-sm);
-  display: block;
-}
-
-.form-group {
-  margin-bottom: var(--spacing-md);
-}
-
-.careers-application .form-input {
-  width: 100%;
-  border: 1px solid #ccc;
-  border-radius: var(--border-radius);
-  padding: var(--spacing-sm);
-  font-size: 14px;
-  transition: var(--transition);
-  box-sizing: border-box;
-}
-
-.careers-application .form-input:focus {
-  border-color: var(--accent-color);
-  box-shadow: 0 0 5px rgba(212, 160, 23, 0.3);
-  outline: none;
-}
-
-.careers-application .form-submit-button {
-  width: 100%;
-  background-color: var(--primary-color);
-  border: none;
-  border-radius: var(--border-radius);
-  padding: var(--spacing-sm) var(--spacing-md);
-  font-size: 16px;
-  font-weight: bold;
-  color: var(--white);
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.careers-application .form-submit-button:hover {
-  background-color: #0f2c28; /* Darker primary color */
-
-}
-
-.form-alert {
-  margin-bottom: var(--spacing-md);
-  padding: var(--spacing-sm);
-  border-radius: var(--border-radius);
-}
-
-.form-alert-success {
-  background-color: #e6f4ea;
-  color: #2e7d32;
-  border: 1px solid #c3e6cb;
-}
-
-.form-alert-danger {
-  background-color: #fce4ec;
-  color: #c62828;
-  border: 1px solid #f8bbd0;
+  line-height: 1.6;
 }
 
 /* Testimonial Section */
@@ -2639,19 +2465,32 @@ nav ul li a:hover {
 }
 
 .careers-testimonial h2 {
+  font-family: 'Lato', sans-serif;
   font-size: 36px;
   color: var(--primary-color);
   margin-bottom: var(--spacing-lg);
+  text-align: center;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-md);
+  max-width: var(--max-width);
+  margin: 0 auto;
 }
 
 .testimonial {
   background-color: var(--white);
   padding: var(--spacing-md);
   border-radius: var(--border-radius);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--box-shadow);
   text-align: center;
-  max-width: 800px;
-  margin: 0 auto;
+  transition: var(--transition);
+}
+
+.testimonial:hover {
+  transform: translateY(-5px);
 }
 
 .testimonial p {
@@ -2659,30 +2498,34 @@ nav ul li a:hover {
   color: var(--text-color);
   font-style: italic;
   margin-bottom: var(--spacing-sm);
+  line-height: 1.6;
 }
 
 .testimonial .employee-name {
   font-size: 14px;
   color: var(--accent-color);
-  font-weight: bold;
+  font-weight: 700;
 }
 
 /* Responsive Design */
 @media (max-width: 1200px) {
   .careers-hero h1 {
-    font-size: 32px;
+    font-size: 36px;
   }
   .careers-hero p {
     font-size: 16px;
+  }
+  .custom-container {
+    padding: 0 var(--spacing-sm);
   }
 }
 
 @media (max-width: 768px) {
   .careers-hero {
-    min-height: 40vh;
+    min-height: 50vh;
   }
   .careers-hero h1 {
-    font-size: 28px;
+    font-size: 32px;
   }
   .careers-hero p {
     font-size: 14px;
@@ -2690,7 +2533,6 @@ nav ul li a:hover {
   .careers-culture .heading h2,
   .careers-jobs h2,
   .careers-benefits h2,
-  .careers-application h2,
   .careers-testimonial h2 {
     font-size: 28px;
   }
@@ -2699,24 +2541,17 @@ nav ul li a:hover {
   }
   .filter-btn {
     padding: var(--spacing-sm);
-    margin: var(--spacing-sm);
     font-size: 14px;
   }
-  .custom-col-4 {
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
-  .custom-col-8,
-  .custom-col-offset-2 {
-    flex: 0 0 100%;
-    max-width: 100%;
-    margin-left: 0;
+  .benefits-grid,
+  .testimonials-grid {
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 576px) {
   .careers-hero {
-    min-height: 30vh;
+    min-height: 40vh;
   }
   .careers-hero h1 {
     font-size: 24px;
@@ -2727,16 +2562,13 @@ nav ul li a:hover {
   .careers-culture,
   .careers-jobs,
   .careers-benefits,
-  .careers-application,
   .careers-testimonial {
     padding: var(--spacing-md) var(--spacing-sm);
   }
-  .careers-application .form-input,
-  .careers-application .form-submit-button {
-    font-size: 14px;
-  }
-  .custom-container {
-    padding: 0 var(--spacing-sm);
+  .job-item,
+  .benefit-item,
+  .testimonial {
+    padding: var(--spacing-sm);
   }
 }
 
@@ -3269,7 +3101,9 @@ padding: 120px;
 .project-details-section p {
   margin-bottom: 20px;
 }
-/* Bento Grid for the gallery section */
+/* ... (Other unchanged styles remain the same) */
+
+/* Project Gallery Section */
 .project-gallery {
   margin-top: 40px;
   padding: 20px 0;
@@ -3277,66 +3111,72 @@ padding: 120px;
 
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  grid-auto-rows: minmax(150px, auto);
-  gap: 15px;
-  justify-content: center;
-  padding: 10px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  grid-template-areas:
+    "item1 item1 item2 item3"
+    "item4 item4 item5 item5"
+    "item6 item6 item7 item7";
 }
 
-/* Default image styling */
+.item-1 { grid-area: item1; }
+.item-2 { grid-area: item2; }
+.item-3 { grid-area: item3; }
+.item-4 { grid-area: item4; }
+.item-5 { grid-area: item5; }
+.item-6 { grid-area: item6; }
+.item-7 { grid-area: item7; }
+
+/* Image styling */
 .gallery-image {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ensures images fill their grid cell without distortion */
+  object-fit: cover;
+  object-position: center;
+  display: block;
   border-radius: 8px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Hover effect for interactivity */
 .gallery-image:hover {
   transform: scale(1.05);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Assign specific grid spans for a Bento Grid effect */
-.gallery-image:nth-child(1) {
-  grid-column: span 2; /* Larger image spanning 2 columns */
-  grid-row: span 2; /* Spanning 2 rows */
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas:
+      "item1 item2"
+      "item3 item4"
+      "item5 item6"
+      "item7 item7";
+  }
 }
 
-.gallery-image:nth-child(2) {
-  grid-column: span 1;
-  grid-row: span 1;
-}
-
-.gallery-image:nth-child(3) {
-  grid-column: span 1;
-  grid-row: span 2;
-}
-
-.gallery-image:nth-child(4) {
-  grid-column: span 2;
-  grid-row: span 1;
-}
-
-/* Ensure responsiveness for smaller screens */
 @media (max-width: 768px) {
   .gallery-grid {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    grid-auto-rows: minmax(100px, auto);
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "item1"
+      "item2"
+      "item3"
+      "item4"
+      "item5"
+      "item6"
+      "item7";
+    gap: 8px;
   }
 
-  .gallery-image:nth-child(1),
-  .gallery-image:nth-child(4) {
-    grid-column: span 1; /* Stack images on smaller screens */
-    grid-row: span 1;
-  }
-
-  .gallery-image:nth-child(3) {
-    grid-row: span 1;
+  .gallery-image {
+    min-height: 150px;
   }
 }
+
+/* ... (Rest of the CSS remains unchanged) */
 .cta-button,
 .back-button {
   display: inline-block;

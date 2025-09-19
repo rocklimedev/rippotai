@@ -92,19 +92,6 @@ const ProjectDetailPage = () => {
         </div>
       </section>
 
-      {/* Wide Full-Length Banner Image */}
-      {/* <section className="project-banner-image">
-        <div className="custom-container">
-          <img
-            src={`${project.image}`}
-            alt={`${project.title} Banner`}
-            className="full-width-image"
-            onClick={() => openModal(0)}
-            style={{ cursor: "pointer" }}
-          />
-        </div>
-      </section> */}
-
       {/* Two Images and Details Section */}
       <section className="project-two-image-section">
         <div className="custom-container">
@@ -117,7 +104,7 @@ const ProjectDetailPage = () => {
                 src={`${project.images?.[0] || "placeholder.png"}`}
                 alt={`${project.title} - Image 1`}
                 className="half-width-image"
-                onClick={() => openModal(1)} // Open modal for first image
+                onClick={() => openModal(1)}
                 style={{ cursor: "pointer" }}
               />
             </div>
@@ -128,7 +115,7 @@ const ProjectDetailPage = () => {
                 src={`${project.images?.[1] || "placeholder.png"}`}
                 alt={`${project.title} - Image 2`}
                 className="half-width-image"
-                onClick={() => openModal(2)} // Open modal for second image
+                onClick={() => openModal(2)}
                 style={{ cursor: "pointer" }}
               />
             </div>
@@ -148,10 +135,10 @@ const ProjectDetailPage = () => {
                 <img
                   src={`${img}`}
                   alt={`${project.title} - Image ${index + 3}`}
-                  key={index + 2}
-                  className="gallery-image"
-                  onClick={() => openModal(index + 3)} // Open modal for gallery images
-                  style={{ cursor: "pointer" }}
+                  key={index}
+                  className={`gallery-image item-${index + 1}`}
+                  style={{ gridArea: `item${index + 1}`, cursor: "pointer" }}
+                  onClick={() => openModal(index + 2)}
                 />
               ))}
             </div>

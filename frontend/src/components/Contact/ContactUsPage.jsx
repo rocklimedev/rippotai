@@ -156,7 +156,6 @@ const ContactUsPage = () => {
               {/* Contact Info and Map */}
               <div className="custom-col-6">
                 <div className="contact-info">
-                  <h4>Our Office</h4>
                   <p>
                     <i className="fas fa-map-marker-alt"></i> 487/64 Peeragarhi,
                     National Market, New Delhi, Delhi 110087

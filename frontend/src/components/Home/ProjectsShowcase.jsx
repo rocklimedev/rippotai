@@ -53,7 +53,7 @@ const ProjectsShowcase = () => {
                   src={project.image}
                   alt={project.title}
                   className="project-image"
-                  style={{ width: "100%" }} // Consistent sizing
+                  style={{ width: "100%" }}
                 />
                 <div className="project-overlay">
                   <h5>{project.title}</h5>
@@ -74,6 +74,19 @@ const ProjectsShowcase = () => {
             )}
           </div>
         ))}
+        {/* Hardcoded Text Item */}
+        <div
+          className="bento-item text item-text"
+          style={{ gridArea: "item-text" }}
+        >
+          <div className="text-block">
+            <h4>Explore Our Work</h4>
+            <p>
+              Discover our diverse portfolio of innovative projects, showcasing
+              creativity and expertise across various domains.
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -1,20 +1,18 @@
 [
   {
-    "title": "Pitampura residence",
-    "category": "Residential",
+    "title": "Chhabra Marble",
+    "category": "Commercial",
     "description": "A contemporary renovation of a South Delhi home, reimagining interiors with natural light, open spaces, and clean lines.",
     "details": "This project was a complete overhaul of an existing residence, where we restructured internal spaces to create a seamless flow between the living, dining, and outdoor areas. The design uses a muted material palette of stone, wood, and glass to bring warmth and sophistication while maximizing daylight penetration. Bespoke furniture and custom storage solutions were integrated to optimize space without compromising aesthetics.",
-    "image": "https://static.cmtradingco.com/rippotai_projects/pitampura_residence/banner.png",
+    "image": "https://static.cmtradingco.com/rippotai_projects/chhabra_marble/banner.jpeg",
     "images": [
-      "https://static.cmtradingco.com/rippotai_projects/pitampura_residence/1.png",
-      "https://static.cmtradingco.com/rippotai_projects/pitampura_residence/2.png",
-      "https://static.cmtradingco.com/rippotai_projects/pitampura_residence/3.png",
-      "https://static.cmtradingco.com/rippotai_projects/pitampura_residence/4.png",
-      "https://static.cmtradingco.com/rippotai_projects/pitampura_residence/5.png",
-      "https://static.cmtradingco.com/rippotai_projects/pitampura_residence/6.png",
-      "https://static.cmtradingco.com/rippotai_projects/pitampura_residence/7.png",
-      "https://static.cmtradingco.com/rippotai_projects/pitampura_residence/8.png"
+      "https://static.cmtradingco.com/rippotai_projects/chhabra_marble/1.jpeg",
+      "https://static.cmtradingco.com/rippotai_projects/chhabra_marble/2.jpeg",
+      "https://static.cmtradingco.com/rippotai_projects/chhabra_marble/3.jpeg",
+      "https://static.cmtradingco.com/rippotai_projects/chhabra_marble/4.jpeg",
+      "https://static.cmtradingco.com/rippotai_projects/chhabra_marble/5.jpeg",
+      "https://static.cmtradingco.com/rippotai_projects/chhabra_marble/6.png"
     ],
-    "slug": "pitampura_residence"
+    "slug": "chhabra_marble"
   }
 ]
