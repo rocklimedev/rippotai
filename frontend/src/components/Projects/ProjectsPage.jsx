@@ -27,12 +27,17 @@ const ProjectsPage = () => {
   // Derive unique categories from projects and include "All"
   const categories = useMemo(() => {
     const uniqueCategories = [
-      "All",
       ...new Set(
         projectsArray.map((project) => project.category).filter(Boolean)
       ),
     ];
-    return uniqueCategories;
+    // Sort categories to prioritize "Residential" after "All"
+    const sortedCategories = uniqueCategories.sort((a, b) => {
+      if (a === "Residential" && b !== "Residential") return -1;
+      if (b === "Residential" && a !== "Residential") return 1;
+      return a.localeCompare(b); // Sort remaining categories alphabetically
+    });
+    return ["All", ...sortedCategories];
   }, [projectsArray]);
 
   // Client-side filtering to ensure correct projects are displayed

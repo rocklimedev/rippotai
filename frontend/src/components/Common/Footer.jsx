@@ -74,8 +74,13 @@ const Footer = () => {
                     <ul className="list-unstyled">
                       <li>
                         <i className="fas fa-map-marker-alt me-2"></i>
-                        487/64 Peeragarhi, National Market, New Delhi, Delhi
-                        110087
+                        <a
+                          href="https://maps.app.goo.gl/Mb4VfJuGgdZqBpi78"
+                          target="_blank"
+                        >
+                          487/64 Peeragarhi, National Market, New Delhi, Delhi
+                          110087
+                        </a>
                       </li>
                       <li>
                         <i className="fas fa-phone-alt me-2"></i>
