@@ -1,4 +1,9 @@
 const Query = require("../models/queries");
+const {
+  emailer,
+  queryConfirmationEmail,
+  adminQueryNotificationEmail,
+} = require("../middleware/sendEmail");
 
 exports.createQuery = async (req, res, next) => {
   try {
@@ -15,7 +20,22 @@ exports.createQuery = async (req, res, next) => {
 
     const query = new Query({ name, email, subject, message });
     await query.save();
-    res.status(201).json({ message: "Query submitted successfully" });
+
+    // Prepare email middleware for user confirmation
+    req.email = {
+      to: email,
+      params: [name, subject, message],
+    };
+    await emailer(queryConfirmationEmail, "query")(req, res, async () => {
+      // Send admin notification
+      req.email = {
+        to: "rippotaiarchitecture@gmail.com",
+        params: [name, email, subject, message],
+      };
+      await emailer(adminQueryNotificationEmail, "query")(req, res, () => {
+        res.status(201).json({ message: "Query submitted successfully" });
+      });
+    });
   } catch (error) {
     console.error("Error in createQuery:", error); // Log error for debugging
     if (error.name === "ValidationError") {
@@ -25,7 +45,6 @@ exports.createQuery = async (req, res, next) => {
     next(error);
   }
 };
-
 exports.getQueries = async (req, res, next) => {
   try {
     const queries = await Query.find().sort({ createdAt: -1 });

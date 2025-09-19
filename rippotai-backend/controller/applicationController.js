@@ -4,6 +4,11 @@ const { v4: uuidv4 } = require("uuid");
 const ftp = require("basic-ftp");
 const path = require("path");
 const { bufferToStream } = require("../utils/buferToStream"); // Utility to convert buffer to stream
+const {
+  emailer,
+  jobApplicationConfirmationEmail,
+  adminJobApplicationNotificationEmail,
+} = require("../middleware/sendEmail");
 
 exports.getAllJobs = async (req, res, next) => {
   try {
@@ -124,11 +129,33 @@ exports.createApplication = async (req, res, next) => {
       });
       await application.save();
 
-      return res.status(201).json({
-        message: "Application submitted successfully",
-        fileUrl,
-        filename: uniqueName,
-      });
+      // Prepare email middleware for applicant confirmation
+      req.email = {
+        to: email,
+        params: [name, position],
+      };
+      await emailer(jobApplicationConfirmationEmail, "application")(
+        req,
+        res,
+        async () => {
+          // Send admin notification
+          req.email = {
+            to: "sagar@rippotai.in",
+            params: [name, email, position, coverLetter, fileUrl],
+          };
+          await emailer(adminJobApplicationNotificationEmail, "application")(
+            req,
+            res,
+            () => {
+              res.status(201).json({
+                message: "Application submitted successfully",
+                fileUrl,
+                filename: uniqueName,
+              });
+            }
+          );
+        }
+      );
     } catch (ftpErr) {
       console.error("FTP upload error:", ftpErr);
       return res
