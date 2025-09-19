@@ -4,20 +4,24 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css");
 
 /* CSS Variables for Consistency */
-:root {
-  --primary-color: #1a3c34;
-  --accent-color: #d4a017;
-  --text-color: #333333;
-  --light-bg: #f8f8f8;
-  --gray-bg: #e8ecef;
-  --white: #ffffff;
-  --transition: all 0.3s ease;
-  --max-width: 1280px;
-  --font-size-base: clamp(14px, 2.5vw, 16px);
-  --border-radius: 8px;
-  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
 
+:root {
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --border-radius: 8px;
+  --shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  --primary-color: #1a3c34; /* Example primary color */
+  --accent-color: #d4a017;
+  --white: #fff;
+  --text-color: #333;
+  --background: #f5f5f5;
+  --light-bg: #e5e5e5;
+  --max-width: 1400px; /* Defined for footer container */
+  --header-height: 60px; /* From previous CSS */
+  --phone-color: #0f2c28; /* Green-blue for phone */
+}
 body {
   margin: 0;
   font-family: 'Lato', sans-serif;
@@ -766,34 +770,16 @@ nav ul li a:hover {
   }
 }
 /* Define CSS custom properties for consistency */
-:root {
-  --spacing-xs: 8px;
-  --spacing-sm: 12px;
-  --spacing-md: 16px;
-  --spacing-lg: 24px;
-  --border-radius: 8px;
-  --shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  --primary-color: #1a3c34; /* Example primary color */
-  --accent-color: #ed7c2f; /* Example accent color */
-  --white: #fff;
-  --text-color: #333;
-  --background: #f5f5f5;
-  --light-bg: #e5e5e5;
-  --max-width: 1400px; /* Defined for footer container */
-  --header-height: 60px; /* From previous CSS */
-  --whatsapp-color: #25d366; /* WhatsApp green */
-  --phone-color: #0f2c28; /* Green-blue for phone */
-}
 
 /* CTA Container (WhatsApp and Phone Icons) */
 .cta-container {
   position: fixed;
-  bottom: clamp(8px, 2vw, 12px); /* Responsive positioning */
-  right: clamp(8px, 2vw, 12px);
+  bottom: 24px; /* gives breathing room from bottom */
+  right: 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing-sm, 8px);
+  gap: 14px; /* more spacing between icons */
   z-index: 1000;
 }
 
@@ -801,57 +787,77 @@ nav ul li a:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: clamp(40px, 5vw, 44px); /* Responsive touch target */
-  height: clamp(40px, 5vw, 44px);
+  width: 56px; /* slightly bigger for tap targets */
+  height: 56px;
   border-radius: 50%;
   transition: transform 0.25s ease, background-color 0.25s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 }
 
 .cta-icon:hover {
   transform: scale(1.08);
 }
 
-.cta-icon.whatsapp {
-  background-color: var(--whatsapp-color);
-}
-
+.cta-icon.whatsapp,
 .cta-icon.phone {
   background-color: var(--phone-color);
 }
 
 .cta-icon svg {
-  font-size: clamp(20px, 3vw, 24px); /* Responsive icon size */
+  font-size: 26px;
 }
 
-/* Contact Us Button */
+/* Contact Us Button (Vertical Tab) */
 .cta-contact {
   position: fixed;
   top: 50%;
-  right: 20px;
+  right: 0;
   transform: translateY(-50%) rotate(-90deg);
   background: var(--primary-color);
   color: var(--white);
-  padding: clamp(8px, 2vw, 10px) clamp(12px, 3vw, 16px); /* Responsive padding */
+  padding: 10px 20px;
   text-decoration: none;
-  border-radius: var(--border-radius) var(--border-radius) 0 0;
+  border-radius: 8px 8px 0 0;
   font-weight: bold;
   text-transform: uppercase;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
   z-index: 1000;
   transform-origin: right center;
-  width: clamp(120px, 15vw, 140px); /* Responsive width */
-  height: clamp(36px, 5vw, 40px);
-  text-align: center;
+  width: 160px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  font-size: clamp(12px, 2vw, 14px); /* Accessible font size */
+  text-align: center;
+  font-size: 14px;
+  letter-spacing: 0.6px;
 }
 
 .cta-contact:hover {
   background: var(--phone-color);
-  transform: translateY(-50%) rotate(-90deg) translateX(-5px);
+  transform: translateY(-50%) rotate(-90deg) translateX(-8px);
+}
+
+/* RESPONSIVE ADJUSTMENTS */
+@media (max-width: 480px) {
+  .cta-container {
+    bottom: 16px;
+    right: 16px;
+    gap: 10px;
+  }
+  .cta-icon {
+    width: 48px;
+    height: 48px;
+  }
+  .cta-icon svg {
+    font-size: 22px;
+  }
+  .cta-contact {
+    width: 130px;
+    height: 40px;
+    font-size: 12px;
+    padding: 8px 16px;
+  }
 }
 
 /* Footer Styling */
@@ -1058,29 +1064,7 @@ nav ul li a:hover {
 }
 
 @media (max-width: 900px) {
-  .cta-container {
-    bottom: var(--spacing-sm);
-    right: var(--spacing-sm);
-  }
 
-  .cta-icon {
-    width: 40px;
-    height: 40px;
-  }
-
-  .cta-icon svg {
-    font-size: 22px;
-  }
-
-  .cta-contact {
-    top: auto;
-    bottom: clamp(80px, 15vw, 100px); /* Above icons */
-    right: 0;
-    width: clamp(100px, 12vw, 120px);
-    height: clamp(32px, 4vw, 36px);
-    font-size: clamp(11px, 2vw, 12px);
-    transform: rotate(-90deg);
-  }
 
   .footer .row {
     justify-content: center;
@@ -1114,27 +1098,7 @@ nav ul li a:hover {
 }
 
 @media (max-width: 600px) {
-  .cta-container {
-    flex-direction: row; /* Horizontal on small screens */
-    gap: var(--spacing-xs);
-    bottom: var(--spacing-xs);
-    right: var(--spacing-xs);
-  }
 
-  .cta-icon {
-    width: 38px;
-    height: 38px;
-  }
-
-  .cta-icon svg {
-    font-size: 20px;
-  }
-
-  .cta-contact {
-    width: clamp(90px, 10vw, 100px);
-    height: clamp(30px, 4vw, 32px);
-    font-size: clamp(10px, 1.8vw, 11px);
-  }
 
   .footer .col-xl-2,
   .footer .col-xl-3,
