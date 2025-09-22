@@ -6,13 +6,24 @@ export const rippotaiApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: API_URL,
     prepareHeaders: (headers, { endpoint }) => {
-      // Skip Content-Type for createApplication to allow browser to set multipart/form-data
-      if (endpoint !== "createApplication") {
+      // Skip setting Content-Type for endpoints that use FormData
+      if (
+        !["createApplication", "createProject", "updateProject"].includes(
+          endpoint
+        )
+      ) {
         headers.set("Content-Type", "application/json");
+      }
+      // Add authorization token for protected endpoints
+      const token = localStorage.getItem("adminToken");
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
       }
       return headers;
     },
   }),
+
+  tagTypes: ["Queries", "Projects", "Jobs", "Applications", "Users"],
   endpoints: (builder) => ({
     // Queries Endpoints
     createQuery: builder.mutation({
@@ -25,16 +36,56 @@ export const rippotaiApi = createApi({
     }),
     getQueries: builder.query({
       query: () => "/queries",
-      providesTags: ["Queries"],
+      providesTags: (result) =>
+        Array.isArray(result)
+          ? [
+              ...result.map(({ _id }) => ({ type: "Queries", id: _id })),
+              { type: "Queries", id: "LIST" },
+            ]
+          : [{ type: "Queries", id: "LIST" }],
+    }),
+    getQuery: builder.query({
+      query: (id) => `/queries/${id}`,
+      providesTags: (result, error, id) => [{ type: "Queries", id }],
+    }),
+    updateQuery: builder.mutation({
+      query: ({ id, ...updates }) => ({
+        url: `/queries/${id}`,
+        method: "PUT",
+        body: updates,
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Queries", id },
+        { type: "Queries", id: "LIST" },
+      ],
+    }),
+    deleteQuery: builder.mutation({
+      query: (id) => ({
+        url: `/queries/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, id) => [
+        { type: "Queries", id },
+        { type: "Queries", id: "LIST" },
+      ],
+    }),
+    addNote: builder.mutation({
+      query: ({ id, note }) => ({
+        url: `/queries/${id}/notes`,
+        method: "POST",
+        body: { note },
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Queries", id },
+        { type: "Queries", id: "LIST" },
+      ],
     }),
 
     // Projects Endpoints
     getProjects: builder.query({
-      query: (category) => ({
-        url: "/projects",
-      }),
+      query: () => "/projects",
       providesTags: (result) =>
-        result
+        Array.isArray(result)
           ? [
               ...result.map(({ _id }) => ({ type: "Projects", id: _id })),
               { type: "Projects", id: "LIST" },
@@ -42,7 +93,8 @@ export const rippotaiApi = createApi({
           : [{ type: "Projects", id: "LIST" }],
     }),
     getProjectBySlug: builder.query({
-      query: (slug) => `projects/${slug}`,
+      query: (slug) => `/projects/${slug}`,
+      providesTags: (result, error, slug) => [{ type: "Projects", id: slug }],
     }),
     createProject: builder.mutation({
       query: ({ title, category, description, details, image, images }) => {
@@ -94,11 +146,9 @@ export const rippotaiApi = createApi({
 
     // Jobs Endpoints
     getJobs: builder.query({
-      query: (category) => ({
-        url: "/careers/jobs",
-      }),
+      query: () => "/careers/jobs",
       providesTags: (result) =>
-        result
+        Array.isArray(result)
           ? [
               ...result.map(({ _id }) => ({ type: "Jobs", id: _id })),
               { type: "Jobs", id: "LIST" },
@@ -159,12 +209,127 @@ export const rippotaiApi = createApi({
     getApplications: builder.query({
       query: () => "/careers/applications",
       providesTags: (result) =>
-        result
+        Array.isArray(result)
           ? [
               ...result.map(({ _id }) => ({ type: "Applications", id: _id })),
               { type: "Applications", id: "LIST" },
             ]
           : [{ type: "Applications", id: "LIST" }],
+    }),
+    updateApplicationStatus: builder.mutation({
+      query: ({ id, status }) => ({
+        url: `/careers/applications/${id}`,
+        method: "PUT",
+        body: { status },
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Applications", id },
+        { type: "Applications", id: "LIST" },
+      ],
+    }),
+    deleteApplication: builder.mutation({
+      query: (id) => ({
+        url: `/careers/applications/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, id) => [
+        { type: "Applications", id },
+        { type: "Applications", id: "LIST" },
+      ],
+    }),
+    getDashboardStats: builder.query({
+      query: () => "/careers/dashboard-stats",
+      providesTags: [{ type: "Applications", id: "LIST" }],
+    }),
+
+    // Users Endpoints
+    getAllUsers: builder.query({
+      query: () => "/users",
+      providesTags: (result) =>
+        Array.isArray(result)
+          ? [
+              ...result.map(({ _id }) => ({ type: "Users", id: _id })),
+              { type: "Users", id: "LIST" },
+            ]
+          : [{ type: "Users", id: "LIST" }],
+    }),
+    getUserById: builder.query({
+      query: (id) => `/users/${id}`,
+      providesTags: (result, error, id) => [{ type: "Users", id }],
+    }),
+    createUser: builder.mutation({
+      query: (userData) => ({
+        url: "/users",
+        method: "POST",
+        body: userData,
+      }),
+      invalidatesTags: [{ type: "Users", id: "LIST" }],
+    }),
+    updateUser: builder.mutation({
+      query: ({ id, ...updates }) => ({
+        url: `/users/${id}`,
+        method: "PUT",
+        body: updates,
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Users", id },
+        { type: "Users", id: "LIST" },
+      ],
+    }),
+    deleteUser: builder.mutation({
+      query: (id) => ({
+        url: `/users/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, id) => [
+        { type: "Users", id },
+        { type: "Users", id: "LIST" },
+      ],
+    }),
+    assignRoles: builder.mutation({
+      query: ({ id, roles }) => ({
+        url: `/users/${id}/roles`,
+        method: "PATCH",
+        body: { roles },
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Users", id },
+        { type: "Users", id: "LIST" },
+      ],
+    }),
+
+    // Auth Endpoints
+    register: builder.mutation({
+      query: (userData) => ({
+        url: "/auth/register",
+        method: "POST",
+        body: userData,
+      }),
+      invalidatesTags: [{ type: "Users", id: "LIST" }],
+    }),
+    login: builder.mutation({
+      query: ({ email, password }) => ({
+        url: "/auth/login",
+        method: "POST",
+        body: { email, password },
+      }),
+    }),
+    refreshToken: builder.mutation({
+      query: (refreshToken) => ({
+        url: "/auth/refresh-token",
+        method: "POST",
+        body: { refreshToken },
+      }),
+    }),
+    getProfile: builder.query({
+      query: () => "/auth/profile",
+      providesTags: [{ type: "Users", id: "PROFILE" }],
+    }),
+    logout: builder.mutation({
+      query: () => ({
+        url: "/auth/logout",
+        method: "POST",
+      }),
     }),
   }),
 });
@@ -172,6 +337,10 @@ export const rippotaiApi = createApi({
 export const {
   useCreateQueryMutation,
   useGetQueriesQuery,
+  useGetQueryQuery,
+  useUpdateQueryMutation,
+  useDeleteQueryMutation,
+  useAddNoteMutation,
   useGetProjectsQuery,
   useGetProjectBySlugQuery,
   useCreateProjectMutation,
@@ -184,4 +353,18 @@ export const {
   useDeleteJobMutation,
   useCreateApplicationMutation,
   useGetApplicationsQuery,
+  useUpdateApplicationStatusMutation,
+  useDeleteApplicationMutation,
+  useGetDashboardStatsQuery,
+  useGetAllUsersQuery,
+  useGetUserByIdQuery,
+  useCreateUserMutation,
+  useUpdateUserMutation,
+  useDeleteUserMutation,
+  useAssignRolesMutation,
+  useRegisterMutation,
+  useLoginMutation,
+  useRefreshTokenMutation,
+  useGetProfileQuery,
+  useLogoutMutation,
 } = rippotaiApi;

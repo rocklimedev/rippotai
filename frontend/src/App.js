@@ -4,7 +4,9 @@ import {
   Routes,
   Route,
   useLocation,
+  Navigate,
 } from "react-router-dom";
+import { AuthProvider, AuthContext } from "./store/AuthContext";
 import Header from "./components/Common/Header";
 import Footer from "./components/Common/Footer";
 import "./App.css";
@@ -19,20 +21,41 @@ import ProjectDetailPage from "./components/Projects/ProjectDetailsPage";
 import Error404 from "./components/Error/Error404";
 import Error403 from "./components/Error/Error403";
 import Error500 from "./components/Error/Error500";
+import AdminDashboard from "./components/Admin/AdminDashboard";
+import AdminQueries from "./components/Admin/AdminQueries";
+import AdminProjects from "./components/Admin/AdminProjects";
+import AdminJobs from "./components/Admin/AdminJobs";
+import AdminApplications from "./components/Admin/AdminApplications";
+import Login from "./components/Auth/Login";
+import Register from "./components/Auth/Register";
+import Profile from "./components/Admin/Profile";
+import AdminLayout from "./components/Admin/AdminLayout";
+import AdminUsers from "./components/Admin/AdminUsers";
+// OR
+import "antd/dist/reset.css"; // For v5
+// Protected Route component
+const ProtectedRoute = ({ children }) => {
+  const { isAuthenticated } = React.useContext(AuthContext);
+  return isAuthenticated ? children : <Navigate to="/login" />;
+};
 
 function AppWrapper() {
   const location = useLocation();
 
-  // List of error routes where we should hide header, footer, and CTA
-  const errorRoutes = ["/*", "/403", "/500"];
-  const isErrorPage =
-    errorRoutes.includes(location.pathname) || location.pathname === "/*"; // fallback for 404 wildcard
+  // List of routes where we should hide header, footer, and CTA
+  const noLayoutRoutes = ["/login", "/*", "/403", "/500", "/admin", "/admin/*"];
+  const isNoLayoutPage = noLayoutRoutes.some(
+    (route) =>
+      location.pathname === route ||
+      (route.endsWith("/*") &&
+        location.pathname.startsWith(route.replace("/*", "")))
+  );
 
   return (
     <>
-      {!isErrorPage && <Header />}
-
+      {!isNoLayoutPage && <Header />}
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutUsPage />} />
         <Route path="/projects" element={<ProjectsPage />} />
@@ -40,13 +63,71 @@ function AppWrapper() {
         <Route path="/contact" element={<ContactUsPage />} />
         <Route path="/career" element={<CareersPage />} />
         <Route path="/careers/apply" element={<CareersApplicationPage />} />
-        <Route path="/*" element={<Error404 />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />{" "}
         <Route path="/403" element={<Error403 />} />
         <Route path="/500" element={<Error500 />} />
+        <Route path="/*" element={<Error404 />} />
+        <Route
+          path="/admin/profile"
+          element={
+            <AdminLayout>
+              <Profile />
+            </AdminLayout>
+          }
+        />
+        {/* Admin Routes */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/queries"
+          element={
+            <ProtectedRoute>
+              <AdminQueries />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/projects"
+          element={
+            <ProtectedRoute>
+              <AdminProjects />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/jobs"
+          element={
+            <ProtectedRoute>
+              <AdminJobs />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/applications"
+          element={
+            <ProtectedRoute>
+              <AdminApplications />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute>
+              <AdminUsers />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
-
-      {!isErrorPage && <CTA />}
-      {!isErrorPage && <Footer />}
+      {!isNoLayoutPage && <CTA />}
+      {!isNoLayoutPage && <Footer />}
     </>
   );
 }
@@ -54,7 +135,9 @@ function AppWrapper() {
 function App() {
   return (
     <Router>
-      <AppWrapper />
+      <AuthProvider>
+        <AppWrapper />
+      </AuthProvider>
     </Router>
   );
 }

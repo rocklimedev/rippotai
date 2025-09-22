@@ -48,7 +48,8 @@ app.use("/uploads", express.static(path.join(__dirname, "Uploads")));
 app.use("/api/queries", require("./routes/queries"));
 app.use("/api/projects", require("./routes/projects"));
 app.use("/api/careers", require("./routes/application"));
-
+app.use("/api/users", require("./routes/user"));
+app.use("/api/auth", require("./routes/auth"));
 // Error Handler
 app.use(errorHandler);
 
