@@ -43,7 +43,7 @@ function AppWrapper() {
   const location = useLocation();
 
   // List of routes where we should hide header, footer, and CTA
-  const noLayoutRoutes = ["/login", "/*", "/403", "/500", "/admin", "/admin/*"];
+  const noLayoutRoutes = ["/login", "/403", "/500", "/admin", "/admin/*"];
   const isNoLayoutPage = noLayoutRoutes.some(
     (route) =>
       location.pathname === route ||

@@ -1,80 +1,110 @@
 import React from "react";
+import { Link } from "react-router-dom"; // Better than <a> for SPA navigation
 import { useGetProjectsQuery } from "../../api/rippotaiApi";
 
 const ProjectsShowcase = () => {
-  const { data: projects, isLoading, isError, error } = useGetProjectsQuery();
+  const {
+    data: projectsResponse,
+    isLoading,
+    isError,
+    error,
+  } = useGetProjectsQuery();
+
+  // Safely extract projects array
+  const projectsArray = React.useMemo(() => {
+    if (!projectsResponse) return [];
+    return Array.isArray(projectsResponse.data)
+      ? projectsResponse.data
+      : Array.isArray(projectsResponse)
+      ? projectsResponse
+      : [];
+  }, [projectsResponse]);
+
+  // Limit to first 7 projects
+  const limitedProjects = projectsArray.slice(0, 7);
 
   if (isLoading) {
-    return <section className="projects-showcase">Loading projects...</section>;
+    return (
+      <section className="projects-showcase">
+        <div className="text-center py-5">Loading featured projects...</div>
+      </section>
+    );
   }
 
   if (isError) {
     return (
       <section className="projects-showcase">
-        Error:{" "}
-        {error?.message || error?.toString() || "Failed to load projects"}
+        <div className="text-center text-danger py-5">
+          Error loading projects. Please try again later.
+        </div>
       </section>
     );
   }
 
-  if (!projects || projects.length === 0) {
-    return <section className="projects-showcase">No projects found</section>;
+  if (limitedProjects.length === 0) {
+    return (
+      <section className="projects-showcase">
+        <div className="text-center py-5">No projects to showcase yet.</div>
+      </section>
+    );
   }
-
-  // Limit to 7 projects
-  const limitedProjects = projects.slice(0, 7);
 
   return (
     <section className="projects-showcase">
       <div className="bento-grid">
         {limitedProjects.map((project, index) => (
           <div
-            key={project.slug}
+            key={project.slug || index} // fallback key if slug missing
             className={`bento-item ${project.type || "image"} item-${
               index + 1
             }`}
-            style={{
-              gridArea: `item${index + 1}`,
-            }}
+            style={{ gridArea: `item${index + 1}` }}
           >
             {project.type === "text" ? (
               <div className="text-block">
-                <h4>{project.title}</h4>
-                {project.category && <span>{project.category}</span>}
+                <h4>{project.title || "Untitled"}</h4>
+                {project.category && (
+                  <span className="project-category">{project.category}</span>
+                )}
                 {project.description && (
                   <p
+                    className="project-description"
                     dangerouslySetInnerHTML={{ __html: project.description }}
                   />
                 )}
               </div>
             ) : (
-              <>
+              <div className="project-image-container">
                 <img
-                  src={project.image}
-                  alt={project.title}
+                  src={project.image || "/placeholder-image.jpg"}
+                  alt={project.title || "Project showcase"}
                   className="project-image"
-                  style={{ width: "100%" }}
+                  loading="lazy" // Huge performance win!
+                  onError={(e) => {
+                    e.currentTarget.src = "/placeholder-image.jpg";
+                  }}
                 />
                 <div className="project-overlay">
-                  <h5>{project.title}</h5>
+                  <h5>{project.title || "Untitled Project"}</h5>
                   {project.category && (
                     <span className="project-category">{project.category}</span>
                   )}
                   {project.description && (
                     <p className="project-description">{project.description}</p>
                   )}
-                  <a
-                    href={`/project/${project.slug}`}
+                  <Link
+                    to={`/project/${project.slug}`}
                     className="view-project-btn"
                   >
                     View Project
-                  </a>
+                  </Link>
                 </div>
-              </>
+              </div>
             )}
           </div>
         ))}
-        {/* Hardcoded Text Item */}
+
+        {/* Static Text Block */}
         <div
           className="bento-item text item-text"
           style={{ gridArea: "item-text" }}
@@ -83,8 +113,12 @@ const ProjectsShowcase = () => {
             <h4>Explore Our Work</h4>
             <p>
               Discover our diverse portfolio of innovative projects, showcasing
-              creativity and expertise across various domains.
+              creativity and expertise across residential, institutional, and
+              product design domains.
             </p>
+            <Link to="/projects" className="view-all-btn">
+              View All Projects →
+            </Link>
           </div>
         </div>
       </div>

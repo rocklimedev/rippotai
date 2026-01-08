@@ -40,7 +40,7 @@ const Footer = () => {
                         <Link to="/about">About Us</Link>
                       </li>
                       <li>
-                        <Link to="/projects">Projects</Link>
+                        <Link to="/projects">All Projects</Link>
                       </li>
                       <li>
                         <Link to="/contact">Contact</Link>
@@ -52,16 +52,26 @@ const Footer = () => {
                   </div>
                 </div>
 
-                {/* Categories Section */}
+                {/* Categories Section - Now with Query Params */}
                 <div className="col-xl-2 col-lg-3 col-md-6 col-6 mb-4 mb-md-0">
                   <div className="footer-categories">
                     <h5 className="footer-title">Categories</h5>
                     <ul className="list-unstyled">
                       <li>
-                        <Link to="#">Residential</Link>
+                        <Link to="/projects?category=residential">
+                          Residential
+                        </Link>
                       </li>
                       <li>
-                        <Link to="#">Commercial</Link>
+                        <Link to="/projects?category=institutional">
+                          Institutional
+                        </Link>
+                      </li>
+                      {/* You can easily add more in the future */}
+                      <li>
+                        <Link to="/projects?category=commercial">
+                          Commercial
+                        </Link>
                       </li>
                     </ul>
                   </div>
@@ -77,6 +87,7 @@ const Footer = () => {
                         <a
                           href="https://maps.app.goo.gl/Mb4VfJuGgdZqBpi78"
                           target="_blank"
+                          rel="noopener noreferrer"
                         >
                           487/64 Peeragarhi, National Market, New Delhi, Delhi
                           110087
@@ -84,7 +95,7 @@ const Footer = () => {
                       </li>
                       <li>
                         <i className="fas fa-phone-alt me-2"></i>
-                        <a href="tel:+918882830560">+918882830560</a>
+                        <a href="tel:+918882830560">+91 88828 30560</a>
                       </li>
                       <li>
                         <i className="fas fa-envelope me-2"></i>
@@ -93,7 +104,8 @@ const Footer = () => {
                         </a>
                       </li>
                     </ul>
-                    <div className="footer-social">
+
+                    <div className="footer-social mt-4">
                       <h5 className="footer-title">Follow Us</h5>
                       <ul className="list-inline mb-0">
                         <li className="list-inline-item">
@@ -134,12 +146,16 @@ const Footer = () => {
             </div>
           </div>
         </footer>
+
         <div className="footer-bottom">
           <div className="container">
             <div className="row">
               <div className="col-12">
                 <p className="text-center mb-0">
-                  &copy; {currentYear}. All Rights Reserved | Designed by
+                  &copy; {currentYear} Rippotai Architecture. All Rights
+                  Reserved
+                  {" | "}
+                  Designed by
                   <a
                     href="https://www.rocklime.com/"
                     className="rocklime-link ms-1"

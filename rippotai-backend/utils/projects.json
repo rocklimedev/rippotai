@@ -1,18 +1,31 @@
 [
   {
-    "title": "Chhabra Marble",
-    "category": "Commercial",
-    "description": "A contemporary renovation of a South Delhi home, reimagining interiors with natural light, open spaces, and clean lines.",
-    "details": "This project was a complete overhaul of an existing residence, where we restructured internal spaces to create a seamless flow between the living, dining, and outdoor areas. The design uses a muted material palette of stone, wood, and glass to bring warmth and sophistication while maximizing daylight penetration. Bespoke furniture and custom storage solutions were integrated to optimize space without compromising aesthetics.",
-    "image": "https://static.cmtradingco.com/rippotai_projects/chhabra_marble/banner.jpeg",
+    "_id": "695269cd1e9c459319583f16",
+    "slug": "residential_school_for_blind",
+    "__v": 0,
+    "category": "Institutional",
+    "createdAt": "2025-12-29T11:45:16.763Z",
+    "title": "Residential School for the Blind",
+    "description": "An institutional thesis project exploring architecture for the visually impaired through circulation-driven planning, sensory design, and spatial clarity. Located at the Sewa Kutir Campus, GTB Nagar, North Delhi, the project proposes a residential and educational environment that prioritizes independence, safety, and intuitive navigation for blind students.",
+    "details": "This project investigates the role of architecture beyond vision, focusing on how spatial organization, movement, and sensory cues can empower the visually impaired. Situated within the North Campus precinct of Delhi University, the proposal occupies a 5.3-acre site inside the Sewa Kutir Campus, an area governed by public welfare institutions.\n\nThe master plan is structured around a strong linear spine that acts as the primary navigational element for students. All major functions—including hostels, mess, academic blocks, administration, library, classrooms, and activity areas—are organized along this spine, ensuring a clear, uninterrupted, and legible circulation path. For visually impaired users, this spine represents the shortest and safest route across the campus.\n\nThe site is deliberately divided into two primary zones: residential functions on one side and academic and activity spaces on the other. Vehicular and pedestrian circulations are strictly segregated, with vehicles restricted to the periphery and the internal campus designed exclusively for pedestrian movement, enhancing safety and independence.\n\nBuilt forms are arranged to create calm courtyards and shaded outdoor spaces that improve microclimate and act as extensions of learning and social interaction. The open-to-built balance is carefully controlled to allow natural light, ventilation, and orientation without relying on visual complexity.\n\nMaterial choices, spatial transitions, ramps, and consistent structural rhythms are intentionally repetitive and restrained, reinforcing spatial memory and ease of navigation. Rather than treating blindness as a limitation, the project positions it as a design driver—proposing an environment that supports dignity, autonomy, and confidence through architectural clarity and sensory awareness.",
+    "image": "http://static.cmtradingco.com/rippotai_projects/residential_school_for_blind/4_thesis intro.jpg",
     "images": [
-      "https://static.cmtradingco.com/rippotai_projects/chhabra_marble/1.jpeg",
-      "https://static.cmtradingco.com/rippotai_projects/chhabra_marble/2.jpeg",
-      "https://static.cmtradingco.com/rippotai_projects/chhabra_marble/3.jpeg",
-      "https://static.cmtradingco.com/rippotai_projects/chhabra_marble/4.jpeg",
-      "https://static.cmtradingco.com/rippotai_projects/chhabra_marble/5.jpeg",
-      "https://static.cmtradingco.com/rippotai_projects/chhabra_marble/6.png"
-    ],
-    "slug": "chhabra_marble"
+      "http://static.cmtradingco.com/rippotai_projects/residential_school_for_blind/4_thesis intro.jpg",
+      "http://static.cmtradingco.com/rippotai_projects/residential_school_for_blind/5_thesis blindness.jpg",
+      "http://static.cmtradingco.com/rippotai_projects/residential_school_for_blind/6_thesis location.jpg",
+      "http://static.cmtradingco.com/rippotai_projects/residential_school_for_blind/7_thesis context.jpg",
+      "http://static.cmtradingco.com/rippotai_projects/residential_school_for_blind/8_thesis desgn deve_1_4.jpg",
+      "http://static.cmtradingco.com/rippotai_projects/residential_school_for_blind/9_thesis desgn deve_2_2.jpg",
+      "http://static.cmtradingco.com/rippotai_projects/residential_school_for_blind/10_thesis desgn deve_3_2.jpg",
+      "http://static.cmtradingco.com/rippotai_projects/residential_school_for_blind/11_thesis site plan.jpg",
+      "http://static.cmtradingco.com/rippotai_projects/residential_school_for_blind/12_thesis ground plan.jpg",
+      "http://static.cmtradingco.com/rippotai_projects/residential_school_for_blind/13_thesis other floor plans.jpg",
+      "http://static.cmtradingco.com/rippotai_projects/residential_school_for_blind/14_thesis SECTION.jpg",
+      "http://static.cmtradingco.com/rippotai_projects/residential_school_for_blind/15_thesis CIRCULATION N BUILT.jpg",
+      "http://static.cmtradingco.com/rippotai_projects/residential_school_for_blind/16_thesis class 1.jpg",
+      "http://static.cmtradingco.com/rippotai_projects/residential_school_for_blind/17_thesis class 2.jpg",
+      "http://static.cmtradingco.com/rippotai_projects/residential_school_for_blind/18_thesis class 3.jpg",
+      "http://static.cmtradingco.com/rippotai_projects/residential_school_for_blind/19_thesis model pictures.jpg"
+    ]
   }
 ]
