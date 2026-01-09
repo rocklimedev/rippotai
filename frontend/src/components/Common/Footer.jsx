@@ -118,6 +118,7 @@ const Footer = () => {
                             <i className="fab fa-facebook-f"></i>
                           </a>
                         </li>
+
                         <li className="list-inline-item">
                           <a
                             href="https://www.instagram.com/rippotai/"
@@ -128,6 +129,7 @@ const Footer = () => {
                             <i className="fab fa-instagram"></i>
                           </a>
                         </li>
+
                         <li className="list-inline-item">
                           <a
                             href="https://www.linkedin.com/company/rippotaiarchitecture/"
@@ -136,6 +138,18 @@ const Footer = () => {
                             aria-label="Follow Rippotai Architecture on LinkedIn"
                           >
                             <i className="fab fa-linkedin-in"></i>
+                          </a>
+                        </li>
+
+                        {/* Pinterest */}
+                        <li className="list-inline-item">
+                          <a
+                            href="https://www.pinterest.com/rippotaiarchitecture/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Follow Rippotai Architecture on Pinterest"
+                          >
+                            <i className="fab fa-pinterest-p"></i>
                           </a>
                         </li>
                       </ul>
