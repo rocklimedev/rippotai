@@ -1,0 +1,62 @@
+name: Deploy Rippotai Backend to VPS
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "rippotai-backend/**"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Step 3: Log in to GitHub Container Registry
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: rocklimedev
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      # Step 4: Build and push Docker image
+      - name: Build and push backend image
+        run: |
+          docker build --no-cache \
+            -t ghcr.io/rocklimedev/rippotai-backend:latest \
+            ./rippotai-backend
+          docker push ghcr.io/rocklimedev/rippotai-backend:latest
+
+      # Step 5: Deploy to VPS via SSH
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: 66.116.204.81
+          username: root
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            set -e
+
+            cd /root/rippotai-backend
+
+            # Log in to GHCR on the VPS
+            echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io \
+              -u rocklimedev --password-stdin
+
+            # Pull latest backend image
+            docker compose pull backend
+
+            # Recreate container
+            docker compose up -d backend --force-recreate --pull always
+
+            # Cleanup old images
+            docker image prune -f

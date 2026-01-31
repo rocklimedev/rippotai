@@ -11,7 +11,8 @@ node_modules
 /rippotai-backend/Projects
 # production
 /build
-
+rippotai-backend-key
+rippotai-backend-key.pub
 # misc
 .DS_Store
 .env.local

@@ -49,7 +49,7 @@ exports.updateProject = async (req, res, next) => {
     const project = await Project.findOneAndUpdate(
       { slug: req.params.slug },
       { title, category, description, details, image, images },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
