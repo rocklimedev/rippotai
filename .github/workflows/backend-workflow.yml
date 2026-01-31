@@ -42,7 +42,8 @@ jobs:
         with:
           host: 66.116.204.81
           username: root
-          key: ${{ secrets.RIPPOTAI_VPS_SSH_KEY }}
+          key: |
+            ${{ secrets.RIPPOTAI_VPS_SSH_KEY }}
           script: |
             set -e
 
