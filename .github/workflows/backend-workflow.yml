@@ -1,59 +1,64 @@
-name: Deploy Rippotai Backend to VPS
+name: Deploy Rippotai Backend
 
 on:
   push:
     branches:
       - main
-    paths:
-      - "rippotai-backend/**"
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout repository
-      - name: Checkout code
+      # 1️⃣ Checkout your code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 2: Set up Docker Buildx
+      # 2️⃣ Setup Docker Buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Step 3: Log in to GitHub Container Registry
-      - name: Log in to GHCR
+      # 3️⃣ Log in to GHCR
+      - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: rocklimedev
-          password: ${{ secrets.RIPPOTAI_GHCR_TOKEN }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Step 4: Build and push Docker image
-      - name: Build and push backend image
+      # 4️⃣ Build and push Docker image
+      - name: Build and push Docker image
         run: |
-          docker build --no-cache \
-            -t ghcr.io/rocklimedev/rippotai-backend:latest \
-            ./rippotai-backend
+          docker build --no-cache -t ghcr.io/rocklimedev/rippotai-backend:latest .
           docker push ghcr.io/rocklimedev/rippotai-backend:latest
 
-      # Step 5: Deploy to VPS via SSH
-      - name: Deploy to VPS
+      # 5️⃣ Deploy to VPS
+      - name: Deploy on VPS
         uses: appleboy/ssh-action@v0.1.10
         with:
-          host: 66.116.204.81
-          username: root
-          key: |
-            ${{ secrets.RIPPOTAI_VPS_SSH_KEY }}
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
           script: |
             set -e
+            cd /root
 
-            cd /root/rippotai-backend
+            # Clone repo if it doesn't exist, else pull latest
+            if [ ! -d rippotai-backend ]; then
+              git clone https://github.com/rocklimedev/rippotai-backend.git
+            else
+              cd rippotai-backend
+              git reset --hard
+              git pull
+            fi
+
+            cd rippotai-backend
 
             # Log in to GHCR on the VPS
-            echo "${{ secrets.RIPPOTAI_GHCR_TOKEN }}" | docker login ghcr.io \
-              -u rocklimedev --password-stdin
+            echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u rocklimedev --password-stdin
 
-            # Pull latest backend image
+            # Pull latest Docker image
             docker compose pull backend
 
             # Recreate container
