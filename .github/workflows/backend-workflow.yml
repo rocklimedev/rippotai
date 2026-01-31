@@ -21,7 +21,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # 3️⃣ Log in to GHCR
+      # 3️⃣ Login to GHCR
       - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
@@ -29,7 +29,7 @@ jobs:
           username: rocklimedev
           password: ${{ secrets.GHCR_PAT }}
 
-      # 4️⃣ Build & push backend image
+      # 4️⃣ Build & Push Backend Image
       - name: Build and push backend image
         run: |
           docker build --no-cache \
@@ -50,16 +50,17 @@ jobs:
 
             cd /root
 
-            # Remove old backend folder if exists (clean deploy)
+            # Remove old backend folder if exists
             if [ -d rippotai-backend ]; then
               rm -rf rippotai-backend
             fi
 
-            # Clone only the backend folder
-            git clone --depth=1 --filter=blob:none --sparse https://github.com/rocklimedev/rippotai.git rippotai-backend
+            # Clone the full repo and move backend folder
+            git clone --depth=1 https://github.com/rocklimedev/rippotai.git temp-rippotai
+            mv temp-rippotai/rippotai-backend rippotai-backend
+            rm -rf temp-rippotai
+
             cd rippotai-backend
-            git sparse-checkout set rippotai-backend
-            git pull origin main
 
             # Login to GHCR
             echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u rocklimedev --password-stdin
@@ -68,7 +69,7 @@ jobs:
             docker compose pull
 
             # Restart backend
-            docker compose up -d --force-recreate
+            docker compose up -d backend --force-recreate --pull always
 
             # Cleanup dangling images
             docker image prune -f
