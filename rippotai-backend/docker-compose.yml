@@ -1,21 +1,21 @@
 services:
   rippotai-backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: ghcr.io/rocklimedev/rippotai-backend:latest
-    container_name: rippotai-backend
-    restart: unless-stopped
+    image: ghcr.io/rocklimedev/rippotai-backend:latest # ← Use this
+    # Remove or comment out the entire build block:
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
 
+    # Strongly recommend removing this too to avoid future name conflicts:
+    # container_name: rippotai-backend
+
+    restart: unless-stopped
     ports:
       - "5000:5000"
-
     env_file:
       - .env
-
     volumes:
       - ./uploads:/app/uploads
-
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000"]
       interval: 30s
