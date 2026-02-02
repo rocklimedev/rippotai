@@ -1,20 +1,15 @@
-# Use official Node.js LTS image
-FROM node:20
+FROM node:20-slim
 
-# Set working directory
 WORKDIR /app
 
-# Copy package files first (to leverage caching)
+# Required for MongoDB Atlas TLS
+RUN apt-get update && apt-get install -y ca-certificates && update-ca-certificates
+
 COPY package*.json ./
+RUN npm install --production
 
-# Install dependencies
-RUN npm install
-
-# Copy the rest of the app
 COPY . .
 
-# Expose the port your app runs on
-EXPOSE 3000
+EXPOSE 5000
 
-# Command to run the app
 CMD ["node", "index.js"]
