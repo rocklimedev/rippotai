@@ -21,7 +21,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # 3️⃣ Login to GHCR
+      # 3️⃣ Login to GitHub Container Registry
       - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
@@ -32,9 +32,10 @@ jobs:
       # 4️⃣ Build & Push Backend Image
       - name: Build and push backend image
         run: |
-          docker build --no-cache \
+          docker build \
             -t ghcr.io/rocklimedev/rippotai-backend:latest \
             ./rippotai-backend
+
           docker push ghcr.io/rocklimedev/rippotai-backend:latest
 
       # 5️⃣ Deploy on VPS
@@ -50,26 +51,18 @@ jobs:
 
             cd /root
 
-            # Remove old backend folder if exists
-            if [ -d rippotai-backend ]; then
-              rm -rf rippotai-backend
+            if [ ! -d rippotai ]; then
+              git clone https://github.com/rocklimedev/rippotai.git
+            else
+              cd rippotai
+              git pull origin main
             fi
 
-            # Clone the full repo and move backend folder
-            git clone --depth=1 https://github.com/rocklimedev/rippotai.git temp-rippotai
-            mv temp-rippotai/rippotai-backend rippotai-backend
-            rm -rf temp-rippotai
+            cd /root/rippotai
 
-            cd rippotai-backend
-
-            # Login to GHCR
             echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u rocklimedev --password-stdin
 
-            # Pull latest Docker image
             docker compose pull
+            docker compose up -d rippotai-backend --force-recreate
 
-            # Restart backend
-            docker compose up -d backend --force-recreate --pull always
-
-            # Cleanup dangling images
             docker image prune -f
