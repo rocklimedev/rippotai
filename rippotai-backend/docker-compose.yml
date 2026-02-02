@@ -1,7 +1,8 @@
 services:
   rippotai-backend:
     image: ghcr.io/rocklimedev/rippotai-backend:latest # ← Use this
-    command: ["node", "index.js"]
+    pull_policy: always # always check for updates
+    command: node index.js
     # Remove or comment out the entire build block:
     # build:
     #   context: .
