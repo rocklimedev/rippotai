@@ -1,25 +1,20 @@
 services:
   rippotai-backend:
-    image: ghcr.io/rocklimedev/rippotai-backend:latest # ← Use this
-    pull_policy: always # always check for updates
-    command: ["node", "/app/index.js"]
-    # Remove or comment out the entire build block:
-    # build:
-    #   context: .
-    #   dockerfile: Dockerfile
-
-    # Strongly recommend removing this too to avoid future name conflicts:
-    # container_name: rippotai-backend
-
+    image: ghcr.io/rocklimedev/rippotai-backend:latest
+    pull_policy: always
     restart: unless-stopped
+
     ports:
       - "5000:5000"
+
     env_file:
       - .env
+
     volumes:
-      - ./uploads:/app/uploads
+      - ./uploads:/usr/src/app/uploads
+
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000"]
+      test: ["CMD", "wget", "-qO-", "http://localhost:5000"]
       interval: 30s
-      timeout: 10s
+      timeout: 5s
       retries: 3
