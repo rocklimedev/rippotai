@@ -1,7 +1,8 @@
-version: "3.9"
-
 services:
   rippotai-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: ghcr.io/rocklimedev/rippotai-backend:latest
     container_name: rippotai-backend
     restart: unless-stopped

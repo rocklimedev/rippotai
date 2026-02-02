@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "rippotai-backend/**"
 
 jobs:
   build-and-deploy:
@@ -12,9 +14,6 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
-        with:
-          # Only checkout the backend folder to save bandwidth (optional)
-          path: rippotai-backend
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -23,7 +22,7 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
+          username: rocklimedev
           password: ${{ secrets.RIPPOTAI_GHCR_TOKEN }}
 
       - name: Build and Push Backend Image
@@ -43,30 +42,13 @@ jobs:
           timeout: 30m
           script: |
             set -e
-            cd /root/
-
-            # If backend folder doesn't exist, clone only backend folder
-            if [ ! -d rippotai-backend ]; then
-              git clone --depth 1 --filter=blob:none --sparse https://github.com/rocklimedev/rippotai.git
-              cd rippotai
-              git sparse-checkout set rippotai-backend
-              mv rippotai-backend ../
-              cd ..
-              rm -rf rippotai
-            fi
-
             cd /root/rippotai-backend
 
-            # Pull latest backend updates
-            git fetch origin main
-            git reset --hard origin/main
-
-            # Cleanup old containers/images
-            docker container prune -f
-            docker image prune -f
-
+            echo "${{ secrets.RIPPOTAI_GHCR_TOKEN }}" | docker login ghcr.io \
+              -u rocklimedev --password-stdin
             # Pull the exact image using digest
-            docker pull $IMAGE_DIGEST
+            docker compose pull rippotai-backend
 
             # Start container
-            docker compose up -d rippotai-backend --force-recreate
+            docker compose up -d rippotai-backend --force-recreate --pull always
+            docker image prune -f
