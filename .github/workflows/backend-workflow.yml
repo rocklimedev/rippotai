@@ -38,7 +38,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.RIPPOTAI_VPS_SSH_KEY }}
           port: 22
-          timeout: 1800 # 30 minutes
+          timeout: 30m # 30 minutes
           script: |
             set -e
             cd /home/ubuntu/rippotai
