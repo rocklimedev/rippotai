@@ -2,9 +2,6 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Required for MongoDB Atlas TLS
-RUN apt-get update && apt-get install -y ca-certificates && update-ca-certificates
-
 COPY package*.json ./
 RUN npm install --production
 
