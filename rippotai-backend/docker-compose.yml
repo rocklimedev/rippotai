@@ -1,7 +1,7 @@
 services:
   rippotai-backend:
     image: ghcr.io/rocklimedev/rippotai-backend:latest # ← Use this
-    command: ["node", "server.js"]
+    command: ["node", "index.js"]
     # Remove or comment out the entire build block:
     # build:
     #   context: .
