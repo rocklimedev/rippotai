@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   rippotai-backend:
-    build: .
+    image: ghcr.io/rocklimedev/rippotai-backend:latest
     container_name: rippotai-backend
     restart: unless-stopped
 
@@ -13,7 +13,6 @@ services:
       - .env
 
     volumes:
-      - .:/app
       - ./uploads:/app/uploads
 
     healthcheck:
