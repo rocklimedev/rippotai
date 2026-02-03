@@ -9,7 +9,7 @@ export const rippotaiApi = createApi({
       // Skip setting Content-Type for endpoints that use FormData
       if (
         !["createApplication", "createProject", "updateProject"].includes(
-          endpoint
+          endpoint,
         )
       ) {
         headers.set("Content-Type", "application/json");
@@ -83,28 +83,74 @@ export const rippotaiApi = createApi({
 
     // Projects Endpoints
     getProjects: builder.query({
-      query: () => "/projects",
+      query: (params) => ({
+        url: "/projects",
+        params,
+      }),
+
+      // ← Add this
+      transformResponse: (response) => {
+        // Assuming response shape is { success: true, data: [...] } or just [...]
+        const rawProjects = Array.isArray(response)
+          ? response
+          : (response?.data ?? []);
+
+        return rawProjects.filter(
+          (p) => p.status !== "draft" && p.status !== "prunned",
+        );
+      },
+
       providesTags: (result) =>
-        Array.isArray(result)
+        result
           ? [
               ...result.map(({ _id }) => ({ type: "Projects", id: _id })),
               { type: "Projects", id: "LIST" },
             ]
           : [{ type: "Projects", id: "LIST" }],
     }),
+    getCompletedProjects: builder.query({
+      query: () => "/projects/completed",
+      providesTags: [{ type: "Projects", id: "LIST" }],
+    }),
+
+    getDraftProjects: builder.query({
+      query: () => "/projects/drafts",
+      providesTags: [{ type: "Projects", id: "LIST" }],
+    }),
+
+    getProjectsByLocation: builder.query({
+      query: (location) => `/projects/location/${location}`,
+      providesTags: [{ type: "Projects", id: "LIST" }],
+    }),
     getProjectBySlug: builder.query({
       query: (slug) => `/projects/${slug}`,
-      providesTags: (result, error, slug) => [{ type: "Projects", id: slug }],
+      providesTags: (result) =>
+        result ? [{ type: "Projects", id: result._id }] : [],
     }),
+
     createProject: builder.mutation({
-      query: ({ title, category, description, details, image, images }) => {
+      query: ({
+        title,
+        category,
+        description,
+        details,
+        image,
+        images,
+        status,
+        location,
+        scope,
+      }) => {
         const formData = new FormData();
         formData.append("title", title);
         formData.append("category", category);
         formData.append("description", description);
         formData.append("details", details);
+        if (status) formData.append("status", status);
+        if (location) formData.append("location", location);
+        if (scope) formData.append("scope", scope);
         if (image) formData.append("image", image);
         if (images) images.forEach((img) => formData.append("images[]", img));
+
         return {
           url: "/projects",
           method: "POST",
@@ -113,15 +159,34 @@ export const rippotaiApi = createApi({
       },
       invalidatesTags: [{ type: "Projects", id: "LIST" }],
     }),
+
+    /**
+     * ADMIN – update (ID based)
+     */
     updateProject: builder.mutation({
-      query: ({ id, title, category, description, details, image, images }) => {
+      query: ({
+        id,
+        title,
+        category,
+        description,
+        details,
+        image,
+        images,
+        status,
+        location,
+        scope,
+      }) => {
         const formData = new FormData();
-        formData.append("title", title);
-        formData.append("category", category);
-        formData.append("description", description);
-        formData.append("details", details);
+        if (title) formData.append("title", title);
+        if (category) formData.append("category", category);
+        if (description) formData.append("description", description);
+        if (details) formData.append("details", details);
+        if (status) formData.append("status", status);
+        if (location) formData.append("location", location);
+        if (scope) formData.append("scope", scope);
         if (image) formData.append("image", image);
         if (images) images.forEach((img) => formData.append("images[]", img));
+
         return {
           url: `/projects/${id}`,
           method: "PUT",
@@ -133,6 +198,25 @@ export const rippotaiApi = createApi({
         { type: "Projects", id: "LIST" },
       ],
     }),
+
+    /**
+     * ADMIN – update status only
+     */
+    updateProjectStatus: builder.mutation({
+      query: ({ id, status }) => ({
+        url: `/projects/${id}/status`,
+        method: "PATCH",
+        body: { status },
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Projects", id },
+        { type: "Projects", id: "LIST" },
+      ],
+    }),
+
+    /**
+     * ADMIN – delete (ID based)
+     */
     deleteProject: builder.mutation({
       query: (id) => ({
         url: `/projects/${id}`,
@@ -346,6 +430,11 @@ export const {
   useCreateProjectMutation,
   useUpdateProjectMutation,
   useDeleteProjectMutation,
+  useGetCompletedProjectsQuery,
+  useGetDraftProjectsQuery,
+  useGetProjectsByLocationQuery,
+  useUpdateProjectStatusMutation,
+
   useGetJobsQuery,
   useGetJobByIdQuery,
   useCreateJobMutation,
