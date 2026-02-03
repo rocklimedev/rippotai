@@ -1,4 +1,5 @@
-import React, { createContext, useState, useEffect } from "react";
+// src/store/AuthContext.js
+import React, { createContext, useState, useEffect, useCallback } from "react";
 import {
   useLoginMutation,
   useLogoutMutation,
@@ -19,14 +20,13 @@ export const AuthProvider = ({ children }) => {
   const [login, { isLoading: isLoginLoading }] = useLoginMutation();
   const [logout] = useLogoutMutation();
   const [refreshTokenMutation] = useRefreshTokenMutation();
+
   const { data: profile, isLoading: isProfileLoading } = useGetProfileQuery(
     undefined,
-    {
-      skip: !authState.token,
-    }
+    { skip: !authState.token },
   );
 
-  // Update auth state when profile data is fetched
+  // Update auth state when profile is successfully fetched
   useEffect(() => {
     if (profile && authState.token) {
       setAuthState((prev) => ({
@@ -35,9 +35,9 @@ export const AuthProvider = ({ children }) => {
         user: profile,
       }));
     }
-  }, [profile]);
+  }, [profile, authState.token]); // ← added authState.token
 
-  // Handle token refresh on mount or when token expires
+  // Attempt to refresh token when we have refreshToken but no access token
   useEffect(() => {
     const refresh = async () => {
       if (authState.refreshToken && !authState.token) {
@@ -45,42 +45,57 @@ export const AuthProvider = ({ children }) => {
           const response = await refreshTokenMutation({
             refreshToken: authState.refreshToken,
           }).unwrap();
+
           localStorage.setItem("adminToken", response.accessToken);
           localStorage.setItem("refreshToken", response.refreshToken);
+
           setAuthState((prev) => ({
             ...prev,
             token: response.accessToken,
             refreshToken: response.refreshToken,
             isAuthenticated: true,
           }));
-        } catch (error) {
-          console.error("Token refresh failed:", error);
-          handleLogout();
+        } catch (err) {
+          console.error("Token refresh failed:", err);
+          handleLogout(); // will be stable thanks to useCallback
         }
       }
     };
+
     refresh();
-  }, [authState.refreshToken, refreshTokenMutation]);
+  }, [
+    authState.refreshToken,
+    authState.token,
+    refreshTokenMutation,
+    handleLogout,
+  ]);
+  // ↑ added missing: authState.token + handleLogout
 
-  const handleLogin = async ({ email, password }) => {
-    try {
-      const response = await login({ email, password }).unwrap();
-      localStorage.setItem("adminToken", response.accessToken);
-      localStorage.setItem("refreshToken", response.refreshToken);
-      setAuthState({
-        isAuthenticated: true,
-        user: response.user,
-        token: response.accessToken,
-        refreshToken: response.refreshToken,
-      });
-      return { success: true };
-    } catch (error) {
-      console.error("Login failed:", error);
-      return { success: false, error: error.data?.message || "Login failed" };
-    }
-  };
+  // Memoize handlers to prevent unnecessary re-renders / effect triggers
+  const handleLogin = useCallback(
+    async ({ email, password }) => {
+      try {
+        const response = await login({ email, password }).unwrap();
+        localStorage.setItem("adminToken", response.accessToken);
+        localStorage.setItem("refreshToken", response.refreshToken);
 
-  const handleLogout = async () => {
+        setAuthState({
+          isAuthenticated: true,
+          user: response.user,
+          token: response.accessToken,
+          refreshToken: response.refreshToken,
+        });
+
+        return { success: true };
+      } catch (error) {
+        console.error("Login failed:", error);
+        return { success: false, error: error.data?.message || "Login failed" };
+      }
+    },
+    [login],
+  );
+
+  const handleLogout = useCallback(async () => {
     try {
       await logout().unwrap();
     } catch (error) {
@@ -88,13 +103,14 @@ export const AuthProvider = ({ children }) => {
     }
     localStorage.removeItem("adminToken");
     localStorage.removeItem("refreshToken");
+
     setAuthState({
       isAuthenticated: false,
       user: null,
       token: null,
       refreshToken: null,
     });
-  };
+  }, [logout]);
 
   return (
     <AuthContext.Provider
