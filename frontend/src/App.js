@@ -62,9 +62,7 @@ function AppWrapper() {
 function App() {
   return (
     <Router>
-      <AuthProvider>
-        <AppWrapper />
-      </AuthProvider>
+      <AppWrapper />
     </Router>
   );
 }
