@@ -73,7 +73,7 @@ const CareersPage = () => {
       setFormStatus({
         type: "error",
         message: errorMessage.includes(
-          "Only PDF, DOC, and DOCX files are allowed"
+          "Only PDF, DOC, and DOCX files are allowed",
         )
           ? "Please upload a PDF, DOC, or DOCX file."
           : errorMessage,
@@ -91,41 +91,6 @@ const CareersPage = () => {
       setResumeFileName("");
     }
   };
-
-  // Sample data for benefits and testimonials (replace with API data if available)
-  const benefits = [
-    {
-      icon: "fas fa-hand-holding-heart",
-      title: "Creative Freedom",
-      description:
-        "Work on innovative projects with the freedom to express your architectural vision.",
-    },
-    {
-      icon: "fas fa-users",
-      title: "Collaborative Culture",
-      description:
-        "Join a team of passionate professionals in a supportive environment.",
-    },
-    {
-      icon: "fas fa-graduation-cap",
-      title: "Growth Opportunities",
-      description:
-        "Access continuous learning and career development programs.",
-    },
-  ];
-
-  const testimonials = [
-    {
-      quote:
-        "Working here has allowed me to push the boundaries of design while collaborating with an inspiring team.",
-      name: "Jane Doe, Senior Architect",
-    },
-    {
-      quote:
-        "The culture of innovation and support has made this the best place to grow my career.",
-      name: "John Smith, Interior Designer",
-    },
-  ];
 
   return (
     <div className="careers-page">

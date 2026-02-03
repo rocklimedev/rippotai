@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import teamMember from "../../assets/images/teammember.jpg";
 import founderImg1 from "../../assets/images/slider_1.JPG";
 import founderImg2 from "../../assets/images/slider_2.JPG";
 import founderImg3 from "../../assets/images/slider_3.JPG";

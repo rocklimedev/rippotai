@@ -1,24 +1,22 @@
+// src/components/Home/ProjectsShowcase.jsx
 import React from "react";
 import { Link } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import "react-lazy-load-image-component/src/effects/blur.css"; // for nice blur → sharp transition
+import "react-lazy-load-image-component/src/effects/blur.css";
 import { useGetProjectsQuery } from "../../api/rippotaiApi";
 
 const ProjectsShowcase = () => {
-  const {
-    data: projectsResponse,
-    isLoading,
-    isError,
-    error,
-  } = useGetProjectsQuery();
+  const { data: projectsResponse, isLoading, isError } = useGetProjectsQuery();
 
   const projectsArray = React.useMemo(() => {
     if (!projectsResponse) return [];
+
+    // Handle both possible response shapes (wrapped in { data: [...] } or direct array)
     return Array.isArray(projectsResponse.data)
       ? projectsResponse.data
       : Array.isArray(projectsResponse)
-      ? projectsResponse
-      : [];
+        ? projectsResponse
+        : [];
   }, [projectsResponse]);
 
   const limitedProjects = projectsArray.slice(0, 6);
@@ -77,13 +75,13 @@ const ProjectsShowcase = () => {
               <div className="project-image-container">
                 <LazyLoadImage
                   src={project.image || "/placeholder-image.jpg"}
-                  alt={project.title || "Project showcase"}
-                  effect="blur" // blur placeholder → smooth reveal
+                  alt={project.title || "Featured architectural project"}
+                  effect="blur"
                   className="project-image"
-                  wrapperClassName="w-100 h-100" // ensure full container fill
-                  height={400} // ← adjust to your typical displayed height
-                  width={600} // ← adjust to your typical displayed width (prevents CLS)
-                  threshold={100} // start loading a bit earlier
+                  wrapperClassName="w-100 h-100"
+                  height={400} // Helps prevent layout shift (CLS)
+                  width={600}
+                  threshold={100}
                   onError={(e) => {
                     e.target.src = "/placeholder-image.jpg";
                   }}
@@ -108,7 +106,7 @@ const ProjectsShowcase = () => {
           </div>
         ))}
 
-        {/* Static Text Block – unchanged */}
+        {/* Static "Explore Our Work" block */}
         <div
           className="bento-item text item-text"
           style={{ gridArea: "item-text" }}

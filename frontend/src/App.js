@@ -24,10 +24,6 @@ import Error500 from "./components/Error/Error500";
 // OR
 import "antd/dist/reset.css"; // For v5
 // Protected Route component
-const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated } = React.useContext(AuthContext);
-  return isAuthenticated ? children : <Navigate to="/login" />;
-};
 
 function AppWrapper() {
   const location = useLocation();
@@ -38,7 +34,7 @@ function AppWrapper() {
     (route) =>
       location.pathname === route ||
       (route.endsWith("/*") &&
-        location.pathname.startsWith(route.replace("/*", "")))
+        location.pathname.startsWith(route.replace("/*", ""))),
   );
 
   return (

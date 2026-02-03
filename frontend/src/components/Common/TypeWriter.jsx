@@ -1,60 +1,71 @@
-import React, { useEffect, useState } from "react";
+// src/components/Common/Typewriter.jsx
+import React, { useEffect, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 
 const Typewriter = ({ showContactUs = true }) => {
-  const phrases = showContactUs
-    ? ["DISCUSS A PROJECT?", "CONTACT US", "STEP INSIDE"]
-    : ["DISCUSS A PROJECT?"];
+  const phrases = useMemo(
+    () =>
+      showContactUs
+        ? ["DISCUSS A PROJECT?", "CONTACT US", "STEP INSIDE"]
+        : ["DISCUSS A PROJECT?"],
+    [showContactUs],
+  );
 
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // Speeds (ms)
+  // Animation timing constants (in milliseconds)
   const TYPING_SPEED = 100;
   const DELETING_SPEED = 50;
   const PAUSE_AFTER_FULL = 1500;
   const PAUSE_AFTER_DELETE = 500;
 
   useEffect(() => {
-    let timeoutId = null;
+    let timeoutId;
+
     const currentPhrase = phrases[currentPhraseIndex];
 
     if (!isDeleting && charIndex < currentPhrase.length) {
-      timeoutId = setTimeout(
-        () => setCharIndex((prev) => prev + 1),
-        TYPING_SPEED
-      );
+      // Typing next character
+      timeoutId = setTimeout(() => {
+        setCharIndex((prev) => prev + 1);
+      }, TYPING_SPEED);
     } else if (!isDeleting && charIndex === currentPhrase.length) {
-      timeoutId = setTimeout(() => setIsDeleting(true), PAUSE_AFTER_FULL);
+      // Pause at end of phrase before deleting
+      timeoutId = setTimeout(() => {
+        setIsDeleting(true);
+      }, PAUSE_AFTER_FULL);
     } else if (isDeleting && charIndex > 0) {
-      timeoutId = setTimeout(
-        () => setCharIndex((prev) => prev - 1),
-        DELETING_SPEED
-      );
+      // Deleting character
+      timeoutId = setTimeout(() => {
+        setCharIndex((prev) => prev - 1);
+      }, DELETING_SPEED);
     } else if (isDeleting && charIndex === 0) {
+      // Pause after deletion, then move to next phrase
       timeoutId = setTimeout(() => {
         setIsDeleting(false);
         setCurrentPhraseIndex((prev) => (prev + 1) % phrases.length);
       }, PAUSE_AFTER_DELETE);
     }
 
-    return () => clearTimeout(timeoutId);
+    // Cleanup: clear any pending timeout when effect re-runs or component unmounts
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
   }, [charIndex, isDeleting, currentPhraseIndex, phrases]);
-
-  // This useEffect seems redundant since currentPhraseIndex is already managed in the modulo operation
-  // Removed to simplify logic, as (prev + 1) % phrases.length handles the cycling correctly
 
   const displayText = phrases[currentPhraseIndex].substring(0, charIndex);
 
-  // Determine what link to render
   const renderLinkedText = () => {
-    const phrase = phrases[currentPhraseIndex];
+    const currentPhrase = phrases[currentPhraseIndex];
 
-    if (phrase === "DISCUSS A PROJECT?") {
+    if (currentPhrase === "DISCUSS A PROJECT?") {
       return (
         <a
-          href="https://wa.me/+919711169727" // Updated with a valid WhatsApp number from footer
+          href="https://wa.me/+919711169727"
           target="_blank"
           rel="noopener noreferrer"
           className="hover:underline"
@@ -63,7 +74,9 @@ const Typewriter = ({ showContactUs = true }) => {
           {displayText}
         </a>
       );
-    } else if (phrase === "CONTACT US") {
+    }
+
+    if (currentPhrase === "CONTACT US") {
       return (
         <Link
           to="/contact"
@@ -73,7 +86,9 @@ const Typewriter = ({ showContactUs = true }) => {
           {displayText}
         </Link>
       );
-    } else if (phrase === "STEP INSIDE") {
+    }
+
+    if (currentPhrase === "STEP INSIDE") {
       return (
         <Link
           to="/career"
@@ -84,6 +99,8 @@ const Typewriter = ({ showContactUs = true }) => {
         </Link>
       );
     }
+
+    // Fallback (should never reach here with current phrases)
     return displayText;
   };
 
