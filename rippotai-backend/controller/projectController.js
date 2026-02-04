@@ -28,11 +28,7 @@ exports.getAllProjects = async (req, res, next) => {
  */
 exports.getPublicProjects = async (req, res, next) => {
   try {
-    const {
-      category,
-      page = 1,
-      limit = 6, // <= CRITICAL
-    } = req.query;
+    const { category, page = 1, limit = 6 } = req.query;
 
     const filter = {
       status: { $in: ["working", "completed"] },
@@ -40,24 +36,26 @@ exports.getPublicProjects = async (req, res, next) => {
 
     if (category) filter.category = category;
 
-    const skip = (page - 1) * limit;
+    const skip = (page - 1) * Number(limit);
+    const limitNum = Number(limit);
 
     const projects = await Project.find(filter)
       .sort({ createdAt: -1 })
       .skip(skip)
-      .limit(Number(limit))
-      .select("title slug category location scope image status createdAt") // 🚀 NO details, NO images[]
-      .lean(); // 🚀 BIG performance win
+      .limit(limitNum)
+      .select("title slug category location scope image status createdAt")
+      .lean();
 
     const total = await Project.countDocuments(filter);
 
+    // Always return 200, even if empty
     res.status(200).json({
-      data: projects,
+      data: projects || [], // ensure array
       pagination: {
         page: Number(page),
-        limit: Number(limit),
+        limit: limitNum,
         total,
-        pages: Math.ceil(total / limit),
+        pages: total > 0 ? Math.ceil(total / limitNum) : 0,
       },
     });
   } catch (error) {
