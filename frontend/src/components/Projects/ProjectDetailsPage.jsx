@@ -8,8 +8,9 @@ const ProjectDetailPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-  // Open modal with the clicked image
+  // Open modal with the clicked image (additional images only)
   const openModal = (index) => {
+    if (!project?.images || project.images.length === 0) return;
     setSelectedImageIndex(index);
     setIsModalOpen(true);
   };
@@ -19,17 +20,17 @@ const ProjectDetailPage = () => {
     setIsModalOpen(false);
   };
 
-  // Navigate to previous image
+  // Navigate to previous image (only in additional images)
   const prevImage = () => {
     setSelectedImageIndex((prev) =>
-      prev === 0 ? project.images.length - 1 : prev - 1
+      prev === 0 ? project.images.length - 1 : prev - 1,
     );
   };
 
-  // Navigate to next image
+  // Navigate to next image (only in additional images)
   const nextImage = () => {
     setSelectedImageIndex((prev) =>
-      prev === project.images.length - 1 ? 0 : prev + 1
+      prev === project.images.length - 1 ? 0 : prev + 1,
     );
   };
 
@@ -73,7 +74,7 @@ const ProjectDetailPage = () => {
     <div className="project-detail-page">
       {/* Hero Section (Banner) */}
       <section className="project-hero">
-        <img src={project.image} alt="" />
+        <img src={project.image} alt={project.title || "Project hero"} />
       </section>
 
       {/* Project Info Section */}
@@ -87,6 +88,16 @@ const ProjectDetailPage = () => {
               <p>
                 <strong>Type:</strong> {project.category}
               </p>
+              {project.location && (
+                <p>
+                  <strong>Location:</strong> {project.location}
+                </p>
+              )}
+              {project.scope && (
+                <p>
+                  <strong>Scope:</strong> {project.scope}
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -100,24 +111,40 @@ const ProjectDetailPage = () => {
               <p className="project-details">{project.details}</p>
             </div>
             <div className="custom-col-6">
-              <img
-                src={`${project.images?.[0] || "placeholder.png"}`}
-                alt={`${project.title} - Image 1`}
-                className="half-width-image"
-                onClick={() => openModal(1)}
-                style={{ cursor: "pointer" }}
-              />
+              {project.images?.[0] ? (
+                <img
+                  src={project.images[0]}
+                  alt={`${project.title} - Image 1`}
+                  className="half-width-image"
+                  onClick={() => openModal(0)}
+                  style={{ cursor: "pointer" }}
+                />
+              ) : (
+                <img
+                  src="/placeholder.png"
+                  alt="Placeholder"
+                  className="half-width-image"
+                />
+              )}
             </div>
           </div>
           <div className="custom-row">
             <div className="custom-col-6">
-              <img
-                src={`${project.images?.[1] || "placeholder.png"}`}
-                alt={`${project.title} - Image 2`}
-                className="half-width-image"
-                onClick={() => openModal(2)}
-                style={{ cursor: "pointer" }}
-              />
+              {project.images?.[1] ? (
+                <img
+                  src={project.images[1]}
+                  alt={`${project.title} - Image 2`}
+                  className="half-width-image"
+                  onClick={() => openModal(1)}
+                  style={{ cursor: "pointer" }}
+                />
+              ) : (
+                <img
+                  src="/placeholder.png"
+                  alt="Placeholder"
+                  className="half-width-image"
+                />
+              )}
             </div>
             <div className="custom-col-6">
               <p className="project-description">{project.description}</p>
@@ -133,13 +160,14 @@ const ProjectDetailPage = () => {
             <div className="gallery-grid">
               {project.images.slice(2).map((img, index) => (
                 <img
-                  src={`${img}`}
+                  src={img}
                   alt={`${project.title} - Image ${index + 3}`}
                   key={index}
                   className={`gallery-image ${
                     index === 0 ? "large-image" : ""
-                  }`} // Make first image larger
+                  }`}
                   onClick={() => openModal(index + 2)}
+                  style={{ cursor: "pointer" }}
                 />
               ))}
             </div>
@@ -148,12 +176,12 @@ const ProjectDetailPage = () => {
       )}
 
       {/* Modal Gallery */}
-      {isModalOpen && (
+      {isModalOpen && project.images && project.images.length > 0 && (
         <div className="modal-gallery">
           <div className="modal-overlay" onClick={closeModal}></div>
           <div className="modal-content">
             <img
-              src={`${project.images[selectedImageIndex] || project.image}`}
+              src={project.images[selectedImageIndex]}
               alt={`${project.title} - Image ${selectedImageIndex + 1}`}
               className="modal-image"
             />
@@ -162,7 +190,7 @@ const ProjectDetailPage = () => {
                 &larr; Prev
               </button>
               <span>
-                {selectedImageIndex + 1} / {project.images?.length || 1}
+                {selectedImageIndex + 1} / {project.images.length}
               </span>
               <button onClick={nextImage} className="modal-nav-button">
                 Next &rarr;

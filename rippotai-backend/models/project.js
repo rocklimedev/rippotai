@@ -51,5 +51,8 @@ projectSchema.pre("save", async function (next) {
   }
   next();
 });
+projectSchema.index({ status: 1, createdAt: -1 });
+projectSchema.index({ category: 1 });
+projectSchema.index({ slug: 1 });
 
 module.exports = mongoose.model("Project", projectSchema);

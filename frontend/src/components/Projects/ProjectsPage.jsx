@@ -1,121 +1,109 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { useGetProjectsQuery } from "../../api/rippotaiApi";
+import { useGetPublicProjectsQuery } from "../../api/rippotaiApi";
 
+/* ---------------- Lazy Image Component ---------------- */
+const LazyImage = React.memo(({ src, alt }) => {
+  const [visible, setVisible] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "120px" },
+    );
+
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={ref} className="project-image-wrapper">
+      {visible && (
+        <img
+          src={src}
+          alt={alt}
+          className="project-img"
+          loading="lazy"
+          decoding="async"
+          onError={(e) => {
+            e.target.src = "/placeholder-image.jpg";
+          }}
+        />
+      )}
+    </div>
+  );
+});
+
+/* ---------------- Main Page ---------------- */
 const ProjectsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Get category from URL query param (e.g., ?category=residential)
-  const urlCategoryParam = searchParams.get("category");
+  const urlCategory = searchParams.get("category");
+  const normalizedCategory = urlCategory
+    ? urlCategory.charAt(0).toUpperCase() + urlCategory.slice(1).toLowerCase()
+    : "All";
 
-  // Normalize: "residential" → "Residential", etc.
-  const normalizedUrlCategory = urlCategoryParam
-    ? urlCategoryParam.charAt(0).toUpperCase() +
-      urlCategoryParam.slice(1).toLowerCase()
-    : null;
+  const [selectedCategory, setSelectedCategory] = useState(normalizedCategory);
+  const [page, setPage] = useState(1);
+  const LIMIT = 6;
 
-  const [selectedCategory, setSelectedCategory] = useState("All");
-
-  // Sync state with URL on mount and when URL changes
+  /* Sync URL → state */
   useEffect(() => {
-    if (normalizedUrlCategory) {
-      // Only accept valid categories (core + ones from data later)
-      // We'll validate fully once data loads
-      setSelectedCategory(normalizedUrlCategory);
-    } else {
-      setSelectedCategory("All");
-    }
-  }, [normalizedUrlCategory]);
+    setSelectedCategory(normalizedCategory);
+    setPage(1);
+  }, [normalizedCategory]);
 
-  // Update URL when user clicks a filter button
-  const handleCategoryChange = (category) => {
-    setSelectedCategory(category);
-
-    if (category === "All") {
-      setSearchParams({}); // Clear query params → /projects
-    } else {
-      const slug = category.toLowerCase();
-      setSearchParams({ category: slug }); // → ?category=residential
-    }
-  };
-
-  // API query: only filter if not "All"
+  /* Query params */
   const queryParams = useMemo(
-    () => (selectedCategory !== "All" ? { category: selectedCategory } : {}),
-    [selectedCategory]
+    () => ({
+      page,
+      limit: LIMIT,
+      ...(selectedCategory !== "All" && { category: selectedCategory }),
+    }),
+    [page, selectedCategory],
   );
 
   const {
-    data: projectsResponse,
+    data: projects = [],
     error,
     isLoading,
     isFetching,
-  } = useGetProjectsQuery(queryParams, {
-    refetchOnMountOrArgChange: true,
-  });
+  } = useGetPublicProjectsQuery(queryParams);
 
-  // Safely extract projects
-  const projectsArray = useMemo(() => {
-    if (!projectsResponse) return [];
-    return Array.isArray(projectsResponse.data)
-      ? projectsResponse.data
-      : Array.isArray(projectsResponse)
-      ? projectsResponse
-      : [];
-  }, [projectsResponse]);
-
-  // Always show core categories + any dynamic ones
+  /* Build categories from loaded data */
   const categories = useMemo(() => {
-    const dynamicCategories = [
-      ...new Set(
-        projectsArray
-          .map((project) => project.category)
-          .filter(Boolean)
-          .filter((cat) => cat.trim() !== "")
-      ),
-    ];
+    const core = ["Residential", "Institutional"];
+    const dynamic = projects.map((p) => p.category).filter(Boolean);
 
-    const coreCategories = ["Residential", "Institutional"];
-    const allUnique = [...new Set([...coreCategories, ...dynamicCategories])];
+    return ["All", ...new Set([...core, ...dynamic])];
+  }, [projects]);
 
-    const sorted = allUnique.sort((a, b) => {
-      const order = ["Residential", "Institutional"];
-      const aIndex = order.indexOf(a);
-      const bIndex = order.indexOf(b);
+  /* Handle category click */
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+    setPage(1);
 
-      if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
-      if (aIndex !== -1) return -1;
-      if (bIndex !== -1) return 1;
-      return a.localeCompare(b);
-    });
-
-    return ["All", ...sorted];
-  }, [projectsArray]);
-
-  // Client-side filtering fallback
-  const filteredProjects = useMemo(() => {
-    if (selectedCategory === "All") return projectsArray;
-    return projectsArray.filter(
-      (project) => project.category === selectedCategory
-    );
-  }, [projectsArray, selectedCategory]);
-
-  // Validate if current selectedCategory is allowed; if not, reset to All
-  useEffect(() => {
-    if (selectedCategory !== "All" && !categories.includes(selectedCategory)) {
-      setSelectedCategory("All");
+    if (category === "All") {
       setSearchParams({});
+    } else {
+      setSearchParams({ category: category.toLowerCase() });
     }
-  }, [categories, selectedCategory, setSearchParams]);
+  };
 
   const isContentLoading = isLoading || isFetching;
 
   return (
     <div className="projects-page">
-      {/* Hero Section */}
+      {/* Hero */}
       <section className="projects-hero" />
 
-      {/* Projects Section */}
+      {/* Content */}
       <section className="our-project-wrapper">
         <div className="custom-container">
           <div className="custom-row">
@@ -123,76 +111,59 @@ const ProjectsPage = () => {
               <div className="heading text-center">
                 <h2>Our Projects</h2>
                 <p>
-                  Explore our diverse portfolio, from residential masterpieces
-                  to innovative product designs and institutional developments.
+                  Explore our diverse portfolio across residential and
+                  institutional developments.
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Category Filters */}
-          <div className="project-filters mt-3" id="project-grid">
-            {isLoading ? (
-              <p>Loading categories...</p>
-            ) : categories.length > 1 ? (
-              categories.map((category) => (
-                <button
-                  key={category}
-                  className={`filter-btn ${
-                    selectedCategory === category ? "active" : ""
-                  }`}
-                  onClick={() => handleCategoryChange(category)}
-                  disabled={isFetching}
-                >
-                  {category}
-                </button>
-              ))
-            ) : (
-              <p>No categories available.</p>
-            )}
+          {/* Filters */}
+          <div className="project-filters mt-3">
+            {categories.map((category) => (
+              <button
+                key={category}
+                className={`filter-btn ${
+                  selectedCategory === category ? "active" : ""
+                }`}
+                onClick={() => handleCategoryChange(category)}
+                disabled={isFetching}
+              >
+                {category}
+              </button>
+            ))}
           </div>
 
-          {/* Project Grid */}
+          {/* Grid */}
           <div className="project-grid mt-3">
             <div className="custom-row">
-              {isContentLoading ? (
+              {isContentLoading && page === 1 ? (
                 <div className="text-center w-100 py-5">
                   <p>Loading projects...</p>
                 </div>
               ) : error ? (
-                <p className="no-projects text-center text-danger">
-                  Error loading projects. Please try again later.
+                <p className="text-danger text-center w-100">
+                  Failed to load projects.
                 </p>
-              ) : filteredProjects.length > 0 ? (
-                filteredProjects.map((project) => (
+              ) : projects.length > 0 ? (
+                projects.map((project) => (
                   <div
-                    className="custom-col-4 custom-col-lg-6 custom-col-md-12 mt-5 project-details"
                     key={project.slug}
+                    className="custom-col-4 custom-col-lg-6 custom-col-md-12 mt-5 project-details"
                   >
-                    <div className="project-image-wrapper">
-                      <img
-                        src={project.image || "/placeholder-image.jpg"}
-                        className="project-img"
-                        alt={project.title || "Project"}
-                        loading="lazy"
-                        onError={(e) => {
-                          e.target.src = "/placeholder-image.jpg";
-                        }}
-                      />
-                    </div>
+                    <LazyImage
+                      src={project.image || "/placeholder-image.jpg"}
+                      alt={project.title}
+                    />
+
                     <div className="project-overlay">
-                      <h5>{project.title || "Untitled Project"}</h5>
-                      <p className="project-type">
-                        {project.category || "Uncategorized"}
-                      </p>
-                      <p className="project-description">
-                        {project.description || "No description available."}
-                      </p>
+                      <h5>{project.title}</h5>
+                      <p className="project-type">{project.category}</p>
+
+                      {/* KEEP LISTING LIGHT */}
                       <Link
-                        to={`/project/${
-                          project.slug
-                        }?category=${encodeURIComponent(
-                          project.category || ""
+                        to={`/project/${project.slug}?category=${encodeURIComponent(
+                          project.category || "",
                         )}`}
                         className="view-project-btn"
                       >
@@ -203,14 +174,24 @@ const ProjectsPage = () => {
                 ))
               ) : (
                 <div className="text-center w-100 py-5">
-                  <p className="no-projects">
-                    Currently there are no projects under this category.
-                  </p>
-                  <p className="text-muted">Check back soon for updates!</p>
+                  <p>No projects available.</p>
                 </div>
               )}
             </div>
           </div>
+
+          {/* Load More */}
+          {projects.length === LIMIT && (
+            <div className="text-center mt-5">
+              <button
+                className="view-project-btn"
+                disabled={isFetching}
+                onClick={() => setPage((p) => p + 1)}
+              >
+                {isFetching ? "Loading..." : "Load More"}
+              </button>
+            </div>
+          )}
         </div>
       </section>
     </div>

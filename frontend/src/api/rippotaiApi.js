@@ -81,25 +81,12 @@ export const rippotaiApi = createApi({
       ],
     }),
 
-    // Projects Endpoints
+    // ADMIN: gets ALL projects (including draft, prunned, etc.)
     getProjects: builder.query({
       query: (params) => ({
         url: "/projects",
         params,
       }),
-
-      // ← Add this
-      transformResponse: (response) => {
-        // Assuming response shape is { success: true, data: [...] } or just [...]
-        const rawProjects = Array.isArray(response)
-          ? response
-          : (response?.data ?? []);
-
-        return rawProjects.filter(
-          (p) => p.status !== "draft" && p.status !== "prunned",
-        );
-      },
-
       providesTags: (result) =>
         result
           ? [
@@ -108,6 +95,34 @@ export const rippotaiApi = createApi({
             ]
           : [{ type: "Projects", id: "LIST" }],
     }),
+
+    getPublicProjects: builder.query({
+      query: ({ page = 1, limit = 6, category } = {}) => ({
+        url: "/projects/public",
+        params: { page, limit, category },
+      }),
+
+      // 👇 Extract only the array used for rendering
+      transformResponse: (response) => response.data,
+
+      // 👇 Cache per page/category combo (VERY important)
+      serializeQueryArgs: ({ endpointName, queryArgs }) => {
+        const { page, category } = queryArgs || {};
+        return `${endpointName}-${page || 1}-${category || "all"}`;
+      },
+
+      // 👇 Keep previous page visible while fetching next
+      keepUnusedDataFor: 60, // seconds
+
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map((p) => ({ type: "Projects", id: p._id })),
+              { type: "Projects", id: "LIST" },
+            ]
+          : [{ type: "Projects", id: "LIST" }],
+    }),
+
     getCompletedProjects: builder.query({
       query: () => "/projects/completed",
       providesTags: [{ type: "Projects", id: "LIST" }],
@@ -122,8 +137,20 @@ export const rippotaiApi = createApi({
       query: (location) => `/projects/location/${location}`,
       providesTags: [{ type: "Projects", id: "LIST" }],
     }),
+    // Add this endpoint
+    getProjectById: builder.query({
+      query: (id) => `/projects/admin/${id}`, // assuming your backend supports GET /projects/:id for admin
+      providesTags: (result, error, id) => [{ type: "Projects", id }],
+    }),
     getProjectBySlug: builder.query({
       query: (slug) => `/projects/${slug}`,
+
+      // 👇 Avoid refetch unless slug changes
+      serializeQueryArgs: ({ endpointName, queryArgs }) =>
+        `${endpointName}-${queryArgs}`,
+
+      keepUnusedDataFor: 300, // cache detail pages longer
+
       providesTags: (result) =>
         result ? [{ type: "Projects", id: result._id }] : [],
     }),
@@ -152,7 +179,7 @@ export const rippotaiApi = createApi({
         if (images) images.forEach((img) => formData.append("images[]", img));
 
         return {
-          url: "/projects",
+          url: "/projects/admin/",
           method: "POST",
           body: formData,
         };
@@ -164,35 +191,11 @@ export const rippotaiApi = createApi({
      * ADMIN – update (ID based)
      */
     updateProject: builder.mutation({
-      query: ({
-        id,
-        title,
-        category,
-        description,
-        details,
-        image,
-        images,
-        status,
-        location,
-        scope,
-      }) => {
-        const formData = new FormData();
-        if (title) formData.append("title", title);
-        if (category) formData.append("category", category);
-        if (description) formData.append("description", description);
-        if (details) formData.append("details", details);
-        if (status) formData.append("status", status);
-        if (location) formData.append("location", location);
-        if (scope) formData.append("scope", scope);
-        if (image) formData.append("image", image);
-        if (images) images.forEach((img) => formData.append("images[]", img));
-
-        return {
-          url: `/projects/${id}`,
-          method: "PUT",
-          body: formData,
-        };
-      },
+      query: ({ id, formData }) => ({
+        url: `/projects/admin/${id}`,
+        method: "PUT",
+        body: formData,
+      }),
       invalidatesTags: (result, error, { id }) => [
         { type: "Projects", id },
         { type: "Projects", id: "LIST" },
@@ -204,7 +207,7 @@ export const rippotaiApi = createApi({
      */
     updateProjectStatus: builder.mutation({
       query: ({ id, status }) => ({
-        url: `/projects/${id}/status`,
+        url: `/projects/admin/${id}/status`,
         method: "PATCH",
         body: { status },
       }),
@@ -219,7 +222,7 @@ export const rippotaiApi = createApi({
      */
     deleteProject: builder.mutation({
       query: (id) => ({
-        url: `/projects/${id}`,
+        url: `/projects/admin/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: (result, error, id) => [
@@ -434,7 +437,9 @@ export const {
   useGetDraftProjectsQuery,
   useGetProjectsByLocationQuery,
   useUpdateProjectStatusMutation,
-
+  useGetPublicProjectsQuery,
+  useGetProjectByIdQuery,
+  useLazyGetProjectByIdQuery,
   useGetJobsQuery,
   useGetJobByIdQuery,
   useCreateJobMutation,

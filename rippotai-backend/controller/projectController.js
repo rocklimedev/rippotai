@@ -14,8 +14,52 @@ exports.getAllProjects = async (req, res, next) => {
     if (category) filter.category = category;
     if (status) filter.status = status;
 
-    const projects = await Project.find(filter).sort({ createdAt: -1 });
+    // Sort alphabetically by title (A to Z)
+    const projects = await Project.find(filter).sort({ title: 1 });
+
     res.status(200).json(projects);
+  } catch (error) {
+    next(error);
+  }
+};
+/**
+ * GET /projects/public
+ * FAST listing API (frontend)
+ */
+exports.getPublicProjects = async (req, res, next) => {
+  try {
+    const {
+      category,
+      page = 1,
+      limit = 6, // <= CRITICAL
+    } = req.query;
+
+    const filter = {
+      status: { $in: ["working", "completed"] },
+    };
+
+    if (category) filter.category = category;
+
+    const skip = (page - 1) * limit;
+
+    const projects = await Project.find(filter)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(Number(limit))
+      .select("title slug category location scope image status createdAt") // 🚀 NO details, NO images[]
+      .lean(); // 🚀 BIG performance win
+
+    const total = await Project.countDocuments(filter);
+
+    res.status(200).json({
+      data: projects,
+      pagination: {
+        page: Number(page),
+        limit: Number(limit),
+        total,
+        pages: Math.ceil(total / limit),
+      },
+    });
   } catch (error) {
     next(error);
   }
@@ -27,7 +71,7 @@ exports.getAllProjects = async (req, res, next) => {
  */
 exports.getProjectBySlug = async (req, res, next) => {
   try {
-    const project = await Project.findOne({ slug: req.params.slug });
+    const project = await Project.findOne({ slug: req.params.slug }).lean();
 
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
@@ -79,50 +123,69 @@ exports.createProject = async (req, res, next) => {
     next(error);
   }
 };
-
+// In your controller
+exports.getProjectById = async (req, res, next) => {
+  try {
+    const project = await Project.findById(req.params.id).lean();
+    if (!project) return res.status(404).json({ message: "Project not found" });
+    res.status(200).json(project);
+  } catch (error) {
+    next(error);
+  }
+};
 /**
  * PUT /projects/:id
  * (ADMIN – ID based)
  */
 exports.updateProject = async (req, res, next) => {
   try {
-    const {
-      title,
-      category,
-      description,
-      details,
-      images,
-      status,
-      location,
-      scope,
-    } = req.body;
+    const updateData = {};
 
-    const image = req.file ? req.file.path : req.body.image;
+    if (req.body.title) updateData.title = req.body.title;
+    if (req.body.category) updateData.category = req.body.category;
+    if (req.body.description) updateData.description = req.body.description;
+    if (req.body.details) updateData.details = req.body.details;
+    if (req.body.status) updateData.status = req.body.status;
+    if (req.body.location) updateData.location = req.body.location;
+    if (req.body.scope) updateData.scope = req.body.scope;
 
-    const project = await Project.findByIdAndUpdate(
-      req.params.id,
-      {
-        title,
-        category,
-        description,
-        details,
-        image,
-        images,
-        status,
-        location,
-        scope,
-      },
-      { new: true, runValidators: true },
-    );
-
-    if (!project) {
-      return res.status(404).json({ message: "Project not found" });
+    if (req.file) {
+      updateData.image = req.file.path; // single main image
     }
 
-    res.status(200).json({
-      message: "Project updated successfully",
-      project,
+    // Gallery logic
+    let finalImages = [];
+
+    // 1. Start with kept existing images
+    if (req.body.existingImages) {
+      try {
+        const kept = JSON.parse(req.body.existingImages);
+        if (Array.isArray(kept)) finalImages = [...kept];
+      } catch (e) {
+        console.error("Invalid existingImages JSON");
+      }
+    }
+
+    // 2. Append any newly uploaded files
+    if (req.files && req.files.images) {
+      const newPaths = req.files.images.map((f) => f.path);
+      finalImages = [...finalImages, ...newPaths];
+    }
+
+    if (finalImages.length > 0) {
+      updateData.images = finalImages;
+    } else if (req.body.existingImages === "[]") {
+      updateData.images = []; // explicitly clear if user removed everything
+    }
+
+    const project = await Project.findByIdAndUpdate(req.params.id, updateData, {
+      new: true,
+      runValidators: true,
     });
+
+    if (!project) return res.status(404).json({ message: "Project not found" });
+
+    res.status(200).json({ message: "Project updated", project });
   } catch (error) {
     next(error);
   }

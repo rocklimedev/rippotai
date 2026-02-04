@@ -20,20 +20,29 @@ const upload = multer({ storage });
  * PUBLIC ROUTES
  */
 router.get("/", ProjectsController.getAllProjects); // ?category=&status=
+router.get("/public", ProjectsController.getPublicProjects); // public / client-facing
 router.get("/completed", ProjectsController.getCompletedProjects);
 router.get("/drafts", ProjectsController.getDraftProjects);
 router.get("/location/:location", ProjectsController.getProjectsByLocation);
 router.get("/:slug", ProjectsController.getProjectBySlug);
-
+router.get("/admin/:id", ProjectsController.getProjectById);
 /**
  * ADMIN / PROTECTED ROUTES
  */
-router.post("/", upload.single("image"), ProjectsController.createProject);
+router.post(
+  "/admin/",
+  upload.single("image"),
+  ProjectsController.createProject,
+);
 
-router.put("/:id", upload.single("image"), ProjectsController.updateProject);
+router.put(
+  "/admin/:id",
+  upload.single("image"),
+  ProjectsController.updateProject,
+);
 
-router.patch("/:id/status", ProjectsController.updateProjectStatus);
+router.patch("/admin/:id/status", ProjectsController.updateProjectStatus);
 
-router.delete("/:id", ProjectsController.deleteProject);
+router.delete("/admin/:id", ProjectsController.deleteProject);
 
 module.exports = router;
