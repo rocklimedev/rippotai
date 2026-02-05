@@ -1,5 +1,6 @@
 // src/store/AuthContext.js
-"use client"; // ← MUST be the VERY FIRST line, before any imports
+"use client"; // ← This must be the very first line
+
 import React, {
   createContext,
   useState,
@@ -14,14 +15,28 @@ import {
   useRefreshTokenMutation,
 } from "../api/rippotaiApi";
 
-export const AuthContext = createContext();
+export const AuthContext = createContext(undefined);
 
 export const AuthProvider = ({ children }) => {
-  const [authState, setAuthState] = useState({
-    isAuthenticated: false,
-    user: null,
-    token: localStorage.getItem("adminToken") || null,
-    refreshToken: localStorage.getItem("refreshToken") || null,
+  // Lazy initialization – only runs on client, safe defaults on server
+  const [authState, setAuthState] = useState(() => {
+    // During SSR / build (server) → no localStorage → safe defaults
+    if (typeof window === "undefined") {
+      return {
+        isAuthenticated: false,
+        user: null,
+        token: null,
+        refreshToken: null,
+      };
+    }
+
+    // Only on client → safe to access localStorage
+    return {
+      isAuthenticated: false,
+      user: null,
+      token: localStorage.getItem("adminToken") || null,
+      refreshToken: localStorage.getItem("refreshToken") || null,
+    };
   });
 
   const [login, { isLoading: isLoginLoading }] = useLoginMutation();
@@ -33,9 +48,7 @@ export const AuthProvider = ({ children }) => {
     { skip: !authState.token },
   );
 
-  // ────────────────────────────────────────────────
-  // Move handleLogout here — before the useEffect that needs it
-  // ────────────────────────────────────────────────
+  // Handle logout – moved up as before
   const handleLogout = useCallback(async () => {
     try {
       await logout().unwrap();
@@ -53,7 +66,7 @@ export const AuthProvider = ({ children }) => {
     });
   }, [logout]);
 
-  // Update auth state when profile is successfully fetched
+  // Update auth state when profile loads
   useEffect(() => {
     if (profile && authState.token) {
       setAuthState((prev) => ({
@@ -64,7 +77,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, [profile, authState.token]);
 
-  // Attempt to refresh token when we have refreshToken but no access token
+  // Token refresh logic
   useEffect(() => {
     const refresh = async () => {
       if (authState.refreshToken && !authState.token) {
@@ -84,7 +97,7 @@ export const AuthProvider = ({ children }) => {
           }));
         } catch (err) {
           console.error("Token refresh failed:", err);
-          handleLogout(); // ← now safe
+          handleLogout();
         }
       }
     };
@@ -94,7 +107,7 @@ export const AuthProvider = ({ children }) => {
     authState.refreshToken,
     authState.token,
     refreshTokenMutation,
-    handleLogout, // ← now declared above
+    handleLogout,
   ]);
 
   const handleLogin = useCallback(
