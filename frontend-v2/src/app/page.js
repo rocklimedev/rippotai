@@ -1,0 +1,137 @@
+"use client";
+// src/components/Home/Home.jsx
+import React from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
+import Image from "next/image"; // ← Add this import
+import "swiper/css";
+
+// Desktop banners
+import banner1 from "../assets/images/banners/INTERIOR 01.jpg";
+import banner2 from "../assets/images/banners/Living Area03.jpg";
+import banner3 from "../assets/images/banners/kitchen_set02.png";
+import banner4 from "../assets/images/banners/main-banner.jpg";
+
+// Mobile banners
+import banner1Mobile from "../assets/images/banners/mobile/5.png";
+import banner2Mobile from "../assets/images/banners/mobile/2.jpg";
+import banner3Mobile from "../assets/images/banners/mobile/3.jpg";
+import banner4Mobile from "../assets/images/banners/mobile/4.jpg";
+
+import founderImg from "../assets/images/founder.png";
+
+import ProjectsShowcase from "@/components/Home/ProjectsShowcase";
+
+const Home = () => {
+  return (
+    <>
+      {/* Hero Section - responsive banner carousel */}
+      <section className="hero">
+        <Swiper
+          modules={[Autoplay]}
+          loop={true}
+          autoplay={{ delay: 5000, disableOnInteraction: false }}
+          className="swiper-container"
+        >
+          <SwiperSlide>
+            <picture>
+              {/* Mobile version */}
+              <source srcSet={banner1Mobile} media="(max-width: 768px)" />
+              {/* Desktop version with next/image */}
+              <div className="hero-image-wrapper">
+                <Image
+                  src={banner1}
+                  alt="Modern interior with elegant wooden elements"
+                  fill
+                  className="hero-image object-cover"
+                  priority // good for first hero image (LCP)
+                  sizes="(max-width: 768px) 100vw, 100vw"
+                />
+              </div>
+            </picture>
+          </SwiperSlide>
+
+          <SwiperSlide>
+            <picture>
+              <source srcSet={banner2Mobile} media="(max-width: 768px)" />
+              <div className="hero-image-wrapper">
+                <Image
+                  src={banner2}
+                  alt="Spacious living area with natural light"
+                  fill
+                  className="hero-image object-cover"
+                  sizes="(max-width: 768px) 100vw, 100vw"
+                />
+              </div>
+            </picture>
+          </SwiperSlide>
+
+          <SwiperSlide>
+            <picture>
+              <source srcSet={banner3Mobile} media="(max-width: 768px)" />
+              <div className="hero-image-wrapper">
+                <Image
+                  src={banner3}
+                  alt="Contemporary modular kitchen design"
+                  fill
+                  className="hero-image object-cover"
+                  sizes="(max-width: 768px) 100vw, 100vw"
+                />
+              </div>
+            </picture>
+          </SwiperSlide>
+
+          <SwiperSlide>
+            <picture>
+              <source srcSet={banner4Mobile} media="(max-width: 768px)" />
+              <div className="hero-image-wrapper">
+                <Image
+                  src={banner4}
+                  alt="Luxury residential exterior facade"
+                  fill
+                  className="hero-image object-cover"
+                  sizes="(max-width: 768px) 100vw, 100vw"
+                />
+              </div>
+            </picture>
+          </SwiperSlide>
+        </Swiper>
+      </section>
+
+      {/* Who We Are Section */}
+      <section className="who-we-are">
+        <div className="who-we-are-block">
+          <div className="who-we-are-container">
+            <div className="who-we-are-text">
+              <h3>Who Are We</h3>
+              <p>
+                At Rippotai Architecture, we believe architecture is more than
+                building spaces—it’s about shaping experiences. Our approach
+                blends functionality with timeless design, creating environments
+                that inspire, nurture, and elevate everyday living. With a deep
+                respect for context, materials, and human connection, we craft
+                spaces that are not only visually striking but also purposeful
+                and enduring.
+              </p>
+            </div>
+
+            <div className="who-we-are-image">
+              <Image
+                src={founderImg}
+                alt="John Rippotai, Founder of Rippotai Architecture"
+                width={500} // adjust based on your actual image size
+                height={600} // adjust to maintain aspect ratio
+                className="founder-img"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <ProjectsShowcase />
+    </>
+  );
+};
+
+export default Home;
