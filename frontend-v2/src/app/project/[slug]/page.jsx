@@ -100,9 +100,7 @@ export default function ProjectDetailPage({ params }) {
       <section className="project-two-image-section">
         <div className="custom-container">
           <div className="custom-row">
-            <div className="custom-col-6">
-              <p className="project-details">{project.details}</p>
-            </div>
+            <div className="custom-col-6">{project.details}</div>
             <div className="custom-col-6">
               <img
                 src={project.images?.[0] || "/placeholder.png"}
@@ -124,9 +122,7 @@ export default function ProjectDetailPage({ params }) {
                 style={{ cursor: project.images?.[1] ? "pointer" : "default" }}
               />
             </div>
-            <div className="custom-col-6">
-              <p className="project-description">{project.description}</p>
-            </div>
+            <div className="custom-col-6">{project.description}</div>
           </div>
         </div>
       </section>

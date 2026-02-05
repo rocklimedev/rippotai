@@ -12,12 +12,12 @@
   --spacing-lg: 24px;
   --border-radius: 8px;
   --shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  --primary-color: #1a3c34; /* Example primary color */
+  --primary-color: #fff; /* Example primary color */
   --accent-color: #d4a017;
   --white: #fff;
-  --text-color: #333;
+  --text-color: #1a3c34;
   --background: #f5f5f5;
-  --light-bg: #e5e5e5;
+  --light-bg: #1a3c34;
   --max-width: 1400px; /* Defined for footer container */
   --header-height: 60px; /* From previous CSS */
   --phone-color: #0f2c28; /* Green-blue for phone */
@@ -26,8 +26,6 @@ body {
   margin: 0;
   font-family: 'Lato', sans-serif;
   font-weight: 400;
-  color: var(--text-color);
-  background-color: var(--light-bg);
   font-size: var(--font-size-base);
   line-height: 1.6;
   overflow-x: hidden;
@@ -48,7 +46,7 @@ header {
 }
 
 header.scrolled {
-  background: var(--primary-color) !important;
+  background: var(--text-color) !important;
   opacity: 0.9;
 }
 
@@ -199,10 +197,6 @@ nav ul li a:hover {
   transition: background 0.2s ease;
 }
 
-.search-results ul li a:hover {
-  background: var(--light-bg);
-}
-
 .result-item {
   display: flex;
   align-items: center;
@@ -220,7 +214,6 @@ nav ul li a:hover {
 .result-content h3 {
   margin: 0;
   font-size: 16px;
-  color: var(--primary-color);
 }
 
 .result-content p {
@@ -231,7 +224,6 @@ nav ul li a:hover {
 }
 
 .search-results p {
-  text-align: center;
   color: var(--text-color);
   font-size: 14px;
 }
@@ -459,7 +451,6 @@ nav ul li a:hover {
   display: flex;
   justify-content: center;
   background-color: var(--primary-color);
-  color: var(--white);
   min-height: clamp(300px, 60vw, 400px); /* Responsive height */
   padding: var(--spacing-lg) 0;
 }
@@ -483,11 +474,13 @@ nav ul li a:hover {
   font-size: clamp(24px, 5vw, 32px); /* Responsive font size */
   font-weight: 700;
   margin-bottom: var(--spacing-sm);
+  color: var(--text-color)
 }
 
 .who-we-are-text p {
   font-size: clamp(16px, 3vw, 18px);
   line-height: 1.8;
+    color: var(--text-color)
 }
 
 .who-we-are-image {
@@ -511,7 +504,9 @@ nav ul li a:hover {
   100% { opacity: 1; transform: scale(1); }
 }
 
-
+.projects-showcase{
+      padding-top: 120px;
+}
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -581,7 +576,9 @@ nav ul li a:hover {
   font-family: 'Lato', sans-serif;
   line-height: 1.5;
 }
-
+.view-all-btn{
+  color: var(--text-color);
+}
 .project-overlay {
   position: absolute;
   top: 0;
@@ -868,7 +865,7 @@ right: 17px;
 
 /* Footer Styling */
 .footer {
-  background-color: var(--primary-color);
+  background-color: var(--text-color);
   padding: clamp(24px, 5vw, 32px) 0; /* Responsive padding */
   color: var(--white);
 }
@@ -1020,7 +1017,6 @@ right: 17px;
   outline-offset: 2px;
 }
 .footer-bottom {
-  background-color: var(--light-bg);
   padding: clamp(12px, 3vw, 16px) 0;
   text-align: center;
 }
@@ -1243,8 +1239,9 @@ right: 17px;
 
 .contact-wrapper .heading h2 {
   font-size: clamp(24px, 5vw, 32px);
-  color: var(--primary-color);
   margin-bottom: var(--spacing-md);
+  text-align: center;
+  color: var(--text-color);
 }
 
 .contact-wrapper .heading p {
@@ -1261,7 +1258,6 @@ right: 17px;
 /* Contact Form */
 .contact-form .form-label {
   font-size: clamp(14px, 2.5vw, 16px);
-  color: var(--primary-color);
   font-weight: 600;
   margin-bottom: var(--spacing-sm);
   display: block;
@@ -1565,8 +1561,9 @@ right: 17px;
 
 .our-project-wrapper .heading h2 {
   font-size: clamp(24px, 5vw, 32px);
-  color: var(--primary-color);
   margin-bottom: var(--spacing-md);
+  text-align: center;
+  color: var(--text-color);
 }
 
 .our-project-wrapper .heading p {
@@ -1574,6 +1571,7 @@ right: 17px;
   color: var(--text-color);
   max-width: 800px;
   margin: 0 auto;
+      text-align: center;
 }
 
 .mt-3 {
@@ -1592,8 +1590,8 @@ right: 17px;
 
 .filter-btn {
   background: none;
-  border: 1px solid var(--primary-color);
-  color: var(--primary-color);
+  border: none;
+    color: var(--text-color);
   padding: clamp(8px, 2vw, 10px) clamp(12px, 3vw, 16px);
   margin: 0 clamp(4px, 1vw, 8px);
   border-radius: var(--border-radius);
@@ -1606,7 +1604,6 @@ right: 17px;
 .filter-btn:hover,
 .filter-btn.active {
   background-color: var(--primary-color);
-  color: var(--white);
 }
 
 /* Project Grid */
@@ -1912,7 +1909,7 @@ right: 17px;
 .careers-culture .heading h2 {
   font-family: 'Lato', sans-serif;
   font-size: clamp(24px, 5vw, 32px);
-  color: var(--primary-color);
+  color: var(--text-color);
   margin-bottom: var(--spacing-sm);
 }
 
@@ -1957,9 +1954,6 @@ right: 17px;
 }
 
 .filter-btn {
-  background: var(--white);
-  border: 1px solid var(--primary-color);
-  color: var(--primary-color);
   padding: clamp(8px, 2vw, 10px) clamp(12px, 3vw, 16px);
   border-radius: var(--border-radius);
   font-size: clamp(14px, 2.5vw, 16px);
@@ -1970,8 +1964,6 @@ right: 17px;
 
 .filter-btn:hover,
 .filter-btn.active {
-  background-color: var(--primary-color);
-  color: var(--white);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow instead of transform */
 }
 
@@ -2720,7 +2712,6 @@ right: 17px;
 /* Typewriter Text */
 .typewriter-text {
   font-size: clamp(20px, 4vw, 28px); /* Responsive font size, ≥20px for accessibility */
-  color: var(--primary-color);
   white-space: nowrap;
   overflow: hidden;
   display: inline-block;
@@ -2733,7 +2724,7 @@ right: 17px;
 
 /* Links inside typewriter */
 .typewriter-text a {
-  color: var(--primary-color);
+  color: var(--text-color);
   text-decoration: none;
   transition: color 0.3s ease, text-decoration 0.3s ease;
   font-weight: 400;
@@ -2828,6 +2819,8 @@ right: 17px;
 .custom-col-6 {
   flex: 0 0 50%;
   max-width: 50%;
+  color: var(--text-color);
+      padding-bottom: 50px;
 }
 
 /* Project Detail Page */
@@ -3516,13 +3509,11 @@ right: 17px;
 
 .careers-form .form-submit-button {
   width: 100%;
-  background-color: var(--primary-color);
   border: none;
   border-radius: var(--border-radius);
   padding: clamp(10px, 2vw, 14px) clamp(12px, 3vw, 16px);
   font-size: clamp(14px, 2.5vw, 16px);
   font-weight: bold;
-  color: var(--white);
   cursor: pointer;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
   text-transform: uppercase;
@@ -3531,7 +3522,6 @@ right: 17px;
 }
 
 .careers-form .form-submit-button:hover {
-  background-color: var(--phone-color);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
