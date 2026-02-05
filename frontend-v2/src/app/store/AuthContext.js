@@ -1,5 +1,5 @@
 // src/store/AuthContext.js
-
+"use client"; // ← MUST be the VERY FIRST line, before any imports
 import React, {
   createContext,
   useState,
