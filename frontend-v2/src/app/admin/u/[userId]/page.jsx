@@ -20,7 +20,7 @@ import {
   ClockCircleOutlined,
   LockOutlined,
 } from "@ant-design/icons";
-import { useGetProfileQuery } from "../../api/rippotaiApi";
+import { useGetProfileQuery } from "@/app/api/rippotaiApi";
 import "@/components/Admin/profile.css";
 
 const { Title, Text } = Typography;
