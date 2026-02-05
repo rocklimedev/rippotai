@@ -21,7 +21,7 @@ import {
   LockOutlined,
 } from "@ant-design/icons";
 import { useGetProfileQuery } from "../../api/rippotaiApi";
-import "./profile.css";
+import "@/components/Admin/profile.css";
 
 const { Title, Text } = Typography;
 
