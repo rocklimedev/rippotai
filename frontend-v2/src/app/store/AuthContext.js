@@ -1,5 +1,12 @@
 // src/store/AuthContext.js
-import React, { createContext, useState, useEffect, useCallback } from "react";
+
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  useCallback,
+  useContext,
+} from "react";
 import {
   useLoginMutation,
   useLogoutMutation,
@@ -26,6 +33,26 @@ export const AuthProvider = ({ children }) => {
     { skip: !authState.token },
   );
 
+  // ────────────────────────────────────────────────
+  // Move handleLogout here — before the useEffect that needs it
+  // ────────────────────────────────────────────────
+  const handleLogout = useCallback(async () => {
+    try {
+      await logout().unwrap();
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("refreshToken");
+
+    setAuthState({
+      isAuthenticated: false,
+      user: null,
+      token: null,
+      refreshToken: null,
+    });
+  }, [logout]);
+
   // Update auth state when profile is successfully fetched
   useEffect(() => {
     if (profile && authState.token) {
@@ -35,7 +62,7 @@ export const AuthProvider = ({ children }) => {
         user: profile,
       }));
     }
-  }, [profile, authState.token]); // ← added authState.token
+  }, [profile, authState.token]);
 
   // Attempt to refresh token when we have refreshToken but no access token
   useEffect(() => {
@@ -57,7 +84,7 @@ export const AuthProvider = ({ children }) => {
           }));
         } catch (err) {
           console.error("Token refresh failed:", err);
-          handleLogout(); // will be stable thanks to useCallback
+          handleLogout(); // ← now safe
         }
       }
     };
@@ -67,11 +94,9 @@ export const AuthProvider = ({ children }) => {
     authState.refreshToken,
     authState.token,
     refreshTokenMutation,
-    handleLogout,
+    handleLogout, // ← now declared above
   ]);
-  // ↑ added missing: authState.token + handleLogout
 
-  // Memoize handlers to prevent unnecessary re-renders / effect triggers
   const handleLogin = useCallback(
     async ({ email, password }) => {
       try {
@@ -95,23 +120,6 @@ export const AuthProvider = ({ children }) => {
     [login],
   );
 
-  const handleLogout = useCallback(async () => {
-    try {
-      await logout().unwrap();
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
-    localStorage.removeItem("adminToken");
-    localStorage.removeItem("refreshToken");
-
-    setAuthState({
-      isAuthenticated: false,
-      user: null,
-      token: null,
-      refreshToken: null,
-    });
-  }, [logout]);
-
   return (
     <AuthContext.Provider
       value={{
@@ -126,4 +134,12 @@ export const AuthProvider = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
+};
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error("useAuth must be used within AuthProvider");
+  }
+  return context;
 };
