@@ -1,13 +1,11 @@
-// src/app/layout.js
-import { GeistSans } from "geist/font/sans"; // Correct path for Sans
-import { GeistMono } from "geist/font/mono"; // Separate path for Mono!
+// app/layout.js
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 
 import "./globals.css";
 import Providers from "./Providers";
 import Header from "@/components/Common/Header";
 import Footer from "@/components/Common/Footer";
-// No extra config needed — the package handles variable names and basic subsets
-// (You can override if needed, but usually not required)
 
 export const metadata = {
   title: "Rippotai Architecture | Best Architecture Firm in New Delhi, India",
@@ -17,7 +15,6 @@ export const metadata = {
     "architecture firm New Delhi, interior designers Delhi, residential architects India, institutional architecture, modern home design Delhi, Rippotai Architecture",
   robots: "index, follow",
   authors: [{ name: "Rippotai Architecture" }],
-  viewport: "width=device-width, initial-scale=1",
   icons: {
     icon: "/logo.png",
   },
@@ -52,6 +49,16 @@ export const metadata = {
   manifest: "/manifest.json",
 };
 
+// ← Separate export for viewport (fixes the warning)
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  // You can add more if needed, e.g.:
+  // maximumScale: 1,
+  // userScalable: false,
+  // themeColor: "#000000",
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -65,8 +72,11 @@ export default function RootLayout({ children }) {
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
-        {/* Uncomment for Lato if you need it */}
-        {/* <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet" /> */}
+
+        <link
+          href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+          rel="stylesheet"
+        />
         <link
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet"
@@ -78,10 +88,8 @@ export default function RootLayout({ children }) {
         className={`${GeistSans.variable} ${GeistMono.variable} antialiased`}
       >
         <Providers>
-          {" "}
           <Header />
-          <main>{children}</main>{" "}
-          {/* ← optional: wrap content in <main> for semantics */}
+          <main>{children}</main>
           <Footer />
         </Providers>
 
