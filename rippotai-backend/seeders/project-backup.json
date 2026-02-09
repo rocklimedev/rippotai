@@ -26,7 +26,8 @@
       "https://static.cmtradingco.com/rippotai_projects/residential_school_for_blind/15.jpg"
     ],
     "title": "Residential School for the Blind",
-    "status": "draft"
+    "status": "draft",
+    "projectId": "1db538e3-6f80-4211-b59a-d05525811051"
   },
   {
     "_id": "695f48fa1e9c4593195902b2",
@@ -46,7 +47,8 @@
     "status": "draft",
     "details": "Lorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem Ipsum",
     "location": "DELHI",
-    "scope": "Do nothing"
+    "scope": "Do nothing",
+    "projectId": "de85d59d-3164-4f6a-8f44-478d2c00c611"
   },
   {
     "_id": "6981a5c84ba888294d1bb827",
@@ -68,7 +70,8 @@
     "location": "Paschim Vihar, New Delhi",
     "scope": "Interior Design, Space Planning, Display Design, Lighting Design",
     "status": "draft",
-    "title": "Chhabra Marble & Sanitary Showroom"
+    "title": "Chhabra Marble & Sanitary Showroom",
+    "projectId": "e80c1c89-d16a-48b6-a84e-439dda50f7b8"
   },
   {
     "_id": "6981aa464ba888294d1bb845",
@@ -92,7 +95,8 @@
     "location": "Panchsheel Park, New Delhi",
     "scope": "Planning & Designing",
     "status": "draft",
-    "title": "Town Property Office"
+    "title": "Town Property Office",
+    "projectId": "0b386202-e703-4a53-8446-2c0cd4747a4c"
   },
   {
     "_id": "6981aa464ba888294d1bb846",
@@ -102,7 +106,7 @@
     "createdAt": "2025-09-17T11:38:09.168Z",
     "description": "Singh’s Residence is a luxurious private home located in the heart of South Delhi, envisioned as an expression of elegance and refined living. The interiors are designed in a rich luxury theme, where opulence is achieved through carefully curated materials rather than excess.",
     "details": "Wood, veneers, and Italian marble form the core material palette, creating a layered composition of warmth and grandeur. Mirrors are strategically incorporated to enhance spatial depth and amplify light, while wooden elements bring balance and tactile comfort to the lavish setting. \n\n\n The residence reflects a harmonious blend of material richness and thoughtful detailing, resulting in interiors that feel sophisticated, expansive, and timeless—crafted to elevate everyday living.",
-    "image": "https://static.cmtradingco.com/rippotai_projects/singh_residence/cover_image.png",
+    "image": "https://static.cmtradingco.com/rippotai_projects/singh_residence/cover_new.png",
     "images": [
       "https://static.cmtradingco.com/rippotai_projects/singh_residence/1.png",
       "https://static.cmtradingco.com/rippotai_projects/singh_residence/2.png",
@@ -116,7 +120,8 @@
     "location": "GK-2, New Delhi",
     "scope": "Interior Designing",
     "status": "completed",
-    "title": "Singh’s Residence"
+    "title": "Singh’s Residence",
+    "projectId": "f6ed2d48-e72b-40c9-bb3d-7b6f8c5b88df"
   },
   {
     "_id": "6981aa464ba888294d1bb847",
@@ -126,7 +131,7 @@
     "createdAt": "2025-09-17T11:38:09.171Z",
     "description": "Goyal Residence in Gurugram is envisioned as a contemporary living space where bold materials and refined detailing come together in quiet harmony.",
     "details": " The walls feature an imagined dado, finished in glossy black laminate, lending depth, contrast, and a subtle play of reflections to the interiors. Structural columns are enveloped in sculptural POP-masking forms, adding rhythm and architectural character to the space. Select walls are layered with wallpaper and complemented by warm wooden accents, creating a balance between texture, warmth, and modern sophistication.  \n\n\n The residence reflects a thoughtful composition of materials and forms, resulting in interiors that feel dynamic yet composed—contemporary in expression and comfortable in experience.",
-    "image": "https://static.cmtradingco.com/rippotai_projects/goyal_residence/cover_page.png",
+    "image": "https://static.cmtradingco.com/rippotai_projects/goyal_residence/cover_new.png",
     "images": [
       "https://static.cmtradingco.com/rippotai_projects/goyal_residence/1.png",
       "https://static.cmtradingco.com/rippotai_projects/goyal_residence/2.png",
@@ -141,7 +146,8 @@
     "location": "Sector 5, Gurgaon, Haryana",
     "scope": "Interior Designing",
     "status": "completed",
-    "title": "Goyal Residence"
+    "title": "Goyal Residence",
+    "projectId": "232142c9-9478-4f62-acd8-7ff94cb946b7"
   },
   {
     "_id": "6981aa464ba888294d1bb848",
@@ -168,7 +174,8 @@
     "location": "GK-54, New Delhi",
     "scope": "Interior Designing",
     "status": "completed",
-    "title": "Gupta’s Residence"
+    "title": "Gupta’s Residence",
+    "projectId": "d825bad9-7a59-4aa4-b3be-d560598dea45"
   },
   {
     "_id": "6981aa464ba888294d1bb849",
@@ -178,7 +185,7 @@
     "createdAt": "2025-09-17T11:40:02.825Z",
     "description": "Kohli’s Residence is a thoughtfully designed home that balances traditional Indian aesthetics with modern functional elements. Rich woodwork forms the primary material language, adding warmth and cultural character to the interiors.",
     "details": "Modern interventions such as glass partitions, bay windows, and streamlined fixtures are integrated seamlessly, ensuring functionality and enhancing natural light and openness. The result is a home that celebrates heritage-inspired design while accommodating contemporary living needs.",
-    "image": "https://static.cmtradingco.com/rippotai_projects/kohli_residence/cover_image.jpeg",
+    "image": "https://static.cmtradingco.com/rippotai_projects/kohli_residence/cover_new.png",
     "images": [
       "https://static.cmtradingco.com/rippotai_projects/kohli_residence/1.jpeg",
       "https://static.cmtradingco.com/rippotai_projects/kohli_residence/2.png",
@@ -187,7 +194,8 @@
     "location": "Shalimar Bagh, New Delhi",
     "scope": "Interior Designing",
     "status": "completed",
-    "title": "Kohli's Residence"
+    "title": "Kohli's Residence",
+    "projectId": "644e4809-bf10-4bb3-94b6-11982af792d7"
   },
   {
     "_id": "6981aa464ba888294d1bb84a",
@@ -197,7 +205,7 @@
     "createdAt": "2025-09-17T11:40:02.870Z",
     "description": "Khanna’s Law Firm is a commercial office space located in New Delhi, designed to reflect professionalism, clarity, and contemporary elegance.",
     "details": "The planning focuses on creating an efficient and well-organized workspace that supports both individual concentration and collaborative discussions. The office follows a modern contemporary design theme, with a refined palette of woods and blue tones that lend warmth and calm to the interiors. These elements are complemented by black MS detailing and fluted glass, adding depth, structure, and a sense of visual sophistication while maintaining privacy where required. \n\n\n The layout includes private cabins, junior counsel offices, a dedicated conference area, a pantry, and other essential support spaces, all planned to ensure smooth workflow and functional efficiency. Careful zoning and material selection contribute to an environment that is both formal and inviting. \n\n\n Overall, the design balances aesthetic restraint with functional planning, resulting in a professional workspace that aligns with the identity and working style of a contemporary legal practice.",
-    "image": "https://static.cmtradingco.com/rippotai_projects/khanna_law_firm/cover_image.png",
+    "image": "https://static.cmtradingco.com/rippotai_projects/khanna_law_firm/cover_new.png",
     "images": [
       "https://static.cmtradingco.com/rippotai_projects/khanna_law_firm/1.png",
       "https://static.cmtradingco.com/rippotai_projects/khanna_law_firm/2.png",
@@ -205,12 +213,16 @@
       "https://static.cmtradingco.com/rippotai_projects/khanna_law_firm/4.png",
       "https://static.cmtradingco.com/rippotai_projects/khanna_law_firm/5.png",
       "https://static.cmtradingco.com/rippotai_projects/khanna_law_firm/6.png",
-      "https://static.cmtradingco.com/rippotai_projects/khanna_law_firm/7.png"
+      "https://static.cmtradingco.com/rippotai_projects/khanna_law_firm/7.png",
+      "https://static.cmtradingco.com/rippotai_projects/khanna_law_firm/8.png",
+      "https://static.cmtradingco.com/rippotai_projects/khanna_law_firm/9.png",
+      "https://static.cmtradingco.com/rippotai_projects/khanna_law_firm/10.png"
     ],
     "location": "Panchsheel Park, New Delhi",
     "scope": "Planning & Interior Designing",
     "status": "completed",
-    "title": "Khanna's Law Firm"
+    "title": "Khanna's Law Firm",
+    "projectId": "58d64965-3c36-4cc1-94b0-510d6f234190"
   },
   {
     "_id": "6981aa464ba888294d1bb84b",
@@ -220,7 +232,7 @@
     "createdAt": "2025-09-18T05:53:52.061Z",
     "description": "Nagpal’s Residence is a mixed-use project located in Pitampura, New Delhi, where the design challenge was to seamlessly integrate a commercial store within a residential building.",
     "details": " The planning and façade treatment were approached holistically to ensure visual continuity between the commercial and residential functions, while still maintaining a clear architectural identity. The façade design is composed using ACP panels, MS members, and tiles, arranged in a balanced composition that unifies both uses of the building. A neutral color palette of greys and beiges was selected to achieve a contemporary, refined appearance while ensuring longevity and contextual harmony within the urban fabric. \n\n\n The interior spaces are inspired by a contemporary design theme, emphasizing clean lines, functionality, and warmth. Wood is used as the primary material, complemented by other subtle design elements to create a comfortable and modern living environment. The interiors are designed to reflect understated elegance while catering to everyday residential needs. \n\n\n Overall, the project demonstrates a thoughtful approach to mixed-use design, combining cohesive façade articulation with well-planned contemporary interiors.",
-    "image": "https://static.cmtradingco.com/rippotai_projects/nagpal_residence/cover_image.png",
+    "image": "https://static.cmtradingco.com/rippotai_projects/nagpal_residence/cover_new.png",
     "images": [
       "https://static.cmtradingco.com/rippotai_projects/nagpal_residence/1.png",
       "https://static.cmtradingco.com/rippotai_projects/nagpal_residence/2.png",
@@ -229,7 +241,8 @@
     "location": "KP-18, Pitampura, New Delhi",
     "scope": "Façade & Interior Designing",
     "status": "completed",
-    "title": "Nagpal's Residence"
+    "title": "Nagpal's Residence",
+    "projectId": "a8cc3e34-04cb-4af8-9fb8-09cac9d456b7"
   },
   {
     "_id": "6981aa464ba888294d1bb84c",
@@ -239,7 +252,7 @@
     "createdAt": "2026-01-08T06:04:41.817Z",
     "description": "CMRR Headquarters is a commercial office space designed in Paschim Vihar to accommodate the operational and creative teams of multiple business verticals, including Chhabra Marble and Trading Company, Rocklime Media Management, and Rippotai Architecture.",
     "details": "The planning emphasizes efficiency, collaboration, and flexibility to support the diverse working styles of these organizations. The design is rooted in a brutalist architectural concept, celebrating the honesty and rawness of materials. Exposed concrete is used extensively across walls, floors, and ceilings, forming the primary visual language of the space. All electrical conduits, piping, and services are intentionally left exposed, reinforcing the principle of “truth to materials” and eliminating unnecessary surface treatments. \n\n\n This raw industrial aesthetic is balanced through careful spatial planning and proportion, ensuring that the environment remains functional, comfortable, and inspiring for daily work. The resulting office reflects a bold, unfiltered architectural expression that aligns with the creative and construction-oriented nature of the firms it houses.",
-    "image": "https://static.cmtradingco.com/rippotai_projects/cmrr_headquarters/cover_image.png",
+    "image": "https://static.cmtradingco.com/rippotai_projects/cmrr_headquarters/cover_new.png",
     "images": [
       "https://static.cmtradingco.com/rippotai_projects/cmrr_headquarters/1.png",
       "https://static.cmtradingco.com/rippotai_projects/cmrr_headquarters/2.png",
@@ -252,7 +265,8 @@
     "location": "Paschim Vihar, New Delhi",
     "scope": "Planning & Designing",
     "status": "completed",
-    "title": "CMRR Headquarters"
+    "title": "CMRR Headquarters",
+    "projectId": "93c29dcb-05dc-47c0-a7d4-c5546d998a9a"
   },
   {
     "_id": "6981aa464ba888294d1bb84d",
@@ -262,18 +276,30 @@
     "createdAt": "2026-01-08T06:04:41.864Z",
     "description": "Moksh Dhaam is a crematorium project envisioned with a deep focus on ritual, movement, and spatial sequencing.",
     "details": "The planning is guided by pathway planning principles, where each space is arranged in accordance with the chronological steps followed during the cremation process. This approach ensures clarity, dignity, and ease of movement for users during a highly sensitive experience. All functional spaces are organized around a central Shiva idol, establishing a strong spiritual and symbolic axis for the site. At the heart of the complex lies an elevated mound that acts as the visual and conceptual focal point. Beneath this mound, administrative offices are thoughtfully integrated, allowing operational functions to remain discreet while maintaining the sanctity of the upper ceremonial spaces. \n\n\n The design places significant emphasis on landscape and environmental sensitivity. A substantial amount of existing vegetation on the site has been retained and incorporated into the overall planning, creating a serene, contemplative environment. The presence of greenery helps soften the industrial nature of the typology while offering a sense of calm, reflection, and continuity with nature. \n\n\n Moksh Dhaam represents a balanced integration of ritual-based planning, spiritual symbolism, and sustainable site responsiveness, resulting in a crematorium that is both functional and respectful in its architectural expression.",
-    "image": "https://static.cmtradingco.com/rippotai_projects/moksh_dhaam/cover_image.png",
+    "image": "https://static.cmtradingco.com/rippotai_projects/moksh_dhaam/cover_new.png",
     "images": [
+      "https://static.cmtradingco.com/rippotai_projects/moksh_dhaam/1.png",
       "https://static.cmtradingco.com/rippotai_projects/moksh_dhaam/2.png",
       "https://static.cmtradingco.com/rippotai_projects/moksh_dhaam/3.png",
       "https://static.cmtradingco.com/rippotai_projects/moksh_dhaam/4.png",
       "https://static.cmtradingco.com/rippotai_projects/moksh_dhaam/5.png",
-      "https://static.cmtradingco.com/rippotai_projects/moksh_dhaam/6.png"
+      "https://static.cmtradingco.com/rippotai_projects/moksh_dhaam/6.png",
+      "https://static.cmtradingco.com/rippotai_projects/moksh_dhaam/7.png",
+      "https://static.cmtradingco.com/rippotai_projects/moksh_dhaam/8.png",
+      "https://static.cmtradingco.com/rippotai_projects/moksh_dhaam/9.png",
+      "https://static.cmtradingco.com/rippotai_projects/moksh_dhaam/10.png",
+      "https://static.cmtradingco.com/rippotai_projects/moksh_dhaam/11.png",
+      "https://static.cmtradingco.com/rippotai_projects/moksh_dhaam/12.png",
+      "https://static.cmtradingco.com/rippotai_projects/moksh_dhaam/13.png",
+      "https://static.cmtradingco.com/rippotai_projects/moksh_dhaam/14.png",
+      "https://static.cmtradingco.com/rippotai_projects/moksh_dhaam/15.png",
+      "https://static.cmtradingco.com/rippotai_projects/moksh_dhaam/16.png"
     ],
     "location": "Aligarh, Uttar Pradesh",
     "scope": "Planning & Designing",
     "status": "completed",
-    "title": "Moksh Dhaam"
+    "title": "Moksh Dhaam",
+    "projectId": "9356d287-a96e-4aaf-88f7-5bc52308edd0"
   },
   {
     "_id": "6981aa474ba888294d1bb84e",
@@ -283,7 +309,7 @@
     "createdAt": "2026-01-08T06:04:41.957Z",
     "description": "Sky View Café is a hospitality project designed on a terrace level, envisioned as a vibrant social space that blends openness, greenery, and experiential design.",
     "details": "The planning focuses on creating a dynamic yet comfortable environment, offering a balance between open-air seating and enclosed seating areas to suit varying user preferences and weather conditions. \n\n\n The layout integrates a dedicated mocktail bar as a central attraction, enhancing the interactive experience of the café. Multiple photo points are strategically designed throughout the space, encouraging visual engagement and making the café a memorable destination for visitors. A garden setting further enriches the ambience, introducing natural elements that soften the built environment and create a relaxed, refreshing atmosphere. \n\n\n Material selection plays a key role in defining the character of the café. An MS frame forms the structural base, paired with glass to maintain visual openness and uninterrupted views. Terracotta jali elements are incorporated to add texture, warmth, and cultural relevance, while also assisting with ventilation and light filtration. The combination of these materials results in a contemporary yet contextually rooted design. \n\n\n Overall, Sky View Café is designed as an inviting rooftop destination that merges functionality, aesthetics, and experiential design, offering patrons a lively yet comfortable dining experience.",
-    "image": "https://static.cmtradingco.com/rippotai_projects/sky_view_cafe/cover_image.png",
+    "image": "https://static.cmtradingco.com/rippotai_projects/sky_view_cafe/cover_new.png",
     "images": [
       "https://static.cmtradingco.com/rippotai_projects/sky_view_cafe/1.png",
       "https://static.cmtradingco.com/rippotai_projects/sky_view_cafe/2.png",
@@ -308,7 +334,8 @@
     "location": "Lucknow, Uttar Pradesh",
     "scope": "Planning & Designing",
     "status": "completed",
-    "title": "Sky View Café"
+    "title": "Sky View Café",
+    "projectId": "d6b22237-c6d6-48c2-911c-bb0fa3507fe4"
   },
   {
     "_id": "6981aa474ba888294d1bb84f",
@@ -318,7 +345,7 @@
     "createdAt": "2026-01-08T06:17:21.711Z",
     "description": "B19 Residence is a study in minimal luxury, where clean lines and subtle materiality meet bespoke craftsmanship. Wood and veneer form the base language, enriched with touches of marble and gold that whisper understated opulence.",
     "details": "Custom furniture—including TV panels, beds, side tables, and consoles—is designed to balance elegance with functionality, each piece curated to complement the home’s refined aesthetic. \n\n\n The terrace unfolds as a serene outdoor retreat, featuring a pergola seating arrangement crafted in black metal and glass, softened by warm wooden elements. Together, they create a space that invites both repose and conversation under the open sky. \n\n\n  The temple, a spiritual anchor within the residence, rises in quiet grandeur. A marble backdrop is paired with frosted glass and wood veneer pocket doors of monumental height, filtering light while honoring the sanctity of the space. Every detail is designed to balance reverence, material honesty, and visual poetry.",
-    "image": "https://static.cmtradingco.com/rippotai_projects/b19_geetanjali_residence/cover_image.png",
+    "image": "https://static.cmtradingco.com/rippotai_projects/b19_geetanjali_residence/cover_new.png",
     "images": [
       "https://static.cmtradingco.com/rippotai_projects/b19_geetanjali_residence/1.png",
       "https://static.cmtradingco.com/rippotai_projects/b19_geetanjali_residence/2.png",
@@ -340,6 +367,7 @@
     "location": "Geetanjali Marg, New Delhi",
     "scope": "Terrace & Bespoke Furniture",
     "status": "completed",
-    "title": "B19 Geetanjali Residence"
+    "title": "B19 Geetanjali Residence",
+    "projectId": "4b18db13-d2df-4f6c-8dcb-1794cb347a4d"
   }
 ]

@@ -1,29 +1,39 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
-import Image from "next/image"; // ← Add this import
+import Image from "next/image";
 
 import founderImg1 from "../../assets/images/slider_1.jpg";
 import founderImg2 from "../../assets/images/slider_2.jpg";
 import founderImg3 from "../../assets/images/slider_3.jpg";
 import companyImg from "../../assets/images/logo.png";
 
+import { useGetPublicProjectsQuery } from "../api/rippotaiApi"; // adjust path if needed
+import ThreeDCarousel from "@/components/About/ThreeDCarousel"; // adjust path if needed
+
 const AboutUsPage = () => {
   const founderImages = [
     { src: founderImg1, alt: "Sagar Chhabra, Founder - Image 1" },
-    { src: founderImg2, alt: "Sagar Chhabra, Founder - Image 2" },
-    { src: founderImg3, alt: "Sagar Chhabra, Founder - Image 3" },
+    { src: founderImg1, alt: "Sagar Chhabra, Founder - Image 2" },
+    { src: founderImg1, alt: "Sagar Chhabra, Founder - Image 3" },
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Change image every 3 seconds
+  // Fetch public projects (you already limited to 8)
+  const { data: projects = [] } = useGetPublicProjectsQuery({
+    page: 1,
+    limit: 8,
+  });
+
+  // Optional: auto-rotate founder images
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % founderImages.length);
+      setCurrentIndex((prev) => (prev + 1) % founderImages.length);
     }, 3000);
 
-    return () => clearInterval(interval); // cleanup
-  }, []);
+    return () => clearInterval(interval);
+  }, [founderImages.length]);
 
   return (
     <div className="about-page">
@@ -39,8 +49,7 @@ const AboutUsPage = () => {
               <Image
                 src={companyImg}
                 alt="Rippotai Architecture - Company Vision"
-                // width & height auto-detected from static import
-                priority // optional: good for logos / above-the-fold images
+                priority
               />
             </div>
             <div className="who-we-are-text">
@@ -55,7 +64,7 @@ const AboutUsPage = () => {
           </div>
         </div>
 
-        {/* Founder Section with Blinking Image Change */}
+        {/* Founder Section with image slider */}
         <div className="who-we-are-block">
           <div className="who-we-are-container">
             <div className="who-we-are-text">
@@ -72,20 +81,31 @@ const AboutUsPage = () => {
             </div>
             <div className="who-we-are-image founder-slider">
               <Image
-                key={currentIndex} // ensures re-render
+                key={currentIndex} // forces re-mount for animation
                 src={founderImages[currentIndex].src}
                 alt={founderImages[currentIndex].alt}
                 className="founder-slider-img blink"
-                // width & height auto-detected from static import
-                // optional: add sizes if you know the layout behavior
                 sizes="(max-width: 768px) 100vw, 50vw"
-                // optional: prioritize the first image
                 priority={currentIndex === 0}
               />
             </div>
           </div>
         </div>
       </section>
+
+      {/* 3D Carousel – now using the fetched projects */}
+      {/* {projects.length > 0 && (
+        <ThreeDCarousel
+          projects={projects}
+          rotationSpeed={28}
+          zDepth={280}
+          cardWidth={320}
+          cardHeight={450}
+          borderRadius="20px"
+          showBackface={false}
+          pauseOnHover={true}
+        />
+      )} */}
     </div>
   );
 };

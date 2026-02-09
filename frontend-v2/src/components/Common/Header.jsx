@@ -119,6 +119,11 @@ const Header = () => {
               Careers
             </Link>
           </li>
+          <li>
+            <Link href="/team" onClick={() => setIsMenuOpen(false)}>
+              Team
+            </Link>
+          </li>
         </ul>
       </nav>
 

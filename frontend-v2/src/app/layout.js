@@ -1,11 +1,11 @@
-// app/layout.js
+// app/layout.tsx
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
-
 import "./globals.css";
 import Providers from "./Providers";
 import Header from "@/components/Common/Header";
 import Footer from "@/components/Common/Footer";
+import ClientLayout from "./ClientLayout"; // ← new file we'll create
 
 export const metadata = {
   title: "Rippotai Architecture | Best Architecture Firm in New Delhi, India",
@@ -49,14 +49,9 @@ export const metadata = {
   manifest: "/manifest.json",
 };
 
-// ← Separate export for viewport (fixes the warning)
 export const viewport = {
   width: "device-width",
   initialScale: 1,
-  // You can add more if needed, e.g.:
-  // maximumScale: 1,
-  // userScalable: false,
-  // themeColor: "#000000",
 };
 
 export default function RootLayout({ children }) {
@@ -72,7 +67,6 @@ export default function RootLayout({ children }) {
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
-
         <link
           href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
           rel="stylesheet"
@@ -82,9 +76,7 @@ export default function RootLayout({ children }) {
         className={`${GeistSans.variable} ${GeistMono.variable} antialiased`}
       >
         <Providers>
-          <Header />
-          <main>{children}</main>
-          <Footer />
+          <ClientLayout>{children}</ClientLayout>
         </Providers>
 
         <script
@@ -92,7 +84,7 @@ export default function RootLayout({ children }) {
           integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
           crossOrigin="anonymous"
           async
-        ></script>
+        />
         <noscript>You need to enable JavaScript to run this app.</noscript>
       </body>
     </html>
