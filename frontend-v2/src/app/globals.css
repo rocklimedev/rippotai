@@ -785,7 +785,7 @@ nav ul li a:hover {
   z-index: 9999;
 }
 
-/* Base button styles (both WhatsApp & Phone) */
+/* Base button styles */
 .cta-icon {
   display: flex;
   align-items: center;
@@ -801,7 +801,7 @@ nav ul li a:hover {
   text-decoration: none;
   overflow: hidden;
   cursor: pointer;
-  position: relative;           /* important for absolute children */
+  position: relative;
 }
 
 /* ── WhatsApp Button ── */
@@ -813,35 +813,34 @@ nav ul li a:hover {
 }
 
 .cta-icon.whatsapp:hover {
-  width: 220px;
+  width: 220px; /* fixed width */
   border-radius: 999px;
   justify-content: flex-start;
   padding-left: 8px;
   padding-right: 24px;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
 }
-
-/* Icon always pinned to the left – never disappears */
+/* WhatsApp Icon wrapper */
 .cta-icon.whatsapp .icon-wrapper {
   position: absolute;
   left: 0;
   top: 0;
   bottom: 0;
-  width: 60px;                    /* same as collapsed button width */
+  width: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2;
   flex-shrink: 0;
-  background: inherit;            /* carries over #25D366 background */
-  border-radius: 50% 0 0 50%;     /* nice soft edge when expanded */
+  background: inherit;
+  border-radius: 50% 0 0 50%;
 }
 
-/* Text label – appears only on hover */
+/* WhatsApp Label */
 .cta-icon.whatsapp .label {
   opacity: 0;
   visibility: hidden;
-  margin-left: 68px;              /* offset = icon width + small gap */
+  margin-left: 68px;
   font-size: 15px;
   font-weight: 600;
   white-space: nowrap;
@@ -858,7 +857,7 @@ nav ul li a:hover {
   transform: translateX(0);
 }
 
-/* Pulse animation ring */
+/* WhatsApp Pulse */
 .cta-icon.whatsapp::after {
   content: '';
   position: absolute;
@@ -875,13 +874,7 @@ nav ul li a:hover {
   opacity: 0.45;
 }
 
-@keyframes pulse {
-  0%   { transform: scale(0.6); opacity: 0.6; }
-  70%  { transform: scale(1.4); opacity: 0; }
-  100% { transform: scale(1.8); opacity: 0; }
-}
-
-/* ── Phone Button (always compact circle) ── */
+/* ── Phone Button ── */
 .cta-icon.phone {
   background-color: #128C7E;
   width: 60px;
@@ -889,7 +882,69 @@ nav ul li a:hover {
   padding: 0;
 }
 
-/* Hover / focus styles for both buttons */
+.cta-icon.phone:hover {
+  width: 220px; /* same fixed width as WhatsApp */
+  border-radius: 999px;
+  justify-content: flex-start;
+  padding-left: 8px;
+  padding-right: 24px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+}
+/* Phone Icon wrapper */
+.cta-icon.phone .icon-wrapper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  flex-shrink: 0;
+  background: inherit;
+  border-radius: 50% 0 0 50%;
+}
+
+/* Phone Label */
+.cta-icon.phone .label {
+  opacity: 0;
+  visibility: hidden;
+  margin-left: 68px;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: 
+    opacity 0.35s ease 0.1s,
+    transform 0.4s ease;
+  transform: translateX(-20px);
+  pointer-events: none;
+}
+
+.cta-icon.phone:hover .label {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+/* Phone Pulse */
+.cta-icon.phone::after {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  background: #128C7E;
+  border-radius: 50%;
+  opacity: 0.25;
+  z-index: 0;
+  pointer-events: none;
+  animation: pulse 2.2s infinite ease-out;
+}
+
+.cta-icon.phone:hover::after {
+  opacity: 0.45;
+}
+
+/* Common hover/focus shadow */
 .cta-icon:hover,
 .cta-icon:focus {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
@@ -901,6 +956,13 @@ nav ul li a:hover {
   width: 28px;
   height: 28px;
   flex-shrink: 0;
+}
+
+/* Pulse animation keyframes */
+@keyframes pulse {
+  0%   { transform: scale(0.6); opacity: 0.6; }
+  70%  { transform: scale(1.4); opacity: 0; }
+  100% { transform: scale(1.8); opacity: 0; }
 }
 
 /* ────────────────────────────────────────────────

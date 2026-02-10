@@ -50,7 +50,7 @@ const mockTeamData = [
   {
     id: 6,
     name: "Bhav Lamba",
-    role: "Content Strategy & Content Lead",
+    role: "Content Strategy & Creative Lead",
     category: "intern",
     image:
       "https://static.cmtradingco.com/rippotai_projects/rippotai_images/bhav.jpeg",
