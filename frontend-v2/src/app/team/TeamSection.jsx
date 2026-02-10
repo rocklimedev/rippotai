@@ -4,19 +4,10 @@
 import { useState, useEffect } from "react";
 import { Spin, Empty, Pagination, Select } from "antd";
 import TeamMember from "./TeamMember";
-import styles from "./team.module.css";
 
-/**
- * Categories (STRICT – used for filtering)
- * --------------------------------------
- * architect
- * admin
- * accounts
- * intern
- * alumni
- * collaborator
- */
-
+// ──────────────────────────────────────────────
+// MOCK DATA (you can later replace with real API fetch)
+// ──────────────────────────────────────────────
 const mockTeamData = [
   {
     id: 1,
@@ -37,7 +28,7 @@ const mockTeamData = [
   },
   {
     id: 3,
-    name: "Saarthi",
+    name: "Sarthi",
     role: "Architect",
     category: "architect",
     bio: "Architect focusing on planning, detailing, and sustainable design strategies for housing and mixed-use projects.",
@@ -121,7 +112,9 @@ const mockTeamData = [
   },
 ];
 
-// Pagination + filter helper
+// ──────────────────────────────────────────────
+// Helper: filter + paginate
+// ──────────────────────────────────────────────
 const getPaginatedAndFilteredTeam = (
   page = 1,
   limit = 12,
@@ -145,6 +138,9 @@ const getPaginatedAndFilteredTeam = (
   };
 };
 
+// ──────────────────────────────────────────────
+// MAIN COMPONENT
+// ──────────────────────────────────────────────
 export default function TeamSection() {
   const [team, setTeam] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -158,6 +154,7 @@ export default function TeamSection() {
   const loadTeam = (page = 1, category = categoryFilter) => {
     setLoading(true);
 
+    // Simulated delay (remove setTimeout in production when using real API)
     setTimeout(() => {
       const result = getPaginatedAndFilteredTeam(page, 12, category);
       setTeam(result.data);
@@ -166,22 +163,28 @@ export default function TeamSection() {
     }, 400);
   };
 
+  // Load initial data & re-load when category changes
   useEffect(() => {
     loadTeam(1, categoryFilter);
   }, [categoryFilter]);
 
+  const handlePageChange = (page) => {
+    loadTeam(page, categoryFilter);
+  };
+
   return (
-    <>
-      {/* Controls */}
-      <div className={styles.controls}>
+    <section className="our-team-section">
+      {/* Controls – Filter + Pagination */}
+      <div className="team-controls">
         <Select
           value={categoryFilter}
-          onChange={setCategoryFilter}
+          onChange={(value) => setCategoryFilter(value)}
           style={{ width: 220 }}
+          placeholder="Filter by role"
           options={[
-            { value: "all", label: "All Team" },
+            { value: "all", label: "All Team Members" },
             { value: "architect", label: "Architects" },
-            { value: "admin", label: "Admin" },
+            { value: "admin", label: "Administration" },
             { value: "accounts", label: "Accounts" },
             { value: "intern", label: "Interns" },
             { value: "collaborator", label: "Collaborators" },
@@ -193,27 +196,30 @@ export default function TeamSection() {
           current={pagination.current}
           total={pagination.total}
           pageSize={pagination.pageSize}
-          onChange={(page) => loadTeam(page, categoryFilter)}
+          onChange={handlePageChange}
           size="small"
           showSizeChanger={false}
           hideOnSinglePage={pagination.total <= pagination.pageSize}
         />
       </div>
 
-      {/* Content */}
+      {/* Content Area */}
       {loading ? (
-        <div className={styles.loading}>
-          <Spin size="large" />
+        <div className="team-loading">
+          <Spin size="large" tip="Loading team..." />
         </div>
       ) : team.length === 0 ? (
-        <Empty description="No team members found." />
+        <Empty
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+          description="No team members found in this category."
+        />
       ) : (
-        <div className={styles.grid}>
+        <div className="team-grid">
           {team.map((member) => (
             <TeamMember key={member.id} {...member} />
           ))}
         </div>
       )}
-    </>
+    </section>
   );
 }

@@ -2848,31 +2848,31 @@ nav ul li a:hover {
   }
 }
 /* Define CSS custom properties for consistency (extends previous :root) */
-/* Team Page Wrapper */
-.team-page {
-  padding-top: 0;
-  background-color: var(--light-bg); /* Dark/teal background like projects */
-}
+/* ==========================================================================
+   TEAM PAGE / TEAM SECTION STYLES
+   Global CSS – no modules
+   Last updated: should match your 2025–2026 design system
+   ========================================================================== */
 
-/* Hero / Banner Section */
+/* ──────────────────────────────────────────────
+   Hero / Banner (optional – if you have one)
+   ────────────────────────────────────────────── */
 .team-hero {
   position: relative;
-  min-height: clamp(35vh, 50vw, 55vh); /* Taller than projects for people-focus */
-  background: url("../assets/images/banners/about_main_banner.jpg") no-repeat center center/cover;
+  min-height: clamp(40vh, 55vw, 60vh);
+  background: url('/assets/images/banners/team-hero.jpg') center/cover no-repeat; /* ← change path */
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: var(--white);
-  margin: 0;
-  padding: clamp(20px, 6vw, 32px);
+  color: white;
 }
 
 .team-hero::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(26, 60, 52, 0.45); /* --text-color overlay for readability */
+  background: rgba(26, 60, 52, 0.55); /* dark teal overlay */
   z-index: 1;
 }
 
@@ -2882,236 +2882,223 @@ nav ul li a:hover {
 }
 
 .team-hero h1 {
-  font-family: 'Neuropol 2', 'Lato', sans-serif;
-  font-size: clamp(2.8rem, 8vw, 5rem);
-  font-weight: 700;
-  margin-bottom: var(--spacing-sm);
-  letter-spacing: 1.5px;
-  line-height: 1.05;
+  font-size: clamp(3rem, 9vw, 6.5rem);
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1;
+  margin-bottom: 0.4em;
 }
 
 .team-hero p {
-  font-size: clamp(1.1rem, 3.5vw, 1.4rem);
+  font-size: clamp(1.2rem, 4vw, 1.5rem);
   max-width: 720px;
-  margin: 0 auto;
   opacity: 0.95;
 }
 
-/* Main Team Content Wrapper */
+/* ──────────────────────────────────────────────
+   Main team wrapper / padding
+   ────────────────────────────────────────────── */
 .our-team-wrapper {
-  padding: clamp(32px, 6vw, 64px) clamp(16px, 4vw, 32px);
-  background-color: var(--white);
+  padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 3rem);
+  background: var(--color-background, #ffffff);
 }
 
-.our-team-wrapper .heading h2 {
-  font-size: clamp(2.2rem, 5vw, 3.2rem);
-  margin-bottom: var(--spacing-md);
-  text-align: center;
-  color: var(--text-color);
-  font-weight: 700;
+/* ──────────────────────────────────────────────
+   Controls: filter dropdown + pagination
+   ────────────────────────────────────────────── */
+.team-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
 }
 
-.our-team-wrapper .heading p {
-  font-size: clamp(1rem, 2.8vw, 1.2rem);
-  color: var(--text-color);
-  max-width: 820px;
-  margin: 0 auto var(--spacing-lg);
-  text-align: center;
-  line-height: 1.6;
-}
 
-/* Filters (optional – match projects style) */
-.team-filters {
-  text-align: center;
-  margin-bottom: var(--spacing-lg);
-}
-
-.filter-btn {
-  background: none;
-  border: none;
-  color: var(--text-color);
-  padding: clamp(10px, 2vw, 12px) clamp(16px, 3vw, 20px);
-  margin: 0 clamp(6px, 1.5vw, 10px);
-  border-radius: var(--border-radius);
-  font-size: clamp(0.95rem, 2.2vw, 1rem);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  min-width: 100px; /* Better touch target */
-}
-
-.filter-btn:hover,
-.filter-btn.active {
-  background-color: var(--accent-color);
-  color: var(--white);
-}
-
-/* Team Grid */
+/* ──────────────────────────────────────────────
+   Grid of team cards
+   ────────────────────────────────────────────── */
 .team-grid {
-  display: grid !important;
+  display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: clamp(20px, 3vw, 32px);
+  gap: clamp(1.5rem, 3vw, 2.5rem);
 }
 
+/* Loading / empty state */
+.team-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  padding: 4rem 0;
+}
+
+.team-empty {
+  padding: 6rem 2rem;
+  text-align: center;
+}
+
+/* ──────────────────────────────────────────────
+   TEAM MEMBER CARD – core component
+   ────────────────────────────────────────────── */
 .team-member-card {
   position: relative;
   overflow: hidden;
-  cursor: pointer;
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-  background: var(--white);
+  border-radius: var(--radius-lg, 16px);
+  background: white;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
 }
 
 .team-member-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  transform: translateY(-10px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.14);
+}
+
+/* Image wrapper + responsive aspect */
+.team-image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;          /* classic portrait for people */
+  overflow: hidden;
+  background: #f0f0f0;          /* fallback color */
 }
 
 .team-member-img {
   width: 100%;
-  height: clamp(280px, 40vw, 360px);
+  height: 100%;
   object-fit: cover;
-  display: block;
-  transition: transform 0.45s ease;
+  transition: transform 0.55s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 .team-member-card:hover .team-member-img {
-  transform: scale(1.08);
+  transform: scale(1.09);
 }
 
+/* Overlay – appears on hover / always visible on touch */
 .team-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(26, 60, 52, 0.7); /* --text-color overlay */
-  color: var(--white);
+  background: linear-gradient(to top, rgba(26, 60, 52, 0.92) 0%, rgba(26, 60, 52, 0.3) 60%, transparent 100%);
+  color: white;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: clamp(16px, 3vw, 24px);
+  padding: clamp(1.6rem, 4vw, 2.4rem);
   opacity: 0;
-  transition: opacity 0.35s ease;
-  text-align: left;
-}
-
-.team-member-card:hover .team-overlay {
-  opacity: 1;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
 }
 
 .team-overlay h3 {
-  font-size: clamp(1.3rem, 3vw, 1.6rem);
-  margin: 0 0 var(--spacing-xs) 0;
+  font-size: clamp(1.4rem, 3.2vw, 1.7rem);
   font-weight: 700;
+  margin: 0 0 0.4em;
+  line-height: 1.15;
 }
 
 .team-overlay .role {
   font-size: clamp(0.95rem, 2.2vw, 1.1rem);
-  color: var(--accent-color);
   font-weight: 600;
-  margin-bottom: var(--spacing-sm);
+  color: var(--color-accent, #e67e22); /* ← change to your accent color */
   text-transform: uppercase;
   letter-spacing: 0.8px;
+  margin-bottom: 1em;
 }
 
 .team-overlay .bio {
-  font-size: clamp(0.9rem, 2vw, 1rem);
-  line-height: 1.55;
-  margin-bottom: var(--spacing-md);
-  opacity: 0.95;
+  font-size: clamp(0.94rem, 2vw, 1.02rem);
+  line-height: 1.58;
+  margin: 0 0 1.3em;
+  opacity: 0.94;
 }
 
-.team-overlay .social-links {
-  display: flex;
-  gap: var(--spacing-md);
+/* Optional category badge (top-right corner) */
+.category-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.4em 0.9em;
+  border-radius: 2rem;
+  text-transform: capitalize;
+  backdrop-filter: blur(6px);
+  z-index: 2;
 }
 
-.team-overlay .social-links a {
-  color: var(--white);
-  font-size: 1.4rem;
-  transition: color 0.25s ease;
-}
-
-.team-overlay .social-links a:hover {
-  color: var(--accent-color);
-}
-
-/* Extra sections (Testimonial / CTA) */
-.team-testimonial,
-.team-cta {
-  padding: clamp(48px, 8vw, 80px) clamp(16px, 4vw, 32px);
-  background-color: var(--background); /* Light gray */
+/* Fallback info – shown below image when not hovering */
+.team-member-info {
+  padding: 1.5rem 1.3rem 1.8rem;
   text-align: center;
+  background: white;
 }
 
-.team-testimonial h2,
-.team-cta h2 {
-  font-size: clamp(2rem, 5vw, 2.8rem);
-  color: var(--text-color);
-  margin-bottom: var(--spacing-lg);
+.team-member-info .name {
+  font-size: clamp(1.25rem, 2.6vw, 1.45rem);
+  font-weight: 700;
+  margin: 0 0 0.4em;
+  color: var(--color-text, #1a1a1a);
 }
 
-/* Responsive Adjustments */
-@media (max-width: 1200px) {
+.team-member-info .role {
+  font-size: clamp(0.95rem, 2.1vw, 1.05rem);
+  color: var(--color-accent, #e67e22);
+  font-weight: 500;
+  margin: 0 0 0.7em;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+
+.team-member-info .bio {
+  font-size: 0.96rem;
+  line-height: 1.55;
+  color: #555;
+  margin: 0;
+}
+
+/* ──────────────────────────────────────────────
+   Responsive adjustments
+   ────────────────────────────────────────────── */
+@media (max-width: 1024px) {
   .team-grid {
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   }
 }
 
-@media (max-width: 900px) {
-  .team-hero {
-    min-height: clamp(30vh, 45vw, 45vh);
+@media (max-width: 768px) {
+  .team-controls {
+    flex-direction: column;
+    align-items: stretch;
   }
 
-  .team-hero h1 {
-    font-size: clamp(2.4rem, 7vw, 3.8rem);
+
+  .team-member-card {
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  .team-hero p {
-    font-size: clamp(1rem, 3vw, 1.2rem);
-  }
-}
-
-@media (max-width: 600px) {
-  .team-hero {
-    min-height: clamp(25vh, 40vw, 35vh);
-    padding: clamp(16px, 5vw, 24px);
-  }
-
-  .team-hero h1 {
-    font-size: clamp(2rem, 8vw, 2.8rem);
-  }
-
-  .team-hero p {
-    font-size: clamp(0.95rem, 3.5vw, 1.1rem);
-  }
-
-  .our-team-wrapper,
-  .team-testimonial,
-  .team-cta {
-    padding: clamp(32px, 6vw, 48px) clamp(12px, 3vw, 20px);
-  }
-
-  .team-member-img {
-    height: clamp(240px, 50vw, 300px);
-  }
-
-  .filter-btn {
-    padding: clamp(8px, 2vw, 10px) clamp(12px, 3vw, 16px);
-    font-size: clamp(0.9rem, 2.5vw, 1rem);
-    margin: 0 clamp(4px, 1vw, 6px);
+  .team-image-wrapper {
+    aspect-ratio: 3 / 4;
   }
 }
 
-@media (max-width: 400px) {
-  .team-grid {
-    gap: clamp(16px, 4vw, 24px);
+@media (max-width: 480px) {
+  .team-overlay {
+    padding: 1.2rem 1.5rem;
   }
 
   .team-overlay h3 {
-    font-size: clamp(1.2rem, 4vw, 1.4rem);
+    font-size: 1.45rem;
   }
 
-  .team-overlay .role {
-    font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+  .team-overlay .role,
+  .team-overlay .bio {
+    font-size: 0.92rem;
   }
 }
 /* Typewriter Container */
