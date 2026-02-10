@@ -14,15 +14,14 @@ const mockTeamData = [
     name: "Sagar Chhabra",
     role: "Founder & Principal Architect",
     category: "architect",
-    bio: "Founder and principal architect with over 18 years of professional experience. Leads design vision, project direction, and long-term practice strategy.",
     image: "/team/sagar.jpg",
   },
+
   {
     id: 2,
     name: "Jayant",
     role: "Architect",
     category: "architect",
-    bio: "Architect involved in design development, working drawings, and on-site coordination across residential and commercial projects.",
     image:
       "https://static.cmtradingco.com/rippotai_projects/rippotai_images/jayant.jpeg",
   },
@@ -31,41 +30,37 @@ const mockTeamData = [
     name: "Sarthi",
     role: "Architect",
     category: "architect",
-    bio: "Architect focusing on planning, detailing, and sustainable design strategies for housing and mixed-use projects.",
     image:
       "https://static.cmtradingco.com/rippotai_projects/rippotai_images/sarthi.jpeg",
   },
   {
     id: 4,
-    name: "Bhav",
-    role: "Social Media Intern",
-    category: "intern",
-    bio: "Handles social media content, visual storytelling, and digital engagement for studio projects and updates.",
-    image:
-      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/bhav.jpeg",
+    name: "Priyanka",
+    role: "Admin",
+    category: "admin",
+    image: "/team/priyanka.jpg",
   },
   {
     id: 5,
     name: "Megha Chhabra",
     role: "Stylist & Creative Head",
     category: "collaborator",
-    bio: "Leads styling, visual language, and creative direction for interiors, photoshoots, and brand presentation.",
     image: "/team/megha.jpg",
   },
   {
     id: 6,
-    name: "Priyanka",
-    role: "Admin",
-    category: "admin",
-    bio: "Manages office administration, documentation, and day-to-day studio operations.",
-    image: "/team/priyanka.jpg",
+    name: "Bhav Lamba",
+    role: "Content Strategy & Content Lead",
+    category: "intern",
+    image:
+      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/bhav.jpeg",
   },
+
   {
     id: 7,
     name: "Lakshay",
     role: "Accountant",
     category: "accounts",
-    bio: "Handles accounting, billing, compliance, and financial records for the practice.",
     image: "",
   },
   {
@@ -73,43 +68,38 @@ const mockTeamData = [
     name: "Sajjan",
     role: "Site Supervisor",
     category: "collaborator",
-    bio: "Supervises site execution, coordinates with contractors, and ensures design intent is maintained on-site.",
     image: "",
   },
-  {
-    id: 9,
-    name: "Shivani",
-    role: "Architect",
-    category: "alumni",
-    bio: "Former team member who contributed to design development and project documentation.",
-    image:
-      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/shivani.jpeg",
-  },
-  {
-    id: 10,
-    name: "Shivam Bhatia",
-    role: "Architect",
-    category: "alumni",
-    bio: "Previously worked on architectural planning and detailing for studio projects.",
-    image: "",
-  },
-  {
-    id: 11,
-    name: "Aniket",
-    role: "Architect",
-    category: "alumni",
-    bio: "Contributed to concept design and working drawings during tenure with the studio.",
-    image:
-      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/aniket.jpeg",
-  },
-  {
-    id: 12,
-    name: "Chhavi",
-    role: "Architect (Collaborator)",
-    category: "collaborator",
-    bio: "External collaborator involved in select architectural and interior design projects.",
-    image: "",
-  },
+  // {
+  //   id: 9,
+  //   name: "Shivani",
+  //   role: "Architect",
+  //   category: "alumni",
+  //   image:
+  //     "https://static.cmtradingco.com/rippotai_projects/rippotai_images/shivani.jpeg",
+  // },
+  // {
+  //   id: 10,
+  //   name: "Shivam Bhatia",
+  //   role: "Architect",
+  //   category: "alumni",
+  //   image: "",
+  // },
+  // {
+  //   id: 11,
+  //   name: "Aniket",
+  //   role: "Architect",
+  //   category: "alumni",
+  //   image:
+  //     "https://static.cmtradingco.com/rippotai_projects/rippotai_images/aniket.jpeg",
+  // },
+  // {
+  //   id: 12,
+  //   name: "Chhavi",
+  //   role: "Architect (Collaborator)",
+  //   category: "collaborator",
+  //   image: "",
+  // },
 ];
 
 // ──────────────────────────────────────────────

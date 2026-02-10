@@ -1,7 +1,7 @@
 // app/team/TeamMember.jsx
 import Image from "next/image";
 
-export default function TeamMember({ name, role, bio, image, category }) {
+export default function TeamMember({ name, role, image, category }) {
   const fallback = "/team/placeholder.jpg";
   const src = image && image.trim() ? image : fallback;
 
@@ -24,7 +24,6 @@ export default function TeamMember({ name, role, bio, image, category }) {
             <span className="category-badge">{category}</span>
             <h3>{name}</h3>
             <div className="role">{role}</div>
-            {bio && <div className="bio">{bio}</div>}
           </div>
         )}
       </div>
@@ -33,7 +32,6 @@ export default function TeamMember({ name, role, bio, image, category }) {
       <div className="team-member-info">
         <h3 className="name">{name}</h3>
         <p className="role">{role}</p>
-        {bio && <p className="bio">{bio}</p>}
       </div>
     </div>
   );

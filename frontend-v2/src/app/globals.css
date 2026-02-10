@@ -3001,7 +3001,7 @@ nav ul li a:hover {
 .team-overlay .role {
   font-size: clamp(0.95rem, 2.2vw, 1.1rem);
   font-weight: 600;
-  color: var(--color-accent, #e67e22); /* ← change to your accent color */
+  color: var(--color-accent, #d4a017); /* ← change to your accent color */
   text-transform: uppercase;
   letter-spacing: 0.8px;
   margin-bottom: 1em;
@@ -3045,12 +3045,12 @@ nav ul li a:hover {
 }
 
 .team-member-info .role {
-  font-size: clamp(0.95rem, 2.1vw, 1.05rem);
-  color: var(--color-accent, #e67e22);
-  font-weight: 500;
-  margin: 0 0 0.7em;
-  text-transform: uppercase;
-  letter-spacing: 0.7px;
+color: var(--color-accent, #d4a017);
+    text-transform: uppercase;
+    /* letter-spacing: .7px; */
+    margin: 0 0 .7em;
+    font-size: clamp(0.95rem, 2.1vw, 0.05rem);
+    font-weight: 400;
 }
 
 .team-member-info .bio {
