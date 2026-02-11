@@ -5,18 +5,15 @@ import { useState, useEffect } from "react";
 import { Spin, Empty, Pagination, Select } from "antd";
 import TeamMember from "./TeamMember";
 
-// ──────────────────────────────────────────────
-// MOCK DATA (you can later replace with real API fetch)
-// ──────────────────────────────────────────────
 const mockTeamData = [
   {
     id: 1,
     name: "Sagar Chhabra",
     role: "Founder & Principal Architect",
     category: "architect",
-    image: "/team/sagar.jpg",
+    image:
+      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/sagar_chhabra.jpeg",
   },
-
   {
     id: 2,
     name: "Jayant",
@@ -43,9 +40,10 @@ const mockTeamData = [
   {
     id: 5,
     name: "Megha Chhabra",
-    role: "Stylist & Creative Head",
+    role: "Styling Head",
     category: "collaborator",
-    image: "/team/megha.jpg",
+    image:
+      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/megha_chhabra.jpeg",
   },
   {
     id: 6,
@@ -78,13 +76,14 @@ const mockTeamData = [
   //   image:
   //     "https://static.cmtradingco.com/rippotai_projects/rippotai_images/shivani.jpeg",
   // },
-  // {
-  //   id: 10,
-  //   name: "Shivam Bhatia",
-  //   role: "Architect",
-  //   category: "alumni",
-  //   image: "",
-  // },
+  {
+    id: 10,
+    name: "Shivam Bhatia",
+    role: "Architect",
+    category: "alumni",
+    image:
+      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/shivam_bhatia.jpeg",
+  },
   // {
   //   id: 11,
   //   name: "Aniket",
