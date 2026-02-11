@@ -3,14 +3,13 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
-import founderImg1 from "../../assets/images/slider_1.jpg";
-import founderImg2 from "../../assets/images/slider_2.jpg";
-import founderImg3 from "../../assets/images/slider_3.jpg";
 import companyImg from "../../assets/images/logo.png";
 
 import { useGetPublicProjectsQuery } from "../api/rippotaiApi"; // adjust path if needed
 import ThreeDCarousel from "@/components/About/ThreeDCarousel"; // adjust path if needed
 
+const founderImg1 =
+  "https://static.cmtradingco.com/rippotai_projects/rippotai_images/sagar_chhabra.jpeg";
 const AboutUsPage = () => {
   const founderImages = [
     { src: founderImg1, alt: "Sagar Chhabra, Founder - Image 1" },

@@ -35,7 +35,8 @@ const mockTeamData = [
     name: "Priyanka",
     role: "Admin",
     category: "admin",
-    image: "/team/priyanka.jpg",
+    image:
+      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/priyanka.jpeg",
   },
   {
     id: 5,
