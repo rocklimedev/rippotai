@@ -7,10 +7,6 @@ import Image from "next/image"; // ← Add this import
 import "swiper/css";
 
 // Desktop banners
-import banner1 from "../assets/images/banners/INTERIOR 01.jpg";
-import banner2 from "../assets/images/banners/Living Area03.jpg";
-import banner3 from "../assets/images/banners/kitchen_set02.png";
-import banner4 from "../assets/images/banners/main-banner.jpg";
 
 // Mobile banners
 import banner1Mobile from "../assets/images/banners/mobile/5.png";
@@ -21,7 +17,16 @@ import banner4Mobile from "../assets/images/banners/mobile/4.jpg";
 import founderImg from "../assets/images/founder.png";
 
 import ProjectsShowcase from "@/components/Home/ProjectsShowcase";
-
+const banner1 =
+  "https://static.cmtradingco.com/rippotai_projects/rippotai_images/slider_1.png";
+const banner2 =
+  "https://static.cmtradingco.com/rippotai_projects/rippotai_images/slider_2.png";
+const banner3 =
+  "https://static.cmtradingco.com/rippotai_projects/rippotai_images/slider_3.jpeg";
+const banner4 =
+  "https://static.cmtradingco.com/rippotai_projects/rippotai_images/slider_4.png";
+const banner5 =
+  "https://static.cmtradingco.com/rippotai_projects/rippotai_images/slider_5.png";
 const Home = () => {
   return (
     <>
@@ -90,6 +95,24 @@ const Home = () => {
                   alt="Luxury residential exterior facade"
                   fill
                   className="hero-image object-cover"
+                  sizes="(max-width: 768px) 100vw, 100vw"
+                />
+              </div>
+            </picture>
+          </SwiperSlide>
+
+          <SwiperSlide>
+            <picture>
+              {/* Mobile version */}
+              <source srcSet={banner1Mobile} media="(max-width: 768px)" />
+              {/* Desktop version with next/image */}
+              <div className="hero-image-wrapper">
+                <Image
+                  src={banner5}
+                  alt="Modern interior with elegant wooden elements"
+                  fill
+                  className="hero-image object-cover"
+                  priority // good for first hero image (LCP)
                   sizes="(max-width: 768px) 100vw, 100vw"
                 />
               </div>
