@@ -127,13 +127,13 @@ const Header = () => {
         </ul>
       </nav>
 
-      <button
+      {/* <button
         className="search-icon"
         onClick={toggleSearch}
         aria-label="Toggle search"
       >
         <FaSearch size={20} />
-      </button>
+      </button> */}
 
       {isMobile && (
         <button
@@ -145,7 +145,7 @@ const Header = () => {
         </button>
       )}
 
-      {isSearchOpen && (
+      {/* {isSearchOpen && (
         <div className="search-overlay">
           <div className="search-modal">
             <div className="search-header">
@@ -204,7 +204,7 @@ const Header = () => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </header>
   );
 };

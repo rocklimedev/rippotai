@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
-import companyImg from "../../assets/images/logo.png";
+import companyImg from "../../assets/images/logo_white.png";
 
 import { useGetPublicProjectsQuery } from "../api/rippotaiApi"; // adjust path if needed
 import ThreeDCarousel from "@/components/About/ThreeDCarousel"; // adjust path if needed
@@ -80,10 +80,12 @@ const AboutUsPage = () => {
             </div>
             <div className="who-we-are-image founder-slider">
               <Image
-                key={currentIndex} // forces re-mount for animation
+                key={currentIndex}
                 src={founderImages[currentIndex].src}
                 alt={founderImages[currentIndex].alt}
                 className="founder-slider-img blink"
+                width={400} // ← add this (adjust based on real image size or design)
+                height={500} // ← add this (maintain aspect ratio, e.g. 4:5 or 3:4)
                 sizes="(max-width: 768px) 100vw, 50vw"
                 priority={currentIndex === 0}
               />
