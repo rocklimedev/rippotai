@@ -33,19 +33,18 @@ export default function ProjectDetailPage() {
   const params = useParams();
   const slug = params?.slug;
 
-  // Fetch the current project
   const {
     data: projectResponse,
     isLoading: isProjectLoading,
+    isFetching,
     isError: isProjectError,
     error: projectError,
   } = useGetProjectBySlugQuery(slug, {
     skip: !slug,
   });
 
-  const project = projectResponse?.data;
-  console.log(project);
-  // Fetch list for prev/next navigation
+  const project = projectResponse;
+
   const { data: projectsList = [], isLoading: isListLoading } =
     useGetPublicProjectsQuery(
       { page: 1, limit: 100 },
@@ -56,13 +55,20 @@ export default function ProjectDetailPage() {
       },
     );
 
+  // Debug logs – keep these for now
   console.log("Current slug:", slug);
-  console.log("Project data:", project);
+  console.log("Raw projectResponse:", projectResponse);
+  console.log("Extracted project:", project);
+  console.log("Loading states:", {
+    isProjectLoading,
+    isFetching,
+    isListLoading,
+  });
 
   // ──────────────────────────────────────────────
-  // Loading / Error / Not Found states
+  // Guards – must come BEFORE any project usage
   // ──────────────────────────────────────────────
-  if (isProjectLoading || isListLoading) {
+  if (isProjectLoading || isFetching || isListLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
@@ -95,11 +101,14 @@ export default function ProjectDetailPage() {
     );
   }
 
-  if (!project || !slug) {
+  if (!slug || !project) {
+    console.warn("Missing slug or project data", { slug, project });
     notFound();
   }
 
-  // Navigation logic (now safe)
+  // ──────────────────────────────────────────────
+  // Navigation – safe now
+  // ──────────────────────────────────────────────
   const currentIndex = projectsList.findIndex((p) => p.slug === slug);
   const prevProject = currentIndex > 0 ? projectsList[currentIndex - 1] : null;
   const nextProject =
@@ -128,7 +137,7 @@ export default function ProjectDetailPage() {
         <div className="absolute bottom-16 left-12 right-12 z-10 text-white">
           <div className="text-xs font-normal tracking-[3px] uppercase text-[#d9af61] mb-4">
             PROJECT {String(currentIndex + 1).padStart(2, "0")} /{" "}
-            {project.category}
+            {project.category || "—"}
           </div>
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-light tracking-[2px] leading-tight">
             {project.title}
@@ -145,18 +154,18 @@ export default function ProjectDetailPage() {
             <AnimateIn delay={0} distance={40} duration={1}>
               <div className="space-y-10">
                 {[
-                  { label: "Location", value: project.location },
-                  { label: "Area", value: project.area },
-                  { label: "Year", value: project.year },
-                  { label: "Type", value: project.category },
-                  { label: "Scope", value: project.scope },
+                  { label: "Location", value: project.location || "—" },
+                  { label: "Area", value: project.area || "—" },
+                  { label: "Year", value: project.year || "—" },
+                  { label: "Type", value: project.category || "—" },
+                  { label: "Scope", value: project.scope || "—" },
                 ].map((item) => (
                   <div key={item.label}>
                     <div className="text-xs font-medium tracking-[3px] uppercase text-[#d9af61] mb-2">
                       {item.label}
                     </div>
                     <div className="text-lg font-light text-[#1a3c34]">
-                      {item.value || "—"}
+                      {item.value}
                     </div>
                   </div>
                 ))}
@@ -171,7 +180,7 @@ export default function ProjectDetailPage() {
               className="lg:col-span-2"
             >
               <p className="text-lg md:text-xl font-light text-gray-700 leading-relaxed">
-                {project.description}
+                {project.description || "No description available."}
               </p>
 
               {project.details && (
@@ -187,7 +196,7 @@ export default function ProjectDetailPage() {
       </section>
 
       {/* Gallery */}
-      {project.images?.length > 0 && (
+      {Array.isArray(project.images) && project.images.length > 0 && (
         <section className="px-6 md:px-12 pb-24 bg-white">
           <div className="max-w-7xl mx-auto">
             <AnimateIn delay={0} distance={30} duration={1}>
@@ -247,9 +256,6 @@ export default function ProjectDetailPage() {
   );
 }
 
-// ──────────────────────────────────────────────
-// Gallery Component
-// ──────────────────────────────────────────────
 function GalleryWithText({ project }) {
   const gallery = project.images || [];
   const total = gallery.length;
@@ -300,7 +306,7 @@ function GalleryWithText({ project }) {
               <div className="overflow-hidden bg-[#f0eeea]">
                 <Image
                   src={item.src}
-                  alt={`${project.title} - ${item.idx + 1}`}
+                  alt={`${project.title || "Project"} - ${item.idx + 1}`}
                   width={1400}
                   height={900}
                   sizes="(max-width: 768px) 100vw, 90vw"
@@ -312,7 +318,6 @@ function GalleryWithText({ project }) {
           );
         }
 
-        // Pair of images
         const nextItem = items[i + 1];
         const hasNext =
           nextItem && nextItem.type === "image" && !nextItem.isFeature;
@@ -328,7 +333,7 @@ function GalleryWithText({ project }) {
               <div className="overflow-hidden bg-[#f0eeea]">
                 <Image
                   src={item.src}
-                  alt={`${project.title} - ${item.idx + 1}`}
+                  alt={`${project.title || "Project"} - ${item.idx + 1}`}
                   width={800}
                   height={600}
                   sizes="(max-width: 768px) 100vw, 45vw"
@@ -341,7 +346,7 @@ function GalleryWithText({ project }) {
                 <div className="overflow-hidden bg-[#f0eeea]">
                   <Image
                     src={nextItem.src}
-                    alt={`${project.title} - ${nextItem.idx + 1}`}
+                    alt={`${project.title || "Project"} - ${nextItem.idx + 1}`}
                     width={800}
                     height={600}
                     sizes="(max-width: 768px) 100vw, 45vw"

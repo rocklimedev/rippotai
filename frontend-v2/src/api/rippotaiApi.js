@@ -145,16 +145,18 @@ export const rippotaiApi = createApi({
     getProjectBySlug: builder.query({
       query: (slug) => `/projects/${slug}`,
 
-      // 👇 Avoid refetch unless slug changes
+      // Add this — make it consistent with public endpoint
+      transformResponse: (response) => {
+        console.log("[DEBUG] Raw API response for getProjectBySlug:", response);
+        return response?.data || null; // extract inner data or null
+      },
+
       serializeQueryArgs: ({ endpointName, queryArgs }) =>
         `${endpointName}-${queryArgs}`,
-
-      keepUnusedDataFor: 300, // cache detail pages longer
-
+      keepUnusedDataFor: 300,
       providesTags: (result) =>
         result ? [{ type: "Projects", id: result._id }] : [],
     }),
-
     createProject: builder.mutation({
       query: ({
         title,
