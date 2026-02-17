@@ -44,7 +44,7 @@ export default function ProjectDetailPage() {
   });
 
   const project = projectResponse?.data;
-
+  console.log(project);
   // Fetch list for prev/next navigation
   const { data: projectsList = [], isLoading: isListLoading } =
     useGetPublicProjectsQuery(
