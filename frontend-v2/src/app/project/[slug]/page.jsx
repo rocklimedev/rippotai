@@ -43,8 +43,10 @@ export default function ProjectDetailPage() {
     skip: !slug,
   });
 
-  const project = projectResponse?.data;
-
+  // Correct – use the root response directly
+  const project = projectResponse ?? null;
+  console.log("Full projectResponse:", projectResponse);
+  console.log("Extracted project:", project);
   // Fetch list for prev/next navigation
   const { data: projectsList = [], isLoading: isListLoading } =
     useGetPublicProjectsQuery(
