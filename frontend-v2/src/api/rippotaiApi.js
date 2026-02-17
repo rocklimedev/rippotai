@@ -145,11 +145,7 @@ export const rippotaiApi = createApi({
     getProjectBySlug: builder.query({
       query: (slug) => `/projects/${slug}`,
 
-      // Add this — make it consistent with public endpoint
-      transformResponse: (response) => {
-        console.log("[DEBUG] Raw API response for getProjectBySlug:", response);
-        return response?.data || null; // extract inner data or null
-      },
+      transformResponse: (response) => response, // explicit, but could be (response) => ({ data: response }) if you want to match list shape
 
       serializeQueryArgs: ({ endpointName, queryArgs }) =>
         `${endpointName}-${queryArgs}`,
