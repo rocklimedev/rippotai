@@ -173,7 +173,7 @@ const ProjectCard = ({ project }) => {
 
   return (
     <Link
-      href={`/project/${slug}`} // ← consistent with detail page: /projects/[slug]
+      href={`/project/${slug}`}
       style={{ cursor: "pointer", textDecoration: "none" }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}

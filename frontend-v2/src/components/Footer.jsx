@@ -229,30 +229,6 @@ export const Footer = () => {
           </p>
         </div>
       </div>
-
-      {/* Optional: move hover styles to global CSS or tailwind */}
-      <style jsx>{`
-        .hover-gold {
-          position: relative;
-          display: inline-block;
-        }
-        .hover-gold::after {
-          content: "";
-          position: absolute;
-          width: 0;
-          height: 1px;
-          bottom: -4px;
-          left: 0;
-          background-color: #d9af61;
-          transition: width 0.35s ease;
-        }
-        .hover-gold:hover::after {
-          width: 100%;
-        }
-        .hover-gold:hover {
-          color: #d9af61 !important;
-        }
-      `}</style>
     </footer>
   );
 };

@@ -1,26 +1,23 @@
-// src/components/Header.jsx
 "use client";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 export const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const pathname = usePathname();
   const router = useRouter();
+  const pathname = usePathname();
 
-  const noBannerPages = []; // ← add paths like ["/admin", "/dashboard"] if needed
+  const noBannerPages = [];
   const hasBanner = !noBannerPages.includes(pathname);
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 80);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -34,29 +31,33 @@ export const Header = () => {
   const scrollToSection = (href) => {
     setMenuOpen(false);
 
-    if (href === "#" || href === "/") {
+    // Route navigation
+    if (href.startsWith("/")) {
+      router.push(href);
+      window.scrollTo({ top: 0 });
+      return;
+    }
+
+    // Home navigation
+    if (href === "#") {
       if (pathname !== "/") {
         router.push("/");
-        // wait a tiny bit for navigation then scroll top
-        setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100);
       } else {
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
       return;
     }
 
-    // Anchor link on current page
-    if (href.startsWith("#")) {
-      const el = document.querySelector(href);
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
-      }
+    // Anchor links — go home first if needed
+    if (pathname !== "/") {
+      router.push("/" + href);
       return;
     }
 
-    // Internal page navigation
-    router.push(href);
-    window.scrollTo({ top: 0 });
+    const el = document.querySelector(href);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
@@ -68,9 +69,9 @@ export const Header = () => {
           left: 0,
           right: 0,
           zIndex: 1000,
-          backgroundColor: headerBg,
+          backgroundColor: "transparent",
           transition: "background-color 0.4s ease",
-          backdropFilter: scrolled || !hasBanner ? "blur(12px)" : "none",
+          borderBottom: "none",
         }}
       >
         <div
@@ -83,13 +84,17 @@ export const Header = () => {
             alignItems: "center",
           }}
         >
-          <Link
-            href="/"
+          <a
+            href="#"
             onClick={(e) => {
               e.preventDefault();
               scrollToSection("#");
             }}
-            style={{ textDecoration: "none" }}
+            style={{
+              textDecoration: "none",
+              display: "flex",
+              alignItems: "center",
+            }}
           >
             <img
               src={
@@ -104,7 +109,7 @@ export const Header = () => {
                 display: "block",
               }}
             />
-          </Link>
+          </a>
 
           <button
             onClick={() => setMenuOpen(!menuOpen)}
@@ -131,18 +136,21 @@ export const Header = () => {
         </div>
       </header>
 
-      {/* Full-screen mobile menu overlay */}
+      {/* Full-screen menu overlay */}
       <div
         style={{
           position: "fixed",
-          inset: 0,
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
           backgroundColor: "#1a3c34",
           zIndex: 999,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           opacity: menuOpen ? 1 : 0,
-          pointerEvents: menuOpen ? "auto" : "none",
+          pointerEvents: menuOpen ? "all" : "none",
           transition: "opacity 0.5s ease",
         }}
       >
@@ -154,10 +162,10 @@ export const Header = () => {
             { label: "Team", href: "/team" },
             { label: "Services", href: "/services" },
             { label: "Process", href: "/process" },
-            { label: "Career", href: "/careers" }, // ← note: /career → /careers (match your route)
+            { label: "Career", href: "/career" },
             { label: "Contact", href: "/contact" },
           ].map((item, i) => (
-            <Link
+            <a
               key={i}
               href={item.href}
               onClick={(e) => {
@@ -167,56 +175,30 @@ export const Header = () => {
               style={{
                 display: "block",
                 fontFamily: "'Lato', sans-serif",
-                fontSize: "clamp(28px, 6vw, 42px)",
+                fontSize: "36px",
                 fontWeight: 300,
                 letterSpacing: "6px",
                 textTransform: "uppercase",
                 color: "#ffffff",
                 textDecoration: "none",
-                padding: "20px 0",
+                padding: "16px 0",
                 transition: "color 0.3s ease, transform 0.3s ease",
+                transformOrigin: "center",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = "#d9af61";
+                e.currentTarget.style.transform = "scale(1.18)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = "#ffffff";
+                e.currentTarget.style.transform = "scale(1)";
               }}
             >
-              <span
-                style={{
-                  position: "relative",
-                  display: "inline-block",
-                }}
-                className="menu-item"
-              >
-                {item.label}
-              </span>
-            </Link>
+              <span className="hover-underline">{item.label}</span>
+            </a>
           ))}
         </nav>
       </div>
-
-      {/* Optional: better hover effect with CSS instead of JS */}
-      <style jsx>{`
-        .menu-item {
-          position: relative;
-        }
-        .menu-item::after {
-          content: "";
-          position: absolute;
-          width: 0;
-          height: 2px;
-          bottom: -8px;
-          left: 50%;
-          background-color: #d9af61;
-          transition:
-            width 0.4s ease,
-            left 0.4s ease;
-        }
-        .menu-item:hover::after {
-          width: 100%;
-          left: 0;
-        }
-        .menu-item:hover {
-          color: #d9af61 !important;
-          transform: scale(1.08);
-        }
-      `}</style>
     </>
   );
 };

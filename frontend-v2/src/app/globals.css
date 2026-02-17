@@ -4,123 +4,123 @@
    1. ALL @import rules MUST come FIRST
 ───────────────────────────────────────────────── */
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
 
-/* ────────────────────────────────────────────────
-   2. Design tokens / theme layer (if using experimental @theme)
-   If your build tool doesn't support @theme yet → move these to :root below
-───────────────────────────────────────────────── */
-@theme {
-  --color-background:     hsl(var(--background));
-  --color-foreground:     hsl(var(--foreground));
-  --color-card:           hsl(var(--card));
-  --color-card-foreground: hsl(var(--card-foreground));
-  --color-popover:        hsl(var(--popover));
-  --color-popover-foreground: hsl(var(--popover-foreground));
-  --color-primary:        hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
-  --color-secondary:      hsl(var(--secondary));
-  --color-secondary-foreground: hsl(var(--secondary-foreground));
-  --color-muted:          hsl(var(--muted));
-  --color-muted-foreground: hsl(var(--muted-foreground));
-  --color-accent:         hsl(var(--accent));
-  --color-accent-foreground: hsl(var(--accent-foreground));
-  --color-destructive:    hsl(var(--destructive));
-  --color-destructive-foreground: hsl(var(--destructive-foreground));
-  --color-border:         hsl(var(--border));
-  --color-input:          hsl(var(--input));
-  --color-ring:           hsl(var(--ring));
-
-  --color-chart-1:        hsl(var(--chart-1));
-  --color-chart-2:        hsl(var(--chart-2));
-  --color-chart-3:        hsl(var(--chart-3));
-  --color-chart-4:        hsl(var(--chart-4));
-  --color-chart-5:        hsl(var(--chart-5));
-
-  --radius:               0.5rem;
+/* Global resets for architecture theme */
+* {
+  border-radius: 0 !important;
+  box-shadow: none !important;
 }
 
-/* ────────────────────────────────────────────────
-   3. Root variables + base resets
-───────────────────────────────────────────────── */
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --card:       0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
-    --popover:    0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary:    160 84% 39%;          /* ≈ #1a3c34 your brand green */
-    --primary-foreground: 0 0% 98%;
-    --secondary:  0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted:      0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent:     43 74% 66%;           /* ≈ #d9af61 your gold */
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border:     0 0% 89.8%;
-    --input:      0 0% 89.8%;
-    --ring:       0 0% 3.9%;
+html {
+  scroll-behavior: smooth;
+}
 
-    --chart-1:    12 76% 61%;
-    --chart-2:    173 58% 39%;
-    --chart-3:    197 37% 24%;
-    --chart-4:    43 74% 66%;
-    --chart-5:    27 87% 67%;
+body {
+  font-family: 'Lato', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+}
+
+/* Footer above interactive grid */
+footer {
+  position: relative;
+  z-index: 10;
+}
+
+/* Responsive grid adjustments */
+@media (max-width: 768px) {
+  .where-it-began-grid {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
   }
 
-  .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card:       0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover:    0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary:    160 84% 45%;          /* slightly lighter for dark mode if needed */
-    --primary-foreground: 0 0% 98%;
-    --secondary:  0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted:      0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent:     43 74% 70%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border:     0 0% 14.9%;
-    --input:      0 0% 14.9%;
-    --ring:       0 0% 83.1%;
+  .works-grid {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+  
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+  
+  .process-step-grid {
+    grid-template-columns: 80px 1fr !important;
+    gap: 24px !important;
+  }
+  
+  .service-item-grid {
+    grid-template-columns: 70px 1fr !important;
+    gap: 24px !important;
   }
 
-  *, *::before, *::after {
-    border-radius: 0 !important;
-    box-shadow: none !important;
+  .services-line {
+    left: 35px !important;
   }
 
-  html {
-    scroll-behavior: smooth;
+  .project-row-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .project-row-grid > div {
+    order: unset !important;
   }
 
-  body {
-    @apply bg-background text-foreground;
-    font-family: 'Lato', system-ui, -apple-system, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 24px !important;
   }
 
-  img {
-    max-width: 100%;
-    height: auto;
-    display: block;
+  .contact-grid {
+    grid-template-columns: 1fr !important;
+    gap: 60px !important;
+  }
+
+  .contact-form-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .service-page-grid {
+    grid-template-columns: 80px 1fr !important;
+    gap: 24px !important;
+  }
+
+  .project-detail-grid {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+
+  .project-gallery-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .bento-grid {
+    grid-template-columns: 1fr !important;
+    grid-auto-rows: auto !important;
+  }
+
+  .bento-grid > div {
+    grid-column: span 1 !important;
+    grid-row: span 1 !important;
+  }
+
+  .values-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .story-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
   }
 }
 
-/* ────────────────────────────────────────────────
-   Custom animations & effects
-───────────────────────────────────────────────── */
+/* Fade-in animation for sections */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -136,14 +136,22 @@
   animation: fadeInUp 0.8s ease-out forwards;
 }
 
-/* CTA pulse ring */
+/* Selection color */
+::selection {
+  background-color: rgba(217, 175, 97, 0.3);
+  color: #1a3c34;
+}
+
+/* CTA Pulse animation */
 .cta-pulse-ring {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   border: 1.5px solid rgba(26, 60, 52, 0.4);
   animation: ctaPulse 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
   pointer-events: none;
-  border-radius: inherit;
 }
 
 .cta-pulse-ring-gold {
@@ -151,41 +159,17 @@
 }
 
 @keyframes ctaPulse {
-  0%   { transform: scale(1);   opacity: 0.6; }
-  100% { transform: scale(1.7); opacity: 0;   }
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
 }
 
-/* Hover underline effect */
-.hover-underline {
-  position: relative;
-  display: inline-block;
-  text-decoration: none;
-}
-
-.hover-underline::after {
-  content: "";
-  position: absolute;
-  inset-inline: 0;
-  bottom: 0;
-  height: 1px;
-  background-color: currentColor;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.hover-underline:hover::after {
-  transform: scaleX(1);
-  transform-origin: left;
-}
-
-/* Selection highlight */
-::selection {
-  background-color: rgba(217, 175, 97, 0.3);
-  color: #1a3c34;
-}
-
-/* Custom scrollbar */
+/* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -196,62 +180,33 @@
 
 ::-webkit-scrollbar-thumb {
   background: rgba(26, 60, 52, 0.3);
-  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(26, 60, 52, 0.5);
 }
 
-/* ────────────────────────────────────────────────
-   Responsive layout overrides
-───────────────────────────────────────────────── */
-@layer utilities {
-  @media (max-width: 768px) {
-    .where-it-began-grid,
-    .works-grid,
-    .footer-grid,
-    .project-detail-grid,
-    .project-gallery-grid,
-    .bento-grid,
-    .values-grid,
-    .story-grid,
-    .contact-grid,
-    .project-row-grid,
-    .contact-form-row {
-      grid-template-columns: 1fr !important;
-      gap: 40px !important;
-    }
-
-    .process-step-grid,
-    .service-item-grid,
-    .service-page-grid {
-      grid-template-columns: 80px 1fr !important;
-      gap: 24px !important;
-    }
-
-    .team-grid {
-      grid-template-columns: repeat(2, 1fr) !important;
-      gap: 24px !important;
-    }
-
-    .services-line {
-      left: 35px !important;
-    }
-
-    .project-row-grid > div {
-      order: unset !important;
-    }
-
-    .bento-grid > div {
-      grid-column: span 1 !important;
-      grid-row: span 1 !important;
-    }
-  }
+/* Hover underline animation: right-to-left reveal */
+.hover-underline {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
 }
 
-/* Footer stacking order */
-footer {
-  position: relative;
-  z-index: 10;
+.hover-underline::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.hover-underline:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
