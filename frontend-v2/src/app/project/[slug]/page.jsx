@@ -1,18 +1,19 @@
-// app/projects/[slug]/page.jsx
+// app/project/[slug]/page.jsx
 "use client";
-import { use } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
-import { AnimateIn } from "@/components/AnimateIn"; // adjust path as needed
+import { AnimateIn } from "@/components/AnimateIn";
 
 import {
   useGetProjectBySlugQuery,
   useGetPublicProjectsQuery,
 } from "@/api/rippotaiApi";
-// Gallery overlay texts (can be moved to a constants file later)
+
+// Gallery overlay texts
 const galleryTexts = [
   {
     heading: "Material & Light",
@@ -28,8 +29,9 @@ const galleryTexts = [
   },
 ];
 
-export default function ProjectDetailPage({ params }) {
-  const { slug } = useParams(params);
+export default function ProjectDetailPage() {
+  const params = useParams();
+  const slug = params?.slug;
 
   // Fetch the current project
   const {
@@ -43,18 +45,19 @@ export default function ProjectDetailPage({ params }) {
 
   const project = projectResponse?.data;
 
-  console.log("Current slug:", slug);
-  console.log("Project data:", project);
-  // Fetch list of projects for prev/next navigation
+  // Fetch list for prev/next navigation
   const { data: projectsList = [], isLoading: isListLoading } =
     useGetPublicProjectsQuery(
-      { page: 1, limit: 100 }, // high limit — adjust based on your backend
+      { page: 1, limit: 100 },
       {
         selectFromResult: ({ data }) => ({
-          data: data?.data || [], // assuming your /public endpoint returns { data: [...] }
+          data: data?.data || [],
         }),
       },
     );
+
+  console.log("Current slug:", slug);
+  console.log("Project data:", project);
 
   // ──────────────────────────────────────────────
   // Loading / Error / Not Found states
@@ -92,7 +95,11 @@ export default function ProjectDetailPage({ params }) {
     );
   }
 
-  // Navigation logic
+  if (!project || !slug) {
+    notFound();
+  }
+
+  // Navigation logic (now safe)
   const currentIndex = projectsList.findIndex((p) => p.slug === slug);
   const prevProject = currentIndex > 0 ? projectsList[currentIndex - 1] : null;
   const nextProject =
@@ -106,7 +113,7 @@ export default function ProjectDetailPage({ params }) {
       <section className="relative w-full h-[85vh] min-h-[500px] overflow-hidden bg-[#0a0a0a]">
         <Image
           src={project.image || "/placeholder-hero.jpg"}
-          alt={project.title}
+          alt={project.title || "Project"}
           fill
           priority
           quality={85}
@@ -120,7 +127,7 @@ export default function ProjectDetailPage({ params }) {
 
         <div className="absolute bottom-16 left-12 right-12 z-10 text-white">
           <div className="text-xs font-normal tracking-[3px] uppercase text-[#d9af61] mb-4">
-            PROJECT {String(project.id || currentIndex + 1).padStart(2, "0")} /{" "}
+            PROJECT {String(currentIndex + 1).padStart(2, "0")} /{" "}
             {project.category}
           </div>
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-light tracking-[2px] leading-tight">
@@ -142,6 +149,7 @@ export default function ProjectDetailPage({ params }) {
                   { label: "Area", value: project.area },
                   { label: "Year", value: project.year },
                   { label: "Type", value: project.category },
+                  { label: "Scope", value: project.scope },
                 ].map((item) => (
                   <div key={item.label}>
                     <div className="text-xs font-medium tracking-[3px] uppercase text-[#d9af61] mb-2">
@@ -165,6 +173,14 @@ export default function ProjectDetailPage({ params }) {
               <p className="text-lg md:text-xl font-light text-gray-700 leading-relaxed">
                 {project.description}
               </p>
+
+              {project.details && (
+                <div className="mt-10">
+                  <div className="text-lg font-light text-gray-700 leading-relaxed whitespace-pre-line">
+                    {project.details}
+                  </div>
+                </div>
+              )}
             </AnimateIn>
           </div>
         </div>
@@ -190,7 +206,7 @@ export default function ProjectDetailPage({ params }) {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-12">
           {prevProject ? (
             <Link
-              href={`/projects/${prevProject.slug}`}
+              href={`/project/${prevProject.slug}`}
               className="group flex items-center gap-4 text-left hover:opacity-80 transition-opacity"
             >
               <ArrowLeft size={20} className="text-[#1a3c34]" />
@@ -209,7 +225,7 @@ export default function ProjectDetailPage({ params }) {
 
           {nextProject ? (
             <Link
-              href={`/projects/${nextProject.slug}`}
+              href={`/project/${nextProject.slug}`}
               className="group flex items-center gap-4 text-right hover:opacity-80 transition-opacity"
             >
               <div>
