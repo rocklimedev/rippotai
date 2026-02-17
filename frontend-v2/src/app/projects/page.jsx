@@ -1,41 +1,323 @@
-// app/projects/page.jsx   ← Server Component (no "use client")
-export const dynamic = "force-dynamic";
-import { Suspense } from "react";
-import ProjectsContent from "./ProjectsContent"; // ← new file, see below
-
+// app/projects/page.jsx
+"use client";
+import Image from "next/image";
+import Link from "next/link";
+import { AnimateIn } from "../../components/AnimateIn";
+import { useGetPublicProjectsQuery } from "@/api/rippotaiApi";
 export default function ProjectsPage() {
+  const {
+    data: projects = [], // default to empty array
+    isLoading,
+    isError,
+    error,
+  } = useGetPublicProjectsQuery(
+    { page: 1, limit: 12 }, // adjust params as needed (your endpoint supports page/limit/category)
+    {
+      // Optional: polling, refetch on focus/mount, etc.
+      // pollingInterval: 30000, // example: refetch every 30s
+    },
+  );
+
   return (
-    <div className="projects-page">
-      {/* Hero Section */}
-      <section className="projects-hero" />
-
-      {/* Main Content with Suspense */}
-      <section className="our-project-wrapper">
-        <div className="custom-container">
-          <div className="custom-row">
-            <div className="custom-col-12">
-              <div className="heading text-center">
-                <h2>Our Projects</h2>
-                <p>
-                  Explore our diverse portfolio across residential and
-                  institutional developments.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Suspense wraps the dynamic part */}
-          <Suspense
-            fallback={
-              <div className="text-center py-10">
-                <p>Loading projects and filters...</p>
-              </div>
-            }
+    <>
+      {/* Banner */}
+      <section
+        style={{
+          position: "relative",
+          width: "100%",
+          height: "65vh",
+          minHeight: "420px",
+          overflow: "hidden",
+          backgroundColor: "#0a0a0a",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+        }}
+        data-testid="works-banner"
+      >
+        <div style={{ overflow: "hidden", position: "relative" }}>
+          <img
+            src="https://customer-assets.emergentagent.com/job_rippotai-arch/artifacts/8uy09mp6_2.png"
+            alt="Our Works"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "center",
+              display: "block",
+            }}
+          />
+        </div>
+        <div style={{ overflow: "hidden", position: "relative" }}>
+          <img
+            src="https://customer-assets.emergentagent.com/job_a3dc2cae-15d4-4a93-bf50-729939b37f9e/artifacts/hryw4vfm_1770101343788_1cd0e9a4-6947-4b6f-af16-bd534382d28d_Redraw_00010_%20%281%29.jpeg"
+            alt="Our Works"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "center",
+              display: "block",
+            }}
+          />
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            background:
+              "linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.15) 100%)",
+            pointerEvents: "none",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            bottom: "60px",
+            left: "48px",
+            zIndex: 2,
+          }}
+        >
+          <h1
+            style={{
+              fontFamily: "'Lato', sans-serif",
+              fontSize: "clamp(36px, 5vw, 56px)",
+              fontWeight: 300,
+              color: "#ffffff",
+              letterSpacing: "1px",
+              margin: 0,
+            }}
           >
-            <ProjectsContent />
-          </Suspense>
+            Our Projects
+          </h1>
+          <div
+            style={{
+              width: "40px",
+              height: "1px",
+              backgroundColor: "#d9af61",
+              marginTop: "20px",
+            }}
+          />
         </div>
       </section>
-    </div>
+
+      {/* Intro Text */}
+      <section style={{ padding: "80px 48px", backgroundColor: "#ffffff" }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+          <AnimateIn delay={0} distance={30} duration={1}>
+            <p
+              style={{
+                fontFamily: "'Lato', sans-serif",
+                fontSize: "16px",
+                fontWeight: 300,
+                color: "#666666",
+                lineHeight: 1.8,
+                maxWidth: "600px",
+                margin: 0,
+              }}
+            >
+              A curated selection of our work across architecture, interiors,
+              and furniture design — each project shaped by precision, purpose,
+              and the enduring simplicity of the cube.
+            </p>
+          </AnimateIn>
+        </div>
+      </section>
+
+      {/* Projects Section */}
+      <section style={{ padding: "0 48px 120px", backgroundColor: "#ffffff" }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+          {isLoading ? (
+            <div
+              style={{
+                textAlign: "center",
+                padding: "120px 0",
+                fontFamily: "'Lato', sans-serif",
+                color: "#1a3c34",
+                fontSize: "18px",
+              }}
+            >
+              Loading projects...
+            </div>
+          ) : isError ? (
+            <div
+              style={{
+                textAlign: "center",
+                padding: "80px 0",
+                color: "#d32f2f",
+                fontSize: "16px",
+              }}
+            >
+              <p>Failed to load projects.</p>
+              <p style={{ fontSize: "14px", marginTop: "8px" }}>
+                {error?.data?.message || error?.message || "Unknown error"}
+              </p>
+            </div>
+          ) : projects.length === 0 ? (
+            <div
+              style={{
+                textAlign: "center",
+                padding: "100px 0",
+                color: "#666",
+                fontSize: "17px",
+              }}
+            >
+              No projects found at the moment.
+            </div>
+          ) : (
+            projects.map((project, idx) => (
+              <AnimateIn
+                key={project._id || project.slug}
+                delay={0.1 * idx}
+                distance={70}
+                duration={1.3}
+              >
+                <ProjectRow project={project} reverse={idx % 2 !== 0} />
+              </AnimateIn>
+            ))
+          )}
+        </div>
+      </section>
+    </>
+  );
+}
+
+function ProjectRow({ project, reverse }) {
+  // Adjust field names according to your actual API response shape
+  // Common fields: _id, slug, title, category, image (or images[0]), description, location, etc.
+  const displayImage =
+    project.image || project.images?.[0] || "/placeholder-project.jpg";
+  const displayDesc =
+    project.description?.substring(0, 160) ||
+    "A thoughtful integration of form and function, designed to resonate with those who inhabit the space — reflecting the cube's clarity and versatility.";
+
+  return (
+    <Link
+      href={`/project/${project.slug}`}
+      style={{ textDecoration: "none", color: "inherit", display: "block" }}
+      prefetch={true}
+    >
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: reverse ? "1fr 1.4fr" : "1.4fr 1fr",
+          gap: "60px",
+          alignItems: "center",
+          marginBottom: "100px",
+          cursor: "pointer",
+        }}
+        className="project-row-grid"
+      >
+        {/* Image */}
+        <div style={{ overflow: "hidden", order: reverse ? 2 : 1 }}>
+          <Image
+            src={displayImage}
+            alt={project.title || "Project image"}
+            width={800}
+            height={600}
+            sizes="(max-width: 768px) 100vw, 58vw"
+            quality={85}
+            style={{
+              width: "100%",
+              height: "auto",
+              display: "block",
+              objectFit: "cover",
+              transition: "transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+            }}
+            className="project-hover-zoom"
+          />
+        </div>
+
+        {/* Info */}
+        <div style={{ order: reverse ? 1 : 2, padding: "20px 0" }}>
+          <div
+            style={{
+              fontFamily: "'Lato', sans-serif",
+              fontSize: "11px",
+              fontWeight: 400,
+              letterSpacing: "3px",
+              textTransform: "uppercase",
+              color: "#d9af61",
+              marginBottom: "16px",
+            }}
+          >
+            {project.category ? project.category.toUpperCase() : "PROJECT"}
+          </div>
+
+          <h2
+            style={{
+              fontFamily: "'Lato', sans-serif",
+              fontSize: "clamp(24px, 3vw, 36px)",
+              fontWeight: 400,
+              color: "#1a3c34",
+              letterSpacing: "1px",
+              lineHeight: 1.3,
+              margin: 0,
+              marginBottom: "20px",
+              position: "relative",
+              display: "inline-block",
+            }}
+          >
+            {project.title}
+            <span
+              style={{
+                position: "absolute",
+                bottom: "-6px",
+                left: 0,
+                height: "1px",
+                backgroundColor: "#d9af61",
+                width: "0%",
+                transition: "width 0.5s ease",
+              }}
+              className="underline-expand"
+            />
+          </h2>
+
+          <p
+            style={{
+              fontFamily: "'Lato', sans-serif",
+              fontSize: "15px",
+              fontWeight: 300,
+              color: "#666666",
+              lineHeight: 1.9,
+              margin: 0,
+              maxWidth: "400px",
+            }}
+          >
+            {displayDesc}
+          </p>
+
+          <div
+            style={{
+              marginTop: "32px",
+              fontFamily: "'Lato', sans-serif",
+              fontSize: "12px",
+              fontWeight: 500,
+              letterSpacing: "3px",
+              textTransform: "uppercase",
+              color: "#1a3c34",
+              transition: "color 0.3s ease",
+            }}
+            className="view-project-text"
+          >
+            VIEW PROJECT →
+          </div>
+        </div>
+      </div>
+
+      <style jsx>{`
+        .project-row-grid:hover .project-hover-zoom {
+          transform: scale(1.04);
+        }
+        .project-row-grid:hover .underline-expand {
+          width: 100% !important;
+        }
+        .project-row-grid:hover .view-project-text {
+          color: #d9af61 !important;
+        }
+      `}</style>
+    </Link>
   );
 }
