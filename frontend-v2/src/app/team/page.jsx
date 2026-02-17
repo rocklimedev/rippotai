@@ -3,10 +3,6 @@
 import Image from "next/image";
 import { AnimateIn } from "../../components/AnimateIn"; // adjust path
 
-// import { Header } from "../../components/Header";
-// import { Footer } from "../../components/Footer";
-// import { FloatingCTA } from "../../components/FloatingCTA";
-
 const teamImage =
   "https://customer-assets.emergentagent.com/job_rippotai-arch/artifacts/ty0yqr54_05b1c7b1-3dfc-4182-ae7b-5b43a03124eb.jpg";
 
@@ -16,47 +12,49 @@ const teamMembers = [
     name: "Sagar Chhabra",
     designation: "Founder & Principal Architect",
     image:
-      "https://customer-assets.emergentagent.com/job_482196a1-b994-40a0-ac44-c060e3262933/artifacts/9o2cyroa_6.png",
+      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/sagar_chhabra.jpeg",
   },
   {
     id: 2,
     name: "Jayant",
     designation: "Architect",
-    image: "/assets/jayant.jpg", // ← make sure this file exists in /public/assets/
+    image:
+      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/jayant.jpeg",
   },
   {
     id: 3,
     name: "Sarthi",
     designation: "Architect",
     image:
-      "https://customer-assets.emergentagent.com/job_482196a1-b994-40a0-ac44-c060e3262933/artifacts/o3hg2i6b_9.png",
+      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/sarthi.jpeg",
   },
   {
     id: 4,
     name: "Priyanka",
     designation: "Admin",
     image:
-      "https://customer-assets.emergentagent.com/job_482196a1-b994-40a0-ac44-c060e3262933/artifacts/2w7pi55a_8.png",
+      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/priyanka.jpeg",
   },
   {
     id: 5,
     name: "Megha Chhabra",
     designation: "Interior Decor and Styling Head",
     image:
-      "https://customer-assets.emergentagent.com/job_482196a1-b994-40a0-ac44-c060e3262933/artifacts/0ttq1u6w_1.png",
+      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/megha_chhabra.jpeg",
   },
   {
     id: 6,
     name: "Bhav Lamba",
     designation: "Content Strategy & Creative Lead",
-    image: "/assets/bhav.jpg", // ← make sure this file exists in /public/assets/
+    image:
+      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/bhav.jpeg",
   },
   {
     id: 7,
     name: "Shivani",
     designation: "Project Manager",
     image:
-      "https://customer-assets.emergentagent.com/job_482196a1-b994-40a0-ac44-c060e3262933/artifacts/1q89sc6f_3.png",
+      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/shivani.jpeg",
     tag: "Alumni",
   },
   {
@@ -64,7 +62,7 @@ const teamMembers = [
     name: "Aniket",
     designation: "Architect",
     image:
-      "https://customer-assets.emergentagent.com/job_482196a1-b994-40a0-ac44-c060e3262933/artifacts/fxkot4hb_4.png",
+      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/aniket.jpeg",
     tag: "Alumni",
   },
   {
@@ -72,7 +70,7 @@ const teamMembers = [
     name: "Shivam",
     designation: "Architect",
     image:
-      "https://customer-assets.emergentagent.com/job_482196a1-b994-40a0-ac44-c060e3262933/artifacts/r6o8yojn_2.png",
+      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/shivam_bhatia.jpeg",
     tag: "Alumni",
   },
 ];

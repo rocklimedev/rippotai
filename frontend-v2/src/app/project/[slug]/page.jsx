@@ -92,10 +92,6 @@ export default function ProjectDetailPage({ params }) {
     );
   }
 
-  if (!project) {
-    notFound();
-  }
-
   // Navigation logic
   const currentIndex = projectsList.findIndex((p) => p.slug === slug);
   const prevProject = currentIndex > 0 ? projectsList[currentIndex - 1] : null;

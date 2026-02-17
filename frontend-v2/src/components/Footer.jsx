@@ -227,6 +227,29 @@ export const Footer = () => {
             © {new Date().getFullYear()} Rippotai Architecture. All rights
             reserved.
           </p>
+
+          {/* Powered by */}
+          <p
+            style={{
+              fontFamily: "'Lato', sans-serif",
+              fontSize: "12px",
+              fontWeight: 300,
+              color: "rgba(26, 60, 52, 0.35)",
+              letterSpacing: "1px",
+              marginTop: "8px",
+            }}
+          >
+            Powered by
+            <a
+              href="https://www.rocklime.com/"
+              className="rocklime-link ms-1"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit Rocklime website"
+            >
+              Rocklime
+            </a>
+          </p>
         </div>
       </div>
     </footer>

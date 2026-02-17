@@ -5,6 +5,16 @@
 ───────────────────────────────────────────────── */
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
+@import url("https://fonts.cdnfonts.com/css/neuropol-2");
+.rocklime-link {
+  color: #d4a017 !important;
+  font-family: 'Neuropol', sans-serif !important;
+  text-decoration: none;
+}
+
+.rocklime-link:hover {
+  text-decoration: underline;
+}
 
 /* Global resets for architecture theme */
 * {
