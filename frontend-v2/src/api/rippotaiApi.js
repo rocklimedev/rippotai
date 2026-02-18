@@ -87,15 +87,20 @@ export const rippotaiApi = createApi({
         url: "/projects",
         params,
       }),
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.map(({ _id }) => ({ type: "Projects", id: _id })),
-              { type: "Projects", id: "LIST" },
-            ]
-          : [{ type: "Projects", id: "LIST" }],
-    }),
+      providesTags: (result) => {
+        const tags = [{ type: "Projects", id: "LIST" }];
 
+        if (Array.isArray(result)) {
+          result.forEach((project) => {
+            if (project?._id) {
+              tags.push({ type: "Projects", id: project._id });
+            }
+          });
+        }
+
+        return tags;
+      },
+    }),
     getPublicProjects: builder.query({
       query: ({ page = 1, limit = 6, category } = {}) => ({
         url: "/projects/public",

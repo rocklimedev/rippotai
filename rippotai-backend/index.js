@@ -4,6 +4,8 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const errorHandler = require("./middleware/errorHandler");
 const path = require("path");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 
 // Load environment variables
 dotenv.config();
@@ -32,7 +34,15 @@ const corsOptions = {
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
 };
+app.use(helmet());
 app.use(cors(corsOptions));
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 mins
+  max: 20, // max 20 requests per IP
+  message: "Too many requests. Try again later.",
+});
+
+app.use("/api/auth", authLimiter);
 
 // Conditionally apply JSON parsing middleware
 app.use((req, res, next) => {

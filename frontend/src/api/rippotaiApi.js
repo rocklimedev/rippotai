@@ -6,7 +6,7 @@ export const rippotaiApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: API_URL,
     prepareHeaders: (headers, { endpoint }) => {
-      // Skip setting Content-Type for endpoints that use FormData
+      // Skip Content-Type for FormData endpoints
       if (
         !["createApplication", "createProject", "updateProject"].includes(
           endpoint,
@@ -14,7 +14,7 @@ export const rippotaiApi = createApi({
       ) {
         headers.set("Content-Type", "application/json");
       }
-      // Add authorization token for protected endpoints
+      // Add admin token for protected routes
       const token = localStorage.getItem("adminToken");
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
@@ -24,8 +24,11 @@ export const rippotaiApi = createApi({
   }),
 
   tagTypes: ["Queries", "Projects", "Jobs", "Applications", "Users"],
+
   endpoints: (builder) => ({
+    // ────────────────────────────────────────────────
     // Queries Endpoints
+    // ────────────────────────────────────────────────
     createQuery: builder.mutation({
       query: ({ name, email, subject, message }) => ({
         url: "/queries",
@@ -34,20 +37,23 @@ export const rippotaiApi = createApi({
       }),
       invalidatesTags: [{ type: "Queries", id: "LIST" }],
     }),
+
     getQueries: builder.query({
       query: () => "/queries",
       providesTags: (result) =>
-        Array.isArray(result)
+        Array.isArray(result?.data)
           ? [
-              ...result.map(({ _id }) => ({ type: "Queries", id: _id })),
+              ...result.data.map(({ _id }) => ({ type: "Queries", id: _id })),
               { type: "Queries", id: "LIST" },
             ]
           : [{ type: "Queries", id: "LIST" }],
     }),
+
     getQuery: builder.query({
       query: (id) => `/queries/${id}`,
       providesTags: (result, error, id) => [{ type: "Queries", id }],
     }),
+
     updateQuery: builder.mutation({
       query: ({ id, ...updates }) => ({
         url: `/queries/${id}`,
@@ -59,6 +65,7 @@ export const rippotaiApi = createApi({
         { type: "Queries", id: "LIST" },
       ],
     }),
+
     deleteQuery: builder.mutation({
       query: (id) => ({
         url: `/queries/${id}`,
@@ -69,6 +76,7 @@ export const rippotaiApi = createApi({
         { type: "Queries", id: "LIST" },
       ],
     }),
+
     addNote: builder.mutation({
       query: ({ id, note }) => ({
         url: `/queries/${id}/notes`,
@@ -81,16 +89,20 @@ export const rippotaiApi = createApi({
       ],
     }),
 
-    // ADMIN: gets ALL projects (including draft, prunned, etc.)
+    // ────────────────────────────────────────────────
+    // Projects Endpoints – using projectId (UUID)
+    // ────────────────────────────────────────────────
+
     getProjects: builder.query({
       query: (params) => ({
         url: "/projects",
         params,
       }),
+      transformResponse: (response) => response?.data ?? [],
       providesTags: (result) =>
-        result
+        Array.isArray(result)
           ? [
-              ...result.map(({ _id }) => ({ type: "Projects", id: _id })),
+              ...result.map((p) => ({ type: "Projects", id: p.projectId })),
               { type: "Projects", id: "LIST" },
             ]
           : [{ type: "Projects", id: "LIST" }],
@@ -101,23 +113,16 @@ export const rippotaiApi = createApi({
         url: "/projects/public",
         params: { page, limit, category },
       }),
-
-      // 👇 Extract only the array used for rendering
-      transformResponse: (response) => response.data,
-
-      // 👇 Cache per page/category combo (VERY important)
+      transformResponse: (response) => response?.data ?? [],
       serializeQueryArgs: ({ endpointName, queryArgs }) => {
         const { page, category } = queryArgs || {};
         return `${endpointName}-${page || 1}-${category || "all"}`;
       },
-
-      // 👇 Keep previous page visible while fetching next
-      keepUnusedDataFor: 60, // seconds
-
+      keepUnusedDataFor: 60,
       providesTags: (result) =>
-        result
+        Array.isArray(result)
           ? [
-              ...result.map((p) => ({ type: "Projects", id: p._id })),
+              ...result.map((p) => ({ type: "Projects", id: p.projectId })),
               { type: "Projects", id: "LIST" },
             ]
           : [{ type: "Projects", id: "LIST" }],
@@ -125,34 +130,38 @@ export const rippotaiApi = createApi({
 
     getCompletedProjects: builder.query({
       query: () => "/projects/completed",
+      transformResponse: (response) => response?.data ?? [],
       providesTags: [{ type: "Projects", id: "LIST" }],
     }),
 
     getDraftProjects: builder.query({
       query: () => "/projects/drafts",
+      transformResponse: (response) => response?.data ?? [],
       providesTags: [{ type: "Projects", id: "LIST" }],
     }),
 
     getProjectsByLocation: builder.query({
       query: (location) => `/projects/location/${location}`,
+      transformResponse: (response) => response?.data ?? [],
       providesTags: [{ type: "Projects", id: "LIST" }],
     }),
-    // Add this endpoint
+
     getProjectById: builder.query({
-      query: (id) => `/projects/admin/${id}`, // assuming your backend supports GET /projects/:id for admin
-      providesTags: (result, error, id) => [{ type: "Projects", id }],
+      query: (projectId) => `/projects/admin/${projectId}`,
+      transformResponse: (response) => response?.data ?? response,
+      providesTags: (result, error, projectId) => [
+        { type: "Projects", id: projectId },
+      ],
     }),
+
     getProjectBySlug: builder.query({
       query: (slug) => `/projects/${slug}`,
-
-      // 👇 Avoid refetch unless slug changes
+      transformResponse: (response) => response?.data ?? response,
       serializeQueryArgs: ({ endpointName, queryArgs }) =>
         `${endpointName}-${queryArgs}`,
-
-      keepUnusedDataFor: 300, // cache detail pages longer
-
+      keepUnusedDataFor: 300,
       providesTags: (result) =>
-        result ? [{ type: "Projects", id: result._id }] : [],
+        result ? [{ type: "Projects", id: result.projectId }] : [],
     }),
 
     createProject: builder.mutation({
@@ -176,7 +185,9 @@ export const rippotaiApi = createApi({
         if (location) formData.append("location", location);
         if (scope) formData.append("scope", scope);
         if (image) formData.append("image", image);
-        if (images) images.forEach((img) => formData.append("images[]", img));
+        if (images && images.length > 0) {
+          images.forEach((img) => formData.append("images", img));
+        }
 
         return {
           url: "/projects/admin/",
@@ -187,65 +198,60 @@ export const rippotaiApi = createApi({
       invalidatesTags: [{ type: "Projects", id: "LIST" }],
     }),
 
-    /**
-     * ADMIN – update (ID based)
-     */
     updateProject: builder.mutation({
-      query: ({ id, formData }) => ({
-        url: `/projects/admin/${id}`,
+      query: ({ projectId, formData }) => ({
+        url: `/projects/admin/${projectId}`,
         method: "PUT",
         body: formData,
       }),
-      invalidatesTags: (result, error, { id }) => [
-        { type: "Projects", id },
+      invalidatesTags: (result, error, { projectId }) => [
+        { type: "Projects", id: projectId },
         { type: "Projects", id: "LIST" },
       ],
     }),
 
-    /**
-     * ADMIN – update status only
-     */
     updateProjectStatus: builder.mutation({
-      query: ({ id, status }) => ({
-        url: `/projects/admin/${id}/status`,
+      query: ({ projectId, status }) => ({
+        url: `/projects/admin/${projectId}/status`,
         method: "PATCH",
         body: { status },
       }),
-      invalidatesTags: (result, error, { id }) => [
-        { type: "Projects", id },
+      invalidatesTags: (result, error, { projectId }) => [
+        { type: "Projects", id: projectId },
         { type: "Projects", id: "LIST" },
       ],
     }),
 
-    /**
-     * ADMIN – delete (ID based)
-     */
     deleteProject: builder.mutation({
-      query: (id) => ({
-        url: `/projects/admin/${id}`,
+      query: (projectId) => ({
+        url: `/projects/admin/${projectId}`,
         method: "DELETE",
       }),
-      invalidatesTags: (result, error, id) => [
-        { type: "Projects", id },
+      invalidatesTags: (result, error, projectId) => [
+        { type: "Projects", id: projectId },
         { type: "Projects", id: "LIST" },
       ],
     }),
 
+    // ────────────────────────────────────────────────
     // Jobs Endpoints
+    // ────────────────────────────────────────────────
     getJobs: builder.query({
       query: () => "/careers/jobs",
       providesTags: (result) =>
-        Array.isArray(result)
+        Array.isArray(result?.data)
           ? [
-              ...result.map(({ _id }) => ({ type: "Jobs", id: _id })),
+              ...result.data.map(({ _id }) => ({ type: "Jobs", id: _id })),
               { type: "Jobs", id: "LIST" },
             ]
           : [{ type: "Jobs", id: "LIST" }],
     }),
+
     getJobById: builder.query({
       query: (id) => `/careers/jobs/${id}`,
       providesTags: (result, error, id) => [{ type: "Jobs", id }],
     }),
+
     createJob: builder.mutation({
       query: ({ title, category, location, description, details }) => ({
         url: "/careers/jobs",
@@ -254,6 +260,7 @@ export const rippotaiApi = createApi({
       }),
       invalidatesTags: [{ type: "Jobs", id: "LIST" }],
     }),
+
     updateJob: builder.mutation({
       query: ({ id, title, category, location, description, details }) => ({
         url: `/careers/jobs/${id}`,
@@ -265,6 +272,7 @@ export const rippotaiApi = createApi({
         { type: "Jobs", id: "LIST" },
       ],
     }),
+
     deleteJob: builder.mutation({
       query: (id) => ({
         url: `/careers/jobs/${id}`,
@@ -276,7 +284,9 @@ export const rippotaiApi = createApi({
       ],
     }),
 
+    // ────────────────────────────────────────────────
     // Applications Endpoints
+    // ────────────────────────────────────────────────
     createApplication: builder.mutation({
       query: ({ name, email, position, resume, coverLetter }) => {
         const formData = new FormData();
@@ -293,16 +303,21 @@ export const rippotaiApi = createApi({
       },
       invalidatesTags: [{ type: "Applications", id: "LIST" }],
     }),
+
     getApplications: builder.query({
       query: () => "/careers/applications",
       providesTags: (result) =>
-        Array.isArray(result)
+        Array.isArray(result?.data)
           ? [
-              ...result.map(({ _id }) => ({ type: "Applications", id: _id })),
+              ...result.data.map(({ _id }) => ({
+                type: "Applications",
+                id: _id,
+              })),
               { type: "Applications", id: "LIST" },
             ]
           : [{ type: "Applications", id: "LIST" }],
     }),
+
     updateApplicationStatus: builder.mutation({
       query: ({ id, status }) => ({
         url: `/careers/applications/${id}`,
@@ -314,6 +329,7 @@ export const rippotaiApi = createApi({
         { type: "Applications", id: "LIST" },
       ],
     }),
+
     deleteApplication: builder.mutation({
       query: (id) => ({
         url: `/careers/applications/${id}`,
@@ -324,26 +340,31 @@ export const rippotaiApi = createApi({
         { type: "Applications", id: "LIST" },
       ],
     }),
+
     getDashboardStats: builder.query({
       query: () => "/careers/dashboard-stats",
       providesTags: [{ type: "Applications", id: "LIST" }],
     }),
 
+    // ────────────────────────────────────────────────
     // Users Endpoints
+    // ────────────────────────────────────────────────
     getAllUsers: builder.query({
       query: () => "/users",
       providesTags: (result) =>
-        Array.isArray(result)
+        Array.isArray(result?.data)
           ? [
-              ...result.map(({ _id }) => ({ type: "Users", id: _id })),
+              ...result.data.map(({ _id }) => ({ type: "Users", id: _id })),
               { type: "Users", id: "LIST" },
             ]
           : [{ type: "Users", id: "LIST" }],
     }),
+
     getUserById: builder.query({
       query: (id) => `/users/${id}`,
       providesTags: (result, error, id) => [{ type: "Users", id }],
     }),
+
     createUser: builder.mutation({
       query: (userData) => ({
         url: "/users",
@@ -352,6 +373,7 @@ export const rippotaiApi = createApi({
       }),
       invalidatesTags: [{ type: "Users", id: "LIST" }],
     }),
+
     updateUser: builder.mutation({
       query: ({ id, ...updates }) => ({
         url: `/users/${id}`,
@@ -363,6 +385,7 @@ export const rippotaiApi = createApi({
         { type: "Users", id: "LIST" },
       ],
     }),
+
     deleteUser: builder.mutation({
       query: (id) => ({
         url: `/users/${id}`,
@@ -373,6 +396,7 @@ export const rippotaiApi = createApi({
         { type: "Users", id: "LIST" },
       ],
     }),
+
     assignRoles: builder.mutation({
       query: ({ id, roles }) => ({
         url: `/users/${id}/roles`,
@@ -385,7 +409,9 @@ export const rippotaiApi = createApi({
       ],
     }),
 
+    // ────────────────────────────────────────────────
     // Auth Endpoints
+    // ────────────────────────────────────────────────
     register: builder.mutation({
       query: (userData) => ({
         url: "/auth/register",
@@ -394,6 +420,7 @@ export const rippotaiApi = createApi({
       }),
       invalidatesTags: [{ type: "Users", id: "LIST" }],
     }),
+
     login: builder.mutation({
       query: ({ email, password }) => ({
         url: "/auth/login",
@@ -401,6 +428,7 @@ export const rippotaiApi = createApi({
         body: { email, password },
       }),
     }),
+
     refreshToken: builder.mutation({
       query: (refreshToken) => ({
         url: "/auth/refresh-token",
@@ -408,10 +436,12 @@ export const rippotaiApi = createApi({
         body: { refreshToken },
       }),
     }),
+
     getProfile: builder.query({
       query: () => "/auth/profile",
       providesTags: [{ type: "Users", id: "PROFILE" }],
     }),
+
     logout: builder.mutation({
       query: () => ({
         url: "/auth/logout",
@@ -428,34 +458,40 @@ export const {
   useUpdateQueryMutation,
   useDeleteQueryMutation,
   useAddNoteMutation,
+
   useGetProjectsQuery,
-  useGetProjectBySlugQuery,
-  useCreateProjectMutation,
-  useUpdateProjectMutation,
-  useDeleteProjectMutation,
+  useGetPublicProjectsQuery,
   useGetCompletedProjectsQuery,
   useGetDraftProjectsQuery,
   useGetProjectsByLocationQuery,
-  useUpdateProjectStatusMutation,
-  useGetPublicProjectsQuery,
   useGetProjectByIdQuery,
   useLazyGetProjectByIdQuery,
+  useGetProjectBySlugQuery,
+
+  useCreateProjectMutation,
+  useUpdateProjectMutation,
+  useUpdateProjectStatusMutation,
+  useDeleteProjectMutation,
+
   useGetJobsQuery,
   useGetJobByIdQuery,
   useCreateJobMutation,
   useUpdateJobMutation,
   useDeleteJobMutation,
+
   useCreateApplicationMutation,
   useGetApplicationsQuery,
   useUpdateApplicationStatusMutation,
   useDeleteApplicationMutation,
   useGetDashboardStatsQuery,
+
   useGetAllUsersQuery,
   useGetUserByIdQuery,
   useCreateUserMutation,
   useUpdateUserMutation,
   useDeleteUserMutation,
   useAssignRolesMutation,
+
   useRegisterMutation,
   useLoginMutation,
   useRefreshTokenMutation,

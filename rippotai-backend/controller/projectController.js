@@ -1,4 +1,3 @@
-// controllers/projectController.js
 const mongoose = require("mongoose");
 const Project = require("../models/project");
 
@@ -48,7 +47,9 @@ exports.getPublicProjects = async (req, res) => {
 
     const [projects, total] = await Promise.all([
       Project.find(filter)
-        .select("title slug category location scope image status createdAt")
+        .select(
+          "title slug category location scope image status createdAt projectId",
+        )
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limitNum)
@@ -76,7 +77,7 @@ exports.getPublicProjects = async (req, res) => {
 exports.getProjectBySlug = async (req, res) => {
   try {
     const project = await Project.findOne({ slug: req.params.slug })
-      .select("-__v -projectId") // optional: hide internal uuid if not needed publicly
+      .select("-__v") // projectId is not needed publicly
       .lean();
 
     if (!project) {
@@ -96,6 +97,7 @@ exports.getProjectBySlug = async (req, res) => {
 /**
  * GET /projects
  * Query params: category, status
+ * Returns all projects (admin view)
  */
 exports.getAllProjects = async (req, res) => {
   try {
@@ -117,15 +119,14 @@ exports.getAllProjects = async (req, res) => {
 };
 
 /**
- * GET /projects/:id
+ * GET /projects/admin/:projectId
+ * :projectId is the custom UUID string, NOT MongoDB _id
  */
 exports.getProjectById = async (req, res) => {
   try {
-    if (!mongoose.isValidObjectId(req.params.id)) {
-      return sendResponse(res, 400, false, null, "Invalid project ID");
-    }
-
-    const project = await Project.findById(req.params.id).select("-__v").lean();
+    const project = await Project.findOne({ projectId: req.params.projectId })
+      .select("-__v")
+      .lean();
 
     if (!project) {
       return sendResponse(res, 404, false, null, "Project not found");
@@ -138,7 +139,8 @@ exports.getProjectById = async (req, res) => {
 };
 
 /**
- * POST /projects
+ * POST /projects/admin/
+ * (ADMIN – create new project)
  */
 exports.createProject = async (req, res) => {
   try {
@@ -182,15 +184,12 @@ exports.createProject = async (req, res) => {
 };
 
 /**
- * PUT /projects/:id
- * (ADMIN – ID based)
+ * PUT /projects/admin/:projectId
+ * :projectId is the custom UUID
+ * (ADMIN – full update)
  */
 exports.updateProject = async (req, res) => {
   try {
-    if (!mongoose.isValidObjectId(req.params.id)) {
-      return sendResponse(res, 400, false, null, "Invalid project ID");
-    }
-
     const updateData = {};
 
     // Scalar fields
@@ -211,7 +210,7 @@ exports.updateProject = async (req, res) => {
       }
     });
 
-    // Main image
+    // Main image - replace if new file uploaded
     if (req.file?.path) {
       updateData.image = req.file.path;
     }
@@ -237,7 +236,7 @@ exports.updateProject = async (req, res) => {
       finalImages = finalImages ? [...finalImages, ...newPaths] : newPaths;
     }
 
-    // Only update gallery if there was explicit input about it
+    // Only update gallery if client sent explicit input
     if (
       req.body.existingImages !== undefined ||
       req.files?.images?.length > 0
@@ -245,8 +244,8 @@ exports.updateProject = async (req, res) => {
       updateData.images = finalImages || [];
     }
 
-    const updatedProject = await Project.findByIdAndUpdate(
-      req.params.id,
+    const updatedProject = await Project.findOneAndUpdate(
+      { projectId: req.params.projectId },
       updateData,
       { new: true, runValidators: true, select: "-__v" },
     );
@@ -274,16 +273,15 @@ exports.updateProject = async (req, res) => {
 };
 
 /**
- * DELETE /projects/:id
- * (ADMIN – ID based)
+ * DELETE /projects/admin/:projectId
+ * :projectId is the custom UUID
+ * (ADMIN)
  */
 exports.deleteProject = async (req, res) => {
   try {
-    if (!mongoose.isValidObjectId(req.params.id)) {
-      return sendResponse(res, 400, false, null, "Invalid project ID");
-    }
-
-    const project = await Project.findByIdAndDelete(req.params.id);
+    const project = await Project.findOneAndDelete({
+      projectId: req.params.projectId,
+    });
 
     if (!project) {
       return sendResponse(res, 404, false, null, "Project not found");
@@ -296,24 +294,9 @@ exports.deleteProject = async (req, res) => {
 };
 
 /**
- * GET /projects/completed
- */
-exports.getCompletedProjects = async (req, res) => {
-  try {
-    const projects = await Project.find({ status: "completed" })
-      .sort({ createdAt: -1 })
-      .select("title slug category location scope image status createdAt")
-      .lean();
-
-    sendResponse(res, 200, true, projects);
-  } catch (error) {
-    sendResponse(res, 500, false, null, "Failed to fetch completed projects");
-  }
-};
-
-/**
- * PATCH /projects/:id/status
- * (ADMIN – ID based)
+ * PATCH /projects/admin/:projectId/status
+ * :projectId is the custom UUID
+ * (ADMIN – quick status change)
  */
 exports.updateProjectStatus = async (req, res) => {
   try {
@@ -323,12 +306,8 @@ exports.updateProjectStatus = async (req, res) => {
       return sendResponse(res, 400, false, null, "Invalid status value");
     }
 
-    if (!mongoose.isValidObjectId(req.params.id)) {
-      return sendResponse(res, 400, false, null, "Invalid project ID");
-    }
-
-    const project = await Project.findByIdAndUpdate(
-      req.params.id,
+    const project = await Project.findOneAndUpdate(
+      { projectId: req.params.projectId },
       { status },
       { new: true, runValidators: true, select: "-__v" },
     );
@@ -346,6 +325,25 @@ exports.updateProjectStatus = async (req, res) => {
       null,
       error.message || "Failed to update status",
     );
+  }
+};
+
+/**
+ * GET /projects/completed
+ * (PUBLIC / ADMIN – completed projects)
+ */
+exports.getCompletedProjects = async (req, res) => {
+  try {
+    const projects = await Project.find({ status: "completed" })
+      .sort({ createdAt: -1 })
+      .select(
+        "title slug category location scope image status createdAt projectId",
+      )
+      .lean();
+
+    sendResponse(res, 200, true, projects);
+  } catch (error) {
+    sendResponse(res, 500, false, null, "Failed to fetch completed projects");
   }
 };
 
@@ -368,6 +366,7 @@ exports.getProjectsByLocation = async (req, res) => {
 
 /**
  * GET /projects/drafts
+ * (ADMIN – draft projects)
  */
 exports.getDraftProjects = async (req, res) => {
   try {

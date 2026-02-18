@@ -162,7 +162,7 @@ export const Header = () => {
             { label: "Team", href: "/team" },
             { label: "Services", href: "/services" },
             { label: "Process", href: "/process" },
-            { label: "Career", href: "/career" },
+            { label: "Career", href: "/careers" },
             { label: "Contact", href: "/contact" },
           ].map((item, i) => (
             <a
