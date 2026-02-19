@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 const Project = require("../models/project");
+const { uploadToFtp } = require("../utils/ftpUpload");
+const slugify = require("slugify");
+const fs = require("fs");
 
 // ────────────────────────────────────────────────
 // Helper for consistent responses
@@ -139,31 +142,65 @@ exports.getProjectById = async (req, res) => {
 };
 
 /**
- * POST /projects/admin/
- * (ADMIN – create new project)
+ * POST /projects/admin/ — CREATE
  */
 exports.createProject = async (req, res) => {
   try {
     const { title, category, description, details, status, location, scope } =
       req.body;
 
-    const mainImage = req.file?.path || req.body.image;
+    if (!title?.trim()) {
+      return sendResponse(res, 400, false, null, "Title is required");
+    }
 
-    if (!mainImage) {
+    const cleanedTitle = title.trim();
+    const slug = slugify(cleanedTitle, { lower: true, strict: true });
+    const projectFolder = `rippotai_projects/${slug}`;
+
+    // ─── MAIN IMAGE (required) ──────────────────────────────────────
+    if (!req.files?.image?.[0]) {
       return sendResponse(res, 400, false, null, "Main image is required");
     }
 
-    const galleryImages = req.files?.images
-      ? req.files.images.map((file) => file.path)
-      : [];
+    const mainFile = req.files.image[0];
 
+    const mainImageUrl = await uploadToFtp(
+      mainFile.buffer,
+      mainFile.originalname || mainFile.filename,
+      projectFolder, // ← remoteDir = rippotai_projects/{slug}
+    );
+
+    // ─── GALLERY IMAGES (optional) ──────────────────────────────────
+    const galleryUrls = [];
+
+    if (req.files?.images?.length > 0) {
+      for (const file of req.files.images) {
+        try {
+          const url = await uploadToFtp(
+            file.buffer,
+            file.originalname || file.filename,
+            projectFolder, // ← same remoteDir for all gallery images
+          );
+          galleryUrls.push(url);
+        } catch (uploadErr) {
+          console.error(
+            `Gallery upload failed: ${file.originalname}`,
+            uploadErr.message,
+          );
+          // continue — don't fail whole request
+        }
+      }
+    }
+
+    // ─── SAVE PROJECT ───────────────────────────────────────────────
     const project = new Project({
-      title: title?.trim(),
-      category: category?.trim(),
-      description,
-      details,
-      image: mainImage,
-      images: galleryImages,
+      title: cleanedTitle,
+      slug,
+      category: category?.trim() || undefined,
+      description: description?.trim(),
+      details: details?.trim(),
+      image: mainImageUrl,
+      images: galleryUrls,
       status: status || "draft",
       location: location?.trim(),
       scope: scope?.trim(),
@@ -173,9 +210,10 @@ exports.createProject = async (req, res) => {
 
     sendResponse(res, 201, true, project, "Project created successfully");
   } catch (error) {
+    console.error("Create project failed:", error);
     sendResponse(
       res,
-      400,
+      500,
       false,
       null,
       error.message || "Failed to create project",
@@ -184,16 +222,13 @@ exports.createProject = async (req, res) => {
 };
 
 /**
- * PUT /projects/admin/:projectId
- * :projectId is the custom UUID
- * (ADMIN – full update)
+ * PUT /projects/admin/:projectId — UPDATE
  */
 exports.updateProject = async (req, res) => {
   try {
     const updateData = {};
 
-    // Scalar fields
-    [
+    const scalarFields = [
       "title",
       "category",
       "description",
@@ -201,7 +236,8 @@ exports.updateProject = async (req, res) => {
       "status",
       "location",
       "scope",
-    ].forEach((key) => {
+    ];
+    scalarFields.forEach((key) => {
       if (req.body[key] !== undefined) {
         updateData[key] =
           typeof req.body[key] === "string"
@@ -210,68 +246,94 @@ exports.updateProject = async (req, res) => {
       }
     });
 
-    // Main image - replace if new file uploaded
-    if (req.file?.path) {
-      updateData.image = req.file.path;
+    // Fetch existing project to determine base folder
+    const existing = await Project.findOne({ projectId: req.params.projectId });
+    if (!existing) {
+      return sendResponse(res, 404, false, null, "Project not found");
     }
 
-    // Gallery images logic
-    let finalImages = null;
+    // Decide folder — use new slug if title changed, otherwise keep existing
+    let projectFolder = `rippotai_projects/${existing.slug}`;
+    if (updateData.title) {
+      const newSlug = slugify(updateData.title, { lower: true, strict: true });
+      if (newSlug !== existing.slug) {
+        projectFolder = `rippotai_projects/${newSlug}`;
+        updateData.slug = newSlug; // keep slug in sync with folder
+      }
+    }
 
-    // Parse existing images the client wants to keep
+    // ─── MAIN IMAGE REPLACEMENT (optional) ───────────────
+    if (req.files?.image?.[0]) {
+      const file = req.files.image[0];
+
+      const newMainUrl = await uploadToFtp(
+        file.buffer,
+        file.originalname || file.filename,
+        projectFolder, // ← remoteDir = rippotai_projects/{slug or new-slug}
+      );
+
+      updateData.image = newMainUrl;
+    }
+
+    // ─── GALLERY ─────────────────────────────────────────
+    let finalImages = [];
+
     if (req.body.existingImages !== undefined) {
       try {
         const kept = JSON.parse(req.body.existingImages);
         if (Array.isArray(kept)) {
-          finalImages = kept.filter(Boolean);
+          finalImages = kept.filter(
+            (u) => typeof u === "string" && u.startsWith("http"),
+          );
         }
-      } catch {
-        // invalid JSON → treat as no kept images
+      } catch (e) {
+        console.warn("Invalid existingImages:", e.message);
       }
     }
 
-    // Append newly uploaded gallery images
     if (req.files?.images?.length > 0) {
-      const newPaths = req.files.images.map((f) => f.path);
-      finalImages = finalImages ? [...finalImages, ...newPaths] : newPaths;
+      for (const file of req.files.images) {
+        try {
+          const url = await uploadToFtp(
+            file.buffer,
+            file.originalname || file.filename,
+            projectFolder, // ← same remoteDir for all new gallery images
+          );
+          finalImages.push(url);
+        } catch (err) {
+          console.error(
+            `Gallery upload failed: ${file.originalname}`,
+            err.message,
+          );
+        }
+      }
     }
 
-    // Only update gallery if client sent explicit input
     if (
       req.body.existingImages !== undefined ||
       req.files?.images?.length > 0
     ) {
-      updateData.images = finalImages || [];
+      updateData.images = finalImages;
     }
 
-    const updatedProject = await Project.findOneAndUpdate(
+    const updated = await Project.findOneAndUpdate(
       { projectId: req.params.projectId },
       updateData,
       { new: true, runValidators: true, select: "-__v" },
     );
 
-    if (!updatedProject) {
-      return sendResponse(res, 404, false, null, "Project not found");
-    }
-
-    sendResponse(
-      res,
-      200,
-      true,
-      updatedProject,
-      "Project updated successfully",
-    );
+    sendResponse(res, 200, true, updated, "Project updated successfully");
   } catch (error) {
+    console.error("Update project error:", error);
     sendResponse(
       res,
-      400,
+      500,
       false,
       null,
       error.message || "Failed to update project",
     );
   }
 };
-
 /**
  * DELETE /projects/admin/:projectId
  * :projectId is the custom UUID

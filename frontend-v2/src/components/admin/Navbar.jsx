@@ -1,47 +1,135 @@
-// components/admin/Navbar.jsx
 "use client";
 
-export default function Navbar() {
+import { useState, useRef, useEffect } from "react";
+import { Menu, User, LogOut } from "lucide-react";
+import { useRouter } from "next/navigation";
+
+export const Navbar = ({ onToggleSidebar, showMenu }) => {
+  const [profileOpen, setProfileOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setProfileOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // ✅ LOGOUT FUNCTION
+  const handleLogout = () => {
+    localStorage.removeItem("adminToken"); // remove token
+    localStorage.removeItem("refreshToken");
+    setProfileOpen(false); // close dropdown
+    router.replace("/login"); // redirect
+  };
+
   return (
-    <div style={styles.navbar}>
-      <div>
-        <div style={styles.label}>ADMIN PANEL</div>
-        <div style={styles.title}>Control Dashboard</div>
+    <header style={styles.header}>
+      {/* LEFT */}
+      <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+        {showMenu && (
+          <button onClick={onToggleSidebar} style={styles.menuBtn}>
+            <Menu size={22} />
+          </button>
+        )}
       </div>
 
-      <div style={styles.user}>Admin</div>
-    </div>
+      {/* RIGHT */}
+      <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+        <div ref={dropdownRef} style={{ position: "relative" }}>
+          <button
+            onClick={() => setProfileOpen(!profileOpen)}
+            style={styles.profileBtn}
+          >
+            <div style={styles.avatar}>
+              <User size={18} />
+            </div>
+          </button>
+
+          {profileOpen && (
+            <div style={styles.dropdown}>
+              <DropdownItem
+                icon={<LogOut size={16} />}
+                text="Logout"
+                danger
+                onClick={handleLogout} // 🔥 IMPORTANT
+              />
+            </div>
+          )}
+        </div>
+      </div>
+    </header>
   );
-}
+};
+
+const DropdownItem = ({ icon, text, danger, onClick }) => (
+  <div
+    onClick={onClick}
+    style={{
+      display: "flex",
+      alignItems: "center",
+      gap: 10,
+      padding: "12px 16px",
+      cursor: "pointer",
+      fontSize: 14,
+      color: danger ? "#ef4444" : "#374151",
+    }}
+  >
+    {icon}
+    {text}
+  </div>
+);
 
 const styles = {
-  navbar: {
-    height: 90,
+  header: {
+    height: 64,
     background: "#ffffff",
-    borderBottom: "1px solid rgba(26,60,52,0.08)",
-    padding: "0 40px",
+    borderBottom: "1px solid #e5e7eb",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
+    padding: "0 20px",
+    position: "sticky",
+    top: 0,
+    zIndex: 50,
   },
 
-  label: {
-    fontFamily: "'Lato', sans-serif",
-    fontSize: 11,
-    letterSpacing: 3,
-    color: "#d9af61",
+  menuBtn: {
+    background: "none",
+    border: "none",
+    cursor: "pointer",
   },
 
-  title: {
-    fontFamily: "'Lato', sans-serif",
-    fontSize: 22,
-    fontWeight: 300,
-    color: "#1a3c34",
+  profileBtn: {
+    background: "none",
+    border: "none",
+    cursor: "pointer",
   },
 
-  user: {
-    fontFamily: "'Lato', sans-serif",
-    fontSize: 14,
-    color: "#1a3c34",
+  avatar: {
+    width: 36,
+    height: 36,
+    borderRadius: "50%",
+    background: "#e5e7eb",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  dropdown: {
+    position: "absolute",
+    right: 0,
+    top: 48,
+    width: 180,
+    background: "#ffffff",
+    borderRadius: 10,
+    boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+    border: "1px solid #e5e7eb",
+    overflow: "hidden",
   },
 };

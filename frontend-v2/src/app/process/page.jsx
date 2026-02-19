@@ -1,57 +1,131 @@
 "use client";
-import { useEffect, useRef, useState, useCallback } from "react";
 
-// You should move this to data/mock.js or data/process.js
+import Image from "next/image";
+import { useEffect, useState, useRef, useCallback } from "react";
+
 const processSteps = [
   {
     id: 1,
-    title: "Discovery",
+    title: "BRIEFING",
     description:
-      "We begin by deeply understanding your vision, needs, site context, and aspirations. Through site visits, client workshops, and research, we establish a clear foundation for the project.",
+      "Understanding context, constraints, and client vision to define architectural direction.",
   },
   {
     id: 2,
-    title: "Concept",
+    title: "DESIGN",
     description:
-      "Ideas take shape through sketches, diagrams, and initial models. We explore multiple directions, balancing creativity with practicality, materiality, and spatial logic.",
+      "Translating vision into spatial concepts through rigorous design exploration.",
   },
   {
     id: 3,
-    title: "Execution",
+    title: "EXECUTION",
     description:
-      "Detailed drawings, material specifications, and coordination with consultants ensure precision from concept to construction. We maintain rigorous oversight throughout.",
+      "Precise realization of design intent through meticulous material selection.",
   },
   {
     id: 4,
-    title: "Realisation",
+    title: "HANDOVER",
     description:
-      "The final phase brings the design to life. We collaborate closely with builders and craftsmen to achieve the intended quality, detail, and atmosphere.",
+      "Final delivery ensuring every detail meets the uncompromising standard.",
   },
 ];
 
 const bannerImage =
   "https://customer-assets.emergentagent.com/job_rippotai-arch/artifacts/saa7noph_Scene%2029.png";
+function MobileTimeline() {
+  return (
+    <section
+      style={{
+        padding: "clamp(60px, 8vw, 100px) clamp(20px, 5vw, 48px)",
+        maxWidth: "900px",
+        margin: "0 auto",
+      }}
+    >
+      {processSteps.map((step, idx) => (
+        <div
+          key={idx}
+          style={{
+            display: "flex",
+            gap: "20px",
+            marginBottom: "48px",
+          }}
+        >
+          {/* Line + Dot */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <div
+              style={{
+                width: "12px",
+                height: "12px",
+                borderRadius: "50%",
+                background: "#d9af61",
+                marginTop: "6px",
+              }}
+            />
+            {idx !== processSteps.length - 1 && (
+              <div
+                style={{
+                  width: "1px",
+                  flex: 1,
+                  background: "rgba(26,60,52,0.2)",
+                  marginTop: "8px",
+                }}
+              />
+            )}
+          </div>
+
+          {/* Content */}
+          <div>
+            <div
+              style={{
+                fontSize: "12px",
+                letterSpacing: "3px",
+                color: "#d9af61",
+                marginBottom: "8px",
+              }}
+            >
+              {String(step.id).padStart(2, "0")}
+            </div>
+
+            <h3
+              style={{
+                fontSize: "20px",
+                letterSpacing: "2px",
+                margin: "0 0 10px",
+                color: "#1a3c34",
+              }}
+            >
+              {step.title}
+            </h3>
+
+            <p style={{ color: "#555", lineHeight: 1.7, margin: 0 }}>
+              {step.description}
+            </p>
+          </div>
+        </div>
+      ))}
+    </section>
+  );
+}
 
 const ProcessCurveSlider = () => {
   const containerRef = useRef(null);
-  const pathRef = useRef(null);
-  const rafRef = useRef(null);
-
   const [progress, setProgress] = useState(0);
-  const [pathLength, setPathLength] = useState(5200);
+  const rafRef = useRef(null);
 
   const updateProgress = useCallback(() => {
     const el = containerRef.current;
     if (!el) return;
-
     const rect = el.getBoundingClientRect();
     const scrollable = el.offsetHeight - window.innerHeight;
-    if (scrollable <= 0) return;
-
     const scrolled = -rect.top;
     const p = Math.max(0, Math.min(1, scrolled / scrollable));
     setProgress(p);
-
     rafRef.current = null;
   }, []);
 
@@ -61,24 +135,12 @@ const ProcessCurveSlider = () => {
         rafRef.current = requestAnimationFrame(updateProgress);
       }
     };
-
     window.addEventListener("scroll", handleScroll, { passive: true });
-    // Initial calculation
-    updateProgress();
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, [updateProgress]);
-
-  // Measure real path length once SVG is mounted
-  useEffect(() => {
-    if (pathRef.current) {
-      const length = pathRef.current.getTotalLength();
-      setPathLength(length);
-    }
-  }, []);
 
   const totalSteps = processSteps.length;
   const activeIndex = Math.min(
@@ -87,14 +149,14 @@ const ProcessCurveSlider = () => {
   );
   const localProgress = progress * totalSteps - activeIndex;
 
-  // Gentle zoom effect
+  // Gentler zoom
   const zoomAmount = Math.sin(localProgress * Math.PI) * 0.15;
   const scale = 1 + zoomAmount;
 
-  // Pan the wide container
+  // Pan across the wide container
   const panPercent = progress * 75;
 
-  // Node positions (viewBox 0 0 4000 1000)
+  // Node positions on SVG (viewBox 0 0 4000 1000)
   const nodes = [
     { cx: 500, cy: 650 },
     { cx: 1500, cy: 280 },
@@ -102,6 +164,7 @@ const ProcessCurveSlider = () => {
     { cx: 3500, cy: 300 },
   ];
 
+  // Card positions: adjusted so Execution (idx 2) doesn't go behind header
   const cardPositions = [
     { left: "12.5%", top: "18%", align: "center" },
     { left: "37.5%", top: "55%", align: "center" },
@@ -111,11 +174,24 @@ const ProcessCurveSlider = () => {
 
   const curvePath =
     "M 0,500 C 200,500 250,650 500,650 S 1000,280 1500,280 S 2000,680 2500,680 S 3000,300 3500,300 C 3750,300 4000,400 4000,400";
+  const pathRef = useRef(null);
+  const [pathLength, setPathLength] = useState(5200);
 
+  useEffect(() => {
+    if (pathRef.current) {
+      setPathLength(pathRef.current.getTotalLength());
+    }
+  }, []);
+
+  // Gold line draws in sync with scroll progress
   const dashOffset = pathLength * (1 - progress);
 
   return (
-    <div ref={containerRef} style={{ height: "500vh", position: "relative" }}>
+    <div
+      ref={containerRef}
+      style={{ height: "500vh", position: "relative" }}
+      data-testid="process-curve-slider"
+    >
       <div
         style={{
           position: "sticky",
@@ -125,6 +201,7 @@ const ProcessCurveSlider = () => {
           backgroundColor: "#ffffff",
         }}
       >
+        {/* Wide scrolling container */}
         <div
           style={{
             width: "400vw",
@@ -135,19 +212,20 @@ const ProcessCurveSlider = () => {
             willChange: "transform",
           }}
         >
-          {/* SVG – Curvy Timeline */}
+          {/* SVG Curvy Path */}
           <svg
             viewBox="0 0 4000 1000"
             preserveAspectRatio="none"
             style={{
               position: "absolute",
-              inset: 0,
+              top: 0,
+              left: 0,
               width: "100%",
               height: "100%",
               pointerEvents: "none",
             }}
           >
-            {/* Faint background path */}
+            {/* Background path */}
             <path
               d={curvePath}
               fill="none"
@@ -155,8 +233,7 @@ const ProcessCurveSlider = () => {
               strokeWidth="3"
               strokeLinecap="round"
             />
-
-            {/* Gold animated progress line */}
+            {/* Animated progress path - synced to scroll */}
             <path
               ref={pathRef}
               d={curvePath}
@@ -168,11 +245,10 @@ const ProcessCurveSlider = () => {
               strokeDashoffset={dashOffset}
             />
 
-            {/* Nodes */}
+            {/* Node circles */}
             {nodes.map((node, idx) => {
               const isActive = idx === activeIndex;
               const isPassed = idx < activeIndex;
-
               return (
                 <g key={idx}>
                   {isActive && (
@@ -186,7 +262,7 @@ const ProcessCurveSlider = () => {
                   <circle
                     cx={node.cx}
                     cy={node.cy}
-                    r={isActive ? 14 : 8}
+                    r={isActive ? "14" : "8"}
                     fill={isActive || isPassed ? "#d9af61" : "transparent"}
                     stroke="#d9af61"
                     strokeWidth="2"
@@ -199,7 +275,7 @@ const ProcessCurveSlider = () => {
             })}
           </svg>
 
-          {/* Step Cards – positioned absolutely */}
+          {/* Step Cards */}
           {processSteps.map((step, idx) => {
             const isActive = idx === activeIndex;
             const isPassed = idx < activeIndex;
@@ -212,13 +288,13 @@ const ProcessCurveSlider = () => {
                   position: "absolute",
                   left: pos.left,
                   top: pos.top,
-                  transform: "translateX(-50%)",
+                  transform: "translate(-50%, 0)",
                   textAlign: pos.align,
                   opacity: isActive ? 1 : isPassed ? 0.5 : 0.25,
                   zIndex: 2,
                   maxWidth: "320px",
-                  pointerEvents: "none", // prevent interaction issues
                 }}
+                data-testid={`process-step-${idx}`}
               >
                 <div
                   style={{
@@ -259,7 +335,6 @@ const ProcessCurveSlider = () => {
                     maxHeight: isActive ? "200px" : "0px",
                     overflow: "hidden",
                     opacity: isActive ? 1 : 0,
-                    transition: "opacity 0.4s ease, max-height 0.6s ease",
                   }}
                 >
                   {step.description}
@@ -272,90 +347,90 @@ const ProcessCurveSlider = () => {
     </div>
   );
 };
-
 export default function ProcessPage() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 1024);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   return (
     <>
-      {/* <Header /> */}
-
-      {/* Hero Banner */}
+      {/* ===== Banner ===== */}
       <section
         style={{
           position: "relative",
           width: "100%",
           height: "60vh",
-          minHeight: "400px",
+          minHeight: "320px",
           overflow: "hidden",
-          backgroundColor: "#0a0a0a",
         }}
       >
-        <img
+        <Image
           src={bannerImage}
           alt="Our Process"
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            objectPosition: "center",
-            display: "block",
-          }}
+          fill
+          priority
+          sizes="100vw"
+          style={{ objectFit: "cover" }}
         />
+
         <div
           style={{
             position: "absolute",
             inset: 0,
-            backgroundColor: "rgba(0, 0, 0, 0.4)",
+            background: "rgba(0,0,0,0.45)",
           }}
         />
+
         <div
           style={{
             position: "absolute",
-            bottom: "60px",
-            left: "48px",
-            zIndex: 2,
+            bottom: "8%",
+            left: "5%",
+            right: "5%",
+            maxWidth: "800px",
+            color: "#fff",
           }}
         >
           <div
             style={{
-              fontFamily: "'Lato', sans-serif",
-              fontSize: "11px",
-              fontWeight: 500,
+              fontSize: "clamp(10px,2vw,12px)",
               letterSpacing: "3px",
-              textTransform: "uppercase",
               color: "#d9af61",
-              marginBottom: "16px",
+              marginBottom: "10px",
             }}
           >
             HOW WE WORK
           </div>
+
           <h1
             style={{
-              fontFamily: "'Lato', sans-serif",
-              fontSize: "clamp(36px, 5vw, 56px)",
+              fontSize: "clamp(32px,6vw,56px)",
               fontWeight: 300,
-              color: "#ffffff",
-              letterSpacing: "1px",
               margin: 0,
             }}
           >
             Our Process
           </h1>
+
           <div
             style={{
               width: "40px",
               height: "1px",
-              backgroundColor: "#d9af61",
-              marginTop: "20px",
+              background: "#d9af61",
+              marginTop: "18px",
             }}
           />
         </div>
       </section>
 
-      {/* Main Interactive Section */}
-      <ProcessCurveSlider />
+      {/* ===== Responsive Content ===== */}
 
-      {/* <Footer /> */}
-      {/* <FloatingCTA /> */}
+      {isMobile ? <MobileTimeline /> : <ProcessCurveSlider />}
     </>
   );
 }

@@ -1,8 +1,9 @@
 // app/admin/jobs/page.jsx
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import {
   Briefcase,
@@ -13,14 +14,38 @@ import {
   Trash2,
   Pencil,
   RefreshCw,
+  X,
+  Loader2,
+  AlertCircle,
 } from "lucide-react";
-import { useGetJobsQuery, useDeleteJobMutation } from "@/api/rippotaiApi";
+import {
+  useGetJobsQuery,
+  useDeleteJobMutation,
+  useCreateJobMutation,
+  useUpdateJobMutation, // ← Make sure this is exported from your api slice
+} from "@/api/rippotaiApi";
 import styles from "./jobs.module.css";
 
 export default function AdminJobsPage() {
+  const router = useRouter();
+
   const [viewMode, setViewMode] = useState("table");
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
+
+  // Modal states
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingJob, setEditingJob] = useState(null); // Store job being edited
+
+  const [formData, setFormData] = useState({
+    title: "",
+    category: "",
+    location: "",
+    description: "",
+    details: "",
+  });
+  const [formError, setFormError] = useState("");
 
   const {
     data: rawJobs = [],
@@ -29,6 +54,10 @@ export default function AdminJobsPage() {
     error,
     refetch,
   } = useGetJobsQuery();
+
+  const [createJob, { isLoading: isCreating }] = useCreateJobMutation();
+  const [updateJob, { isLoading: isUpdating }] = useUpdateJobMutation();
+  const [deleteJob, { isLoading: isDeleting }] = useDeleteJobMutation();
 
   const jobs = useMemo(() => {
     let list = Array.isArray(rawJobs)
@@ -52,7 +81,33 @@ export default function AdminJobsPage() {
     return list;
   }, [rawJobs, searchTerm, categoryFilter]);
 
-  const [deleteJob, { isLoading: isDeleting }] = useDeleteJobMutation();
+  // Reset form when opening create modal
+  useEffect(() => {
+    if (isCreateModalOpen) {
+      setFormData({
+        title: "",
+        category: "",
+        location: "",
+        description: "",
+        details: "",
+      });
+      setFormError("");
+    }
+  }, [isCreateModalOpen]);
+
+  // Fill form when opening edit modal
+  useEffect(() => {
+    if (isEditModalOpen && editingJob) {
+      setFormData({
+        title: editingJob.title || "",
+        category: editingJob.category || "",
+        location: editingJob.location || "",
+        description: editingJob.description || "",
+        details: editingJob.details || "",
+      });
+      setFormError("");
+    }
+  }, [isEditModalOpen, editingJob]);
 
   const handleDelete = async (jobId) => {
     if (!confirm("Delete this job posting? This cannot be undone.")) return;
@@ -61,6 +116,61 @@ export default function AdminJobsPage() {
       refetch();
     } catch (err) {
       alert(err.data?.message || "Delete failed");
+    }
+  };
+
+  const handleJobClick = (jobId) => {
+    router.push(`/admin/jobs/${jobId}/applications`);
+  };
+
+  const openEditModal = (job) => {
+    setEditingJob(job);
+    setIsEditModalOpen(true);
+  };
+
+  // Shared form change handler
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormError("");
+  };
+
+  // Shared submit handler (create or update)
+  const handleSubmitJob = async (e) => {
+    e.preventDefault();
+    setFormError("");
+
+    if (!formData.title.trim()) return setFormError("Job title is required");
+    if (!formData.category.trim()) return setFormError("Category is required");
+    if (!formData.description.trim())
+      return setFormError("Description is required");
+
+    try {
+      if (isEditModalOpen && editingJob) {
+        // Update existing job
+        await updateJob({ id: editingJob._id, ...formData }).unwrap();
+        alert("Job updated successfully!");
+        setIsEditModalOpen(false);
+        setEditingJob(null);
+      } else {
+        // Create new job
+        await createJob(formData).unwrap();
+        alert("Job created successfully!");
+        setIsCreateModalOpen(false);
+      }
+
+      setFormData({
+        title: "",
+        category: "",
+        location: "",
+        description: "",
+        details: "",
+      });
+      refetch();
+    } catch (err) {
+      setFormError(
+        err.data?.message || "Failed to save job. Please try again.",
+      );
     }
   };
 
@@ -82,7 +192,7 @@ export default function AdminJobsPage() {
   }
 
   return (
-    <div className={`${styles.container} min-h-screen bg-gray-50`}>
+    <div className={`${styles.container} min-h-screen bg-gray-50 pb-20`}>
       {/* Header */}
       <header className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -93,17 +203,17 @@ export default function AdminJobsPage() {
             </span>
           </h1>
           <p className="mt-1 text-sm text-gray-500">
-            Manage career opportunities
+            Manage career opportunities at our architectural firm
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          <Link
-            href="/admin/jobs/new"
-            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
+          <button
+            onClick={() => setIsCreateModalOpen(true)}
+            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700 transition-colors"
           >
             <Plus size={16} /> New Job
-          </Link>
+          </button>
         </div>
       </header>
 
@@ -127,11 +237,20 @@ export default function AdminJobsPage() {
             className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm focus:border-blue-500 focus:ring-blue-500"
           >
             <option value="all">All Categories</option>
-            <option value="Engineering">Engineering</option>
-            <option value="Design">Design</option>
-            <option value="Marketing">Marketing</option>
-            <option value="Operations">Operations</option>
-            <option value="Other">Other</option>
+            <option value="Architectural Design">Architectural Design</option>
+            <option value="Interior Design">Interior Design</option>
+            <option value="Urban Planning">Urban Planning</option>
+            <option value="Landscape Architecture">
+              Landscape Architecture
+            </option>
+            <option value="Project Management">Project Management</option>
+            <option value="Sustainable Design">Sustainable Design</option>
+            <option value="Heritage Conservation">Heritage Conservation</option>
+            <option value="Residential Projects">Residential Projects</option>
+            <option value="Commercial Projects">Commercial Projects</option>
+            <option value="Institutional Projects">
+              Institutional Projects
+            </option>
           </select>
         </div>
 
@@ -184,14 +303,186 @@ export default function AdminJobsPage() {
         <JobsTable
           jobs={jobs}
           onDelete={handleDelete}
+          onJobClick={handleJobClick}
+          onEdit={openEditModal} // ← Pass edit handler
           isDeleting={isDeleting}
         />
       ) : (
         <JobsCards
           jobs={jobs}
           onDelete={handleDelete}
+          onJobClick={handleJobClick}
+          onEdit={openEditModal} // ← Pass edit handler
           isDeleting={isDeleting}
         />
+      )}
+
+      {/* Create / Edit Modal (same modal reused) */}
+      {(isCreateModalOpen || isEditModalOpen) && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            {/* Header */}
+            <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between z-10">
+              <h2 className="text-xl font-bold text-gray-900">
+                {isEditModalOpen ? "Edit Job Posting" : "Add New Job Posting"}
+              </h2>
+              <button
+                onClick={() => {
+                  setIsCreateModalOpen(false);
+                  setIsEditModalOpen(false);
+                  setEditingJob(null);
+                  setFormError("");
+                }}
+                className="p-2 rounded-full hover:bg-gray-100 transition"
+              >
+                <X size={24} className="text-gray-600" />
+              </button>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleSubmitJob} className="p-6 space-y-6">
+              {formError && (
+                <div className="bg-red-50 border border-red-200 text-red-800 p-4 rounded-lg flex items-start gap-3">
+                  <AlertCircle size={20} className="mt-0.5 flex-shrink-0" />
+                  <p>{formError}</p>
+                </div>
+              )}
+
+              {/* Title */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Job Title <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="e.g. Senior Architect - Residential Projects"
+                />
+              </div>
+
+              {/* Category */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Category <span className="text-red-500">*</span>
+                </label>
+                <select
+                  name="category"
+                  value={formData.category}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                >
+                  <option value="">Select category</option>
+                  <option value="Architectural Design">
+                    Architectural Design
+                  </option>
+                  <option value="Interior Design">Interior Design</option>
+                  <option value="Urban Planning">Urban Planning</option>
+                  <option value="Landscape Architecture">
+                    Landscape Architecture
+                  </option>
+                  <option value="Project Management">Project Management</option>
+                  <option value="Sustainable Design">Sustainable Design</option>
+                  <option value="Heritage Conservation">
+                    Heritage Conservation
+                  </option>
+                  <option value="Residential Projects">
+                    Residential Projects
+                  </option>
+                  <option value="Commercial Projects">
+                    Commercial Projects
+                  </option>
+                  <option value="Institutional Projects">
+                    Institutional Projects
+                  </option>
+                </select>
+              </div>
+
+              {/* Location */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Location
+                </label>
+                <input
+                  type="text"
+                  name="location"
+                  value={formData.location}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="e.g. Delhi NCR / Remote / Mumbai"
+                />
+              </div>
+
+              {/* Short Description */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Short Description <span className="text-red-500">*</span>
+                </label>
+                <textarea
+                  name="description"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  required
+                  rows={3}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Brief overview of the role and key responsibilities..."
+                />
+              </div>
+
+              {/* Detailed Description */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Detailed Description <span className="text-red-500">*</span>
+                </label>
+                <textarea
+                  name="details"
+                  value={formData.details}
+                  onChange={handleInputChange}
+                  required
+                  rows={10}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
+                  placeholder="Full job description, requirements, benefits, qualifications..."
+                />
+              </div>
+
+              {/* Footer */}
+              <div className="sticky bottom-0 bg-white border-t border-gray-200 px-6 py-4 flex justify-end gap-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsCreateModalOpen(false);
+                    setIsEditModalOpen(false);
+                    setEditingJob(null);
+                    setFormError("");
+                  }}
+                  className="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isCreating || isUpdating}
+                  className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed transition flex items-center gap-2"
+                >
+                  {isCreating || isUpdating ? (
+                    <>
+                      <Loader2 size={18} className="animate-spin" />
+                      {isEditModalOpen ? "Updating..." : "Creating..."}
+                    </>
+                  ) : isEditModalOpen ? (
+                    "Update Job"
+                  ) : (
+                    "Create Job"
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       )}
     </div>
   );
@@ -215,8 +506,8 @@ function LoadingSkeleton() {
   );
 }
 
-// ────────────────────────────────────────────── Table View
-function JobsTable({ jobs, onDelete, isDeleting }) {
+// ────────────────────────────────────────────── JobsTable (now with Edit handler)
+function JobsTable({ jobs, onDelete, onJobClick, onEdit, isDeleting }) {
   return (
     <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
       <table className="w-full text-sm">
@@ -243,7 +534,8 @@ function JobsTable({ jobs, onDelete, isDeleting }) {
           {jobs.map((job) => (
             <tr
               key={job._id}
-              className="group hover:bg-gray-50 transition-colors"
+              className="group hover:bg-gray-50 transition-colors cursor-pointer"
+              onClick={() => onJobClick(job._id)}
             >
               <td className="px-4 py-3 font-medium text-gray-900">
                 {job.title || "—"}
@@ -260,16 +552,25 @@ function JobsTable({ jobs, onDelete, isDeleting }) {
                   : "—"}
               </td>
               <td className="px-4 py-3 text-right">
-                <div className="flex items-center justify-end gap-2 opacity-70 group-hover:opacity-100 transition-opacity">
-                  <Link
-                    href={`/admin/jobs/${job._id}/edit`}
+                <div
+                  className="flex items-center justify-end gap-2 opacity-70 group-hover:opacity-100 transition-opacity"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onEdit(job); // ← Open edit modal
+                    }}
                     className="rounded p-1.5 hover:bg-gray-100"
                     title="Edit"
                   >
                     <Pencil size={16} className="text-gray-600" />
-                  </Link>
+                  </button>
                   <button
-                    onClick={() => onDelete(job._id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDelete(job._id);
+                    }}
                     disabled={isDeleting}
                     className="rounded p-1.5 text-red-600 hover:bg-red-50"
                     title="Delete"
@@ -286,14 +587,15 @@ function JobsTable({ jobs, onDelete, isDeleting }) {
   );
 }
 
-// ────────────────────────────────────────────── Card View
-function JobsCards({ jobs, onDelete, isDeleting }) {
+// ────────────────────────────────────────────── JobsCards (with Edit handler)
+function JobsCards({ jobs, onDelete, onJobClick, onEdit, isDeleting }) {
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {jobs.map((job) => (
         <div
           key={job._id}
-          className="group overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5"
+          className="group overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5 cursor-pointer"
+          onClick={() => onJobClick(job._id)}
         >
           <div className="p-5">
             <h3 className="font-semibold text-gray-900 line-clamp-2 mb-1">
@@ -318,15 +620,21 @@ function JobsCards({ jobs, onDelete, isDeleting }) {
                   ? format(new Date(job.createdAt), "dd MMM yyyy")
                   : "—"}
               </span>
-              <div className="flex gap-2">
-                <Link
-                  href={`/admin/jobs/${job._id}/edit`}
+              <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onEdit(job); // ← Open edit modal
+                  }}
                   className="text-blue-600 hover:underline"
                 >
                   Edit
-                </Link>
+                </button>
                 <button
-                  onClick={() => onDelete(job._id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDelete(job._id);
+                  }}
                   disabled={isDeleting}
                   className="text-red-600 hover:underline disabled:opacity-50"
                 >

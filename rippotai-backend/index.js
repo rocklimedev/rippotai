@@ -60,6 +60,7 @@ app.use("/api/projects", require("./routes/projects"));
 app.use("/api/careers", require("./routes/application"));
 app.use("/api/users", require("./routes/user"));
 app.use("/api/auth", require("./routes/auth"));
+app.use("/api/roles", require("./routes/roles"));
 // Error Handler
 app.use(errorHandler);
 

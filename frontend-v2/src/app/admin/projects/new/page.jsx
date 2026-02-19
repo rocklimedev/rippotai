@@ -106,27 +106,42 @@ export default function NewProjectPage() {
     }
 
     try {
-      const payload = {
-        title: formData.title.trim(),
-        category: formData.category.trim(),
-        description: formData.description.trim(),
-        details: formData.details.trim(),
-        location: formData.location.trim() || undefined,
-        scope: formData.scope.trim() || undefined,
-        status: formData.status,
-        image: mainImage,
-        images: galleryImages.length > 0 ? galleryImages : undefined,
-      };
+      const formDataToSend = new FormData();
 
-      await createProject(payload).unwrap();
+      // Text fields
+      formDataToSend.append("title", formData.title.trim());
+      formDataToSend.append("category", formData.category.trim());
+      formDataToSend.append("description", formData.description.trim());
+      formDataToSend.append("details", formData.details.trim());
+      if (formData.location.trim()) {
+        formDataToSend.append("location", formData.location.trim());
+      }
+      if (formData.scope.trim()) {
+        formDataToSend.append("scope", formData.scope.trim());
+      }
+      formDataToSend.append("status", formData.status);
+
+      // Main image – single file
+      formDataToSend.append("image", mainImage);
+
+      // Gallery images – append each file with the same field name "images"
+      galleryImages.forEach((file) => {
+        formDataToSend.append("images", file);
+      });
+
+      // Send FormData (RTK Query will set correct Content-Type: multipart/form-data)
+      await createProject(formDataToSend).unwrap();
 
       setSuccess(true);
       setTimeout(() => {
         router.push("/admin/projects");
       }, 1500);
     } catch (err) {
+      console.error("Create project error:", err);
       setError(
-        err.data?.message || "Failed to create project. Please try again.",
+        err.data?.message ||
+          err.message ||
+          "Failed to create project. Please try again.",
       );
     }
   };

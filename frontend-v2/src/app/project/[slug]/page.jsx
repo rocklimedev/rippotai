@@ -44,9 +44,8 @@ export default function ProjectDetailPage() {
   });
 
   // Correct – use the root response directly
-  const project = projectResponse ?? null;
-  console.log("Full projectResponse:", projectResponse);
-  console.log("Extracted project:", project);
+  const project = projectResponse?.data ?? null;
+
   // Fetch list for prev/next navigation
   const { data: projectsList = [], isLoading: isListLoading } =
     useGetPublicProjectsQuery(
@@ -57,9 +56,6 @@ export default function ProjectDetailPage() {
         }),
       },
     );
-
-  console.log("Current slug:", slug);
-  console.log("Project data:", project);
 
   // ──────────────────────────────────────────────
   // Loading / Error / Not Found states

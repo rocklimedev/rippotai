@@ -6,7 +6,6 @@ const roleSchema = new mongoose.Schema(
       type: String,
       required: [true, "Role name is required"],
       unique: true,
-      enum: ["Admin", "HR", "Architect", "Employee"], // extend as needed
     },
     description: {
       type: String,
@@ -26,7 +25,7 @@ const roleSchema = new mongoose.Schema(
       },
     ],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("Role", roleSchema);

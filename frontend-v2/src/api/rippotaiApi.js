@@ -1,3 +1,4 @@
+// src/api/rippotaiApi.js
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_URL } from "../store/config";
 
@@ -6,7 +7,7 @@ export const rippotaiApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: API_URL,
     prepareHeaders: (headers, { endpoint }) => {
-      // Skip setting Content-Type for endpoints that use FormData
+      // Skip Content-Type for FormData endpoints
       if (
         !["createApplication", "createProject", "updateProject"].includes(
           endpoint,
@@ -14,18 +15,28 @@ export const rippotaiApi = createApi({
       ) {
         headers.set("Content-Type", "application/json");
       }
-      // Add authorization token for protected endpoints
+
+      // Add Bearer token from localStorage for protected routes
       const token = localStorage.getItem("adminToken");
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
+
       return headers;
     },
   }),
 
-  tagTypes: ["Queries", "Projects", "Jobs", "Applications", "Users"],
+  tagTypes: [
+    "Queries",
+    "Projects",
+    "Jobs",
+    "Applications",
+    "Users",
+    "Roles", // ← NEW tag for roles
+  ],
+
   endpoints: (builder) => ({
-    // Queries Endpoints
+    // ────────────────────────────────────────────── Queries ──────────────────────────────────────────────
     createQuery: builder.mutation({
       query: ({ name, email, subject, message }) => ({
         url: "/queries",
@@ -81,7 +92,7 @@ export const rippotaiApi = createApi({
       ],
     }),
 
-    // ADMIN: gets ALL projects (including draft, prunned, etc.)
+    // ────────────────────────────────────────────── Projects ──────────────────────────────────────────────
     getProjects: builder.query({
       query: (params) => ({
         url: "/projects",
@@ -89,15 +100,11 @@ export const rippotaiApi = createApi({
       }),
       providesTags: (result) => {
         const tags = [{ type: "Projects", id: "LIST" }];
-
         if (Array.isArray(result)) {
           result.forEach((project) => {
-            if (project?._id) {
-              tags.push({ type: "Projects", id: project._id });
-            }
+            if (project?._id) tags.push({ type: "Projects", id: project._id });
           });
         }
-
         return tags;
       },
     }),
@@ -106,19 +113,12 @@ export const rippotaiApi = createApi({
         url: "/projects/public",
         params: { page, limit, category },
       }),
-
-      // 👇 Extract only the array used for rendering
       transformResponse: (response) => response.data,
-
-      // 👇 Cache per page/category combo (VERY important)
       serializeQueryArgs: ({ endpointName, queryArgs }) => {
         const { page, category } = queryArgs || {};
         return `${endpointName}-${page || 1}-${category || "all"}`;
       },
-
-      // 👇 Keep previous page visible while fetching next
-      keepUnusedDataFor: 60, // seconds
-
+      keepUnusedDataFor: 60,
       providesTags: (result) =>
         result
           ? [
@@ -127,31 +127,25 @@ export const rippotaiApi = createApi({
             ]
           : [{ type: "Projects", id: "LIST" }],
     }),
-
     getCompletedProjects: builder.query({
       query: () => "/projects/completed",
       providesTags: [{ type: "Projects", id: "LIST" }],
     }),
-
     getDraftProjects: builder.query({
       query: () => "/projects/drafts",
       providesTags: [{ type: "Projects", id: "LIST" }],
     }),
-
     getProjectsByLocation: builder.query({
       query: (location) => `/projects/location/${location}`,
       providesTags: [{ type: "Projects", id: "LIST" }],
     }),
-    // Add this endpoint
     getProjectById: builder.query({
-      query: (id) => `/projects/admin/${id}`, // assuming your backend supports GET /projects/:id for admin
+      query: (id) => `/projects/admin/${id}`,
       providesTags: (result, error, id) => [{ type: "Projects", id }],
     }),
     getProjectBySlug: builder.query({
       query: (slug) => `/projects/${slug}`,
-
-      transformResponse: (response) => response, // explicit, but could be (response) => ({ data: response }) if you want to match list shape
-
+      transformResponse: (response) => response,
       serializeQueryArgs: ({ endpointName, queryArgs }) =>
         `${endpointName}-${queryArgs}`,
       keepUnusedDataFor: 300,
@@ -159,40 +153,13 @@ export const rippotaiApi = createApi({
         result ? [{ type: "Projects", id: result._id }] : [],
     }),
     createProject: builder.mutation({
-      query: ({
-        title,
-        category,
-        description,
-        details,
-        image,
-        images,
-        status,
-        location,
-        scope,
-      }) => {
-        const formData = new FormData();
-        formData.append("title", title);
-        formData.append("category", category);
-        formData.append("description", description);
-        formData.append("details", details);
-        if (status) formData.append("status", status);
-        if (location) formData.append("location", location);
-        if (scope) formData.append("scope", scope);
-        if (image) formData.append("image", image);
-        if (images) images.forEach((img) => formData.append("images[]", img));
-
-        return {
-          url: "/projects/admin/",
-          method: "POST",
-          body: formData,
-        };
-      },
-      invalidatesTags: [{ type: "Projects", id: "LIST" }],
+      query: (formData) => ({
+        url: "/projects/admin/",
+        method: "POST",
+        body: formData,
+        // Do NOT set Content-Type manually — browser sets multipart/form-data with boundary
+      }),
     }),
-
-    /**
-     * ADMIN – update (ID based)
-     */
     updateProject: builder.mutation({
       query: ({ id, formData }) => ({
         url: `/projects/admin/${id}`,
@@ -204,10 +171,6 @@ export const rippotaiApi = createApi({
         { type: "Projects", id: "LIST" },
       ],
     }),
-
-    /**
-     * ADMIN – update status only
-     */
     updateProjectStatus: builder.mutation({
       query: ({ id, status }) => ({
         url: `/projects/admin/${id}/status`,
@@ -219,10 +182,6 @@ export const rippotaiApi = createApi({
         { type: "Projects", id: "LIST" },
       ],
     }),
-
-    /**
-     * ADMIN – delete (ID based)
-     */
     deleteProject: builder.mutation({
       query: (id) => ({
         url: `/projects/admin/${id}`,
@@ -234,7 +193,7 @@ export const rippotaiApi = createApi({
       ],
     }),
 
-    // Jobs Endpoints
+    // ────────────────────────────────────────────── Jobs ──────────────────────────────────────────────
     getJobs: builder.query({
       query: () => "/careers/jobs",
       providesTags: (result) =>
@@ -279,7 +238,7 @@ export const rippotaiApi = createApi({
       ],
     }),
 
-    // Applications Endpoints
+    // ────────────────────────────────────────────── Applications ──────────────────────────────────────────────
     createApplication: builder.mutation({
       query: ({ name, email, position, resume, coverLetter }) => {
         const formData = new FormData();
@@ -332,7 +291,7 @@ export const rippotaiApi = createApi({
       providesTags: [{ type: "Applications", id: "LIST" }],
     }),
 
-    // Users Endpoints
+    // ────────────────────────────────────────────── Users ──────────────────────────────────────────────
     getAllUsers: builder.query({
       query: () => "/users",
       providesTags: (result) =>
@@ -388,7 +347,61 @@ export const rippotaiApi = createApi({
       ],
     }),
 
-    // Auth Endpoints
+    // ────────────────────────────────────────────── Roles ──────────────────────────────────────────────
+    getAllRoles: builder.query({
+      query: () => "/roles",
+      providesTags: (result) =>
+        Array.isArray(result)
+          ? [
+              ...result.map(({ _id }) => ({ type: "Roles", id: _id })),
+              { type: "Roles", id: "LIST" },
+            ]
+          : [{ type: "Roles", id: "LIST" }],
+    }),
+
+    getRoleById: builder.query({
+      query: (id) => `/roles/${id}`,
+      providesTags: (result, error, id) => [{ type: "Roles", id }],
+    }),
+
+    createRole: builder.mutation({
+      query: ({ name, description, permissions }) => ({
+        url: "/roles",
+        method: "POST",
+        body: { name, description, permissions },
+      }),
+      invalidatesTags: [{ type: "Roles", id: "LIST" }],
+    }),
+
+    updateRole: builder.mutation({
+      query: ({ id, name, description, permissions }) => ({
+        url: `/roles/${id}`,
+        method: "PUT",
+        body: { name, description, permissions },
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Roles", id },
+        { type: "Roles", id: "LIST" },
+      ],
+    }),
+
+    deleteRole: builder.mutation({
+      query: (id) => ({
+        url: `/roles/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, id) => [
+        { type: "Roles", id },
+        { type: "Roles", id: "LIST" },
+      ],
+    }),
+
+    getAvailablePermissions: builder.query({
+      query: () => "/roles/permissions",
+      providesTags: ["Roles"],
+    }),
+
+    // ────────────────────────────────────────────── Auth ──────────────────────────────────────────────
     register: builder.mutation({
       query: (userData) => ({
         url: "/auth/register",
@@ -431,6 +444,7 @@ export const {
   useUpdateQueryMutation,
   useDeleteQueryMutation,
   useAddNoteMutation,
+
   useGetProjectsQuery,
   useGetProjectBySlugQuery,
   useCreateProjectMutation,
@@ -443,22 +457,34 @@ export const {
   useGetPublicProjectsQuery,
   useGetProjectByIdQuery,
   useLazyGetProjectByIdQuery,
+
   useGetJobsQuery,
   useGetJobByIdQuery,
   useCreateJobMutation,
   useUpdateJobMutation,
   useDeleteJobMutation,
+
   useCreateApplicationMutation,
   useGetApplicationsQuery,
   useUpdateApplicationStatusMutation,
   useDeleteApplicationMutation,
   useGetDashboardStatsQuery,
+
   useGetAllUsersQuery,
   useGetUserByIdQuery,
   useCreateUserMutation,
   useUpdateUserMutation,
   useDeleteUserMutation,
   useAssignRolesMutation,
+
+  // ── NEW Role exports ──
+  useGetAllRolesQuery,
+  useGetRoleByIdQuery,
+  useCreateRoleMutation,
+  useUpdateRoleMutation,
+  useDeleteRoleMutation,
+  useGetAvailablePermissionsQuery,
+
   useRegisterMutation,
   useLoginMutation,
   useRefreshTokenMutation,
