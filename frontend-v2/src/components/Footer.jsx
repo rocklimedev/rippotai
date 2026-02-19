@@ -1,5 +1,5 @@
 // src/components/Footer.jsx
-"use client"; // ← only if you add interactivity later (hover states are fine with CSS)
+"use client";
 
 import Link from "next/link";
 import { navigationLinks, socialLinks, contactInfo } from "@/lib/config";

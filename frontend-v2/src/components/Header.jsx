@@ -97,11 +97,7 @@ export const Header = () => {
             }}
           >
             <img
-              src={
-                menuOpen
-                  ? "https://customer-assets.emergentagent.com/job_rippotai-arch/artifacts/m8qgu5v4_white%20logo%20X2.png"
-                  : "/logo.png"
-              }
+              src={menuOpen ? "/logo.png" : "/logo.png"}
               alt="Rippotai"
               style={{
                 height: "68px",
