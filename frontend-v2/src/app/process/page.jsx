@@ -32,86 +32,6 @@ const processSteps = [
 
 const bannerImage =
   "https://customer-assets.emergentagent.com/job_rippotai-arch/artifacts/saa7noph_Scene%2029.png";
-function MobileTimeline() {
-  return (
-    <section
-      style={{
-        padding: "clamp(60px, 8vw, 100px) clamp(20px, 5vw, 48px)",
-        maxWidth: "900px",
-        margin: "0 auto",
-      }}
-    >
-      {processSteps.map((step, idx) => (
-        <div
-          key={idx}
-          style={{
-            display: "flex",
-            gap: "20px",
-            marginBottom: "48px",
-          }}
-        >
-          {/* Line + Dot */}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <div
-              style={{
-                width: "12px",
-                height: "12px",
-                borderRadius: "50%",
-                background: "#d9af61",
-                marginTop: "6px",
-              }}
-            />
-            {idx !== processSteps.length - 1 && (
-              <div
-                style={{
-                  width: "1px",
-                  flex: 1,
-                  background: "rgba(26,60,52,0.2)",
-                  marginTop: "8px",
-                }}
-              />
-            )}
-          </div>
-
-          {/* Content */}
-          <div>
-            <div
-              style={{
-                fontSize: "12px",
-                letterSpacing: "3px",
-                color: "#d9af61",
-                marginBottom: "8px",
-              }}
-            >
-              {String(step.id).padStart(2, "0")}
-            </div>
-
-            <h3
-              style={{
-                fontSize: "20px",
-                letterSpacing: "2px",
-                margin: "0 0 10px",
-                color: "#1a3c34",
-              }}
-            >
-              {step.title}
-            </h3>
-
-            <p style={{ color: "#555", lineHeight: 1.7, margin: 0 }}>
-              {step.description}
-            </p>
-          </div>
-        </div>
-      ))}
-    </section>
-  );
-}
 
 const ProcessCurveSlider = () => {
   const containerRef = useRef(null);
@@ -164,7 +84,6 @@ const ProcessCurveSlider = () => {
     { cx: 3500, cy: 300 },
   ];
 
-  // Card positions: adjusted so Execution (idx 2) doesn't go behind header
   const cardPositions = [
     { left: "12.5%", top: "18%", align: "center" },
     { left: "37.5%", top: "55%", align: "center" },
@@ -174,6 +93,7 @@ const ProcessCurveSlider = () => {
 
   const curvePath =
     "M 0,500 C 200,500 250,650 500,650 S 1000,280 1500,280 S 2000,680 2500,680 S 3000,300 3500,300 C 3750,300 4000,400 4000,400";
+
   const pathRef = useRef(null);
   const [pathLength, setPathLength] = useState(5200);
 
@@ -183,7 +103,6 @@ const ProcessCurveSlider = () => {
     }
   }, []);
 
-  // Gold line draws in sync with scroll progress
   const dashOffset = pathLength * (1 - progress);
 
   return (
@@ -201,7 +120,6 @@ const ProcessCurveSlider = () => {
           backgroundColor: "#ffffff",
         }}
       >
-        {/* Wide scrolling container */}
         <div
           style={{
             width: "400vw",
@@ -212,7 +130,6 @@ const ProcessCurveSlider = () => {
             willChange: "transform",
           }}
         >
-          {/* SVG Curvy Path */}
           <svg
             viewBox="0 0 4000 1000"
             preserveAspectRatio="none"
@@ -225,7 +142,6 @@ const ProcessCurveSlider = () => {
               pointerEvents: "none",
             }}
           >
-            {/* Background path */}
             <path
               d={curvePath}
               fill="none"
@@ -233,7 +149,6 @@ const ProcessCurveSlider = () => {
               strokeWidth="3"
               strokeLinecap="round"
             />
-            {/* Animated progress path - synced to scroll */}
             <path
               ref={pathRef}
               d={curvePath}
@@ -245,7 +160,6 @@ const ProcessCurveSlider = () => {
               strokeDashoffset={dashOffset}
             />
 
-            {/* Node circles */}
             {nodes.map((node, idx) => {
               const isActive = idx === activeIndex;
               const isPassed = idx < activeIndex;
@@ -275,7 +189,6 @@ const ProcessCurveSlider = () => {
             })}
           </svg>
 
-          {/* Step Cards */}
           {processSteps.map((step, idx) => {
             const isActive = idx === activeIndex;
             const isPassed = idx < activeIndex;
@@ -347,19 +260,10 @@ const ProcessCurveSlider = () => {
     </div>
   );
 };
+
 export default function ProcessPage() {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 1024);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
-
   return (
     <>
-      {/* ===== Banner ===== */}
       <section
         style={{
           position: "relative",
@@ -428,9 +332,8 @@ export default function ProcessPage() {
         </div>
       </section>
 
-      {/* ===== Responsive Content ===== */}
-
-      {isMobile ? <MobileTimeline /> : <ProcessCurveSlider />}
+      {/* Always use same timeline now */}
+      <ProcessCurveSlider />
     </>
   );
 }
