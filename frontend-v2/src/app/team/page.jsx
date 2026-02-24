@@ -73,6 +73,14 @@ const teamMembers = [
       "https://static.cmtradingco.com/rippotai_projects/rippotai_images/shivam_bhatia.jpeg",
     tag: "Alumni",
   },
+  {
+    id: 10,
+    name: "Sajjan",
+    designation: "Site Supervisor",
+    image:
+      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/sajjan.jpeg",
+    tag: "Collaborator",
+  },
 ];
 
 export default function TeamPage() {
