@@ -220,3 +220,17 @@ footer {
   transform: scaleX(1);
   transform-origin: left;
 }
+@media (max-width: 480px) {
+  header > div {
+    padding: 16px 20px !important; /* reduce left/right padding */
+  }
+
+  header img {
+    height: 48px !important; /* shrink logo slightly */
+  }
+
+  header button {
+    font-size: 13px !important; /* prevent wrapping */
+    letter-spacing: 2px !important;
+  }
+}

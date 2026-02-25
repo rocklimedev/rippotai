@@ -132,6 +132,7 @@ export default function ServicesPage() {
                 duration={1.2}
               >
                 <div
+                  className="service-grid"
                   style={{
                     display: "grid",
                     gridTemplateColumns: "minmax(70px, 120px) 1fr",
