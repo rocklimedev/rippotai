@@ -13,8 +13,6 @@ import FadeInSection from "@/components/FadeInSection"; // ← new client compon
 export default function HomePage() {
   return (
     <>
-      {/* <Header />    ← usually placed in layout.tsx */}
-
       <HeroSection />
 
       <FadeInSection>
@@ -40,9 +38,6 @@ export default function HomePage() {
       <FadeInSection>
         <FounderMessage />
       </FadeInSection>
-
-      {/* <FloatingCTA /> */}
-      {/* <Footer />     ← usually in layout.tsx */}
     </>
   );
 }

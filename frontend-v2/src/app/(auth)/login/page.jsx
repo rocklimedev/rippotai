@@ -36,8 +36,6 @@ export default function AdminLoginPage() {
         const urlParams = new URLSearchParams(window.location.search);
         const redirectTo = urlParams.get("redirect") || "/admin/";
 
-        console.log("Login success — redirecting to:", redirectTo);
-
         // Hard redirect — fixes navigation issues
         window.location.href = redirectTo;
       } else {

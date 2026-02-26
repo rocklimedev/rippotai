@@ -352,9 +352,6 @@ const ValuesSlider = () => {
 export default function AboutPage() {
   return (
     <>
-      {/* You can move Header & Footer here or use a layout.tsx */}
-      {/* <Header /> */}
-
       {/* Banner */}
       <section
         style={{
@@ -615,9 +612,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
-      {/* <FloatingCTA /> */}
-      {/* <Footer /> */}
     </>
   );
 }

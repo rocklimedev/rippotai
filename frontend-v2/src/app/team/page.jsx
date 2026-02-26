@@ -86,8 +86,6 @@ const teamMembers = [
 export default function TeamPage() {
   return (
     <>
-      {/* <Header /> */}
-
       {/* Hero Banner */}
       <section
         style={{
@@ -284,9 +282,6 @@ export default function TeamPage() {
           </div>
         </div>
       </section>
-
-      {/* <Footer /> */}
-      {/* <FloatingCTA /> */}
     </>
   );
 }
