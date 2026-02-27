@@ -47,7 +47,12 @@ export default function Sidebar({ open, setOpen, isDesktop }) {
 
         {/* Logo */}
         <div style={styles.logo}>
-          <Image src="/logo.png" alt="Rippotai" width={160} height={60} />
+          <Image
+            src="/assets/logo_mono.png"
+            alt="Rippotai"
+            width={160}
+            height={60}
+          />
         </div>
 
         {/* Nav */}

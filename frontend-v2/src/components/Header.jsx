@@ -62,7 +62,6 @@ export const Header = () => {
           left: 0,
           right: 0,
           zIndex: 1000,
-          backgroundColor: headerBg,
           transition: "background-color 0.4s ease",
         }}
       >
