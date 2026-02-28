@@ -9,31 +9,29 @@ const {
 exports.createQuery = async (req, res, next) => {
   try {
     const { name, email, subject, message } = req.body;
+
     if (!name || !email || !subject || !message) {
-      return res
-        .status(400)
-        .json({ message: "All required fields must be provided" });
+      return res.status(400).json({
+        message: "All required fields must be provided",
+      });
     }
 
     const query = new Query({ name, email, subject, message });
     await query.save();
 
-    req.email = { to: email, params: [name, subject, message] };
-    await emailer(queryConfirmationEmail, "query")(req, res, async () => {
-      req.email = {
-        to: "rippotaiarchitecture@gmail.com",
-        params: [name, email, subject, message],
-      };
-      await emailer(adminQueryNotificationEmail, "query")(req, res, () => {
-        res.status(201).json(query);
-      });
+    // ← This line was missing
+    return res.status(201).json({
+      message: "Query created successfully",
+      id: query._id,
     });
   } catch (err) {
     console.error("Error in createQuery:", err);
-    next(err);
+    return res.status(500).json({
+      message: "Failed to create query",
+    });
+    // or next(err) if you have global error handler that sends response
   }
 };
-
 exports.getQueries = async (req, res, next) => {
   try {
     const queries = await Query.find()
@@ -50,7 +48,7 @@ exports.getQuery = async (req, res, next) => {
   try {
     const query = await Query.findById(req.params.id).populate(
       "assignedTo",
-      "name email"
+      "name email",
     );
     if (!query) return res.status(404).json({ message: "Query not found" });
     res.json(query);

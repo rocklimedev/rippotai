@@ -93,6 +93,8 @@ export const Header = () => {
               alt="Rippotai"
               style={{
                 height: "68px",
+                width: "auto",
+                objectFit: "contain",
                 transition: "all 0.3s ease",
               }}
             />

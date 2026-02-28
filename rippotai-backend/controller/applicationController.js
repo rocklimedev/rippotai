@@ -62,7 +62,7 @@ exports.updateJob = async (req, res, next) => {
     const job = await Job.findByIdAndUpdate(
       req.params.id,
       { title, category, location, description, details },
-      { new: true }
+      { new: true },
     );
     if (!job) return res.status(404).json({ message: "Job not found" });
     res.status(200).json({ message: "Job updated successfully", job });
@@ -87,14 +87,16 @@ exports.deleteJob = async (req, res, next) => {
 exports.createApplication = async (req, res, next) => {
   try {
     const { name, email, position, coverLetter } = req.body;
-    if (!req.file)
+
+    if (!req.file) {
       return res.status(400).json({ message: "Resume is required" });
+    }
 
     const existingApplication = await Application.findOne({ email, position });
     if (existingApplication) {
-      return res
-        .status(400)
-        .json({ message: "You have already applied for this job." });
+      return res.status(400).json({
+        message: "You have already applied for this job.",
+      });
     }
 
     const ext = path.extname(req.file.originalname);
@@ -128,45 +130,37 @@ exports.createApplication = async (req, res, next) => {
         resume: fileUrl,
         coverLetter,
       });
+
       await application.save();
 
-      // Send confirmation + admin notification
-      req.email = { to: email, params: [name, position] };
-      await emailer(jobApplicationConfirmationEmail, "application")(
-        req,
-        res,
-        async () => {
-          req.email = {
-            to: process.env.ADMIN_EMAIL || "admin@example.com",
-            params: [name, email, position, coverLetter, fileUrl],
-          };
-          await emailer(adminJobApplicationNotificationEmail, "application")(
-            req,
-            res,
-            () => {
-              res.status(201).json({
-                message: "Application submitted successfully",
-                fileUrl,
-                filename: uniqueName,
-              });
-            }
-          );
-        }
-      );
+      // ────────────────────────────────────────
+      // THIS WAS MISSING — send success response
+      // ────────────────────────────────────────
+      return res.status(201).json({
+        message: "Application submitted successfully",
+        applicationId: application._id,
+        // optional: fileUrl if frontend wants to show it
+      });
     } catch (ftpErr) {
       console.error("FTP upload error:", ftpErr);
-      return res
-        .status(500)
-        .json({ message: "FTP upload failed", error: ftpErr.message });
+      return res.status(500).json({
+        message: "FTP upload failed",
+        error: ftpErr.message,
+      });
     } finally {
       client.close();
     }
   } catch (error) {
     console.error("Create application error:", error);
-    next(error);
+    // If you have a global error handler that sends response → fine
+    // Otherwise better to send here too:
+    return res.status(500).json({
+      message: "Failed to process application",
+      error: error.message,
+    });
+    // or next(error) if your error middleware always responds
   }
 };
-
 // Get all applications (with filters)
 exports.getApplications = async (req, res, next) => {
   try {
@@ -202,7 +196,7 @@ exports.updateApplicationStatus = async (req, res, next) => {
     const application = await Application.findByIdAndUpdate(
       req.params.id,
       { status },
-      { new: true }
+      { new: true },
     );
     if (!application)
       return res.status(404).json({ message: "Application not found" });

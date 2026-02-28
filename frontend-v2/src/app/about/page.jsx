@@ -1,29 +1,51 @@
-// app/about/page.jsx   ← recommended location in Next.js App Router
+// app/about/page.jsx (Optimized Full Rewrite)
+
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { FloatingCTA } from "@/components/FloatingCTA";
 import { AnimateIn } from "@/components/AnimateIn";
+
 const teamImage =
   "https://customer-assets.emergentagent.com/job_rippotai-arch/artifacts/ty0yqr54_05b1c7b1-3dfc-4182-ae7b-5b43a03124eb.jpg";
 
-const HorizontalSlider = () => {
-  const containerRef = useRef(null);
+/************************************
+ * SMOOTH SCROLL HOOK
+ ************************************/
+const useScrollProgress = (ref) => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      const el = containerRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const scrollable = el.offsetHeight - window.innerHeight;
-      const scrolled = -rect.top;
-      const p = Math.max(0, Math.min(1, scrolled / scrollable));
-      setProgress(p);
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const el = ref.current;
+          if (!el) return;
+          const rect = el.getBoundingClientRect();
+          const scrollable = el.offsetHeight - window.innerHeight;
+          const scrolled = -rect.top;
+          const p = Math.max(0, Math.min(1, scrolled / scrollable));
+          setProgress(p);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  return progress;
+};
+
+/************************************
+ * HORIZONTAL SLIDER
+ ************************************/
+const HorizontalSlider = () => {
+  const containerRef = useRef(null);
+  const progress = useScrollProgress(containerRef);
 
   const slides = [
     {
@@ -42,6 +64,7 @@ const HorizontalSlider = () => {
         style={{
           position: "sticky",
           top: 0,
+          minHeight: "100vh",
           height: "100vh",
           overflow: "hidden",
           backgroundColor: "#ffffff",
@@ -52,11 +75,11 @@ const HorizontalSlider = () => {
         <div
           style={{
             display: "flex",
-            gap: "0px",
-            transform: `translateX(${-progress * 50}%)`,
-            transition: "transform 0.1s linear",
-            width: "200vw",
-            height: "100%",
+            width: `${slides.length * 100}vw`,
+            willChange: "transform",
+            backfaceVisibility: "hidden",
+            transform: `translateX(${-progress * (slides.length - 1) * 100}vw)`,
+            transition: "none",
           }}
         >
           {slides.map((slide, idx) => (
@@ -69,7 +92,6 @@ const HorizontalSlider = () => {
                 alignItems: "center",
                 justifyContent: "center",
                 padding: "0 10vw",
-                flexShrink: 0,
               }}
             >
               <div style={{ maxWidth: "700px" }}>
@@ -86,20 +108,19 @@ const HorizontalSlider = () => {
                 >
                   {slide.label}
                 </div>
+
                 <h2
                   style={{
                     fontFamily: "'Lato', sans-serif",
                     fontSize: "clamp(32px, 4vw, 48px)",
                     fontWeight: 300,
                     color: "#1a3c34",
-                    letterSpacing: "1px",
-                    lineHeight: 1.2,
-                    margin: 0,
                     marginBottom: "40px",
                   }}
                 >
                   {slide.label}
                 </h2>
+
                 <p
                   style={{
                     fontFamily: "'Lato', sans-serif",
@@ -107,7 +128,6 @@ const HorizontalSlider = () => {
                     fontWeight: 300,
                     color: "#555555",
                     lineHeight: 2,
-                    margin: 0,
                   }}
                 >
                   {slide.text}
@@ -132,13 +152,13 @@ const HorizontalSlider = () => {
             <div
               key={idx}
               style={{
-                width: progress >= (idx + 0.3) / slides.length ? "32px" : "8px",
+                width: progress >= idx / slides.length ? "32px" : "8px",
                 height: "2px",
                 backgroundColor:
-                  progress >= (idx + 0.3) / slides.length
+                  progress >= idx / slides.length
                     ? "#d9af61"
                     : "rgba(26, 60, 52, 0.15)",
-                transition: "all 0.4s ease",
+                transition: "width 0.3s ease, background-color 0.3s ease",
               }}
             />
           ))}
@@ -148,6 +168,9 @@ const HorizontalSlider = () => {
   );
 };
 
+/************************************
+ * VALUES SLIDER
+ ************************************/
 const values = [
   {
     title: "Precision",
@@ -169,23 +192,7 @@ const values = [
 
 const ValuesSlider = () => {
   const containerRef = useRef(null);
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const el = containerRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const scrollable = el.offsetHeight - window.innerHeight;
-      const scrolled = -rect.top;
-      const p = Math.max(0, Math.min(1, scrolled / scrollable));
-      setProgress(p);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
+  const progress = useScrollProgress(containerRef);
   const totalSlides = values.length;
 
   return (
@@ -197,30 +204,22 @@ const ValuesSlider = () => {
         style={{
           position: "sticky",
           top: 0,
+          minHeight: "100vh",
           height: "100vh",
           overflow: "hidden",
           backgroundColor: "#f5f1eb",
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        {/* Section header */}
-        <div
-          style={{
-            position: "absolute",
-            top: "48px",
-            left: "10vw",
-            zIndex: 2,
-          }}
-        >
+        {/* Header */}
+        <div style={{ position: "absolute", top: "48px", left: "10vw" }}>
           <div
             style={{
               fontFamily: "'Lato', sans-serif",
               fontSize: "12px",
               fontWeight: 500,
               letterSpacing: "4px",
-              textTransform: "uppercase",
               color: "#d9af61",
               marginBottom: "12px",
             }}
@@ -233,23 +232,21 @@ const ValuesSlider = () => {
               fontSize: "clamp(28px, 3vw, 40px)",
               fontWeight: 300,
               color: "#1a3c34",
-              margin: 0,
             }}
           >
             What drives us forward
           </h2>
         </div>
 
-        {/* Sliding cards */}
+        {/* Cards */}
         <div
           style={{
             display: "flex",
-            gap: "0px",
-            transform: `translateX(${-progress * (totalSlides - 1) * (100 / totalSlides)}%)`,
-            transition: "transform 0.1s linear",
             width: `${totalSlides * 100}vw`,
-            height: "60%",
-            alignItems: "center",
+            willChange: "transform",
+            backfaceVisibility: "hidden",
+            transform: `translateX(${-progress * (totalSlides - 1) * 100}vw)`,
+            transition: "none",
           }}
         >
           {values.map((val, idx) => (
@@ -257,11 +254,9 @@ const ValuesSlider = () => {
               key={idx}
               style={{
                 width: "100vw",
+                padding: "0 10vw",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
-                padding: "0 10vw",
-                flexShrink: 0,
               }}
             >
               <div
@@ -275,7 +270,6 @@ const ValuesSlider = () => {
                   style={{
                     fontFamily: "'Lato', sans-serif",
                     fontSize: "11px",
-                    fontWeight: 500,
                     letterSpacing: "3px",
                     color: "#1a3c34",
                     marginBottom: "16px",
@@ -283,27 +277,26 @@ const ValuesSlider = () => {
                 >
                   {val.title}
                 </div>
+
                 <h3
                   style={{
                     fontFamily: "'Lato', sans-serif",
                     fontSize: "clamp(28px, 3vw, 42px)",
                     fontWeight: 300,
                     color: "#1a3c34",
-                    margin: 0,
                     marginBottom: "24px",
-                    letterSpacing: "1px",
                   }}
                 >
                   {val.title}
                 </h3>
+
                 <p
                   style={{
                     fontFamily: "'Lato', sans-serif",
                     fontSize: "17px",
                     fontWeight: 300,
-                    color: "#555555",
+                    color: "#555",
                     lineHeight: 2,
-                    margin: 0,
                   }}
                 >
                   {val.text}
@@ -325,10 +318,10 @@ const ValuesSlider = () => {
           }}
         >
           {values.map((_, idx) => {
-            const active =
-              progress >= idx / totalSlides &&
-              progress < (idx + 1) / totalSlides;
-            const passed = progress >= (idx + 1) / totalSlides;
+            const sectionStart = idx / totalSlides;
+            const sectionEnd = (idx + 1) / totalSlides;
+            const active = progress >= sectionStart && progress < sectionEnd;
+            const passed = progress >= sectionEnd;
 
             return (
               <div
@@ -338,7 +331,7 @@ const ValuesSlider = () => {
                   height: "2px",
                   backgroundColor:
                     active || passed ? "#d9af61" : "rgba(26, 60, 52, 0.15)",
-                  transition: "all 0.4s ease",
+                  transition: "all 0.3s ease",
                 }}
               />
             );
@@ -349,6 +342,9 @@ const ValuesSlider = () => {
   );
 };
 
+/************************************
+ * MAIN PAGE
+ ************************************/
 export default function AboutPage() {
   return (
     <>
@@ -360,7 +356,6 @@ export default function AboutPage() {
           height: "60vh",
           minHeight: "400px",
           overflow: "hidden",
-          backgroundColor: "#0a0a0a",
         }}
       >
         <img
@@ -371,9 +366,9 @@ export default function AboutPage() {
             height: "100%",
             objectFit: "cover",
             objectPosition: "center top",
-            display: "block",
           }}
         />
+
         <div
           style={{
             position: "absolute",
@@ -384,45 +379,39 @@ export default function AboutPage() {
             backgroundColor: "rgba(0, 0, 0, 0.35)",
           }}
         />
-        <div
-          style={{
-            position: "absolute",
-            bottom: "60px",
-            left: "48px",
-            zIndex: 2,
-          }}
-        >
+
+        {/* Heading */}
+        <div style={{ position: "absolute", bottom: 60, left: 48 }}>
           <div
             style={{
               fontFamily: "'Lato', sans-serif",
               fontSize: "11px",
-              fontWeight: 500,
               letterSpacing: "3px",
               textTransform: "uppercase",
               color: "#d9af61",
-              marginBottom: "16px",
+              marginBottom: 16,
             }}
           >
             WHO WE ARE
           </div>
+
           <h1
             style={{
               fontFamily: "'Lato', sans-serif",
               fontSize: "clamp(36px, 5vw, 56px)",
               fontWeight: 300,
-              color: "#ffffff",
-              letterSpacing: "1px",
-              margin: 0,
+              color: "#fff",
             }}
           >
             About Us
           </h1>
+
           <div
             style={{
-              width: "40px",
-              height: "1px",
+              width: 40,
+              height: 1,
               backgroundColor: "#d9af61",
-              marginTop: "20px",
+              marginTop: 20,
             }}
           />
         </div>
@@ -430,26 +419,25 @@ export default function AboutPage() {
 
       <HorizontalSlider />
 
-      {/* About Us Text */}
-      <section style={{ padding: "120px 48px", backgroundColor: "#ffffff" }}>
-        <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
-          <AnimateIn delay={0} distance={40} duration={1}>
+      {/* About Text */}
+      <section style={{ padding: "120px 48px", backgroundColor: "#fff" }}>
+        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+          <AnimateIn>
             <div
               style={{
                 fontFamily: "'Lato', sans-serif",
-                fontSize: "12px",
-                fontWeight: 500,
+                fontSize: 12,
                 letterSpacing: "4px",
                 textTransform: "uppercase",
                 color: "#d9af61",
-                marginBottom: "32px",
+                marginBottom: 32,
               }}
             >
               ABOUT US
             </div>
           </AnimateIn>
 
-          <AnimateIn delay={0.15} distance={50} duration={1.2}>
+          <AnimateIn delay={0.15}>
             <h2
               style={{
                 fontFamily: "'Lato', sans-serif",
@@ -457,8 +445,7 @@ export default function AboutPage() {
                 fontWeight: 300,
                 color: "#1a3c34",
                 lineHeight: 1.6,
-                margin: 0,
-                marginBottom: "40px",
+                marginBottom: 40,
               }}
             >
               We design spaces that inspire innovation, foster warmth, and shape
@@ -467,43 +454,34 @@ export default function AboutPage() {
             </h2>
           </AnimateIn>
 
-          <AnimateIn delay={0.3} distance={50} duration={1.2}>
+          <AnimateIn delay={0.3}>
             <p
               style={{
                 fontFamily: "'Lato', sans-serif",
-                fontSize: "16px",
-                fontWeight: 300,
-                color: "#444444",
+                fontSize: 16,
+                color: "#444",
                 lineHeight: 2,
-                margin: 0,
-                marginBottom: "24px",
+                marginBottom: 24,
               }}
             >
               “Rippotai,” is inspired by the Japanese term for “cube,”
               symbolizing the fundamental form of objects and the essence of
-              design. In geometry, the cube stands as a primary shape, a
-              building block from which complex forms and structures arise. Its
-              uniformity and symmetry provide a sense of order and coherence,
-              making it a powerful symbol in the world of design.
+              design.
             </p>
           </AnimateIn>
 
-          <AnimateIn delay={0.4} distance={50} duration={1.2}>
+          <AnimateIn delay={0.4}>
             <p
               style={{
                 fontFamily: "'Lato', sans-serif",
-                fontSize: "16px",
-                fontWeight: 300,
-                color: "#444444",
+                fontSize: 16,
+                color: "#444",
                 lineHeight: 2,
-                margin: 0,
               }}
             >
-              The functionality of a cube, with its capacity to be stacked,
-              rotated, and transformed, mirrors our approach to versatile and
-              adaptive design. We are committed to creating iconic, functional,
-              and user-centric designs that push boundaries while remaining
-              rooted in timeless principles.
+              The functionality of a cube mirrors our approach to adaptive
+              design. We are committed to creating functional, iconic,
+              user-centric work.
             </p>
           </AnimateIn>
         </div>
@@ -512,34 +490,31 @@ export default function AboutPage() {
       <ValuesSlider />
 
       {/* Our Story */}
-      <section style={{ padding: "120px 48px", backgroundColor: "#ffffff" }}>
-        <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
-          <AnimateIn delay={0} distance={40} duration={1}>
+      <section style={{ padding: "120px 48px" }}>
+        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+          <AnimateIn>
             <div
               style={{
                 fontFamily: "'Lato', sans-serif",
-                fontSize: "12px",
-                fontWeight: 500,
+                fontSize: 12,
                 letterSpacing: "4px",
                 textTransform: "uppercase",
                 color: "#d9af61",
-                marginBottom: "32px",
+                marginBottom: 32,
               }}
             >
               OUR STORY
             </div>
           </AnimateIn>
 
-          <AnimateIn delay={0.15} distance={50} duration={1.2}>
+          <AnimateIn delay={0.15}>
             <h2
               style={{
                 fontFamily: "'Lato', sans-serif",
                 fontSize: "clamp(24px, 3vw, 36px)",
                 fontWeight: 300,
                 color: "#1a3c34",
-                lineHeight: 1.6,
-                margin: 0,
-                marginBottom: "48px",
+                marginBottom: 48,
               }}
             >
               Rippotai Architecture was founded on the belief that architecture
@@ -547,61 +522,49 @@ export default function AboutPage() {
             </h2>
           </AnimateIn>
 
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "48px" }}
-          >
+          <div style={{ display: "flex", flexDirection: "column", gap: 48 }}>
             {[
               {
                 year: "The Beginning",
-                text: "What began as a pursuit of disciplined design evolved into a studio defined by structure, minimalism, and material honesty. From early conceptual explorations to fully realized architectural works, our journey has been shaped by one consistent principle: restraint creates strength.",
+                text: "What began as a pursuit of disciplined design evolved into a studio defined by material honesty and structural clarity.",
               },
               {
                 year: "The Idea",
-                text: "We started with a clear idea — that architecture should speak quietly, yet stand confidently. Over time, Rippotai has grown into a practice grounded in research, collaboration, and execution. Each project has contributed to refining our philosophy — one that values precision over excess and clarity over complication.",
+                text: "We believe architecture should speak quietly, yet stand confidently—refined through precision and restraint.",
               },
               {
                 year: "Today & Beyond",
-                text: "Today, Rippotai Architecture continues to design spaces that are intentional, functional, and enduring. Our journey is far from over — every new project is a new chapter in the Rippotai story.",
+                text: "We continue creating purposeful, enduring spaces. Every new project is a new chapter in our story.",
               },
             ].map((item, idx) => (
-              <AnimateIn
-                key={idx}
-                delay={0.15 * idx}
-                distance={40}
-                duration={1}
-              >
+              <AnimateIn key={idx} delay={0.1 * idx}>
                 <div
                   style={{
                     display: "grid",
                     gridTemplateColumns: "180px 1fr",
-                    gap: "48px",
-                    alignItems: "start",
+                    gap: 48,
                   }}
-                  className="story-grid"
                 >
                   <div
                     style={{
                       fontFamily: "'Lato', sans-serif",
-                      fontSize: "14px",
-                      fontWeight: 500,
+                      fontSize: 14,
                       letterSpacing: "2px",
                       color: "#d9af61",
-                      paddingTop: "4px",
                     }}
                   >
                     {item.year}
                   </div>
+
                   <p
                     style={{
                       fontFamily: "'Lato', sans-serif",
-                      fontSize: "16px",
-                      fontWeight: 300,
-                      color: "#444444",
+                      fontSize: 16,
+                      color: "#444",
                       lineHeight: 2,
-                      margin: 0,
-                      paddingBottom: "48px",
+                      paddingBottom: 48,
                       borderBottom:
-                        idx < 2 ? "1px solid rgba(26, 60, 52, 0.08)" : "none",
+                        idx < 2 ? "1px solid rgba(26,60,52,0.1)" : "none",
                     }}
                   >
                     {item.text}
