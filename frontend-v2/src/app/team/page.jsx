@@ -11,22 +11,19 @@ const teamMembers = [
     id: 1,
     name: "Sagar Chhabra",
     designation: "Founder & Principal Architect",
-    image:
-      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/sagar_chhabra.jpeg",
+    image: "/assets/sagar_chhabra.png",
   },
   {
     id: 2,
     name: "Jayant",
     designation: "Architect",
-    image:
-      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/jayant.jpeg",
+    image: "/assets/Jayant.jpg",
   },
   {
     id: 3,
     name: "Sarthi",
     designation: "Architect",
-    image:
-      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/sarthi.jpeg",
+    image: "/assets/saarthi.jpeg",
   },
   {
     id: 4,
@@ -46,31 +43,27 @@ const teamMembers = [
     id: 6,
     name: "Bhav Lamba",
     designation: "Content Strategy & Creative Lead",
-    image:
-      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/bhav.jpeg",
+    image: "/assets/Bhav.jpg",
   },
   {
     id: 7,
     name: "Shivani",
     designation: "Project Manager",
-    image:
-      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/shivani.jpeg",
+    image: "/assets/shivani.png",
     tag: "Alumni",
   },
   {
     id: 8,
     name: "Aniket",
     designation: "Architect",
-    image:
-      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/aniket.jpeg",
+    image: "/assets/aniket.png",
     tag: "Alumni",
   },
   {
     id: 9,
     name: "Shivam",
     designation: "Architect",
-    image:
-      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/shivam_bhatia.jpeg",
+    image: "/assets/shivam.png",
     tag: "Alumni",
   },
   {
@@ -79,6 +72,13 @@ const teamMembers = [
     designation: "Site Supervisor",
     image:
       "https://static.cmtradingco.com/rippotai_projects/rippotai_images/sajjan.jpeg",
+    tag: "Supervisor",
+  },
+  {
+    id: 11,
+    name: "Chhavi",
+    designation: "Collaborator",
+    image: "/assets/CM.png",
     tag: "Collaborator",
   },
 ];
