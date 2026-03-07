@@ -47,32 +47,31 @@ const teamMembers = [
   },
   {
     id: 7,
+    name: "Sajjan",
+    designation: "Site Supervisor",
+    image:
+      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/sajjan.jpeg",
+  },
+  {
+    id: 8,
     name: "Shivani",
     designation: "Project Manager",
     image: "/assets/shivani.png",
     tag: "Alumni",
   },
   {
-    id: 8,
+    id: 9,
     name: "Aniket",
     designation: "Architect",
     image: "/assets/aniket.png",
     tag: "Alumni",
   },
   {
-    id: 9,
+    id: 10,
     name: "Shivam",
     designation: "Architect",
     image: "/assets/shivam.png",
     tag: "Alumni",
-  },
-  {
-    id: 10,
-    name: "Sajjan",
-    designation: "Site Supervisor",
-    image:
-      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/sajjan.jpeg",
-    tag: "Supervisor",
   },
   {
     id: 11,
