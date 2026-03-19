@@ -30,9 +30,6 @@ const processSteps = [
   },
 ];
 
-const bannerImage =
-  "https://customer-assets.emergentagent.com/job_rippotai-arch/artifacts/saa7noph_Scene%2029.png";
-
 const ProcessCurveSlider = () => {
   const containerRef = useRef(null);
   const [progress, setProgress] = useState(0);
@@ -274,7 +271,7 @@ export default function ProcessPage() {
         }}
       >
         <Image
-          src={bannerImage}
+          src="/assets/process.png"
           alt="Our Process"
           fill
           priority

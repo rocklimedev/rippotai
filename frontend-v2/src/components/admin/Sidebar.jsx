@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 const items = [
   { name: "Dashboard", path: "/admin/" },
   { name: "Projects", path: "/admin/projects" },
-  { name: "Jobs", path: "/admin/jobs" },
+  { name: "Applications", path: "/admin/applications" },
   { name: "Queries", path: "/admin/queries" },
   { name: "Users", path: "/admin/users" },
 ];

@@ -31,9 +31,6 @@ const services = [
   },
 ];
 
-const bannerImage =
-  "https://customer-assets.emergentagent.com/job_rippotai-arch/artifacts/p8r3ckuw_Scene%2025%281%29.png";
-
 export default function ServicesPage() {
   return (
     <>
@@ -49,7 +46,7 @@ export default function ServicesPage() {
         }}
       >
         <Image
-          src={bannerImage}
+          src="/assets/services.png"
           alt="Our Services"
           fill
           priority

@@ -5,9 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import { FloatingCTA } from "@/components/FloatingCTA";
 import { AnimateIn } from "@/components/AnimateIn";
 
-const teamImage =
-  "https://customer-assets.emergentagent.com/job_rippotai-arch/artifacts/ty0yqr54_05b1c7b1-3dfc-4182-ae7b-5b43a03124eb.jpg";
-
 /************************************
  * SMOOTH SCROLL HOOK
  ************************************/
@@ -359,7 +356,7 @@ export default function AboutPage() {
         }}
       >
         <img
-          src={teamImage}
+          src="/assets/team.jpg"
           alt="Rippotai Team"
           style={{
             width: "100%",

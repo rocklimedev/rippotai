@@ -1,4 +1,3 @@
-const Job = require("../models/job");
 const Application = require("../models/application");
 const { v4: uuidv4 } = require("uuid");
 const ftp = require("basic-ftp");
@@ -10,92 +9,26 @@ const {
   adminJobApplicationNotificationEmail,
 } = require("../middleware/sendEmail");
 
-// ------------------- JOB CONTROLLERS -------------------
-
-// Get all jobs (with optional filters, search, pagination)
-exports.getAllJobs = async (req, res, next) => {
-  try {
-    const { category, search, page = 1, limit = 10 } = req.query;
-    const filter = {};
-    if (category) filter.category = category;
-    if (search) filter.title = { $regex: search, $options: "i" };
-
-    const jobs = await Job.find(filter)
-      .sort({ createdAt: -1 })
-      .skip((page - 1) * limit)
-      .limit(Number(limit));
-
-    const total = await Job.countDocuments(filter);
-
-    res
-      .status(200)
-      .json({ jobs, total, page: Number(page), limit: Number(limit) });
-  } catch (error) {
-    next(error);
-  }
-};
-
-exports.createJob = async (req, res, next) => {
-  try {
-    const { title, category, location, description, details } = req.body;
-    const job = new Job({ title, category, location, description, details });
-    await job.save();
-    res.status(201).json({ message: "Job created successfully", job });
-  } catch (error) {
-    next(error);
-  }
-};
-
-exports.getJobById = async (req, res, next) => {
-  try {
-    const job = await Job.findById(req.params.id);
-    if (!job) return res.status(404).json({ message: "Job not found" });
-    res.status(200).json(job);
-  } catch (error) {
-    next(error);
-  }
-};
-
-exports.updateJob = async (req, res, next) => {
-  try {
-    const { title, category, location, description, details } = req.body;
-    const job = await Job.findByIdAndUpdate(
-      req.params.id,
-      { title, category, location, description, details },
-      { new: true },
-    );
-    if (!job) return res.status(404).json({ message: "Job not found" });
-    res.status(200).json({ message: "Job updated successfully", job });
-  } catch (error) {
-    next(error);
-  }
-};
-
-exports.deleteJob = async (req, res, next) => {
-  try {
-    const job = await Job.findByIdAndDelete(req.params.id);
-    if (!job) return res.status(404).json({ message: "Job not found" });
-    res.status(200).json({ message: "Job deleted successfully" });
-  } catch (error) {
-    next(error);
-  }
-};
-
 // ------------------- APPLICATION CONTROLLERS -------------------
 
 // Create application (with FTP resume upload)
 exports.createApplication = async (req, res, next) => {
   try {
-    const { name, email, position, coverLetter } = req.body;
-
+    const { name, email, interestedIn, designation, phone, coverLetter } =
+      req.body;
+    console.log(name, email, interestedIn, designation, phone, coverLetter);
     if (!req.file) {
       return res.status(400).json({ message: "Resume is required" });
     }
 
-    const existingApplication = await Application.findOne({ email, position });
+    // Check for duplicate application by email + interestedIn
+    const existingApplication = await Application.findOne({
+      email,
+      interestedIn,
+    });
     if (existingApplication) {
       return res.status(400).json({
-        message: "You have already applied for this job.",
+        message: "You have already applied for this department.",
       });
     }
 
@@ -126,20 +59,18 @@ exports.createApplication = async (req, res, next) => {
       const application = new Application({
         name,
         email,
-        position,
+        phone,
+        designation,
+        interestedIn,
         resume: fileUrl,
         coverLetter,
       });
 
       await application.save();
 
-      // ────────────────────────────────────────
-      // THIS WAS MISSING — send success response
-      // ────────────────────────────────────────
       return res.status(201).json({
         message: "Application submitted successfully",
         applicationId: application._id,
-        // optional: fileUrl if frontend wants to show it
       });
     } catch (ftpErr) {
       console.error("FTP upload error:", ftpErr);
@@ -152,16 +83,14 @@ exports.createApplication = async (req, res, next) => {
     }
   } catch (error) {
     console.error("Create application error:", error);
-    // If you have a global error handler that sends response → fine
-    // Otherwise better to send here too:
     return res.status(500).json({
       message: "Failed to process application",
       error: error.message,
     });
-    // or next(error) if your error middleware always responds
   }
 };
-// Get all applications (with filters)
+
+// Get all applications (with filters and pagination)
 exports.getApplications = async (req, res, next) => {
   try {
     const { status, search, page = 1, limit = 10 } = req.query;
@@ -171,7 +100,7 @@ exports.getApplications = async (req, res, next) => {
       filter.$or = [
         { name: { $regex: search, $options: "i" } },
         { email: { $regex: search, $options: "i" } },
-        { position: { $regex: search, $options: "i" } },
+        { interestedIn: { $regex: search, $options: "i" } },
       ];
     }
 
@@ -189,10 +118,10 @@ exports.getApplications = async (req, res, next) => {
   }
 };
 
-// Update application status (for dashboard)
+// Update application status (Pending, Reviewed, Shortlisted, Rejected)
 exports.updateApplicationStatus = async (req, res, next) => {
   try {
-    const { status } = req.body; // Pending, Reviewed, Shortlisted, Rejected
+    const { status } = req.body;
     const application = await Application.findByIdAndUpdate(
       req.params.id,
       { status },
@@ -200,6 +129,7 @@ exports.updateApplicationStatus = async (req, res, next) => {
     );
     if (!application)
       return res.status(404).json({ message: "Application not found" });
+
     res
       .status(200)
       .json({ message: "Application status updated", application });
@@ -214,29 +144,24 @@ exports.deleteApplication = async (req, res, next) => {
     const application = await Application.findByIdAndDelete(req.params.id);
     if (!application)
       return res.status(404).json({ message: "Application not found" });
+
     res.status(200).json({ message: "Application deleted successfully" });
   } catch (error) {
     next(error);
   }
 };
 
-// Dashboard analytics (jobs & applications overview)
+// Dashboard analytics
 exports.getDashboardStats = async (req, res, next) => {
   try {
-    const [
-      totalJobs,
-      totalApplications,
-      pendingApplications,
-      shortlistedApplications,
-    ] = await Promise.all([
-      Job.countDocuments(),
-      Application.countDocuments(),
-      Application.countDocuments({ status: "Pending" }),
-      Application.countDocuments({ status: "Shortlisted" }),
-    ]);
+    const [totalApplications, pendingApplications, shortlistedApplications] =
+      await Promise.all([
+        Application.countDocuments(),
+        Application.countDocuments({ status: "Pending" }),
+        Application.countDocuments({ status: "Shortlisted" }),
+      ]);
 
     res.status(200).json({
-      totalJobs,
       totalApplications,
       pendingApplications,
       shortlistedApplications,

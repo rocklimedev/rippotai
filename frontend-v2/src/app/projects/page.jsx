@@ -1,22 +1,47 @@
 // app/projects/page.jsx
 "use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AnimateIn } from "../../components/AnimateIn";
 import { useGetPublicProjectsQuery } from "@/api/rippotaiApi";
+
 export default function ProjectsPage() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const limit = 6; // matches your API example (you can make this configurable later)
+
   const {
-    data: projects = [], // default to empty array
+    data: apiResponse,
     isLoading,
     isError,
     error,
   } = useGetPublicProjectsQuery(
-    { page: 1, limit: 12 }, // adjust params as needed (your endpoint supports page/limit/category)
+    { page: currentPage, limit },
     {
-      // Optional: polling, refetch on focus/mount, etc.
-      // pollingInterval: 30000, // example: refetch every 30s
+      keepUnusedDataFor: 60,
     },
   );
+
+  const projects = apiResponse?.data ?? [];
+  const pagination = apiResponse?.pagination ?? {
+    page: 1,
+    limit,
+    total: 0,
+    pages: 1,
+  };
+
+  const totalPages = pagination.pages || 1;
+  const hasPrevious = currentPage > 1;
+  const hasNext = currentPage < totalPages;
+
+  const handlePrevious = () => {
+    if (hasPrevious) setCurrentPage((prev) => prev - 1);
+  };
+
+  const handleNext = () => {
+    if (hasNext) setCurrentPage((prev) => prev + 1);
+  };
 
   return (
     <>
@@ -126,7 +151,7 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      {/* Projects Section */}
+      {/* Projects Grid + Pagination */}
       <section style={{ padding: "0 48px 120px", backgroundColor: "#ffffff" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           {isLoading ? (
@@ -167,16 +192,81 @@ export default function ProjectsPage() {
               No projects found at the moment.
             </div>
           ) : (
-            projects.map((project, idx) => (
-              <AnimateIn
-                key={project._id || project.slug}
-                delay={0.1 * idx}
-                distance={70}
-                duration={1.3}
-              >
-                <ProjectRow project={project} reverse={idx % 2 !== 0} />
-              </AnimateIn>
-            ))
+            <>
+              {/* Project Rows */}
+              {projects.map((project, idx) => (
+                <AnimateIn
+                  key={project._id || project.slug}
+                  delay={0.1 * idx}
+                  distance={70}
+                  duration={1.3}
+                >
+                  <ProjectRow project={project} reverse={idx % 2 !== 0} />
+                </AnimateIn>
+              ))}
+
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: "32px",
+                    marginTop: "100px",
+                    fontFamily: "'Lato', sans-serif",
+                  }}
+                >
+                  <button
+                    onClick={handlePrevious}
+                    disabled={!hasPrevious || isLoading}
+                    style={{
+                      padding: "12px 28px",
+                      backgroundColor: hasPrevious ? "#1a3c34" : "#e8ecef",
+                      color: hasPrevious ? "#ffffff" : "#999999",
+                      border: "none",
+                      borderRadius: "6px",
+                      fontSize: "15px",
+                      fontWeight: 500,
+                      cursor: hasPrevious ? "pointer" : "not-allowed",
+                      transition: "all 0.2s ease",
+                      letterSpacing: "0.5px",
+                    }}
+                  >
+                    ← Previous
+                  </button>
+
+                  <span
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: 400,
+                      color: "#1a3c34",
+                    }}
+                  >
+                    Page {currentPage} of {totalPages}
+                  </span>
+
+                  <button
+                    onClick={handleNext}
+                    disabled={!hasNext || isLoading}
+                    style={{
+                      padding: "12px 28px",
+                      backgroundColor: hasNext ? "#1a3c34" : "#e8ecef",
+                      color: hasNext ? "#ffffff" : "#999999",
+                      border: "none",
+                      borderRadius: "6px",
+                      fontSize: "15px",
+                      fontWeight: 500,
+                      cursor: hasNext ? "pointer" : "not-allowed",
+                      transition: "all 0.2s ease",
+                      letterSpacing: "0.5px",
+                    }}
+                  >
+                    Next →
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>
@@ -185,10 +275,9 @@ export default function ProjectsPage() {
 }
 
 function ProjectRow({ project, reverse }) {
-  // Adjust field names according to your actual API response shape
-  // Common fields: _id, slug, title, category, image (or images[0]), description, location, etc.
   const displayImage =
     project.image || project.images?.[0] || "/placeholder-project.jpg";
+
   const displayDesc =
     project.description?.substring(0, 160) ||
     "A thoughtful integration of form and function, designed to resonate with those who inhabit the space — reflecting the cube's clarity and versatility.";
@@ -210,7 +299,7 @@ function ProjectRow({ project, reverse }) {
         }}
         className="project-row-grid"
       >
-        {/* Image */}
+        {/* Image Column */}
         <div style={{ overflow: "hidden", order: reverse ? 2 : 1 }}>
           <Image
             src={displayImage}
@@ -230,7 +319,7 @@ function ProjectRow({ project, reverse }) {
           />
         </div>
 
-        {/* Info */}
+        {/* Text Column */}
         <div style={{ order: reverse ? 1 : 2, padding: "20px 0" }}>
           <div
             style={{

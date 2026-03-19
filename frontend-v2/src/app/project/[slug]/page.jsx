@@ -1,4 +1,3 @@
-// app/project/[slug]/page.jsx
 "use client";
 
 import Image from "next/image";
@@ -13,7 +12,6 @@ import {
   useGetPublicProjectsQuery,
 } from "@/api/rippotaiApi";
 
-// Gallery overlay texts
 const galleryTexts = [
   {
     heading: "Material & Light",
@@ -33,20 +31,16 @@ export default function ProjectDetailPage() {
   const params = useParams();
   const slug = params?.slug;
 
-  // Fetch the current project
   const {
     data: projectResponse,
     isLoading: isProjectLoading,
     isError: isProjectError,
-    error: projectError,
   } = useGetProjectBySlugQuery(slug, {
     skip: !slug,
   });
 
-  // Correct – use the root response directly
   const project = projectResponse?.data ?? null;
 
-  // Fetch list for prev/next navigation
   const { data: projectsList = [], isLoading: isListLoading } =
     useGetPublicProjectsQuery(
       { page: 1, limit: 100 },
@@ -57,47 +51,18 @@ export default function ProjectDetailPage() {
       },
     );
 
-  // ──────────────────────────────────────────────
-  // Loading / Error / Not Found states
-  // ──────────────────────────────────────────────
   if (isProjectLoading || isListLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#d9af61] mx-auto mb-6"></div>
-          <p className="text-gray-600">Loading project details...</p>
-        </div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin h-10 w-10 border-b-2 border-[#d9af61] rounded-full"></div>
       </div>
     );
   }
 
-  if (isProjectError) {
-    console.error("Project fetch error:", projectError);
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center max-w-md px-6">
-          <h2 className="text-2xl font-light text-gray-800 mb-4">
-            Something went wrong
-          </h2>
-          <p className="text-gray-600 mb-6">
-            We couldn't load this project. Please try again later.
-          </p>
-          <Link
-            href="/projects"
-            className="inline-block px-6 py-3 bg-[#1a3c34] text-white hover:bg-[#2a4c44] transition-colors"
-          >
-            Back to Projects
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  if (!project || !slug) {
+  if (isProjectError || !project) {
     notFound();
   }
 
-  // Navigation logic (now safe)
   const currentIndex = projectsList.findIndex((p) => p.slug === slug);
   const prevProject = currentIndex > 0 ? projectsList[currentIndex - 1] : null;
   const nextProject =
@@ -107,137 +72,108 @@ export default function ProjectDetailPage() {
 
   return (
     <main className="bg-white">
-      {/* Hero Banner */}
-      <section className="relative w-full h-[85vh] min-h-[500px] overflow-hidden bg-[#0a0a0a]">
+      {/* HERO */}
+      <section className="relative w-full h-[85vh] min-h-[500px]">
         <Image
-          src={project.image || "/placeholder-hero.jpg"}
-          alt={project.title || "Project"}
+          src={project.image || "/placeholder.jpg"}
+          alt={project.title}
           fill
           priority
-          quality={85}
-          sizes="(max-width: 768px) 100vw, 85vw"
-          className="object-cover object-center"
-          placeholder="blur"
-          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/OhPPQAJJAPXdxCaAAAAAElFTkSuQmCC"
+          className="object-cover"
         />
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-black/10" />
 
-        <div className="absolute bottom-16 left-12 right-12 z-10 text-white">
-          <div className="text-xs font-normal tracking-[3px] uppercase text-[#d9af61] mb-4">
-            PROJECT {String(currentIndex + 1).padStart(2, "0")} /{" "}
+        <div className="absolute bottom-16 left-12 text-white">
+          <h1 className="text-6xl font-light">{project.title}</h1>
+          <div className="text-xs tracking-[3px] uppercase text-[#d9af61] mb-4">
             {project.category}
           </div>
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-light tracking-[2px] leading-tight">
-            {project.title}
-          </h1>
-          <div className="w-10 h-px bg-[#d9af61] mt-8" />
         </div>
       </section>
 
-      {/* Project Info */}
-      <section className="py-20 px-6 md:px-12 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 lg:gap-24">
-            {/* Meta */}
-            <AnimateIn delay={0} distance={40} duration={1}>
-              <div className="space-y-10">
-                {[
-                  { label: "Location", value: project.location },
-                  { label: "Area", value: project.area },
-                  { label: "Year", value: project.year },
-                  { label: "Type", value: project.category },
-                  { label: "Scope", value: project.scope },
-                ].map((item) => (
-                  <div key={item.label}>
-                    <div className="text-xs font-medium tracking-[3px] uppercase text-[#d9af61] mb-2">
-                      {item.label}
-                    </div>
-                    <div className="text-lg font-light text-[#1a3c34]">
-                      {item.value || "—"}
-                    </div>
+      {/* INFO */}
+      <section className="py-20 px-6 md:px-12">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-3 gap-20">
+          <AnimateIn>
+            <div className="space-y-10">
+              {[
+                { label: "Location", value: project.location },
+                { label: "Area", value: project.area },
+                { label: "Year", value: project.year },
+                { label: "Type", value: project.category },
+                { label: "Scope", value: project.scope },
+              ].map((item) => (
+                <div key={item.label}>
+                  <div className="text-xs tracking-[3px] uppercase text-[#d9af61] mb-2">
+                    {item.label}
                   </div>
-                ))}
-              </div>
-            </AnimateIn>
-
-            {/* Description */}
-            <AnimateIn
-              delay={0.2}
-              distance={40}
-              duration={1.2}
-              className="lg:col-span-2"
-            >
-              <p className="text-lg md:text-xl font-light text-gray-700 leading-relaxed">
-                {project.description}
-              </p>
-
-              {project.details && (
-                <div className="mt-10">
-                  <div className="text-lg font-light text-gray-700 leading-relaxed whitespace-pre-line">
-                    {project.details}
+                  <div className="text-lg text-[#1a3c34]">
+                    {item.value || "—"}
                   </div>
                 </div>
-              )}
-            </AnimateIn>
-          </div>
+              ))}
+            </div>
+          </AnimateIn>
+
+          <AnimateIn className="lg:col-span-2">
+            <p className="text-xl text-gray-700 leading-relaxed">
+              {project.description}
+            </p>
+
+            {project.details && (
+              <div className="mt-10 text-gray-700 whitespace-pre-line">
+                {project.details}
+              </div>
+            )}
+          </AnimateIn>
         </div>
       </section>
 
-      {/* Gallery */}
+      {/* GALLERY */}
       {project.images?.length > 0 && (
-        <section className="px-6 md:px-12 pb-24 bg-white">
+        <section className="px-6 md:px-12 pb-24">
           <div className="max-w-7xl mx-auto">
-            <AnimateIn delay={0} distance={30} duration={1}>
-              <h2 className="text-sm font-medium tracking-[4px] uppercase text-[#1a3c34] mb-12">
-                Project Gallery
-              </h2>
-            </AnimateIn>
+            <h2 className="text-sm tracking-[4px] uppercase mb-12">
+              Project Gallery
+            </h2>
 
             <GalleryWithText project={project} />
           </div>
         </section>
       )}
 
-      {/* Prev / Next Navigation */}
-      <section className="border-t border-[#1a3c34]/10 py-16 px-6 md:px-12 bg-white">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-12">
+      {/* NAVIGATION */}
+      <section className="border-t py-16 px-6 md:px-12">
+        <div className="max-w-7xl mx-auto flex justify-between">
           {prevProject ? (
             <Link
               href={`/project/${prevProject.slug}`}
-              className="group flex items-center gap-4 text-left hover:opacity-80 transition-opacity"
+              className="flex items-center gap-3"
             >
-              <ArrowLeft size={20} className="text-[#1a3c34]" />
+              <ArrowLeft size={20} />
               <div>
-                <div className="text-xs font-medium tracking-[2px] uppercase text-gray-500">
-                  Previous Project
-                </div>
-                <div className="text-xl font-normal text-[#1a3c34] mt-1 group-hover:underline">
-                  {prevProject.title}
-                </div>
+                <div className="text-xs uppercase text-gray-500">Previous</div>
+                <div className="text-lg">{prevProject.title}</div>
               </div>
             </Link>
           ) : (
-            <div className="flex-1" />
+            <div />
           )}
 
           {nextProject ? (
             <Link
               href={`/project/${nextProject.slug}`}
-              className="group flex items-center gap-4 text-right hover:opacity-80 transition-opacity"
+              className="flex items-center gap-3"
             >
-              <div>
-                <div className="text-xs font-medium tracking-[2px] uppercase text-gray-500">
-                  Next Project
-                </div>
-                <div className="text-xl font-normal text-[#1a3c34] mt-1 group-hover:underline">
-                  {nextProject.title}
-                </div>
+              <div className="text-right">
+                <div className="text-xs uppercase text-gray-500">Next</div>
+                <div className="text-lg">{nextProject.title}</div>
               </div>
-              <ArrowRight size={20} className="text-[#1a3c34]" />
+              <ArrowRight size={20} />
             </Link>
           ) : (
-            <div className="flex-1" />
+            <div />
           )}
         </div>
       </section>
@@ -245,43 +181,50 @@ export default function ProjectDetailPage() {
   );
 }
 
-// ──────────────────────────────────────────────
-// Gallery Component
-// ──────────────────────────────────────────────
 function GalleryWithText({ project }) {
-  const gallery = project.images || [];
-  const total = gallery.length;
+  const allImages = project.images || [];
+  const previewImages = allImages.slice(0, 5);
+  const total = previewImages.length;
+
   const items = [];
   let textIdx = 0;
 
-  gallery.forEach((img, idx) => {
+  previewImages.forEach((img, idx) => {
     const isFeature = idx === 0 || idx === total - 1;
-    items.push({ type: "image", src: img, idx, isFeature });
+
+    items.push({
+      type: "image",
+      src: img,
+      idx,
+      isFeature,
+    });
 
     if (
       (idx + 1) % 2 === 0 &&
       idx < total - 1 &&
       textIdx < galleryTexts.length
     ) {
-      items.push({ type: "text", ...galleryTexts[textIdx] });
+      items.push({
+        type: "text",
+        ...galleryTexts[textIdx],
+      });
+
       textIdx++;
     }
   });
 
   return (
-    <div className="space-y-16 md:space-y-24">
+    <div className="space-y-20">
       {items.map((item, i) => {
         if (item.type === "text") {
           return (
-            <AnimateIn key={`text-${i}`} delay={0.1} distance={30} duration={1}>
-              <div className="max-w-2xl mx-auto px-4 text-center md:text-left">
-                <div className="w-8 h-px bg-[#d9af61] mb-6 mx-auto md:mx-0" />
-                <h3 className="text-sm font-medium tracking-[3px] uppercase text-[#1a3c34] mb-4">
+            <AnimateIn key={`text-${i}`}>
+              <div className="max-w-2xl mx-auto text-center md:text-left">
+                <div className="w-8 h-px bg-[#d9af61] mb-6" />
+                <h3 className="text-sm uppercase tracking-[3px] mb-4">
                   {item.heading}
                 </h3>
-                <p className="text-base md:text-lg font-light text-gray-600 leading-relaxed">
-                  {item.body}
-                </p>
+                <p className="text-gray-600 leading-relaxed">{item.body}</p>
               </div>
             </AnimateIn>
           );
@@ -289,69 +232,57 @@ function GalleryWithText({ project }) {
 
         if (item.isFeature) {
           return (
-            <AnimateIn
-              key={`img-${item.idx}`}
-              delay={0.1}
-              distance={40}
-              duration={1.2}
-            >
-              <div className="overflow-hidden bg-[#f0eeea]">
-                <Image
-                  src={item.src}
-                  alt={`${project.title} - ${item.idx + 1}`}
-                  width={1400}
-                  height={900}
-                  sizes="(max-width: 768px) 100vw, 90vw"
-                  quality={85}
-                  className="w-full h-auto object-cover transition-transform duration-700 hover:scale-105"
-                />
-              </div>
+            <AnimateIn key={`img-${item.idx}`}>
+              <Image
+                src={item.src}
+                alt=""
+                width={1400}
+                height={900}
+                className="w-full object-cover"
+              />
             </AnimateIn>
           );
         }
 
-        // Pair of images
         const nextItem = items[i + 1];
         const hasNext =
           nextItem && nextItem.type === "image" && !nextItem.isFeature;
 
         return (
-          <AnimateIn
-            key={`pair-${item.idx}`}
-            delay={0.1}
-            distance={40}
-            duration={1.2}
-          >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-              <div className="overflow-hidden bg-[#f0eeea]">
-                <Image
-                  src={item.src}
-                  alt={`${project.title} - ${item.idx + 1}`}
-                  width={800}
-                  height={600}
-                  sizes="(max-width: 768px) 100vw, 45vw"
-                  quality={85}
-                  className="w-full h-auto object-cover transition-transform duration-700 hover:scale-105"
-                />
-              </div>
+          <AnimateIn key={`pair-${item.idx}`}>
+            <div className="grid md:grid-cols-2 gap-8">
+              <Image
+                src={item.src}
+                alt=""
+                width={800}
+                height={600}
+                className="object-cover"
+              />
 
               {hasNext && (
-                <div className="overflow-hidden bg-[#f0eeea]">
-                  <Image
-                    src={nextItem.src}
-                    alt={`${project.title} - ${nextItem.idx + 1}`}
-                    width={800}
-                    height={600}
-                    sizes="(max-width: 768px) 100vw, 45vw"
-                    quality={85}
-                    className="w-full h-auto object-cover transition-transform duration-700 hover:scale-105"
-                  />
-                </div>
+                <Image
+                  src={nextItem.src}
+                  alt=""
+                  width={800}
+                  height={600}
+                  className="object-cover"
+                />
               )}
             </div>
           </AnimateIn>
         );
       })}
+
+      {allImages.length > 5 && (
+        <div className="text-center pt-10">
+          <Link
+            href={`/project/${project.slug}/gallery`}
+            className="inline-block px-8 py-4 border border-[#1a3c34] text-[#1a3c34] hover:bg-[#1a3c34] hover:text-white transition"
+          >
+            See Full Gallery
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

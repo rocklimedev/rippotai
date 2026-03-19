@@ -34,13 +34,6 @@ const upload = multer({
   },
 });
 
-// Job Routes
-router.get("/jobs", getAllJobs); // GET /api/jobs - Get all jobs (with filters, search, pagination)
-router.post("/jobs", createJob); // POST /api/jobs - Create new job
-router.get("/jobs/:id", getJobById); // GET /api/jobs/:id - Get single job by ID
-router.put("/jobs/:id", updateJob); // PUT /api/jobs/:id - Update job by ID
-router.delete("/jobs/:id", deleteJob); // DELETE /api/jobs/:id - Delete job by ID
-
 // Application Routes
 router.post("/apply", upload.single("resume"), createApplication); // POST /api/apply - Create job application with resume upload
 router.get("/applications", getApplications); // GET /api/applications - Get all applications (with filters)

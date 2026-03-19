@@ -100,14 +100,6 @@ export default function AdminDashboard() {
             Here's a quick overview of your admin dashboard
           </p>
         </div>
-
-        <Link
-          href="/admin/projects/new"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
-        >
-          <FileText size={18} />
-          New Project
-        </Link>
       </div>
 
       {/* Stats Cards */}
@@ -118,14 +110,6 @@ export default function AdminDashboard() {
           value={stats.projects}
           color="blue"
           link="/admin/projects"
-        />
-
-        <StatCard
-          icon={<Briefcase size={24} />}
-          title="Job Postings"
-          value={stats.jobs}
-          color="green"
-          link="/admin/jobs"
         />
 
         <StatCard
@@ -185,43 +169,6 @@ export default function AdminDashboard() {
             </>
           )}
         />
-      </div>
-
-      {/* Quick Actions */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-        <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <QuickActionCard
-            icon={<FileText size={20} />}
-            title="Create New Project"
-            href="/admin/projects/new"
-          />
-
-          <QuickActionCard
-            icon={<Briefcase size={20} />}
-            title="Post New Job"
-            href="/admin/jobs/new"
-          />
-
-          <QuickActionCard
-            icon={<MessageSquare size={20} />}
-            title="View All Inquiries"
-            href="/admin/queries"
-          />
-
-          <QuickActionCard
-            icon={<Users size={20} />}
-            title="Manage Users"
-            href="/admin/users"
-          />
-
-          <QuickActionCard
-            icon={<Users size={20} />}
-            title="Review Applications"
-            href="/admin/applications"
-          />
-        </div>
       </div>
     </div>
   );
@@ -292,22 +239,5 @@ function RecentSection({ title, items, emptyMessage, link, renderItem }) {
         </div>
       )}
     </div>
-  );
-}
-
-function QuickActionCard({ icon, title, href }) {
-  return (
-    <Link
-      href={href}
-      className="flex items-center gap-4 p-5 border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all group"
-    >
-      <div className="p-3 bg-blue-50 text-blue-600 rounded-lg group-hover:bg-blue-100 transition-colors">
-        {icon}
-      </div>
-
-      <div className="font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
-        {title}
-      </div>
-    </Link>
   );
 }

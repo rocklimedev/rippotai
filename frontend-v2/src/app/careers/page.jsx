@@ -1,12 +1,8 @@
-// app/careers/page.jsx
 "use client";
 import { useState } from "react";
 import { useCreateApplicationMutation } from "@/api/rippotaiApi";
 import { AnimateIn } from "@/components/AnimateIn";
 import { toast } from "sonner";
-
-const teamImage =
-  "https://customer-assets.emergentagent.com/job_rippotai-arch/artifacts/ty0yqr54_05b1c7b1-3dfc-4182-ae7b-5b43a03124eb.jpg";
 
 export default function CareerPage() {
   const [createApplication, { isLoading: pending }] =
@@ -44,23 +40,29 @@ export default function CareerPage() {
 
     const formData = new FormData(e.currentTarget);
 
-    // Rename / map fields to match backend expectation
-    const payload = {
-      name: formData.get("name"),
-      email: formData.get("email"),
-      position: formData.get("interestedIn"), // ← map "interestedIn" → "position"
-      resume: formData.get("portfolio"), // ← map "portfolio" → "resume"
-      // coverLetter: optional — you can add a textarea later if needed
-    };
+    // Get the file from input
+    const fileInput = e.currentTarget.querySelector('input[name="portfolio"]');
+    const resumeFile = fileInput?.files?.[0];
 
     try {
-      await createApplication(payload).unwrap();
+      // Call RTK Query mutation with a plain object; the mutation will construct FormData
+      await createApplication({
+        name: formData.get("name"),
+        email: formData.get("email"),
+        phone: formData.get("phone"),
+        designation: formData.get("designation"),
+        interestedIn: formData.get("interestedIn"),
+        coverLetter: formData.get("coverLetter") || "", // optional
+        resume: resumeFile,
+      }).unwrap();
+
       toast.success("Application submitted successfully! We'll be in touch.");
       e.target.reset();
       setFileName("");
     } catch (err) {
       const errorMsg =
         err?.data?.message || err?.message || "Failed to submit application.";
+      console.log(err);
       toast.error(errorMsg);
     }
   };
@@ -79,7 +81,7 @@ export default function CareerPage() {
         }}
       >
         <img
-          src={teamImage}
+          src="/assets/team.jpg"
           alt="Join Rippotai"
           style={{
             width: "100%",
@@ -157,7 +159,7 @@ export default function CareerPage() {
                 <input type="text" name="name" required style={inputStyle} />
               </div>
 
-              {/* Phone – optional for this API, but you can keep it */}
+              {/* Phone */}
               <div style={{ marginBottom: "32px" }}>
                 <label style={labelStyle}>Phone Number</label>
                 <input type="tel" name="phone" style={inputStyle} />
@@ -169,13 +171,13 @@ export default function CareerPage() {
                 <input type="email" name="email" required style={inputStyle} />
               </div>
 
-              {/* Current Designation – optional */}
+              {/* Designation */}
               <div style={{ marginBottom: "32px" }}>
                 <label style={labelStyle}>Current Designation</label>
                 <input type="text" name="designation" style={inputStyle} />
               </div>
 
-              {/* Interested In → becomes position */}
+              {/* Interested In */}
               <div style={{ marginBottom: "32px" }}>
                 <label style={labelStyle}>Interested In</label>
                 <select
@@ -193,7 +195,7 @@ export default function CareerPage() {
                 </select>
               </div>
 
-              {/* Portfolio → becomes resume */}
+              {/* Portfolio / Resume */}
               <div style={{ marginBottom: "48px" }}>
                 <label style={labelStyle}>Upload Portfolio / Resume</label>
                 <label

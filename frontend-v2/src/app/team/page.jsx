@@ -3,9 +3,6 @@
 import Image from "next/image";
 import { AnimateIn } from "../../components/AnimateIn"; // adjust path
 
-const teamImage =
-  "https://customer-assets.emergentagent.com/job_rippotai-arch/artifacts/ty0yqr54_05b1c7b1-3dfc-4182-ae7b-5b43a03124eb.jpg";
-
 const teamMembers = [
   {
     id: 1,
@@ -98,7 +95,7 @@ export default function TeamPage() {
         }}
       >
         <Image
-          src={teamImage}
+          src="/assets/team.jpg"
           alt="Rippotai Team"
           fill
           priority

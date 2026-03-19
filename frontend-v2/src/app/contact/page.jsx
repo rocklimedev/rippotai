@@ -13,9 +13,6 @@ const contactInfo = {
   phone: "+91 99110 80605",
 };
 
-const teamImage =
-  "https://customer-assets.emergentagent.com/job_rippotai-arch/artifacts/ty0yqr54_05b1c7b1-3dfc-4182-ae7b-5b43a03124eb.jpg";
-
 const googleMapsLink =
   "https://www.google.com/maps?gs_lcrp=EgZjaHJvbWUqDggAEEUYJxg7GIAEGIoFMg4IABBFGCcYOxiABBiKBTIVCAEQLhhDGMcBGLEDGNEDGIAEGIoFMgYIAhBFGEAyBggDEEUYOTIGCAQQRRg7MgYIBRBFGDwyBggGEEUYPDIGCAcQRRg80gEHNzYwajBqN6gCALACAA&um=1&ie=UTF-8&fb=1&gl=in&sa=X&geocode=KbHnzh2cBQ05MZlLNlNYBa34&daddr=487/64,+National+Market,+peeragarhi,+Paschim+Vihar,+New+Delhi,+Delhi,+110087";
 
@@ -112,7 +109,7 @@ export default function ContactPage() {
         }}
       >
         <img
-          src={teamImage}
+          src="/assets/team.jpg"
           alt="Contact Rippotai"
           style={{
             width: "100%",

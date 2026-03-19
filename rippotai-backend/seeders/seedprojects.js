@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const connectDB = require("../config/db"); // Adjust path if needed
 const Project = require("../models/project"); // Adjust path if needed
-const projectsData = require("../utils/projects.json"); // Adjust path if needed
+const projectsData = require("./project-backup.json"); // Adjust path if needed
 
 // Seeder function
 const seedProjects = async () => {

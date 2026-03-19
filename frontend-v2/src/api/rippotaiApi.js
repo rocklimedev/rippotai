@@ -113,16 +113,18 @@ export const rippotaiApi = createApi({
         url: "/projects/public",
         params: { page, limit, category },
       }),
-      transformResponse: (response) => response.data,
+      // transformResponse: (response) => response.data,   ← REMOVE or COMMENT OUT this line
+
       serializeQueryArgs: ({ endpointName, queryArgs }) => {
         const { page, category } = queryArgs || {};
         return `${endpointName}-${page || 1}-${category || "all"}`;
       },
       keepUnusedDataFor: 60,
       providesTags: (result) =>
-        result
+        // Adjust providesTags because result is now full response object
+        result?.data
           ? [
-              ...result.map((p) => ({ type: "Projects", id: p._id })),
+              ...result.data.map((p) => ({ type: "Projects", id: p._id })),
               { type: "Projects", id: "LIST" },
             ]
           : [{ type: "Projects", id: "LIST" }],
@@ -240,17 +242,28 @@ export const rippotaiApi = createApi({
 
     // ────────────────────────────────────────────── Applications ──────────────────────────────────────────────
     createApplication: builder.mutation({
-      query: ({ name, email, position, resume, coverLetter }) => {
+      query: ({
+        name,
+        email,
+        designation,
+        interestedIn,
+        phone,
+        resume,
+        coverLetter,
+      }) => {
         const formData = new FormData();
         formData.append("name", name);
         formData.append("email", email);
-        formData.append("position", position);
-        formData.append("coverLetter", coverLetter);
-        if (resume) formData.append("resume", resume);
+        formData.append("designation", designation);
+        formData.append("interestedIn", interestedIn);
+        formData.append("phone", phone);
+        if (coverLetter) formData.append("coverLetter", coverLetter);
+        if (resume) formData.append("resume", resume); // key must match multer.single("resume")
+
         return {
           url: "/careers/apply",
           method: "POST",
-          body: formData,
+          body: formData, // do NOT add headers here
         };
       },
       invalidatesTags: [{ type: "Applications", id: "LIST" }],
