@@ -10,7 +10,7 @@ import { useGetPublicProjectsQuery } from "@/api/rippotaiApi";
 
 export const WorksSection = () => {
   const {
-    data: projects = [],
+    data: projectsData = [],
     isLoading,
     isError,
   } = useGetPublicProjectsQuery(
@@ -20,13 +20,14 @@ export const WorksSection = () => {
       // Or add polling/refetchOnMountOrArgChange if desired
     },
   );
-  console.log(projects);
+  const projects = projectsData?.data ?? [];
+
   // Optional: limit displayed projects (e.g. show 3–6 on homepage)
   const displayedProjects = useMemo(
     () => (Array.isArray(projects) ? projects.slice(0, 6) : []),
     [projects],
   );
-  console.log(displayedProjects);
+
   if (isLoading) {
     return (
       <section
