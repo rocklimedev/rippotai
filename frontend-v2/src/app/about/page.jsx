@@ -350,8 +350,7 @@ export default function AboutPage() {
         style={{
           position: "relative",
           width: "100%",
-          height: "60vh",
-          minHeight: "400px",
+          height: "100vh",
           overflow: "hidden",
         }}
       >

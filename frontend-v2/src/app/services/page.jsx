@@ -39,8 +39,7 @@ export default function ServicesPage() {
         style={{
           position: "relative",
           width: "100%",
-          height: "60vh",
-          minHeight: "340px",
+          height: "100vh",
           overflow: "hidden",
           backgroundColor: "#0a0a0a",
         }}
@@ -51,7 +50,10 @@ export default function ServicesPage() {
           fill
           priority
           sizes="100vw"
-          style={{ objectFit: "cover" }}
+          style={{
+            objectFit: "cover",
+            objectPosition: "center 40%", // 👈 better framing
+          }}
         />
 
         {/* Overlay */}
@@ -110,7 +112,6 @@ export default function ServicesPage() {
           />
         </div>
       </section>
-
       {/* ================= Services ================= */}
       <section
         style={{

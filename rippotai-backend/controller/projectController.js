@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const Project = require("../models/project");
 const { uploadToFtp } = require("../utils/ftpUpload");
 const slugify = require("slugify");
-const fs = require("fs");
 
 // ────────────────────────────────────────────────
 // Helper for consistent responses
@@ -24,13 +23,41 @@ const sendResponse = (
 };
 
 // ────────────────────────────────────────────────
+// TRANSFORMER (🔥 CORE LOGIC)
+// ────────────────────────────────────────────────
+const transformProject = (project) => {
+  if (!project) return project;
+
+  let banner = null;
+
+  if (Array.isArray(project.images)) {
+    const filteredImages = [];
+
+    for (const img of project.images) {
+      if (
+        typeof img === "string" &&
+        img.split("/").pop().toLowerCase() === "banner.png"
+      ) {
+        banner = img;
+      } else {
+        filteredImages.push(img);
+      }
+    }
+
+    project.images = filteredImages;
+  }
+
+  if (banner) {
+    project.banner = banner;
+  }
+
+  return project;
+};
+
+// ────────────────────────────────────────────────
 // PUBLIC ENDPOINTS
 // ────────────────────────────────────────────────
 
-/**
- * GET /projects/public
- * FAST listing API (frontend)
- */
 exports.getPublicProjects = async (req, res) => {
   try {
     const { category, page = "1", limit = "6" } = req.query;
@@ -51,7 +78,7 @@ exports.getPublicProjects = async (req, res) => {
     const [projects, total] = await Promise.all([
       Project.find(filter)
         .select(
-          "title slug category location scope image status createdAt projectId",
+          "title slug category location scope image images status createdAt projectId",
         )
         .sort({ createdAt: -1 })
         .skip(skip)
@@ -60,7 +87,9 @@ exports.getPublicProjects = async (req, res) => {
       Project.countDocuments(filter),
     ]);
 
-    sendResponse(res, 200, true, projects, null, {
+    const transformed = projects.map(transformProject);
+
+    sendResponse(res, 200, true, transformed, null, {
       pagination: {
         page: pageNum,
         limit: limitNum,
@@ -73,35 +102,26 @@ exports.getPublicProjects = async (req, res) => {
   }
 };
 
-/**
- * GET /projects/:slug
- * (PUBLIC – slug based)
- */
 exports.getProjectBySlug = async (req, res) => {
   try {
     const project = await Project.findOne({ slug: req.params.slug })
-      .select("-__v") // projectId is not needed publicly
+      .select("-__v")
       .lean();
 
     if (!project) {
       return sendResponse(res, 404, false, null, "Project not found");
     }
 
-    sendResponse(res, 200, true, project);
+    sendResponse(res, 200, true, transformProject(project));
   } catch (error) {
     sendResponse(res, 500, false, null, "Server error");
   }
 };
 
 // ────────────────────────────────────────────────
-// ADMIN / FULL ENDPOINTS
+// ADMIN
 // ────────────────────────────────────────────────
 
-/**
- * GET /projects
- * Query params: category, status
- * Returns all projects (admin view)
- */
 exports.getAllProjects = async (req, res) => {
   try {
     const { category, status } = req.query;
@@ -115,16 +135,12 @@ exports.getAllProjects = async (req, res) => {
       .select("-__v")
       .lean();
 
-    sendResponse(res, 200, true, projects);
+    sendResponse(res, 200, true, projects.map(transformProject));
   } catch (error) {
     sendResponse(res, 500, false, null, "Failed to fetch projects");
   }
 };
 
-/**
- * GET /projects/admin/:projectId
- * :projectId is the custom UUID string, NOT MongoDB _id
- */
 exports.getProjectById = async (req, res) => {
   try {
     const project = await Project.findOne({ projectId: req.params.projectId })
@@ -135,15 +151,16 @@ exports.getProjectById = async (req, res) => {
       return sendResponse(res, 404, false, null, "Project not found");
     }
 
-    sendResponse(res, 200, true, project);
+    sendResponse(res, 200, true, transformProject(project));
   } catch (error) {
     sendResponse(res, 500, false, null, "Server error");
   }
 };
 
-/**
- * POST /projects/admin/ — CREATE
- */
+// ────────────────────────────────────────────────
+// CREATE
+// ────────────────────────────────────────────────
+
 exports.createProject = async (req, res) => {
   try {
     const { title, category, description, details, status, location, scope } =
@@ -157,7 +174,6 @@ exports.createProject = async (req, res) => {
     const slug = slugify(cleanedTitle, { lower: true, strict: true });
     const projectFolder = `rippotai_projects/${slug}`;
 
-    // ─── MAIN IMAGE (required) ──────────────────────────────────────
     if (!req.files?.image?.[0]) {
       return sendResponse(res, 400, false, null, "Main image is required");
     }
@@ -167,10 +183,9 @@ exports.createProject = async (req, res) => {
     const mainImageUrl = await uploadToFtp(
       mainFile.buffer,
       mainFile.originalname || mainFile.filename,
-      projectFolder, // ← remoteDir = rippotai_projects/{slug}
+      projectFolder,
     );
 
-    // ─── GALLERY IMAGES (optional) ──────────────────────────────────
     const galleryUrls = [];
 
     if (req.files?.images?.length > 0) {
@@ -179,20 +194,15 @@ exports.createProject = async (req, res) => {
           const url = await uploadToFtp(
             file.buffer,
             file.originalname || file.filename,
-            projectFolder, // ← same remoteDir for all gallery images
+            projectFolder,
           );
           galleryUrls.push(url);
-        } catch (uploadErr) {
-          console.error(
-            `Gallery upload failed: ${file.originalname}`,
-            uploadErr.message,
-          );
-          // continue — don't fail whole request
+        } catch (err) {
+          console.error("Gallery upload failed:", err.message);
         }
       }
     }
 
-    // ─── SAVE PROJECT ───────────────────────────────────────────────
     const project = new Project({
       title: cleanedTitle,
       slug,
@@ -208,27 +218,27 @@ exports.createProject = async (req, res) => {
 
     await project.save();
 
-    sendResponse(res, 201, true, project, "Project created successfully");
-  } catch (error) {
-    console.error("Create project failed:", error);
     sendResponse(
       res,
-      500,
-      false,
-      null,
-      error.message || "Failed to create project",
+      201,
+      true,
+      transformProject(project.toObject()),
+      "Project created successfully",
     );
+  } catch (error) {
+    sendResponse(res, 500, false, null, error.message);
   }
 };
 
-/**
- * PUT /projects/admin/:projectId — UPDATE
- */
+// ────────────────────────────────────────────────
+// UPDATE
+// ────────────────────────────────────────────────
+
 exports.updateProject = async (req, res) => {
   try {
     const updateData = {};
 
-    const scalarFields = [
+    const fields = [
       "title",
       "category",
       "description",
@@ -237,7 +247,8 @@ exports.updateProject = async (req, res) => {
       "location",
       "scope",
     ];
-    scalarFields.forEach((key) => {
+
+    fields.forEach((key) => {
       if (req.body[key] !== undefined) {
         updateData[key] =
           typeof req.body[key] === "string"
@@ -246,49 +257,46 @@ exports.updateProject = async (req, res) => {
       }
     });
 
-    // Fetch existing project to determine base folder
-    const existing = await Project.findOne({ projectId: req.params.projectId });
+    const existing = await Project.findOne({
+      projectId: req.params.projectId,
+    });
+
     if (!existing) {
       return sendResponse(res, 404, false, null, "Project not found");
     }
 
-    // Decide folder — use new slug if title changed, otherwise keep existing
     let projectFolder = `rippotai_projects/${existing.slug}`;
+
     if (updateData.title) {
-      const newSlug = slugify(updateData.title, { lower: true, strict: true });
+      const newSlug = slugify(updateData.title, {
+        lower: true,
+        strict: true,
+      });
+
       if (newSlug !== existing.slug) {
         projectFolder = `rippotai_projects/${newSlug}`;
-        updateData.slug = newSlug; // keep slug in sync with folder
+        updateData.slug = newSlug;
       }
     }
 
-    // ─── MAIN IMAGE REPLACEMENT (optional) ───────────────
     if (req.files?.image?.[0]) {
       const file = req.files.image[0];
 
       const newMainUrl = await uploadToFtp(
         file.buffer,
         file.originalname || file.filename,
-        projectFolder, // ← remoteDir = rippotai_projects/{slug or new-slug}
+        projectFolder,
       );
 
       updateData.image = newMainUrl;
     }
 
-    // ─── GALLERY ─────────────────────────────────────────
     let finalImages = [];
 
-    if (req.body.existingImages !== undefined) {
+    if (req.body.existingImages) {
       try {
-        const kept = JSON.parse(req.body.existingImages);
-        if (Array.isArray(kept)) {
-          finalImages = kept.filter(
-            (u) => typeof u === "string" && u.startsWith("http"),
-          );
-        }
-      } catch (e) {
-        console.warn("Invalid existingImages:", e.message);
-      }
+        finalImages = JSON.parse(req.body.existingImages);
+      } catch {}
     }
 
     if (req.files?.images?.length > 0) {
@@ -297,48 +305,37 @@ exports.updateProject = async (req, res) => {
           const url = await uploadToFtp(
             file.buffer,
             file.originalname || file.filename,
-            projectFolder, // ← same remoteDir for all new gallery images
+            projectFolder,
           );
           finalImages.push(url);
-        } catch (err) {
-          console.error(
-            `Gallery upload failed: ${file.originalname}`,
-            err.message,
-          );
-        }
+        } catch {}
       }
     }
 
-    if (
-      req.body.existingImages !== undefined ||
-      req.files?.images?.length > 0
-    ) {
-      updateData.images = finalImages;
-    }
+    updateData.images = finalImages;
 
     const updated = await Project.findOneAndUpdate(
       { projectId: req.params.projectId },
       updateData,
-      { new: true, runValidators: true, select: "-__v" },
-    );
+      { new: true, runValidators: true },
+    ).lean();
 
-    sendResponse(res, 200, true, updated, "Project updated successfully");
-  } catch (error) {
-    console.error("Update project error:", error);
     sendResponse(
       res,
-      500,
-      false,
-      null,
-      error.message || "Failed to update project",
+      200,
+      true,
+      transformProject(updated),
+      "Project updated successfully",
     );
+  } catch (error) {
+    sendResponse(res, 500, false, null, error.message);
   }
 };
-/**
- * DELETE /projects/admin/:projectId
- * :projectId is the custom UUID
- * (ADMIN)
- */
+
+// ────────────────────────────────────────────────
+// DELETE + OTHERS
+// ────────────────────────────────────────────────
+
 exports.deleteProject = async (req, res) => {
   try {
     const project = await Project.findOneAndDelete({
@@ -349,95 +346,56 @@ exports.deleteProject = async (req, res) => {
       return sendResponse(res, 404, false, null, "Project not found");
     }
 
-    sendResponse(res, 200, true, null, "Project deleted successfully");
-  } catch (error) {
+    sendResponse(res, 200, true, null, "Deleted");
+  } catch {
     sendResponse(res, 500, false, null, "Server error");
   }
 };
 
-/**
- * PATCH /projects/admin/:projectId/status
- * :projectId is the custom UUID
- * (ADMIN – quick status change)
- */
 exports.updateProjectStatus = async (req, res) => {
   try {
     const { status } = req.body;
 
-    if (!["draft", "prunned", "working", "completed"].includes(status)) {
-      return sendResponse(res, 400, false, null, "Invalid status value");
-    }
-
     const project = await Project.findOneAndUpdate(
       { projectId: req.params.projectId },
       { status },
-      { new: true, runValidators: true, select: "-__v" },
-    );
+      { new: true },
+    ).lean();
 
-    if (!project) {
-      return sendResponse(res, 404, false, null, "Project not found");
-    }
-
-    sendResponse(res, 200, true, project, "Project status updated");
+    sendResponse(res, 200, true, transformProject(project));
   } catch (error) {
-    sendResponse(
-      res,
-      400,
-      false,
-      null,
-      error.message || "Failed to update status",
-    );
+    sendResponse(res, 400, false, null, error.message);
   }
 };
 
-/**
- * GET /projects/completed
- * (PUBLIC / ADMIN – completed projects)
- */
 exports.getCompletedProjects = async (req, res) => {
   try {
-    const projects = await Project.find({ status: "completed" })
-      .sort({ createdAt: -1 })
-      .select(
-        "title slug category location scope image status createdAt projectId",
-      )
-      .lean();
+    const projects = await Project.find({ status: "completed" }).lean();
 
-    sendResponse(res, 200, true, projects);
-  } catch (error) {
-    sendResponse(res, 500, false, null, "Failed to fetch completed projects");
+    sendResponse(res, 200, true, projects.map(transformProject));
+  } catch {
+    sendResponse(res, 500, false, null, "Error");
   }
 };
 
-/**
- * GET /projects/location/:location
- */
 exports.getProjectsByLocation = async (req, res) => {
   try {
-    const { location } = req.params;
+    const projects = await Project.find({
+      location: req.params.location?.trim(),
+    }).lean();
 
-    const projects = await Project.find({ location: location?.trim() })
-      .sort({ createdAt: -1 })
-      .lean();
-
-    sendResponse(res, 200, true, projects);
-  } catch (error) {
-    sendResponse(res, 500, false, null, "Server error");
+    sendResponse(res, 200, true, projects.map(transformProject));
+  } catch {
+    sendResponse(res, 500, false, null, "Error");
   }
 };
 
-/**
- * GET /projects/drafts
- * (ADMIN – draft projects)
- */
 exports.getDraftProjects = async (req, res) => {
   try {
-    const projects = await Project.find({ status: "draft" })
-      .sort({ createdAt: -1 })
-      .lean();
+    const projects = await Project.find({ status: "draft" }).lean();
 
-    sendResponse(res, 200, true, projects);
-  } catch (error) {
-    sendResponse(res, 500, false, null, "Failed to fetch draft projects");
+    sendResponse(res, 200, true, projects.map(transformProject));
+  } catch {
+    sendResponse(res, 500, false, null, "Error");
   }
 };

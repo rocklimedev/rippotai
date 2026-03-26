@@ -74,8 +74,7 @@ export default function CareerPage() {
         style={{
           position: "relative",
           width: "100%",
-          height: "50vh",
-          minHeight: "350px",
+          height: "100vh",
           overflow: "hidden",
           backgroundColor: "#0a0a0a",
         }}
@@ -91,16 +90,17 @@ export default function CareerPage() {
             display: "block",
           }}
         />
+
+        {/* Overlay */}
         <div
           style={{
             position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
+            inset: 0,
             backgroundColor: "rgba(0, 0, 0, 0.4)",
           }}
         />
+
+        {/* Text */}
         <div
           style={{
             position: "absolute",
@@ -115,12 +115,12 @@ export default function CareerPage() {
               fontSize: "clamp(36px, 5vw, 56px)",
               fontWeight: 300,
               color: "#ffffff",
-              letterSpacing: "1px",
               margin: 0,
             }}
           >
             Careers
           </h1>
+
           <div
             style={{
               width: "40px",
@@ -131,7 +131,6 @@ export default function CareerPage() {
           />
         </div>
       </section>
-
       <section style={{ padding: "100px 48px", backgroundColor: "#fff" }}>
         <div style={{ maxWidth: "700px", margin: "0 auto" }}>
           <AnimateIn delay={0} distance={40} duration={1}>

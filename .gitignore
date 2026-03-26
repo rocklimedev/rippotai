@@ -23,7 +23,7 @@ rippotai-backend-key.pub
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
+rippotai_images
 
 /rippotai-backend/images
 images.zip

@@ -50,53 +50,37 @@ export default function ProjectsPage() {
         style={{
           position: "relative",
           width: "100%",
-          height: "65vh",
-          minHeight: "420px",
+          height: "100vh", // 🔥 full screen
           overflow: "hidden",
           backgroundColor: "#0a0a0a",
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
         }}
         data-testid="works-banner"
       >
-        <div style={{ overflow: "hidden", position: "relative" }}>
-          <img
-            src="https://customer-assets.emergentagent.com/job_rippotai-arch/artifacts/8uy09mp6_2.png"
-            alt="Our Works"
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              objectPosition: "center",
-              display: "block",
-            }}
-          />
-        </div>
-        <div style={{ overflow: "hidden", position: "relative" }}>
-          <img
-            src="https://customer-assets.emergentagent.com/job_a3dc2cae-15d4-4a93-bf50-729939b37f9e/artifacts/hryw4vfm_1770101343788_1cd0e9a4-6947-4b6f-af16-bd534382d28d_Redraw_00010_%20%281%29.jpeg"
-            alt="Our Works"
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              objectPosition: "center",
-              display: "block",
-            }}
-          />
-        </div>
+        {/* Image */}
+        <img
+          src="/assets/projects_banner.jpeg"
+          alt="Our Projects"
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            objectPosition: "center",
+            display: "block",
+          }}
+        />
+
+        {/* Overlay */}
         <div
           style={{
             position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
+            inset: 0,
             background:
-              "linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.15) 100%)",
+              "linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0.2))",
             pointerEvents: "none",
           }}
         />
+
+        {/* Heading */}
         <div
           style={{
             position: "absolute",
@@ -111,12 +95,12 @@ export default function ProjectsPage() {
               fontSize: "clamp(36px, 5vw, 56px)",
               fontWeight: 300,
               color: "#ffffff",
-              letterSpacing: "1px",
               margin: 0,
             }}
           >
             Our Projects
           </h1>
+
           <div
             style={{
               width: "40px",
@@ -127,7 +111,6 @@ export default function ProjectsPage() {
           />
         </div>
       </section>
-
       {/* Intro Text */}
       <section style={{ padding: "80px 48px", backgroundColor: "#ffffff" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>

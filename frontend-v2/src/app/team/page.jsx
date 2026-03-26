@@ -87,9 +87,7 @@ export default function TeamPage() {
         style={{
           position: "relative",
           width: "100%",
-          height: "auto",
-          minHeight: "400px",
-          maxHeight: "75vh",
+          height: "100vh",
           overflow: "hidden",
           backgroundColor: "#0a0a0a",
         }}
@@ -99,14 +97,11 @@ export default function TeamPage() {
           alt="Rippotai Team"
           fill
           priority
-          quality={85}
           sizes="100vw"
           style={{
-            objectFit: "contain",
-            objectPosition: "center",
+            objectFit: "cover",
+            objectPosition: "center 30%",
           }}
-          placeholder="blur"
-          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/OhPPQAJJAPXdxCaAAAAAElFTkSuQmCC"
         />
 
         <div
@@ -148,7 +143,6 @@ export default function TeamPage() {
           />
         </div>
       </section>
-
       {/* Team Introduction + Grid */}
       <section style={{ padding: "100px 48px", backgroundColor: "#ffffff" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>

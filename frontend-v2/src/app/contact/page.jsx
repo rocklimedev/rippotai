@@ -102,8 +102,7 @@ export default function ContactPage() {
         style={{
           position: "relative",
           width: "100%",
-          height: "50vh",
-          minHeight: "350px",
+          height: "100vh",
           overflow: "hidden",
           backgroundColor: "#0a0a0a",
         }}
@@ -119,16 +118,17 @@ export default function ContactPage() {
             display: "block",
           }}
         />
+
+        {/* Overlay */}
         <div
           style={{
             position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
+            inset: 0,
             backgroundColor: "rgba(0, 0, 0, 0.4)",
           }}
         />
+
+        {/* Text */}
         <div
           style={{
             position: "absolute",
@@ -143,12 +143,12 @@ export default function ContactPage() {
               fontSize: "clamp(36px, 5vw, 56px)",
               fontWeight: 300,
               color: "#ffffff",
-              letterSpacing: "1px",
               margin: 0,
             }}
           >
             Contact Us
           </h1>
+
           <div
             style={{
               width: "40px",
@@ -159,7 +159,6 @@ export default function ContactPage() {
           />
         </div>
       </section>
-
       {/* Contact Content */}
       <section style={{ padding: "100px 48px" }}>
         <div

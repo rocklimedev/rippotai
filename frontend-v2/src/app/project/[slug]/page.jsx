@@ -12,21 +12,6 @@ import {
   useGetPublicProjectsQuery,
 } from "@/api/rippotaiApi";
 
-const galleryTexts = [
-  {
-    heading: "Material & Light",
-    body: "A dialogue between natural materials and carefully orchestrated light — each surface chosen to age gracefully, each opening designed to frame the sky.",
-  },
-  {
-    heading: "Spatial Rhythm",
-    body: "Spaces that breathe. The interplay of volume, proportion, and restraint creates a quiet rhythm throughout the home.",
-  },
-  {
-    heading: "Crafted Details",
-    body: "Every joint, every edge, every threshold is considered — where architecture meets the precision of craft.",
-  },
-];
-
 export default function ProjectDetailPage() {
   const params = useParams();
   const slug = params?.slug;
@@ -72,16 +57,12 @@ export default function ProjectDetailPage() {
 
   return (
     <main className="bg-white">
-      {/* FULLSCREEN HERO */}
-      {/* HERO (SQUARE IMAGE + CONTENT BELOW) */}
-      {/* HERO (RESPONSIVE SQUARE IMAGE + CONTENT BELOW) */}
+      {/* HERO */}
       <section className="bg-white pt-16 md:pt-20 pb-12 md:pb-16 px-4 sm:px-6 md:px-12 lg:px-16">
         <div className="max-w-7xl mx-auto">
-          {/* Image Wrapper */}
-          {/* Image Wrapper */}
           <div className="relative w-full max-w-6xl mx-auto aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-lg md:rounded-xl">
             <Image
-              src={project.image || "/placeholder.jpg"}
+              src={project.banner || "/placeholder.jpg"}
               alt={project.title}
               fill
               priority
@@ -89,14 +70,9 @@ export default function ProjectDetailPage() {
               className="object-cover transition duration-700 hover:scale-105"
             />
           </div>
-          {/* Content BELOW */}
-          {/* Content BELOW */}
-          <div className="max-w-6xl mx-auto mt-10 md:mt-12">
-            {/* Title aligned with image edge */}
-            <div className="px-1 md:px-2">
-              {/* Category */}
 
-              {/* Title (smaller + cleaner) */}
+          <div className="max-w-6xl mx-auto mt-10 md:mt-12">
+            <div className="px-1 md:px-2">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light leading-tight max-w-3xl">
                 {project.title}
               </h1>
@@ -105,7 +81,6 @@ export default function ProjectDetailPage() {
               </div>
             </div>
 
-            {/* Meta centered separately */}
             <div className="mt-10 md:mt-12 flex justify-center">
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-8 md:gap-x-12 gap-y-6 text-xs sm:text-sm md:text-base text-center">
                 {project.location && (
@@ -161,15 +136,12 @@ export default function ProjectDetailPage() {
         <div className="max-w-5xl mx-auto">
           <AnimateIn>
             <div className="prose prose-lg md:prose-xl max-w-none text-gray-700">
-              {/* Intro Statement */}
               <p className="text-2xl md:text-3xl font-light leading-snug mb-12 text-black">
                 {project.description}
               </p>
 
-              {/* Divider */}
               <div className="w-12 h-px bg-[#d9af61] mb-12" />
 
-              {/* Detailed Content */}
               {project.details && (
                 <div className="whitespace-pre-line text-lg md:text-xl leading-relaxed text-gray-600 space-y-6">
                   {project.details}
@@ -184,10 +156,6 @@ export default function ProjectDetailPage() {
       {project.images?.length > 0 && (
         <section className="px-6 md:px-12 pb-32 pt-16">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-sm tracking-[4px] uppercase mb-16 text-center md:text-left">
-              Project Gallery
-            </h2>
-
             <GalleryWithText project={project} />
           </div>
         </section>
@@ -201,10 +169,7 @@ export default function ProjectDetailPage() {
               href={`/project/${prevProject.slug}`}
               className="flex items-center gap-4 group"
             >
-              <ArrowLeft
-                size={24}
-                className="group-hover:-translate-x-1 transition"
-              />
+              <ArrowLeft className="group-hover:-translate-x-1 transition" />
               <div>
                 <div className="text-xs uppercase text-gray-500">Previous</div>
                 <div className="text-xl font-light group-hover:text-[#d9af61] transition">
@@ -227,10 +192,7 @@ export default function ProjectDetailPage() {
                   {nextProject.title}
                 </div>
               </div>
-              <ArrowRight
-                size={24}
-                className="group-hover:translate-x-1 transition"
-              />
+              <ArrowRight className="group-hover:translate-x-1 transition" />
             </Link>
           ) : (
             <div />
@@ -245,6 +207,14 @@ function GalleryWithText({ project }) {
   const allImages = project.images || [];
   const previewImages = allImages.slice(0, 5);
   const total = previewImages.length;
+
+  // 🔥 Convert details string → paragraphs
+  const detailBlocks = project.details
+    ? project.details
+        .split(/\n+/)
+        .map((t) => t.trim())
+        .filter(Boolean)
+    : [];
 
   const items = [];
   let textIdx = 0;
@@ -262,13 +232,12 @@ function GalleryWithText({ project }) {
     if (
       (idx + 1) % 2 === 0 &&
       idx < total - 1 &&
-      textIdx < galleryTexts.length
+      textIdx < detailBlocks.length
     ) {
       items.push({
         type: "text",
-        ...galleryTexts[textIdx],
+        body: detailBlocks[textIdx],
       });
-
       textIdx++;
     }
   });
@@ -281,10 +250,9 @@ function GalleryWithText({ project }) {
             <AnimateIn key={`text-${i}`}>
               <div className="max-w-2xl mx-auto text-center md:text-left">
                 <div className="w-8 h-px bg-[#d9af61] mb-6" />
-                <h3 className="text-sm uppercase tracking-[3px] mb-4">
-                  {item.heading}
-                </h3>
-                <p className="text-gray-600 leading-relaxed">{item.body}</p>
+                <p className="text-gray-600 leading-relaxed text-lg md:text-xl">
+                  {item.body}
+                </p>
               </div>
             </AnimateIn>
           );

@@ -265,8 +265,7 @@ export default function ProcessPage() {
         style={{
           position: "relative",
           width: "100%",
-          height: "60vh",
-          minHeight: "320px",
+          height: "100vh",
           overflow: "hidden",
         }}
       >
@@ -276,9 +275,13 @@ export default function ProcessPage() {
           fill
           priority
           sizes="100vw"
-          style={{ objectFit: "cover" }}
+          style={{
+            objectFit: "cover",
+            objectPosition: "center 40%", // 👈 better framing
+          }}
         />
 
+        {/* Overlay */}
         <div
           style={{
             position: "absolute",
@@ -287,6 +290,7 @@ export default function ProcessPage() {
           }}
         />
 
+        {/* Text */}
         <div
           style={{
             position: "absolute",
@@ -295,6 +299,7 @@ export default function ProcessPage() {
             right: "5%",
             maxWidth: "800px",
             color: "#fff",
+            zIndex: 2,
           }}
         >
           <div
@@ -328,7 +333,6 @@ export default function ProcessPage() {
           />
         </div>
       </section>
-
       {/* Always use same timeline now */}
       <ProcessCurveSlider />
     </>
