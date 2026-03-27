@@ -7,7 +7,7 @@ import Image from "next/image";
 import {
   useGetProjectByIdQuery,
   useUpdateProjectMutation,
-} from "@/api/rippotaiApi";
+} from "@/api/projectsApi";
 import { ArrowLeft, Upload, X, Loader2, Trash2, Plus } from "lucide-react";
 import Link from "next/link";
 

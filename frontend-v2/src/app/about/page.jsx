@@ -1,10 +1,9 @@
-// app/about/page.jsx (Optimized Full Rewrite)
+// app/about/page.jsx
 
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { FloatingCTA } from "@/components/FloatingCTA";
 import { AnimateIn } from "@/components/AnimateIn";
-
+import { values, aboutImage } from "@/lib/config";
 /************************************
  * SMOOTH SCROLL HOOK
  ************************************/
@@ -164,28 +163,6 @@ const HorizontalSlider = () => {
     </div>
   );
 };
-
-/************************************
- * VALUES SLIDER
- ************************************/
-const values = [
-  {
-    title: "Precision",
-    text: "Every detail is deliberate. From material selection to spatial proportions, we approach design with an architect's exactness.",
-  },
-  {
-    title: "Integrity",
-    text: "Transparency and honesty define our process. We build trust through clear communication and unwavering commitment to quality.",
-  },
-  {
-    title: "Innovation",
-    text: "We blend timeless design principles with forward-thinking techniques, ensuring our work stays relevant and inspiring.",
-  },
-  {
-    title: "Collaboration",
-    text: "Great spaces emerge from great partnerships. We listen, understand, and co-create with our clients every step of the way.",
-  },
-];
 
 const ValuesSlider = () => {
   const containerRef = useRef(null);
@@ -355,7 +332,7 @@ export default function AboutPage() {
         }}
       >
         <img
-          src="/assets/team.jpg"
+          src={aboutImage}
           alt="Rippotai Team"
           style={{
             width: "100%",

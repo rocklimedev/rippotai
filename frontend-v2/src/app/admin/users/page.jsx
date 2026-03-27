@@ -18,16 +18,18 @@ import {
   Shield,
 } from "lucide-react";
 import {
-  useGetAllUsersQuery,
-  useDeleteUserMutation,
-  useCreateUserMutation,
-  useUpdateUserMutation,
   useGetAllRolesQuery,
   useCreateRoleMutation,
   useUpdateRoleMutation,
   useDeleteRoleMutation,
   useGetAvailablePermissionsQuery,
-} from "@/api/rippotaiApi";
+} from "@/api/rolesApi";
+import {
+  useGetAllUsersQuery,
+  useDeleteUserMutation,
+  useCreateUserMutation,
+  useUpdateUserMutation,
+} from "@/api/usersApi";
 import styles from "./users.module.css";
 
 export default function AdminUsersPage() {

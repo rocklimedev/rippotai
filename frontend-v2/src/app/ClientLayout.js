@@ -10,16 +10,7 @@ import { Footer } from "@/components/Footer";
 import { Toaster } from "@/components/ui/sonner";
 import { InteractiveGrid } from "@/components/InteractiveGrid";
 
-function ScrollToTop() {
-  const pathname = usePathname();
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-
-  return null;
-}
-
+import ScrollToTop from "@/hooks/scrollToTop";
 export default function ClientLayout({ children }) {
   const pathname = usePathname();
 

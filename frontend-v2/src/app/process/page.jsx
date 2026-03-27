@@ -2,33 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState, useRef, useCallback } from "react";
-
-const processSteps = [
-  {
-    id: 1,
-    title: "BRIEFING",
-    description:
-      "Understanding context, constraints, and client vision to define architectural direction.",
-  },
-  {
-    id: 2,
-    title: "DESIGN",
-    description:
-      "Translating vision into spatial concepts through rigorous design exploration.",
-  },
-  {
-    id: 3,
-    title: "EXECUTION",
-    description:
-      "Precise realization of design intent through meticulous material selection.",
-  },
-  {
-    id: 4,
-    title: "HANDOVER",
-    description:
-      "Final delivery ensuring every detail meets the uncompromising standard.",
-  },
-];
+import { processImage, processSteps } from "@/lib/config";
 
 const ProcessCurveSlider = () => {
   const containerRef = useRef(null);
@@ -270,7 +244,7 @@ export default function ProcessPage() {
         }}
       >
         <Image
-          src="/assets/process.png"
+          src={processImage}
           alt="Our Process"
           fill
           priority

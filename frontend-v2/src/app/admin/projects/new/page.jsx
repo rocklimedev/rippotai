@@ -4,7 +4,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { useCreateProjectMutation } from "@/api/rippotaiApi";
+import { useCreateProjectMutation } from "@/api/projectsApi";
 import { Plus, X, Upload, Loader2, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 

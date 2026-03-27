@@ -1,33 +1,5 @@
-import { Building2, Palette, Armchair, KeyRound } from "lucide-react";
 import { AnimateIn } from "./AnimateIn";
-
-const services = [
-  {
-    icon: Building2,
-    title: "Architecture",
-    description:
-      "We create visually striking, functional spaces inspired by the simplicity and versatility of the cube.",
-  },
-  {
-    icon: Palette,
-    title: "Interiors",
-    description:
-      "Our interior designs blend style and practicality, tailored to reflect your personality and needs.",
-  },
-  {
-    icon: Armchair,
-    title: "Furniture",
-    description:
-      "Our niche furniture pieces are uniquely designed to reflect our brand's philosophy, adding distinct character and functionality to your space.",
-  },
-  {
-    icon: KeyRound,
-    title: "Turnkey Projects",
-    description:
-      "End-to-end project delivery from concept to completion — we manage every detail so you can move into a fully finished space without a worry.",
-  },
-];
-
+import { services } from "@/lib/config";
 export const ServicesSection = () => {
   return (
     <section

@@ -2,34 +2,7 @@
 
 import Image from "next/image";
 import { AnimateIn } from "@/components/AnimateIn";
-import { Building2, Palette, Armchair, KeyRound } from "lucide-react";
-
-const services = [
-  {
-    icon: KeyRound,
-    title: "Turnkey Projects",
-    description:
-      "End-to-end project delivery from concept to completion. We manage every detail — design, procurement, construction, and finishing — so you can move into a fully finished space without a worry.",
-  },
-  {
-    icon: Building2,
-    title: "Architecture",
-    description:
-      "We create visually striking, functional spaces inspired by the simplicity and versatility of the cube.",
-  },
-  {
-    icon: Palette,
-    title: "Interiors",
-    description:
-      "Our interior designs blend style and practicality, tailored to reflect your personality and needs.",
-  },
-  {
-    icon: Armchair,
-    title: "Furniture",
-    description:
-      "Our niche furniture pieces are uniquely designed to reflect our brand's philosophy.",
-  },
-];
+import { services, servicesImage } from "@/lib/config";
 
 export default function ServicesPage() {
   return (
@@ -45,7 +18,7 @@ export default function ServicesPage() {
         }}
       >
         <Image
-          src="/assets/services.png"
+          src={servicesImage}
           alt="Our Services"
           fill
           priority

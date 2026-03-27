@@ -50,7 +50,8 @@ export const FounderMessage = () => {
               fontStyle: "italic",
             }}
           >
-            Architecture is basically a container of something. I hope they will enjoy not so much the teacup, but the tea.
+            Less is more,
+            <br /> but clients want “one more.”
           </blockquote>
         </AnimateIn>
 

@@ -13,13 +13,11 @@ import {
   Loader2,
 } from "lucide-react";
 
-import {
-  useGetProjectsQuery,
-  useGetJobsQuery,
-  useGetQueriesQuery,
-  useGetApplicationsQuery,
-  useGetProfileQuery,
-} from "@/api/rippotaiApi";
+import { useGetProjectsQuery } from "@/api/projectsApi";
+import { useGetJobsQuery } from "@/api/jobsApi";
+import { useGetProfileQuery } from "@/api/authApi";
+import { useGetApplicationsQuery } from "@/api/applicationsApi";
+import { useGetQueriesQuery } from "@/api/queriesApi";
 
 export default function AdminDashboard() {
   // ───────────────── Fetch Data ─────────────────

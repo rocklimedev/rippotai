@@ -2,82 +2,7 @@
 "use client";
 import Image from "next/image";
 import { AnimateIn } from "../../components/AnimateIn"; // adjust path
-
-const teamMembers = [
-  {
-    id: 1,
-    name: "Sagar Chhabra",
-    designation: "Founder & Principal Architect",
-    image: "/assets/sagar_chhabra.png",
-  },
-  {
-    id: 2,
-    name: "Jayant",
-    designation: "Architect",
-    image: "/assets/Jayant.jpg",
-  },
-  {
-    id: 3,
-    name: "Sarthi",
-    designation: "Architect",
-    image: "/assets/saarthi.jpeg",
-  },
-  {
-    id: 4,
-    name: "Priyanka",
-    designation: "Admin",
-    image:
-      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/priyanka.jpeg",
-  },
-  {
-    id: 5,
-    name: "Megha Chhabra",
-    designation: "Interior Decor and Styling Head",
-    image:
-      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/megha_chhabra.jpeg",
-  },
-  {
-    id: 6,
-    name: "Bhav Lamba",
-    designation: "Content Strategy & Creative Lead",
-    image: "/assets/Bhav.jpg",
-  },
-  {
-    id: 7,
-    name: "Sajjan",
-    designation: "Site Supervisor",
-    image:
-      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/sajjan.jpeg",
-  },
-  {
-    id: 8,
-    name: "Shivani",
-    designation: "Project Manager",
-    image: "/assets/shivani.png",
-    tag: "Alumni",
-  },
-  {
-    id: 9,
-    name: "Aniket",
-    designation: "Architect",
-    image: "/assets/aniket.png",
-    tag: "Alumni",
-  },
-  {
-    id: 10,
-    name: "Shivam",
-    designation: "Architect",
-    image: "/assets/shivam.png",
-    tag: "Alumni",
-  },
-  {
-    id: 11,
-    name: "Chhavi",
-    designation: "Collaborator",
-    image: "/assets/CM.png",
-    tag: "Collaborator",
-  },
-];
+import { teamImage, teamMembers } from "@/lib/config";
 
 export default function TeamPage() {
   return (
@@ -92,18 +17,16 @@ export default function TeamPage() {
           backgroundColor: "#0a0a0a",
         }}
       >
-        <Image
-          src="/assets/team.jpg"
+        <img
+          src={teamImage}
           alt="Rippotai Team"
-          fill
-          priority
-          sizes="100vw"
           style={{
+            width: "100%",
+            height: "100%",
             objectFit: "cover",
-            objectPosition: "center 30%",
+            objectPosition: "center top",
           }}
         />
-
         <div
           style={{
             position: "absolute",

@@ -1,26 +1,33 @@
-// src/lib/store.js
 import { configureStore } from "@reduxjs/toolkit";
-import { rippotaiApi } from "../api/rippotaiApi"; // adjust path
+
+import { queriesApi } from "@/api/queriesApi";
+import { projectsApi } from "@/api/projectsApi";
+import { applicationsApi } from "@/api/applicationsApi";
+import { usersApi } from "@/api/usersApi";
+import { authApi } from "@/api/authApi";
+import { rolesApi } from "@/api/rolesApi";
+import { jobsApi } from "@/api/jobsApi";
+const apis = [
+  queriesApi,
+  projectsApi,
+  jobsApi,
+  applicationsApi,
+  usersApi,
+  rolesApi,
+  authApi,
+];
 
 export const makeStore = () => {
   const store = configureStore({
-    reducer: {
-      [rippotaiApi.reducerPath]: rippotaiApi.reducer,
-      // add other reducers here later
-    },
+    reducer: Object.fromEntries(
+      apis.map((api) => [api.reducerPath, api.reducer]),
+    ),
+
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(rippotaiApi.middleware),
-    // Optional: better dev experience
+      getDefaultMiddleware().concat(apis.map((api) => api.middleware)),
+
     devTools: process.env.NODE_ENV !== "production",
   });
 
-  // Do NOT call setupListeners here — move it to client component
   return store;
 };
-
-// Optional: Type exports (even in JS, helpful for IDE/intellisense)
-export const getStateType =
-  /** @type {ReturnType<typeof makeStore>['getState']} */ (state) => state;
-export const getDispatchType =
-  /** @type {ReturnType<typeof makeStore>['dispatch']} */ (dispatch) =>
-    dispatch;

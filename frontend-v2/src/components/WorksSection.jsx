@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { AnimateIn } from "./AnimateIn";
 
-import { useGetPublicProjectsQuery } from "@/api/rippotaiApi";
+import { useGetPublicProjectsQuery } from "@/api/projectsApi";
 
 export const WorksSection = () => {
   const {
@@ -165,8 +165,7 @@ export const WorksSection = () => {
 const ProjectCard = ({ project }) => {
   const [hovered, setHovered] = useState(false);
 
-  const imageSrc =
-    project.image || project.images?.[0] || "/placeholder-project.jpg";
+  const imageSrc = project.image;
   const title = project.title || "Untitled Project";
   const slug = project.slug;
 

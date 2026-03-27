@@ -4,17 +4,8 @@ import { useState } from "react";
 import { AnimateIn } from "@/components/AnimateIn";
 import { toast } from "sonner";
 import { MapPin, Mail, Phone } from "lucide-react";
-import { useCreateQueryMutation } from "@/api/rippotaiApi";
-
-const contactInfo = {
-  address:
-    "487/64, National Market, Peeragarhi, Paschim Vihar, New Delhi, Delhi 110087",
-  email: "sagar@rippotai.in",
-  phone: "+91 99110 80605",
-};
-
-const googleMapsLink =
-  "https://www.google.com/maps?gs_lcrp=EgZjaHJvbWUqDggAEEUYJxg7GIAEGIoFMg4IABBFGCcYOxiABBiKBTIVCAEQLhhDGMcBGLEDGNEDGIAEGIoFMgYIAhBFGEAyBggDEEUYOTIGCAQQRRg7MgYIBRBFGDwyBggGEEUYPDIGCAcQRRg80gEHNzYwajBqN6gCALACAA&um=1&ie=UTF-8&fb=1&gl=in&sa=X&geocode=KbHnzh2cBQ05MZlLNlNYBa34&daddr=487/64,+National+Market,+peeragarhi,+Paschim+Vihar,+New+Delhi,+Delhi,+110087";
+import { useCreateQueryMutation } from "@/api/queriesApi";
+import { contactImage, contactInfo, googleMapsLink } from "@/lib/config";
 
 export default function ContactPage() {
   const [createQuery, { isLoading: pending }] = useCreateQueryMutation();
@@ -108,7 +99,7 @@ export default function ContactPage() {
         }}
       >
         <img
-          src="/assets/team.jpg"
+          src={contactImage}
           alt="Contact Rippotai"
           style={{
             width: "100%",
@@ -385,7 +376,7 @@ export default function ContactPage() {
                 onMouseEnter={(e) => (e.target.style.color = "#d9af61")}
                 onMouseLeave={(e) => (e.target.style.color = "#1a3c34")}
               >
-                Get Directions \u2192
+                Get Directions
               </a>
             </AnimateIn>
           </div>

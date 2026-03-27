@@ -13,7 +13,7 @@ import {
   X,
   Mail,
 } from "lucide-react";
-import { useGetQueriesQuery, useDeleteQueryMutation } from "@/api/rippotaiApi";
+import { useGetQueriesQuery, useDeleteQueryMutation } from "@/api/queriesApi";
 import styles from "./queries.module.css";
 
 export default function AdminQueriesPage() {

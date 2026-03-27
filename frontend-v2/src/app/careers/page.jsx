@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
-import { useCreateApplicationMutation } from "@/api/rippotaiApi";
+import { useCreateApplicationMutation } from "@/api/jobsApi";
 import { AnimateIn } from "@/components/AnimateIn";
 import { toast } from "sonner";
-
+import { careerImage } from "@/lib/config";
 export default function CareerPage() {
   const [createApplication, { isLoading: pending }] =
     useCreateApplicationMutation();
@@ -74,23 +74,14 @@ export default function CareerPage() {
         style={{
           position: "relative",
           width: "100%",
-          height: "100vh",
-          overflow: "hidden",
-          backgroundColor: "#0a0a0a",
+          minHeight: "100vh",
+          height: "100dvh", // fixes mobile viewport issues
+          backgroundImage: `url(${careerImage})`, // ✅ fixed
+          backgroundSize: "cover",
+          backgroundPosition: "center top",
+          backgroundRepeat: "no-repeat",
         }}
       >
-        <img
-          src="/assets/team.jpg"
-          alt="Join Rippotai"
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            objectPosition: "center top",
-            display: "block",
-          }}
-        />
-
         {/* Overlay */}
         <div
           style={{

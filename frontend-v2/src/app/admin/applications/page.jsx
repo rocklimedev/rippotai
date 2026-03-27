@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
+import { useGetDashboardStatsQuery } from "@/api/applicationsApi";
 import {
   useGetApplicationsQuery,
   useUpdateApplicationStatusMutation,
   useDeleteApplicationMutation,
-  useGetDashboardStatsQuery,
-} from "@/api/rippotaiApi";
+} from "@/api/applicationsApi";
 import { Loader2, RefreshCw } from "lucide-react";
 import styles from "./jobs.module.css";
 

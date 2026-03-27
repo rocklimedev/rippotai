@@ -6,7 +6,7 @@ import Link from "next/link";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 
-import { useGetProjectBySlugQuery } from "@/api/rippotaiApi";
+import { useGetProjectBySlugQuery } from "@/api/projectsApi";
 
 export default function ProjectGalleryPage() {
   // Normalize slug properly
