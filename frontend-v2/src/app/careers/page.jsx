@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { useCreateApplicationMutation } from "@/api/jobsApi";
+import { useCreateApplicationMutation } from "@/api/applicationsApi";
 import { AnimateIn } from "@/components/AnimateIn";
 import { toast } from "sonner";
 import { careerImage } from "@/lib/config";
