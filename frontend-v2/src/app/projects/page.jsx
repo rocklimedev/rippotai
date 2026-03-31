@@ -200,17 +200,28 @@ export default function ProjectsPage() {
           ) : (
             <>
               {/* Project Rows */}
-              {projects.map((project, idx) => (
-                <AnimateIn
-                  key={project._id || project.slug}
-                  delay={0.1 * idx}
-                  distance={70}
-                  duration={1.3}
-                >
-                  <ProjectRow project={project} reverse={idx % 2 !== 0} />
-                </AnimateIn>
-              ))}
+              {projects.map((project, idx) => {
+                const cacheBustedProject = {
+                  ...project,
+                  image: project.image
+                    ? `${project.image}?v=${project.updatedAt || Date.now()}`
+                    : project.image,
+                };
 
+                return (
+                  <AnimateIn
+                    key={project._id || project.slug}
+                    delay={0.1 * idx}
+                    distance={70}
+                    duration={1.3}
+                  >
+                    <ProjectRow
+                      project={cacheBustedProject}
+                      reverse={idx % 2 !== 0}
+                    />
+                  </AnimateIn>
+                );
+              })}
               {/* Shadcn Pagination */}
               {totalPages > 1 && (
                 <div style={{ marginTop: "100px" }}>
