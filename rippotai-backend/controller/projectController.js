@@ -399,3 +399,33 @@ exports.getDraftProjects = async (req, res) => {
     sendResponse(res, 500, false, null, "Error");
   }
 };
+// ────────────────────────────────────────────────
+// FEATURED PROJECTS
+// ────────────────────────────────────────────────
+
+exports.getFeaturedProjects = async (req, res) => {
+  try {
+    const { limit = "6" } = req.query;
+
+    const limitNum = Math.min(50, Math.max(1, parseInt(limit, 10)));
+
+    const projects = await Project.find({
+      featured: true,
+    })
+      .sort({ createdAt: -1 })
+      .limit(limitNum)
+      .select(
+        "title slug category location scope image images status createdAt projectId featured"
+      )
+      .lean();
+
+    sendResponse(
+      res,
+      200,
+      true,
+      projects.map(transformProject)
+    );
+  } catch (error) {
+    sendResponse(res, 500, false, null, "Failed to fetch featured projects");
+  }
+};

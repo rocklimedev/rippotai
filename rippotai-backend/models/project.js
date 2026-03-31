@@ -30,7 +30,11 @@ const projectSchema = new mongoose.Schema({
     default: "draft",
     index: true,
   },
-
+  featured: {
+    type: Boolean,
+    default: false,
+    index: true,
+  },
   location: {
     type: String,
     trim: true,

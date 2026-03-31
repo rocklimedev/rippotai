@@ -65,7 +65,20 @@ export const projectsApi = createApi({
       query: (location) => `/projects/location/${location}`,
       providesTags: [{ type: "Projects", id: "LIST" }],
     }),
-
+    getFeaturedProjects: builder.query({
+      query: (limit = 6) => ({
+        url: "/projects/featured",
+        params: { limit },
+      }),
+      keepUnusedDataFor: 60,
+      providesTags: (result) =>
+        result?.data
+          ? [
+              ...result.data.map((p) => ({ type: "Projects", id: p._id })),
+              { type: "Projects", id: "LIST" },
+            ]
+          : [{ type: "Projects", id: "LIST" }],
+    }),
     getProjectById: builder.query({
       query: (id) => `/projects/admin/${id}`,
       providesTags: (result, error, id) => [{ type: "Projects", id }],
@@ -133,6 +146,7 @@ export const {
   useGetProjectsByLocationQuery,
   useGetProjectByIdQuery,
   useGetProjectBySlugQuery,
+  useGetFeaturedProjectsQuery,
   useCreateProjectMutation,
   useUpdateProjectMutation,
   useUpdateProjectStatusMutation,

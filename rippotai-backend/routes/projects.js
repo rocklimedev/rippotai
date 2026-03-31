@@ -34,6 +34,7 @@ const uploadBoth = upload.fields([
 ───────────────────────────────────────────────── */
 router.get("/", ProjectsController.getAllProjects);
 router.get("/public", ProjectsController.getPublicProjects);
+router.get("/featured", ProjectsController.getFeaturedProjects);
 router.get("/completed", ProjectsController.getCompletedProjects);
 router.get("/drafts", ProjectsController.getDraftProjects);
 router.get("/location/:location", ProjectsController.getProjectsByLocation);

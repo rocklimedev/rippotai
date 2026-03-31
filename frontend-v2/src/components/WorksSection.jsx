@@ -1,27 +1,20 @@
 // src/components/WorksSection.jsx
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AnimateIn } from "./AnimateIn";
 
-import { useGetPublicProjectsQuery } from "@/api/projectsApi";
+import { useGetFeaturedProjectsQuery } from "@/api/projectsApi";
 
 export const WorksSection = () => {
   const {
-    data: projectsData = [],
+    data: projectsData,
     isLoading,
     isError,
-  } = useGetPublicProjectsQuery({ page: 1, limit: 6 });
-
+  } = useGetFeaturedProjectsQuery(6);
   const projects = projectsData?.data ?? [];
-
-  const displayedProjects = useMemo(
-    () => (Array.isArray(projects) ? projects.slice(0, 6) : []),
-    [projects],
-  );
-
   if (isLoading) {
     return (
       <section style={{ backgroundColor: "#ffffff", padding: "100px 48px" }}>
@@ -36,7 +29,7 @@ export const WorksSection = () => {
     );
   }
 
-  if (isError || displayedProjects.length === 0) {
+  if (isError || projects.length === 0) {
     return null;
   }
 
@@ -74,7 +67,7 @@ export const WorksSection = () => {
             gap: "48px",
           }}
         >
-          {displayedProjects.map((project, idx) => (
+          {projects.map((project, idx) => (
             <AnimateIn key={project._id || project.slug} delay={0.15 * idx}>
               <ProjectCard project={project} />
             </AnimateIn>
@@ -93,9 +86,7 @@ export const WorksSection = () => {
 const ProjectCard = ({ project }) => {
   const [hovered, setHovered] = useState(false);
 
-  // ✅ CACHE BUSTING FIX
   const imageSrc = `${project.image}?v=${project.updatedAt || project._id}`;
-
   const title = project.title || "Untitled Project";
   const slug = project.slug;
 
@@ -123,7 +114,7 @@ const ProjectCard = ({ project }) => {
           fill
           sizes="(max-width: 768px) 100vw, 45vw"
           quality={82}
-          unoptimized // ✅ IMPORTANT: bypass Next.js cache
+          unoptimized
           style={{
             objectFit: "cover",
             transition: "transform 0.6s ease",
