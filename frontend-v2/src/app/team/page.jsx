@@ -12,21 +12,12 @@ export default function TeamPage() {
         style={{
           position: "relative",
           width: "100%",
-          height: "100vh",
+          height: "auto",
           overflow: "hidden",
           backgroundColor: "#0a0a0a",
         }}
       >
-        <img
-          src={teamImage}
-          alt="Rippotai Team"
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            objectPosition: "center top",
-          }}
-        />
+        <img src={teamImage} alt="Rippotai Team" className="team-hero-img" />
         <div
           style={{
             position: "absolute",

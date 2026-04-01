@@ -101,12 +101,6 @@ export const processSteps = [
 
 export const services = [
   {
-    icon: KeyRound,
-    title: "Turnkey Projects",
-    description:
-      "End-to-end project delivery from concept to completion. We manage every detail — design, procurement, construction, and finishing — so you can move into a fully finished space without a worry.",
-  },
-  {
     icon: Building2,
     title: "Architecture",
     description:
@@ -123,6 +117,12 @@ export const services = [
     title: "Furniture",
     description:
       "Our niche furniture pieces are uniquely designed to reflect our brand's philosophy.",
+  },
+  {
+    icon: KeyRound,
+    title: "Turnkey Projects",
+    description:
+      "End-to-end project delivery from concept to completion. We manage every detail — design, procurement, construction, and finishing — so you can move into a fully finished space without a worry.",
   },
 ];
 export const teamMembers = [
@@ -205,6 +205,7 @@ export const API_URL =
   process.env.NODE_ENV === "production"
     ? "https://api.rippotaiarchitecture.com/api"
     : "http://localhost:5000/api";
+
 export const STATUS_LABELS = {
   all: "All Projects",
   draft: "Drafts",

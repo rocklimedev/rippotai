@@ -60,17 +60,18 @@ export default function ProjectDetailPage() {
       {/* HERO */}
       <section className="bg-white pt-16 md:pt-20 pb-12 md:pb-16 px-4 sm:px-6 md:px-12 lg:px-16">
         <div className="max-w-7xl mx-auto">
-          <div className="relative w-full max-w-6xl mx-auto aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-lg md:rounded-xl">
+          <div className="relative w-full max-w-6xl mx-auto aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-lg md:rounded-xl group">
             <Image
               src={project.banner || "/placeholder.jpg"}
               alt={project.title}
               fill
               priority
-              quality={90}
-              className="object-cover transition duration-700 hover:scale-105"
+              sizes="(max-width: 768px) 100vw, 80vw"
+              quality={82}
+              unoptimized
+              className="object-cover transition duration-700 group-hover:scale-105"
             />
           </div>
-
           <div className="max-w-6xl mx-auto mt-10 md:mt-12">
             <div className="px-1 md:px-2">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light leading-tight max-w-3xl">

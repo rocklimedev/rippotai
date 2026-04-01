@@ -9,11 +9,9 @@ import "react-photo-view/dist/react-photo-view.css";
 import { useGetProjectBySlugQuery } from "@/api/projectsApi";
 
 export default function ProjectGalleryPage() {
-  // Normalize slug properly
   const params = useParams();
   const slug = Array.isArray(params?.slug) ? params.slug[0] : params?.slug;
 
-  // Safe query call
   const { data, isLoading } = useGetProjectBySlugQuery(slug, {
     skip: !slug || typeof slug !== "string",
   });
@@ -34,7 +32,6 @@ export default function ProjectGalleryPage() {
                 : "Gallery"}
           </h1>
 
-          {/* Guard Link */}
           {slug && (
             <Link
               href={`/project/${slug}`}
@@ -60,20 +57,25 @@ export default function ProjectGalleryPage() {
         ) : (
           <PhotoProvider maskOpacity={0.92} photoClosable speed={() => 320}>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-7">
-              {images.map((img, i) => (
-                <PhotoView key={i} src={img}>
-                  <div className="cursor-zoom-in overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-all duration-300 aspect-[4/3] relative">
-                    <Image
-                      src={img}
-                      alt={`Gallery image ${i + 1}`}
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover hover:scale-105 transition-transform duration-700 ease-out"
-                      quality={82}
-                    />
-                  </div>
-                </PhotoView>
-              ))}
+              {images.map((img, i) => {
+                const imageSrc = `${img}?v=${project?.updatedAt || ""}`;
+
+                return (
+                  <PhotoView key={i} src={imageSrc}>
+                    <div className="cursor-zoom-in overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-all duration-300 aspect-[4/3] relative">
+                      <Image
+                        src={imageSrc}
+                        alt={`Gallery image ${i + 1}`}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        quality={82}
+                        unoptimized
+                        className="object-cover transition-transform duration-700 ease-out hover:scale-105"
+                      />
+                    </div>
+                  </PhotoView>
+                );
+              })}
             </div>
           </PhotoProvider>
         )}

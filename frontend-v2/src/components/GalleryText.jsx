@@ -1,12 +1,15 @@
+"use client";
+
 import { AnimateIn } from "./AnimateIn";
 import Image from "next/image";
 import Link from "next/link";
+
 export default function GalleryWithText({ project }) {
   const allImages = project.images || [];
   const previewImages = allImages.slice(0, 5);
   const total = previewImages.length;
 
-  // 🔥 Convert details string → paragraphs
+  // Convert details string → paragraphs
   const detailBlocks = project.details
     ? project.details
         .split(/\n+/)
@@ -43,6 +46,7 @@ export default function GalleryWithText({ project }) {
   return (
     <div className="space-y-20">
       {items.map((item, i) => {
+        // TEXT BLOCK
         if (item.type === "text") {
           return (
             <AnimateIn key={`text-${i}`}>
@@ -56,20 +60,27 @@ export default function GalleryWithText({ project }) {
           );
         }
 
+        const imageSrc = `${item.src}?v=${project.updatedAt || ""}`;
+
+        // FEATURE IMAGE (full width)
         if (item.isFeature) {
           return (
             <AnimateIn key={`img-${item.idx}`}>
               <Image
-                src={item.src}
+                src={imageSrc}
                 alt=""
                 width={1400}
                 height={900}
-                className="w-full object-cover"
+                sizes="100vw"
+                quality={82}
+                unoptimized
+                className="w-full object-cover transition duration-700 hover:scale-[1.03]"
               />
             </AnimateIn>
           );
         }
 
+        // CHECK FOR PAIR
         const nextItem = items[i + 1];
         const hasNext =
           nextItem && nextItem.type === "image" && !nextItem.isFeature;
@@ -77,21 +88,29 @@ export default function GalleryWithText({ project }) {
         return (
           <AnimateIn key={`pair-${item.idx}`}>
             <div className="grid md:grid-cols-2 gap-8">
+              {/* LEFT IMAGE */}
               <Image
-                src={item.src}
+                src={imageSrc}
                 alt=""
                 width={800}
                 height={600}
-                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                quality={82}
+                unoptimized
+                className="object-cover transition duration-700 hover:scale-105"
               />
 
+              {/* RIGHT IMAGE */}
               {hasNext && (
                 <Image
-                  src={nextItem.src}
+                  src={`${nextItem.src}?v=${project.updatedAt || ""}`}
                   alt=""
                   width={800}
                   height={600}
-                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  quality={82}
+                  unoptimized
+                  className="object-cover transition duration-700 hover:scale-105"
                 />
               )}
             </div>
@@ -99,6 +118,7 @@ export default function GalleryWithText({ project }) {
         );
       })}
 
+      {/* CTA */}
       {allImages.length > 5 && (
         <div className="text-center pt-10">
           <Link
