@@ -3,10 +3,17 @@ const { Schema, model } = require("mongoose");
 
 const QuerySchema = new Schema(
   {
+    branch: {
+      type: String,
+      enum: ["chhabra_marble", "rippotai"],
+      required: true,
+    },
+
     name: { type: String, required: true },
     email: { type: String, required: true },
     subject: { type: String, required: true },
     message: { type: String, required: true },
+
     status: {
       type: String,
       enum: ["new", "in-progress", "resolved"],
@@ -17,7 +24,9 @@ const QuerySchema = new Schema(
       enum: ["low", "medium", "high"],
       default: "medium",
     },
+
     assignedTo: { type: Schema.Types.ObjectId, ref: "User" },
+
     notes: [
       {
         text: String,
@@ -28,5 +37,4 @@ const QuerySchema = new Schema(
   },
   { timestamps: true }
 );
-
 module.exports = model("Query", QuerySchema);

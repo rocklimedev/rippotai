@@ -1,4 +1,3 @@
-// app/admin/queries/page.jsx
 "use client";
 
 import { useState, useMemo } from "react";
@@ -19,15 +18,16 @@ import styles from "./queries.module.css";
 export default function AdminQueriesPage() {
   const [viewMode, setViewMode] = useState("table");
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedQuery, setSelectedQuery] = useState(null); // for modal
+  const [selectedQuery, setSelectedQuery] = useState(null);
 
+  // ✅ FIXED: Now fetching only for "rippotai" branch
   const {
     data: rawQueries = [],
     isLoading,
     isError,
     error,
     refetch,
-  } = useGetQueriesQuery();
+  } = useGetQueriesQuery("rippotai");
 
   const queries = useMemo(() => {
     let list = Array.isArray(rawQueries) ? rawQueries : rawQueries?.data || [];
@@ -39,7 +39,7 @@ export default function AdminQueriesPage() {
           q.name?.toLowerCase().includes(term) ||
           q.email?.toLowerCase().includes(term) ||
           q.subject?.toLowerCase().includes(term) ||
-          q.message?.toLowerCase().includes(term),
+          q.message?.toLowerCase().includes(term)
       );
     }
 
@@ -53,11 +53,11 @@ export default function AdminQueriesPage() {
       return;
 
     try {
-      await deleteQuery(queryId).unwrap();
+      await deleteQuery({ branch: "rippotai", id: queryId }).unwrap(); // ✅ Fixed
       refetch();
-      if (selectedQuery?._id === queryId) setSelectedQuery(null); // close modal if open
+      if (selectedQuery?._id === queryId) setSelectedQuery(null);
     } catch (err) {
-      alert(err.data?.message || "Failed to delete inquiry");
+      alert(err?.data?.message || "Failed to delete inquiry");
     }
   };
 
@@ -87,13 +87,13 @@ export default function AdminQueriesPage() {
       <header className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
-            Inquiries / Queries
+            Rippotai Inquiries
             <span className="ml-3 text-lg font-normal text-gray-600">
               ({queries.length})
             </span>
           </h1>
           <p className="mt-1 text-sm text-gray-500">
-            View and manage contact form submissions
+            Managing contact form submissions for Rippotai branch
           </p>
         </div>
       </header>
@@ -146,7 +146,7 @@ export default function AdminQueriesPage() {
           <p className="mt-2 text-sm text-gray-500">
             {searchTerm
               ? "Try changing your search term"
-              : "New messages from the contact form will appear here."}
+              : "New messages from the Rippotai contact form will appear here."}
           </p>
           {searchTerm && (
             <button
@@ -177,10 +177,9 @@ export default function AdminQueriesPage() {
       {selectedQuery && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
           <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            {/* Header */}
             <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between z-10">
               <h2 className="text-xl font-bold text-gray-900">
-                Inquiry Details
+                Inquiry Details — Rippotai
               </h2>
               <button
                 onClick={closeModal}
@@ -190,7 +189,6 @@ export default function AdminQueriesPage() {
               </button>
             </div>
 
-            {/* Content */}
             <div className="p-6 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -221,7 +219,7 @@ export default function AdminQueriesPage() {
                     {selectedQuery.createdAt
                       ? format(
                           new Date(selectedQuery.createdAt),
-                          "dd MMMM yyyy • hh:mm a",
+                          "dd MMMM yyyy • hh:mm a"
                         )
                       : "—"}
                   </p>
@@ -238,7 +236,6 @@ export default function AdminQueriesPage() {
               </div>
             </div>
 
-            {/* Footer */}
             <div className="sticky bottom-0 bg-white border-t border-gray-200 px-6 py-4 flex justify-end gap-3">
               <button
                 onClick={closeModal}
@@ -264,7 +261,7 @@ export default function AdminQueriesPage() {
   );
 }
 
-// ────────────────────────────────────────────── Loading Skeleton
+// Loading Skeleton (unchanged)
 function LoadingSkeleton() {
   return (
     <div className={styles.container}>
@@ -281,28 +278,22 @@ function LoadingSkeleton() {
   );
 }
 
-// ────────────────────────────────────────────── Table View
+// Table View
 function QueriesTable({ queries, onDelete, onView, isDeleting }) {
   return (
     <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
       <table className="w-full text-sm">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-4 py-3 text-left font-medium text-gray-700">
-              Name
-            </th>
+            <th className="px-4 py-3 text-left font-medium text-gray-700">Name</th>
             <th className="hidden md:table-cell px-4 py-3 text-left font-medium text-gray-700">
               Email
             </th>
-            <th className="px-4 py-3 text-left font-medium text-gray-700">
-              Subject
-            </th>
+            <th className="px-4 py-3 text-left font-medium text-gray-700">Subject</th>
             <th className="hidden lg:table-cell px-4 py-3 text-left font-medium text-gray-700">
               Received
             </th>
-            <th className="px-4 py-3 text-right font-medium text-gray-700">
-              Actions
-            </th>
+            <th className="px-4 py-3 text-right font-medium text-gray-700">Actions</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-100">
@@ -352,7 +343,7 @@ function QueriesTable({ queries, onDelete, onView, isDeleting }) {
   );
 }
 
-// ────────────────────────────────────────────── Card View
+// Card View
 function QueriesCards({ queries, onDelete, onView, isDeleting }) {
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

@@ -1,4 +1,3 @@
-// --- FILE: controllers/queryController.js
 const Query = require("../models/queries");
 const {
   emailer,
@@ -6,20 +5,46 @@ const {
   adminQueryNotificationEmail,
 } = require("../middleware/sendEmail");
 
+/**
+ * CREATE QUERY
+ */
 exports.createQuery = async (req, res, next) => {
   try {
-    const { name, email, subject, message } = req.body;
+    const { name, email, subject, message, branch } = req.body;
 
-    if (!name || !email || !subject || !message) {
+    if (!name || !email || !subject || !message || !branch) {
       return res.status(400).json({
-        message: "All required fields must be provided",
+        message: "All required fields including branch must be provided",
       });
     }
 
-    const query = new Query({ name, email, subject, message });
+    const query = new Query({
+      name,
+      email,
+      subject,
+      message,
+      branch, // ✅ branch added
+    });
+
     await query.save();
 
-    // ← This line was missing
+    // Send emails
+    try {
+      await emailer(email, queryConfirmationEmail({ name, subject }));
+
+      await emailer(
+        process.env.ADMIN_EMAIL,
+        adminQueryNotificationEmail({
+          name,
+          email,
+          subject,
+          branch,
+        })
+      );
+    } catch (emailErr) {
+      console.error("Email error:", emailErr);
+    }
+
     return res.status(201).json({
       message: "Query created successfully",
       id: query._id,
@@ -29,14 +54,23 @@ exports.createQuery = async (req, res, next) => {
     return res.status(500).json({
       message: "Failed to create query",
     });
-    // or next(err) if you have global error handler that sends response
   }
 };
+
+/**
+ * GET ALL QUERIES (FILTER BY BRANCH)
+ */
 exports.getQueries = async (req, res, next) => {
   try {
-    const queries = await Query.find()
+    const { branch } = req.query;
+
+    const filter = {};
+    if (branch) filter.branch = branch; // ✅ filter applied
+
+    const queries = await Query.find(filter)
       .populate("assignedTo", "name email")
       .sort({ createdAt: -1 });
+
     res.json(queries);
   } catch (err) {
     console.error("Error in getQueries:", err);
@@ -44,48 +78,114 @@ exports.getQueries = async (req, res, next) => {
   }
 };
 
+/**
+ * GET SINGLE QUERY (BRANCH SAFE)
+ */
 exports.getQuery = async (req, res, next) => {
   try {
-    const query = await Query.findById(req.params.id).populate(
+    const { branch } = req.query;
+
+    const filter = { _id: req.params.id };
+    if (branch) filter.branch = branch;
+
+    const query = await Query.findOne(filter).populate(
       "assignedTo",
-      "name email",
+      "name email"
     );
-    if (!query) return res.status(404).json({ message: "Query not found" });
+
+    if (!query) {
+      return res.status(404).json({ message: "Query not found" });
+    }
+
     res.json(query);
   } catch (err) {
     next(err);
   }
 };
 
+/**
+ * UPDATE QUERY (BRANCH SAFE)
+ */
 exports.updateQuery = async (req, res, next) => {
   try {
-    const updates = req.body;
-    const query = await Query.findByIdAndUpdate(req.params.id, updates, {
-      new: true,
-    }).populate("assignedTo", "name email");
-    if (!query) return res.status(404).json({ message: "Query not found" });
+    const { branch } = req.body;
+
+    if (!branch) {
+      return res.status(400).json({ message: "Branch is required" });
+    }
+
+    const query = await Query.findOneAndUpdate(
+      { _id: req.params.id, branch },
+      req.body,
+      { new: true }
+    ).populate("assignedTo", "name email");
+
+    if (!query) {
+      return res.status(404).json({ message: "Query not found" });
+    }
+
     res.json(query);
   } catch (err) {
     next(err);
   }
 };
 
+/**
+ * DELETE QUERY (BRANCH SAFE)
+ */
 exports.deleteQuery = async (req, res, next) => {
   try {
-    await Query.findByIdAndDelete(req.params.id);
+    const { branch } = req.query;
+
+    if (!branch) {
+      return res.status(400).json({ message: "Branch is required" });
+    }
+
+    const deleted = await Query.findOneAndDelete({
+      _id: req.params.id,
+      branch,
+    });
+
+    if (!deleted) {
+      return res.status(404).json({ message: "Query not found" });
+    }
+
     res.json({ message: "Query deleted" });
   } catch (err) {
     next(err);
   }
 };
 
+/**
+ * ADD NOTE TO QUERY (BRANCH SAFE)
+ */
 exports.addNote = async (req, res, next) => {
   try {
-    const query = await Query.findById(req.params.id);
-    if (!query) return res.status(404).json({ message: "Query not found" });
-    query.notes.push({ text: req.body.text, author: req.user._id });
+    const { branch, text } = req.body;
+
+    if (!branch || !text) {
+      return res.status(400).json({
+        message: "Branch and note text are required",
+      });
+    }
+
+    const query = await Query.findOne({
+      _id: req.params.id,
+      branch,
+    });
+
+    if (!query) {
+      return res.status(404).json({ message: "Query not found" });
+    }
+
+    query.notes.push({
+      text,
+      author: req.user?._id, // safe optional chaining
+    });
+
     await query.save();
     await query.populate("notes.author", "name email");
+
     res.json(query);
   } catch (err) {
     next(err);

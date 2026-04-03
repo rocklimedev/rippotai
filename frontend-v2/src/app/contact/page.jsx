@@ -1,4 +1,3 @@
-// app/contact/page.jsx
 "use client";
 import { useState } from "react";
 import { AnimateIn } from "@/components/AnimateIn";
@@ -9,9 +8,7 @@ import { contactImage, contactInfo, googleMapsLink } from "@/lib/config";
 
 export default function ContactPage() {
   const [createQuery, { isLoading: pending }] = useCreateQueryMutation();
-  const [fileName, setFileName] = useState("");
-
-  // ✅ ADDED: form state (no style changes)
+  
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -20,7 +17,6 @@ export default function ContactPage() {
     message: "",
   });
 
-  // ✅ ADDED: change handler
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -56,6 +52,11 @@ export default function ContactPage() {
 
     const { name, email, phone, subject, message } = formData;
 
+    if (!name || !email || !subject || !message) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
     let finalMessage = message;
     if (phone) {
       finalMessage = `Phone: ${phone}\n\n${message}`;
@@ -63,6 +64,7 @@ export default function ContactPage() {
 
     try {
       await createQuery({
+        branch: "rippotai",           // ✅ Fixed: Now sending branch
         name,
         email,
         subject,
@@ -71,7 +73,7 @@ export default function ContactPage() {
 
       toast.success("Message sent successfully! We'll get back to you soon.");
 
-      // ✅ Reset controlled form
+      // Reset form
       setFormData({
         name: "",
         email: "",
@@ -150,6 +152,7 @@ export default function ContactPage() {
           />
         </div>
       </section>
+
       {/* Contact Content */}
       <section style={{ padding: "100px 48px" }}>
         <div
@@ -207,7 +210,7 @@ export default function ContactPage() {
                   }}
                 >
                   <div>
-                    <label style={labelStyle}>Phone</label>
+                    <label style={labelStyle}>Phone (Optional)</label>
                     <input
                       type="tel"
                       name="phone"
@@ -255,6 +258,7 @@ export default function ContactPage() {
                     border: "none",
                     padding: "16px 48px",
                     cursor: "pointer",
+                    opacity: pending ? 0.8 : 1,
                   }}
                 >
                   {pending ? "Sending..." : "Send Message"}
