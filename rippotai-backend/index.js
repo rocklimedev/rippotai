@@ -29,6 +29,7 @@ const corsOptions = {
     "https://dashboard-cmtradingco.vercel.app",
     "https://rippotaiarchitecture.com",
     "https://rippotai.vercel.app",
+    "https://cmtradingco.com",
   ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
