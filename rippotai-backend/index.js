@@ -18,26 +18,34 @@ connectDB();
 
 // Middleware
 // CORS configuration
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:3001",
+  "http://localhost:3002",
+  "http://localhost:3003",
+  "https://dashboard-rocklime.vercel.app",
+  "https://cmtradingco.vercel.app",
+  "https://dashboard-cmtradingco.vercel.app",
+  "https://rippotaiarchitecture.com",
+  "https://rippotai.vercel.app",
+  "https://cmtradingco.com",
+  "https://www.cmtradingco.com",
+];
+
 const corsOptions = {
-  origin: [
-    "http://localhost:3000",
-    "http://localhost:3001",
-    "http://localhost:3002",
-    "http://localhost:3003",
-    "https://dashboard-rocklime.vercel.app",
-    "https://cmtradingco.vercel.app",
-    "https://dashboard-cmtradingco.vercel.app",
-    "https://rippotaiarchitecture.com",
-    "https://rippotai.vercel.app",
-    "https://cmtradingco.com",
-    "https://www.cmtradingco.com",
-  ],
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS: " + origin));
+    }
+  },
   credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
 };
+
 app.use(helmet());
 app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 mins
   max: 20, // max 20 requests per IP
