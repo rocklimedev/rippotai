@@ -57,6 +57,9 @@ export const socialLinks = [
     label: "Pinterest",
     href: "https://in.pinterest.com/rippotaiarchitecture/",
   },
+  {
+    label: "Threads", href: "https://www.threads.com/@rippotai"
+  }
 ];
 
 export const contactInfo = {
