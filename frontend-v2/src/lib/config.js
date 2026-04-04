@@ -159,7 +159,7 @@ export const teamMembers = [
     name: "Megha Chhabra",
     designation: "Interior Decor and Styling Head",
     image:
-      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/megha_chhabra.jpeg",
+      "/assets/megha.PNG",
   },
   {
     id: 6,
