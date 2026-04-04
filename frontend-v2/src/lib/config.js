@@ -32,7 +32,7 @@ export const processImage = "/assets/process.png";
 export const contactImage = "/assets/contact_banner.png";
 export const aboutImage = "/assets/team.jpg";
 export const careerImage = "/assets/careers_banner.png";
-export const projectsImage = "/assets/projects_banner.jpeg";
+export const projectsImage = "/assets/projects_banner_main.jpeg";
 export const servicesImage = "/assets/services.png";
 export const teamImage = "/assets/team.jpg";
 
