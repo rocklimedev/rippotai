@@ -32,7 +32,7 @@ export const processImage = "/assets/process.png";
 export const contactImage = "/assets/contact_banner.png";
 export const aboutImage = "/assets/team.jpg";
 export const careerImage = "/assets/careers_banner.png";
-export const projectsImage = "/assets/projects_banner_main.jpeg";
+export const projectsImage = "/assets/projects_banner_main.jpg";
 export const servicesImage = "/assets/services.png";
 export const teamImage = "/assets/team.jpg";
 
@@ -58,8 +58,9 @@ export const socialLinks = [
     href: "https://in.pinterest.com/rippotaiarchitecture/",
   },
   {
-    label: "Threads", href: "https://www.threads.com/@rippotai"
-  }
+    label: "Threads",
+    href: "https://www.threads.com/@rippotai",
+  },
 ];
 
 export const contactInfo = {
@@ -158,8 +159,7 @@ export const teamMembers = [
     id: 5,
     name: "Megha Chhabra",
     designation: "Interior Decor and Styling Head",
-    image:
-      "/assets/megha.PNG",
+    image: "/assets/megha.PNG",
   },
   {
     id: 6,
