@@ -9,6 +9,11 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "media.cmtradingco.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "customer-assets.emergentagent.com",
         pathname: "/**",
       },
