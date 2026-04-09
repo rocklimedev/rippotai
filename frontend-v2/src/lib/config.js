@@ -1,11 +1,11 @@
 import { Building2, Palette, Armchair, KeyRound } from "lucide-react";
 export const heroImages = [
-  "https://static.cmtradingco.com/rippotai_projects/rippotai_images/1.png",
-  "https://static.cmtradingco.com/rippotai_projects/rippotai_images/4.png",
-  "https://static.cmtradingco.com/rippotai_projects/rippotai_images/5.png",
-  "https://static.cmtradingco.com/rippotai_projects/rippotai_images/3.jpeg",
-  "https://static.cmtradingco.com/rippotai_projects/rippotai_images/7.png",
-  "https://static.cmtradingco.com/rippotai_projects/rippotai_images/8.png",
+  "https://media.cmtradingco.com/rippotai_projects/rippotai_images/1.png",
+  "https://media.cmtradingco.com/rippotai_projects/rippotai_images/4.png",
+  "https://media.cmtradingco.com/rippotai_projects/rippotai_images/5.png",
+  "https://media.cmtradingco.com/rippotai_projects/rippotai_images/3.jpeg",
+  "https://media.cmtradingco.com/rippotai_projects/rippotai_images/7.png",
+  "https://media.cmtradingco.com/rippotai_projects/rippotai_images/8.png",
 ];
 /************************************
  * VALUES SLIDER
@@ -153,7 +153,7 @@ export const teamMembers = [
     name: "Priyanka",
     designation: "Admin",
     image:
-      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/priyanka.jpeg",
+      "https://media.cmtradingco.com/rippotai_projects/rippotai_images/priyanka.jpeg",
   },
   {
     id: 5,
@@ -172,7 +172,7 @@ export const teamMembers = [
     name: "Sajjan",
     designation: "Site Supervisor",
     image:
-      "https://static.cmtradingco.com/rippotai_projects/rippotai_images/sajjan.jpeg",
+      "https://media.cmtradingco.com/rippotai_projects/rippotai_images/sajjan.jpeg",
   },
   {
     id: 8,
