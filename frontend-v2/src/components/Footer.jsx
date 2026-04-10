@@ -231,7 +231,7 @@ export const Footer = () => {
           <p
             style={{
               fontFamily: "'Lato', sans-serif",
-              fontSize: "12px",
+              fontSize: "14px", // ⬆️ increased from 12px
               fontWeight: 300,
               letterSpacing: "1px",
               marginTop: "8px",
@@ -244,6 +244,10 @@ export const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Visit Rocklime website"
+              style={{
+                fontSize: "14px", // ⬆️ match or slightly bigger
+                fontWeight: 400, // ⬆️ makes "Rocklime" stand out
+              }}
             >
               Rocklime
             </a>
