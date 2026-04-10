@@ -34,14 +34,17 @@ const transformProject = (project) => {
     const filteredImages = [];
 
     for (const img of project.images) {
-      if (
-        typeof img === "string" &&
-        img.split("/").pop().toLowerCase() === "banner.png"
-      ) {
-        banner = img;
-      } else {
-        filteredImages.push(img);
+      if (typeof img === "string") {
+        const fileName = img.split("/").pop().toLowerCase();
+        const nameWithoutExt = fileName.replace(/\.(png|jpe?g)$/i, "");
+
+        if (nameWithoutExt === "banner") {
+          banner = img;
+          continue;
+        }
       }
+
+      filteredImages.push(img);
     }
 
     project.images = filteredImages;
@@ -415,16 +418,11 @@ exports.getFeaturedProjects = async (req, res) => {
       .sort({ createdAt: -1 })
       .limit(limitNum)
       .select(
-        "title slug category location scope image images status createdAt projectId featured"
+        "title slug category location scope image images status createdAt projectId featured",
       )
       .lean();
 
-    sendResponse(
-      res,
-      200,
-      true,
-      projects.map(transformProject)
-    );
+    sendResponse(res, 200, true, projects.map(transformProject));
   } catch (error) {
     sendResponse(res, 500, false, null, "Failed to fetch featured projects");
   }
