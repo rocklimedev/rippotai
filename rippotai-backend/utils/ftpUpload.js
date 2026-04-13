@@ -1,11 +1,20 @@
-// middleware/upload.js (or utils/ftpUpload.js)
 const ftp = require("basic-ftp");
 const { Readable, Writable } = require("stream");
 const { v4: uuidv4 } = require("uuid");
 const path = require("path");
+
 require("dotenv").config();
 
-// Helper: Create a writable stream that collects data into a Buffer
+/**
+ * Buffer → Stream
+ */
+function bufferToStream(buffer) {
+  const stream = new Readable();
+  stream.push(buffer);
+  stream.push(null);
+  return stream;
+}
+
 function createBufferWritable() {
   const chunks = [];
   const writable = new Writable({
@@ -14,123 +23,128 @@ function createBufferWritable() {
       callback();
     },
   });
-
   writable.getBuffer = () => Buffer.concat(chunks);
   return writable;
 }
 
-async function uploadToFtp(
-  buffer,
-  originalName,
-  remoteDir = "/uploads/default",
-  options = {},
-) {
-  const ext = path.extname(originalName);
-  const uniqueName = `${uuidv4()}${ext}`;
-
+/**
+ * 🔥 FINAL UPLOAD FUNCTION (ROBUST + FLEXIBLE)
+ */
+async function uploadToFtp(buffer, filename, options = {}) {
   const client = new ftp.Client();
   client.ftp.verbose = process.env.NODE_ENV === "development";
 
   try {
+    // ==================== BASE URL ====================
+    let baseUrl = (
+      process.env.MEDIA_BASE_URL || "https://media.cmtradingco.com"
+    ).trim();
+
+    if (!baseUrl.includes("://")) {
+      baseUrl = "https://" + baseUrl;
+    }
+
+    baseUrl = baseUrl.replace(/\/+$/, "");
+
+    // ==================== FILE NAME ====================
+    const ext = path.extname(filename) || ".jpg";
+    const uniqueName = `${uuidv4()}${ext}`;
+
+    // ==================== REMOTE DIR ====================
+    let remoteDir = "/uploads";
+
+    if (typeof options === "string") {
+      remoteDir = options;
+    } else if (options?.remoteDir) {
+      remoteDir = options.remoteDir;
+    }
+
+    if (!remoteDir.startsWith("/")) remoteDir = "/" + remoteDir;
+
+    // 🔥 CRITICAL FIX FOR 553 ERROR
+    // Ensure correct base path for hosting
+    let fullDir = `${remoteDir}`;
+    fullDir = fullDir.replace(/\/+$/, "");
+
+    console.log("📁 Upload dir:", fullDir);
+
+    // ==================== CONNECT ====================
     await client.access({
       host: process.env.FTP_HOST,
-      port: process.env.FTP_PORT || 21,
+      port: parseInt(process.env.FTP_PORT) || 21,
       user: process.env.FTP_USER,
       password: process.env.FTP_PASSWORD,
       secure: process.env.FTP_SECURE === "true",
       timeout: 0,
-      ...options,
     });
 
-    // Normalize path: ensure it starts with /
-    let normalizedDir = remoteDir.startsWith("/") ? remoteDir : `/${remoteDir}`;
-    normalizedDir = normalizedDir.replace(/\/+$/, ""); // remove trailing slash
+    // ==================== ENSURE DIR ====================
+    await client.ensureDir(fullDir);
 
-    // Split into segments
-    const segments = normalizedDir.split("/").filter(Boolean);
-    let currentPath = "";
+    // ==================== UPLOAD ====================
+    const remotePath = `${fullDir}/${uniqueName}`;
 
-    // Create each directory level one by one
-    for (const segment of segments) {
-      currentPath += `/${segment}`;
+    console.log("⬆️ Uploading:", remotePath);
 
-      try {
-        // Try to create directory
-        await client.send("MKD", currentPath);
-        console.log(`[FTP] Created directory: ${currentPath}`);
-      } catch (mkdirErr) {
-        // 550 or 521 usually means already exists → safe to ignore
-        if (
-          mkdirErr.code === 550 ||
-          mkdirErr.code === 521 ||
-          mkdirErr.message.includes("already exists") ||
-          mkdirErr.message.includes("File exists")
-        ) {
-          console.log(`[FTP] Directory already exists: ${currentPath}`);
-        } else {
-          console.error(
-            `[FTP] Failed to create ${currentPath}:`,
-            mkdirErr.message,
-          );
-          throw mkdirErr;
-        }
-      }
+    await client.uploadFrom(bufferToStream(buffer), remotePath);
+
+    // ==================== PERMISSIONS ====================
+    try {
+      await client.send("SITE", `CHMOD 775 ${remotePath}`);
+    } catch (e) {
+      console.warn("CHMOD skipped");
     }
 
-    // Upload using full path (no need for cd)
-    const fullRemotePath = `${normalizedDir}/${uniqueName}`;
+    // ==================== FINAL URL ====================
+    let finalUrl = `${baseUrl}${remoteDir}/${uniqueName}`;
 
-    const stream = bufferToStream(buffer);
-    await client.uploadFrom(stream, fullRemotePath);
+    finalUrl = finalUrl.replace(/([^:]\/)\/+/g, "$1");
 
-    console.log(`[FTP] Uploaded to: ${fullRemotePath}`);
+    console.log("✅ Uploaded:", finalUrl);
 
-    return `${process.env.FTP_BASE_URL}${normalizedDir}/${uniqueName}`;
-  } catch (err) {
-    console.error("FTP upload failed:", err.message, err.stack || err);
-    throw err;
+    return {
+      url: finalUrl,
+      remotePath,
+    };
+  } catch (error) {
+    console.error("❌ FTP Upload Error:", error.message);
+    throw new Error(`FTP upload failed: ${error.message}`);
   } finally {
     client.close();
   }
 }
 
-function bufferToStream(buffer) {
-  const stream = new Readable();
-  stream.push(buffer);
-  stream.push(null);
-  return stream;
-}
-
+/**
+ * Download
+ */
 async function downloadFromFtp(ftpPath) {
   const client = new ftp.Client();
   client.ftp.verbose = process.env.NODE_ENV === "development";
 
   try {
-    // Extract remote path from URL if needed
     let remotePath = ftpPath;
+
     if (ftpPath.startsWith("http")) {
       const url = new URL(ftpPath);
-      remotePath = url.pathname;
+      remotePath = `/public_html${url.pathname}`;
     }
 
     await client.access({
       host: process.env.FTP_HOST,
-      port: process.env.FTP_PORT || 21,
+      port: parseInt(process.env.FTP_PORT) || 21,
       user: process.env.FTP_USER,
       password: process.env.FTP_PASSWORD,
       secure: process.env.FTP_SECURE === "true",
       timeout: 0,
     });
 
-    // Use a writable that collects into Buffer
     const bufferWritable = createBufferWritable();
-
     await client.downloadTo(bufferWritable, remotePath);
 
     return bufferWritable.getBuffer();
   } catch (err) {
     console.error("FTP download error:", err);
-    throw new Error(`Failed to download file from FTP: ${err.message}`);
+    throw new Error(`Download failed: ${err.message}`);
   } finally {
     client.close();
   }

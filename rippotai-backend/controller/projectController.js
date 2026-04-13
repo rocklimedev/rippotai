@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Project = require("../models/project");
-const { uploadToFtp } = require("../utils/ftpUpload");
 const slugify = require("slugify");
+const { createFtpClient, uploadToFtp, chmod } = require("../utils/ftpUpload");
 
 // ────────────────────────────────────────────────
 // Helper for consistent responses
@@ -160,10 +160,6 @@ exports.getProjectById = async (req, res) => {
   }
 };
 
-// ────────────────────────────────────────────────
-// CREATE
-// ────────────────────────────────────────────────
-
 exports.createProject = async (req, res) => {
   try {
     const { title, category, description, details, status, location, scope } =
@@ -173,33 +169,38 @@ exports.createProject = async (req, res) => {
       return sendResponse(res, 400, false, null, "Title is required");
     }
 
-    const cleanedTitle = title.trim();
-    const slug = slugify(cleanedTitle, { lower: true, strict: true });
-    const projectFolder = `rippotai_projects/${slug}`;
-
     if (!req.files?.image?.[0]) {
       return sendResponse(res, 400, false, null, "Main image is required");
     }
 
+    const cleanedTitle = title.trim();
+    const slug = slugify(cleanedTitle, { lower: true, strict: true });
+
+    // ✅ folder path (relative, ftp util will handle base)
+    const projectFolder = `rippotai_projects/${slug}`;
+
+    // 🔥 Upload main image
     const mainFile = req.files.image[0];
 
-    const mainImageUrl = await uploadToFtp(
+    const mainUpload = await uploadToFtp(
       mainFile.buffer,
-      mainFile.originalname || mainFile.filename,
+      mainFile.originalname,
       projectFolder,
     );
 
+    // 🔥 Upload gallery
     const galleryUrls = [];
 
-    if (req.files?.images?.length > 0) {
+    if (req.files?.images?.length) {
       for (const file of req.files.images) {
         try {
-          const url = await uploadToFtp(
+          const upload = await uploadToFtp(
             file.buffer,
-            file.originalname || file.filename,
+            file.originalname,
             projectFolder,
           );
-          galleryUrls.push(url);
+
+          galleryUrls.push(upload.url);
         } catch (err) {
           console.error("Gallery upload failed:", err.message);
         }
@@ -209,10 +210,10 @@ exports.createProject = async (req, res) => {
     const project = new Project({
       title: cleanedTitle,
       slug,
-      category: category?.trim() || undefined,
+      category: category?.trim(),
       description: description?.trim(),
       details: details?.trim(),
-      image: mainImageUrl,
+      image: mainUpload.url,
       images: galleryUrls,
       status: status || "draft",
       location: location?.trim(),
@@ -229,18 +230,24 @@ exports.createProject = async (req, res) => {
       "Project created successfully",
     );
   } catch (error) {
+    console.error(error);
     sendResponse(res, 500, false, null, error.message);
   }
 };
-
 // ────────────────────────────────────────────────
-// UPDATE
+// UPDATE PROJECT - Fully Updated
 // ────────────────────────────────────────────────
-
 exports.updateProject = async (req, res) => {
   try {
-    const updateData = {};
+    const existing = await Project.findOne({
+      projectId: req.params.projectId,
+    });
 
+    if (!existing) {
+      return sendResponse(res, 404, false, null, "Project not found");
+    }
+
+    const updateData = {};
     const fields = [
       "title",
       "category",
@@ -260,14 +267,7 @@ exports.updateProject = async (req, res) => {
       }
     });
 
-    const existing = await Project.findOne({
-      projectId: req.params.projectId,
-    });
-
-    if (!existing) {
-      return sendResponse(res, 404, false, null, "Project not found");
-    }
-
+    // 🔥 Folder logic
     let projectFolder = `rippotai_projects/${existing.slug}`;
 
     if (updateData.title) {
@@ -282,36 +282,44 @@ exports.updateProject = async (req, res) => {
       }
     }
 
+    // 🔥 Update main image
     if (req.files?.image?.[0]) {
       const file = req.files.image[0];
 
-      const newMainUrl = await uploadToFtp(
+      const upload = await uploadToFtp(
         file.buffer,
-        file.originalname || file.filename,
+        file.originalname,
         projectFolder,
       );
 
-      updateData.image = newMainUrl;
+      updateData.image = upload.url;
     }
 
+    // 🔥 Existing images
     let finalImages = [];
 
     if (req.body.existingImages) {
       try {
         finalImages = JSON.parse(req.body.existingImages);
-      } catch {}
+      } catch {
+        finalImages = [];
+      }
     }
 
-    if (req.files?.images?.length > 0) {
+    // 🔥 New gallery images
+    if (req.files?.images?.length) {
       for (const file of req.files.images) {
         try {
-          const url = await uploadToFtp(
+          const upload = await uploadToFtp(
             file.buffer,
-            file.originalname || file.filename,
+            file.originalname,
             projectFolder,
           );
-          finalImages.push(url);
-        } catch {}
+
+          finalImages.push(upload.url);
+        } catch (err) {
+          console.error("Gallery upload failed:", err.message);
+        }
       }
     }
 
@@ -331,10 +339,10 @@ exports.updateProject = async (req, res) => {
       "Project updated successfully",
     );
   } catch (error) {
+    console.error(error);
     sendResponse(res, 500, false, null, error.message);
   }
 };
-
 // ────────────────────────────────────────────────
 // DELETE + OTHERS
 // ────────────────────────────────────────────────

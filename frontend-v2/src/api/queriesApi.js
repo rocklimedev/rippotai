@@ -4,13 +4,16 @@ import { API_URL } from "@/lib/config";
 
 export const queriesApi = createApi({
   reducerPath: "queriesApi",
+
   baseQuery: fetchBaseQuery({
-    baseUrl: API_URL,
+    baseUrl: `${API_URL}/queries`,
     prepareHeaders: (headers) => {
       headers.set("Content-Type", "application/json");
 
       const token = localStorage.getItem("adminToken");
-      if (token) headers.set("Authorization", `Bearer ${token}`);
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
 
       return headers;
     },
@@ -20,47 +23,57 @@ export const queriesApi = createApi({
 
   endpoints: (builder) => ({
     /**
-     * CREATE QUERY - FIXED
+     * ✅ CREATE QUERY
      */
     createQuery: builder.mutation({
       query: ({ branch, name, email, subject, message }) => ({
-        url: `/queries/`,                    // Keep as per your current route
+        url: `/`,
         method: "POST",
-        body: { name, email, subject, message, branch },   // ✅ Send branch in body
+        body: { branch, name, email, subject, message },
       }),
       invalidatesTags: [{ type: "Queries", id: "LIST" }],
     }),
 
     /**
-     * GET ALL QUERIES (by branch)
+     * ✅ GET ALL QUERIES (WITH BRANCH FILTER)
      */
     getQueries: builder.query({
-      query: (branch) => `/queries/${branch}`,
+      query: (branch) => ({
+        url: `/`,
+        params: { branch }, // 🔥 FIXED
+      }),
       providesTags: (result) =>
         Array.isArray(result)
           ? [
-              ...result.map(({ _id }) => ({ type: "Queries", id: _id })),
+              ...result.map(({ _id }) => ({
+                type: "Queries",
+                id: _id,
+              })),
               { type: "Queries", id: "LIST" },
             ]
           : [{ type: "Queries", id: "LIST" }],
     }),
 
     /**
-     * GET SINGLE QUERY
+     * ✅ GET SINGLE QUERY
      */
     getQuery: builder.query({
-      query: ({ branch, id }) => `/queries/${branch}/${id}`,
+      query: ({ id, branch }) => ({
+        url: `/${id}`,
+        params: { branch }, // 🔥 FIXED
+      }),
       providesTags: (result, error, { id }) => [{ type: "Queries", id }],
     }),
 
     /**
-     * UPDATE QUERY
+     * ✅ UPDATE QUERY
      */
     updateQuery: builder.mutation({
-      query: ({ branch, id, ...updates }) => ({
-        url: `/queries/${branch}/${id}`,
+      query: ({ id, branch, ...updates }) => ({
+        url: `/${id}`,
         method: "PUT",
-        body: updates,
+        params: { branch }, // 🔥 consistent
+        body: { ...updates, branch },
       }),
       invalidatesTags: (result, error, { id }) => [
         { type: "Queries", id },
@@ -69,12 +82,13 @@ export const queriesApi = createApi({
     }),
 
     /**
-     * DELETE QUERY
+     * ✅ DELETE QUERY
      */
     deleteQuery: builder.mutation({
-      query: ({ branch, id }) => ({
-        url: `/queries/${branch}/${id}`,
+      query: ({ id, branch }) => ({
+        url: `/${id}`,
         method: "DELETE",
+        params: { branch }, // 🔥 FIXED
       }),
       invalidatesTags: (result, error, { id }) => [
         { type: "Queries", id },
@@ -83,13 +97,13 @@ export const queriesApi = createApi({
     }),
 
     /**
-     * ADD NOTE
+     * ✅ ADD NOTE
      */
     addNote: builder.mutation({
-      query: ({ branch, id, text }) => ({
-        url: `/queries/${branch}/${id}/notes`,
+      query: ({ id, branch, text }) => ({
+        url: `/${id}/notes`,
         method: "POST",
-        body: { text, branch },   // ✅ Also send branch in body for consistency
+        body: { text, branch }, // 🔥 required
       }),
       invalidatesTags: (result, error, { id }) => [
         { type: "Queries", id },
