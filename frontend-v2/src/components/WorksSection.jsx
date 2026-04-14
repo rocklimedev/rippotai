@@ -83,9 +83,7 @@ export const WorksSection = () => {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: isMobile
-              ? "1fr"
-              : "repeat(auto-fit, minmax(280px, 1fr))",
+            gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", // ✅ FIXED HERE
             gap: isMobile ? "24px" : "48px",
           }}
         >
@@ -138,7 +136,7 @@ const ProjectCard = ({ project, isMobile }) => {
           src={imageSrc}
           alt={title}
           fill
-          sizes="(max-width: 768px) 100vw, 45vw"
+          sizes="(max-width: 768px) 100vw, 50vw"
           quality={82}
           unoptimized
           style={{

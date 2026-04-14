@@ -111,6 +111,12 @@ export const services = [
       "We create visually striking, functional spaces inspired by the simplicity and versatility of the cube.",
   },
   {
+    icon: KeyRound,
+    title: "Turnkey Projects",
+    description:
+      "End-to-end project delivery from concept to completion. We manage every detail — design, procurement, construction, and finishing — so you can move into a fully finished space without a worry.",
+  },
+  {
     icon: Palette,
     title: "Interiors",
     description:
@@ -121,12 +127,6 @@ export const services = [
     title: "Furniture",
     description:
       "Our niche furniture pieces are uniquely designed to reflect our brand's philosophy.",
-  },
-  {
-    icon: KeyRound,
-    title: "Turnkey Projects",
-    description:
-      "End-to-end project delivery from concept to completion. We manage every detail — design, procurement, construction, and finishing — so you can move into a fully finished space without a worry.",
   },
 ];
 export const teamMembers = [

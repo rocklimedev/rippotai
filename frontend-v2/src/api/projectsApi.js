@@ -20,18 +20,25 @@ export const projectsApi = createApi({
 
   endpoints: (builder) => ({
     getProjects: builder.query({
-      query: (params) => ({ url: "/projects", params }),
+      query: (params) => ({
+        url: "/projects",
+        params,
+      }),
+
       providesTags: (result) => {
         const tags = [{ type: "Projects", id: "LIST" }];
-        if (Array.isArray(result)) {
-          result.forEach((project) => {
-            if (project?._id) tags.push({ type: "Projects", id: project._id });
-          });
-        }
+
+        const projects = result?.data?.data || [];
+
+        projects.forEach((project) => {
+          if (project?._id) {
+            tags.push({ type: "Projects", id: project._id });
+          }
+        });
+
         return tags;
       },
     }),
-
     getPublicProjects: builder.query({
       query: ({ page = 1, limit = 6, category } = {}) => ({
         url: "/projects/public",
@@ -102,17 +109,17 @@ export const projectsApi = createApi({
     }),
 
     updateProject: builder.mutation({
-      query: ({ id, formData }) => ({
-        url: `/projects/admin/${id}`,
+      query: ({ projectId, formData }) => ({
+        url: `/projects/admin/${projectId}`,
         method: "PUT",
         body: formData,
       }),
-      invalidatesTags: (result, error, { id }) => [
-        { type: "Projects", id },
+      invalidatesTags: (result, error, { projectId }) => [
+        { type: "Project", id: projectId }, // ← This is critical
+        { type: "Projects", id: projectId },
         { type: "Projects", id: "LIST" },
       ],
     }),
-
     updateProjectStatus: builder.mutation({
       query: ({ id, status }) => ({
         url: `/projects/admin/${id}/status`,

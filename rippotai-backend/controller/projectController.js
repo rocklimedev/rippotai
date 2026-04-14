@@ -127,23 +127,47 @@ exports.getProjectBySlug = async (req, res) => {
 
 exports.getAllProjects = async (req, res) => {
   try {
-    const { category, status } = req.query;
+    const { category, status, page = 1, limit = 10, search } = req.query;
 
+    // Convert to numbers
+    const pageNumber = Math.max(parseInt(page), 1);
+    const pageSize = Math.max(parseInt(limit), 1);
+    const skip = (pageNumber - 1) * pageSize;
+
+    // Filters
     const filter = {};
+
     if (category?.trim()) filter.category = category.trim();
     if (status?.trim()) filter.status = status.trim();
 
+    // 🔍 Search (optional but recommended)
+    if (search?.trim()) {
+      const regex = new RegExp(search.trim(), "i");
+      filter.$or = [{ title: regex }, { category: regex }, { location: regex }];
+    }
+
+    // Total count (IMPORTANT for pagination)
+    const total = await Project.countDocuments(filter);
+
+    // Fetch paginated data
     const projects = await Project.find(filter)
       .sort({ title: 1 })
+      .skip(skip)
+      .limit(pageSize)
       .select("-__v")
       .lean();
 
-    sendResponse(res, 200, true, projects.map(transformProject));
+    sendResponse(res, 200, true, {
+      data: projects.map(transformProject),
+      total,
+      page: pageNumber,
+      limit: pageSize,
+      totalPages: Math.ceil(total / pageSize),
+    });
   } catch (error) {
     sendResponse(res, 500, false, null, "Failed to fetch projects");
   }
 };
-
 exports.getProjectById = async (req, res) => {
   try {
     const project = await Project.findOne({ projectId: req.params.projectId })
