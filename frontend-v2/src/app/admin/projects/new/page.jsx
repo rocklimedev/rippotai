@@ -25,6 +25,10 @@ export default function NewProjectPage() {
 
   const [mainImage, setMainImage] = useState(null);
   const [mainImagePreview, setMainImagePreview] = useState(null);
+
+  const [bannerImage, setBannerImage] = useState(null);
+  const [bannerImagePreview, setBannerImagePreview] = useState(null);
+
   const [galleryImages, setGalleryImages] = useState([]);
   const [galleryPreviews, setGalleryPreviews] = useState([]);
 
@@ -36,6 +40,7 @@ export default function NewProjectPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Main Image Handler
   const handleMainImageChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -51,6 +56,23 @@ export default function NewProjectPage() {
     reader.readAsDataURL(file);
   };
 
+  // Banner Image Handler
+  const handleBannerImageChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setError("Please select an image file");
+      return;
+    }
+
+    setBannerImage(file);
+    const reader = new FileReader();
+    reader.onloadend = () => setBannerImagePreview(reader.result);
+    reader.readAsDataURL(file);
+  };
+
+  // Gallery Handler
   const handleGalleryChange = (e) => {
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
@@ -84,26 +106,15 @@ export default function NewProjectPage() {
     setError("");
     setSuccess(false);
 
-    if (!formData.title.trim()) {
-      setError("Project title is required");
-      return;
-    }
-    if (!formData.category.trim()) {
-      setError("Category is required");
-      return;
-    }
-    if (!formData.description.trim()) {
-      setError("Short description is required");
-      return;
-    }
-    if (!formData.details.trim()) {
-      setError("Detailed content is required");
-      return;
-    }
-    if (!mainImage) {
-      setError("Main project image is required");
-      return;
-    }
+    // Validation
+    if (!formData.title.trim()) return setError("Project title is required");
+    if (!formData.category.trim()) return setError("Category is required");
+    if (!formData.description.trim())
+      return setError("Short description is required");
+    if (!formData.details.trim())
+      return setError("Detailed content is required");
+    if (!mainImage) return setError("Main project image is required");
+    if (!bannerImage) return setError("Banner image is required");
 
     try {
       const formDataToSend = new FormData();
@@ -113,23 +124,20 @@ export default function NewProjectPage() {
       formDataToSend.append("category", formData.category.trim());
       formDataToSend.append("description", formData.description.trim());
       formDataToSend.append("details", formData.details.trim());
-      if (formData.location.trim()) {
+      if (formData.location.trim())
         formDataToSend.append("location", formData.location.trim());
-      }
-      if (formData.scope.trim()) {
+      if (formData.scope.trim())
         formDataToSend.append("scope", formData.scope.trim());
-      }
       formDataToSend.append("status", formData.status);
 
-      // Main image – single file
+      // Files
       formDataToSend.append("image", mainImage);
+      formDataToSend.append("banner", bannerImage); // ← New: Banner
 
-      // Gallery images – append each file with the same field name "images"
       galleryImages.forEach((file) => {
         formDataToSend.append("images", file);
       });
 
-      // Send FormData (RTK Query will set correct Content-Type: multipart/form-data)
       await createProject(formDataToSend).unwrap();
 
       setSuccess(true);
@@ -164,7 +172,7 @@ export default function NewProjectPage() {
 
       {success && (
         <div className="mb-6 p-4 bg-green-50 border border-green-200 text-green-800 rounded-lg">
-          Project created successfully! Redirecting to list...
+          Project created successfully! Redirecting...
         </div>
       )}
 
@@ -215,7 +223,7 @@ export default function NewProjectPage() {
           </div>
         </div>
 
-        {/* Status & Location */}
+        {/* Status, Location, Scope */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -243,7 +251,7 @@ export default function NewProjectPage() {
               value={formData.location}
               onChange={handleInputChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="e.g. Mumbai, Maharashtra"
+              placeholder="e.g. Delhi, India"
             />
           </div>
 
@@ -262,7 +270,7 @@ export default function NewProjectPage() {
           </div>
         </div>
 
-        {/* Description */}
+        {/* Description & Details */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Short Description <span className="text-red-500">*</span>
@@ -273,12 +281,11 @@ export default function NewProjectPage() {
             onChange={handleInputChange}
             rows={3}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Brief overview of the project (shown in listings)"
+            placeholder="Brief overview..."
             required
           />
         </div>
 
-        {/* Details */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Detailed Content <span className="text-red-500">*</span>
@@ -288,26 +295,69 @@ export default function NewProjectPage() {
             value={formData.details}
             onChange={handleInputChange}
             rows={8}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
-            placeholder="Full project description, features, materials, challenges, outcome... (supports markdown if your frontend renders it)"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Full project description..."
             required
           />
-          <p className="mt-1 text-xs text-gray-500">
-            Tip: You can use markdown formatting (## headings, *lists*,
-            **bold**, etc.)
-          </p>
+        </div>
+
+        {/* Banner Image - NEW */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Banner / Hero Image <span className="text-red-500">*</span>
+          </label>
+          <div className="flex items-start gap-6">
+            <div className="flex-1">
+              {bannerImagePreview ? (
+                <div className="relative w-full max-w-2xl h-64 rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
+                  <Image
+                    src={bannerImagePreview}
+                    alt="Banner preview"
+                    fill
+                    className="object-cover"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setBannerImage(null);
+                      setBannerImagePreview(null);
+                    }}
+                    className="absolute top-3 right-3 bg-white/90 hover:bg-white text-red-600 rounded-full p-2 shadow"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+              ) : (
+                <label className="flex flex-col items-center justify-center w-full max-w-2xl h-64 border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 cursor-pointer transition">
+                  <Upload size={40} className="text-gray-400 mb-3" />
+                  <span className="text-lg font-medium text-gray-600">
+                    Upload Banner Image
+                  </span>
+                  <span className="text-sm text-gray-500 mt-1">
+                    Recommended: 1920 × 800 px (wide hero banner)
+                  </span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleBannerImageChange}
+                    className="hidden"
+                  />
+                </label>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Main Image */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Main Project Image <span className="text-red-500">*</span>
+            Main Project Image (Thumbnail){" "}
+            <span className="text-red-500">*</span>
           </label>
-
           <div className="flex items-start gap-6">
             <div className="flex-1">
               {mainImagePreview ? (
-                <div className="relative w-64 h-48 rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
+                <div className="relative w-80 h-52 rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
                   <Image
                     src={mainImagePreview}
                     alt="Main preview"
@@ -320,19 +370,16 @@ export default function NewProjectPage() {
                       setMainImage(null);
                       setMainImagePreview(null);
                     }}
-                    className="absolute top-2 right-2 bg-white/80 hover:bg-white text-red-600 rounded-full p-1.5 shadow-sm"
+                    className="absolute top-2 right-2 bg-white/80 hover:bg-white text-red-600 rounded-full p-1.5"
                   >
                     <X size={16} />
                   </button>
                 </div>
               ) : (
-                <label className="flex flex-col items-center justify-center w-64 h-48 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 hover:bg-gray-100 cursor-pointer transition">
+                <label className="flex flex-col items-center justify-center w-80 h-52 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 hover:bg-gray-100 cursor-pointer">
                   <Upload size={32} className="text-gray-400 mb-2" />
                   <span className="text-sm text-gray-500">
-                    Click to upload main image
-                  </span>
-                  <span className="text-xs text-gray-400 mt-1">
-                    PNG, JPG, max 5MB recommended
+                    Upload main image
                   </span>
                   <input
                     type="file"
@@ -342,12 +389,6 @@ export default function NewProjectPage() {
                   />
                 </label>
               )}
-            </div>
-
-            <div className="text-sm text-gray-500 space-y-1">
-              <p>• Should be high quality (min 1200×800 recommended)</p>
-              <p>• Will be used as cover / hero image</p>
-              <p>• Aspect ratio ~ 4:3 or 16:9 works best</p>
             </div>
           </div>
         </div>
@@ -359,7 +400,6 @@ export default function NewProjectPage() {
           </label>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {/* Previews */}
             {galleryPreviews.map((preview, index) => (
               <div key={index} className="relative group">
                 <div className="aspect-square rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
@@ -373,20 +413,17 @@ export default function NewProjectPage() {
                 <button
                   type="button"
                   onClick={() => removeGalleryImage(index)}
-                  className="absolute top-1 right-1 bg-white/90 hover:bg-white text-red-600 rounded-full p-1.5 shadow opacity-0 group-hover:opacity-100 transition"
+                  className="absolute top-2 right-2 bg-white/90 hover:bg-white text-red-600 rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition"
                 >
                   <X size={14} />
                 </button>
               </div>
             ))}
 
-            {/* Upload button */}
-            <label className="aspect-square flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 hover:bg-gray-100 cursor-pointer transition">
+            <label className="aspect-square flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 hover:bg-gray-100 cursor-pointer">
               <Plus size={24} className="text-gray-400 mb-1" />
               <span className="text-xs text-gray-500 text-center">
-                Add more
-                <br />
-                images
+                Add more images
               </span>
               <input
                 type="file"
@@ -399,7 +436,7 @@ export default function NewProjectPage() {
           </div>
         </div>
 
-        {/* Submit */}
+        {/* Submit Buttons */}
         <div className="pt-6 border-t border-gray-200 flex justify-end gap-4">
           <Link
             href="/admin/projects"
@@ -411,12 +448,12 @@ export default function NewProjectPage() {
           <button
             type="submit"
             disabled={isCreating}
-            className="inline-flex items-center px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+            className="inline-flex items-center px-8 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isCreating ? (
               <>
                 <Loader2 size={18} className="animate-spin mr-2" />
-                Creating...
+                Creating Project...
               </>
             ) : (
               "Create Project"

@@ -54,7 +54,7 @@
   },
   {
     "_id": "6981a5c84ba888294d1bb827",
-    "slug": "chhabra-marble-sanitary-showroom",
+    "slug": "chhabra-marble-and-sanitary-showroom",
     "__v": 0,
     "category": "Commercial",
     "createdAt": "2026-02-03T07:37:45.687Z",
@@ -71,7 +71,7 @@
     ],
     "location": "Paschim Vihar, New Delhi",
     "scope": "Interior Design, Space Planning, Display Design, Lighting Design",
-    "status": "draft",
+    "status": "completed",
     "title": "Chhabra Marble & Sanitary Showroom",
     "projectId": "e80c1c89-d16a-48b6-a84e-439dda50f7b8",
     "featured": false
@@ -93,9 +93,9 @@
       "https://media.cmtradingco.com/rippotai_projects/town_property_office/5.png",
       "https://media.cmtradingco.com/rippotai_projects/town_property_office/6.png",
       "https://media.cmtradingco.com/rippotai_projects/town_property_office/7.png",
-      "https://media.cmtradingco.com/rippotai_projects/town_property_office/8.png",
-      "https://media.cmtradingco.com/rippotai_projects/town_property_office/banner.png"
+      "https://media.cmtradingco.com/rippotai_projects/town_property_office/8.png"
     ],
+    "banner": "https://media.cmtradingco.com/rippotai_projects/town_property_office/banner.png",
     "location": "Panchsheel Park, New Delhi",
     "scope": "Planning & Designing",
     "status": "completed",
@@ -118,11 +118,11 @@
       "https://media.cmtradingco.com/rippotai_projects/singh_residence/3.png",
       "https://media.cmtradingco.com/rippotai_projects/singh_residence/4.png",
       "https://media.cmtradingco.com/rippotai_projects/singh_residence/5.png",
-      "https://media.cmtradingco.com/rippotai_projects/singh_residence/7.png",
-      "https://media.cmtradingco.com/rippotai_projects/singh_residence/banner.png"
+      "https://media.cmtradingco.com/rippotai_projects/singh_residence/7.png"
     ],
     "location": "GK-2, New Delhi",
     "scope": "Interior Designing",
+    "banner": "https://media.cmtradingco.com/rippotai_projects/singh_residence/banner.png",
     "status": "completed",
     "title": "Singh’s Residence",
     "projectId": "f6ed2d48-e72b-40c9-bb3d-7b6f8c5b88df",
@@ -142,12 +142,12 @@
       "https://media.cmtradingco.com/rippotai_projects/goyal_residence/2.png",
       "https://media.cmtradingco.com/rippotai_projects/goyal_residence/3.png",
       "https://media.cmtradingco.com/rippotai_projects/goyal_residence/4.png",
-      "https://media.cmtradingco.com/rippotai_projects/goyal_residence/5.png",
-      "https://media.cmtradingco.com/rippotai_projects/goyal_residence/banner.png"
+      "https://media.cmtradingco.com/rippotai_projects/goyal_residence/5.png"
     ],
     "location": "Sector 5, Gurgaon, Haryana",
     "scope": "Interior Designing",
     "status": "completed",
+    "banner": "https://media.cmtradingco.com/rippotai_projects/goyal_residence/banner.png",
     "title": "Goel's Residence Gurugram",
     "projectId": "232142c9-9478-4f62-acd8-7ff94cb946b7",
     "featured": true
@@ -173,12 +173,12 @@
       "https://media.cmtradingco.com/rippotai_projects/gupta_residence/9.png",
       "https://media.cmtradingco.com/rippotai_projects/gupta_residence/10.png",
       "https://media.cmtradingco.com/rippotai_projects/gupta_residence/11.png",
-      "https://media.cmtradingco.com/rippotai_projects/gupta_residence/12.png",
-      "https://media.cmtradingco.com/rippotai_projects/gupta_residence/banner.png"
+      "https://media.cmtradingco.com/rippotai_projects/gupta_residence/12.png"
     ],
     "location": "GK-54, New Delhi",
     "scope": "Interior Designing",
     "status": "completed",
+    "banner": "https://media.cmtradingco.com/rippotai_projects/gupta_residence/banner.png",
     "title": "Gupta’s Residence",
     "projectId": "d825bad9-7a59-4aa4-b3be-d560598dea45",
     "featured": false
@@ -220,13 +220,13 @@
       "https://media.cmtradingco.com/rippotai_projects/khanna_law_firm/4.png",
       "https://media.cmtradingco.com/rippotai_projects/khanna_law_firm/5.png",
       "https://media.cmtradingco.com/rippotai_projects/khanna_law_firm/6.png",
-      "https://media.cmtradingco.com/rippotai_projects/khanna_law_firm/7.png",
-      "https://media.cmtradingco.com/rippotai_projects/khanna_law_firm/banner.png"
+      "https://media.cmtradingco.com/rippotai_projects/khanna_law_firm/7.png"
     ],
     "location": "Panchsheel Park, New Delhi",
     "scope": "Planning & Interior Designing",
     "status": "completed",
     "title": "Vinay Khanna Law Chambers, Panchsheel Park",
+    "banner": "https://media.cmtradingco.com/rippotai_projects/khanna_law_firm/banner.png",
     "projectId": "58d64965-3c36-4cc1-94b0-510d6f234190",
     "featured": true
   },
@@ -251,12 +251,12 @@
       "https://media.cmtradingco.com/rippotai_projects/nagpal_residence/9.png",
       "https://media.cmtradingco.com/rippotai_projects/nagpal_residence/10.png",
       "https://media.cmtradingco.com/rippotai_projects/nagpal_residence/11.png",
-      "https://media.cmtradingco.com/rippotai_projects/nagpal_residence/12.png",
-      "https://media.cmtradingco.com/rippotai_projects/nagpal_residence/banner.png"
+      "https://media.cmtradingco.com/rippotai_projects/nagpal_residence/12.png"
     ],
     "location": "KP-18, Pitampura, New Delhi",
     "scope": "Façade & Interior Designing",
     "status": "completed",
+    "banner": "https://media.cmtradingco.com/rippotai_projects/nagpal_residence/banner.png",
     "title": "Nagpal's Residence, Pitampura",
     "projectId": "a8cc3e34-04cb-4af8-9fb8-09cac9d456b7",
     "featured": true
@@ -276,13 +276,13 @@
       "https://media.cmtradingco.com/rippotai_projects/cmrr_headquarters/3.png",
       "https://media.cmtradingco.com/rippotai_projects/cmrr_headquarters/4.png",
       "https://media.cmtradingco.com/rippotai_projects/cmrr_headquarters/5.png",
-      "https://media.cmtradingco.com/rippotai_projects/cmrr_headquarters/6.png",
-      "https://media.cmtradingco.com/rippotai_projects/cmrr_headquarters/banner.png"
+      "https://media.cmtradingco.com/rippotai_projects/cmrr_headquarters/6.png"
     ],
     "location": "Paschim Vihar, New Delhi",
     "scope": "Planning & Designing",
     "status": "draft",
     "title": "CMRR Headquarters",
+    "banner": "https://media.cmtradingco.com/rippotai_projects/cmrr_headquarters/banner.png",
     "projectId": "93c29dcb-05dc-47c0-a7d4-c5546d998a9a",
     "featured": false
   },
@@ -300,12 +300,12 @@
       "https://media.cmtradingco.com/rippotai_projects/moksh_dhaam/2.png",
       "https://media.cmtradingco.com/rippotai_projects/moksh_dhaam/3.png",
       "https://media.cmtradingco.com/rippotai_projects/moksh_dhaam/4.png",
-      "https://media.cmtradingco.com/rippotai_projects/moksh_dhaam/5.png",
-      "https://media.cmtradingco.com/rippotai_projects/moksh_dhaam/banner.png"
+      "https://media.cmtradingco.com/rippotai_projects/moksh_dhaam/5.png"
     ],
     "location": "Aligarh, Uttar Pradesh",
     "scope": "Planning & Designing",
     "status": "completed",
+    "banner": "https://media.cmtradingco.com/rippotai_projects/moksh_dhaam/banner.png",
     "title": "Moksh Dham , Aligarh",
     "projectId": "9356d287-a96e-4aaf-88f7-5bc52308edd0",
     "featured": true
@@ -331,12 +331,12 @@
       "https://media.cmtradingco.com/rippotai_projects/sky_view_cafe/9.png",
       "https://media.cmtradingco.com/rippotai_projects/sky_view_cafe/10.png",
       "https://media.cmtradingco.com/rippotai_projects/sky_view_cafe/11.png",
-      "https://media.cmtradingco.com/rippotai_projects/sky_view_cafe/12.png",
-      "https://media.cmtradingco.com/rippotai_projects/sky_view_cafe/banner.png"
+      "https://media.cmtradingco.com/rippotai_projects/sky_view_cafe/12.png"
     ],
     "location": "Lucknow, Uttar Pradesh",
     "scope": "Planning & Designing",
     "status": "completed",
+    "banner": "https://media.cmtradingco.com/rippotai_projects/sky_view_cafe/banner.png",
     "title": "Sky View Restaurant, Lucknow",
     "projectId": "d6b22237-c6d6-48c2-911c-bb0fa3507fe4",
     "featured": true
@@ -356,13 +356,13 @@
       "https://media.cmtradingco.com/rippotai_projects/b19_geetanjali_residence/3.png",
       "https://media.cmtradingco.com/rippotai_projects/b19_geetanjali_residence/4.png",
       "https://media.cmtradingco.com/rippotai_projects/b19_geetanjali_residence/5.png",
-      "https://media.cmtradingco.com/rippotai_projects/b19_geetanjali_residence/6.png",
-      "https://media.cmtradingco.com/rippotai_projects/b19_geetanjali_residence/banner.png"
+      "https://media.cmtradingco.com/rippotai_projects/b19_geetanjali_residence/6.png"
     ],
     "location": "Geetanjali Marg, New Delhi",
     "scope": "Terrace & Bespoke Furniture",
     "status": "completed",
     "title": "Khanna's residence, Geetanjali Marg",
+    "banner": "https://media.cmtradingco.com/rippotai_projects/b19_geetanjali_residence/banner.png",
     "projectId": "4b18db13-d2df-4f6c-8dcb-1794cb347a4d",
     "featured": true
   },
@@ -385,23 +385,23 @@
       "https://media.cmtradingco.com/rippotai_projects/gupta_residence_two/6.jpg",
       "https://media.cmtradingco.com/rippotai_projects/gupta_residence_two/7.jpg",
       "https://media.cmtradingco.com/rippotai_projects/gupta_residence_two/8.jpg",
-      "https://media.cmtradingco.com/rippotai_projects/gupta_residence_two/9.jpg",
-      "https://media.cmtradingco.com/rippotai_projects/gupta_residence_two/banner.jpg"
+      "https://media.cmtradingco.com/rippotai_projects/gupta_residence_two/9.jpg"
     ],
     "location": "GK II , New Delhi",
     "projectId": "4f590281-7c72-45b9-b63e-49f92b96fe04",
     "scope": "Interior Designing",
+    "banner": "https://media.cmtradingco.com/rippotai_projects/gupta_residence_two/banner.jpg",
     "status": "completed",
     "title": "Gupta’s Residence II"
   },
   {
     "_id": "69dcd587d4b38daebe7caa35",
-    "slug": "bangas_residence",
+    "slug": "bangas-residence",
     "__v": 0,
     "category": "Residential",
     "createdAt": "2026-04-13T11:37:43.084Z",
     "description": "Banga’s Residence is a refined exploration of modern minimalism, where clean architectural lines meet warm material tones. The design focuses on simplicity, functionality, and a subtle sense of luxury through carefully selected finishes.",
-    "details": "The project emphasizes bespoke furniture crafted to align with the home’s understated aesthetic. Elements such as TV panels, beds, and storage units are designed with precision, using wood and veneer to create a cohesive visual language.\n\nThe terrace is developed as a calm outdoor extension, featuring a pergola seating arrangement in metal and wood that balances openness with comfort. The overall design approach prioritizes clarity, durability, and a timeless modern appeal.",
+    "details": "The project emphasizes bespoke furniture crafted to align with the home’s understated aesthetic. Elements such as TV panels, beds, and storage units are designed with precision, using wood and veneer to create a cohesive visual language.\r\n\r\nThe terrace is developed as a calm outdoor extension, featuring a pergola seating arrangement in metal and wood that balances openness with comfort. The overall design approach prioritizes clarity, durability, and a timeless modern appeal.",
     "featured": false,
     "image": "https://media.cmtradingco.com/rippotai_projects/bangas_residence/cover_image.png",
     "images": [
@@ -425,13 +425,12 @@
       "https://media.cmtradingco.com/rippotai_projects/bangas_residence/18.png",
       "https://media.cmtradingco.com/rippotai_projects/bangas_residence/19.png",
       "https://media.cmtradingco.com/rippotai_projects/bangas_residence/20.png",
-      "https://media.cmtradingco.com/rippotai_projects/bangas_residence/21.png",
-      "https://media.cmtradingco.com/rippotai_projects/bangas_residence/banner.png"
+      "https://media.cmtradingco.com/rippotai_projects/bangas_residence/21.png"
     ],
-    "location": "Geetanjali Marg, New Delhi",
+    "location": "Paschim Vihar, New Delhi",
     "projectId": "cbacdf30-8eef-47ed-9b90-f683fae19924",
     "scope": "Terrace & Bespoke Furniture",
-    "status": "draft",
+    "status": "working",
     "title": "Banga’s Residence"
   },
   {
@@ -498,13 +497,13 @@
       "https://media.cmtradingco.com/rippotai_projects/luv_residence/1.png",
       "https://media.cmtradingco.com/rippotai_projects/luv_residence/2.png",
       "https://media.cmtradingco.com/rippotai_projects/luv_residence/3.png",
-      "https://media.cmtradingco.com/rippotai_projects/luv_residence/4.png",
-      "https://media.cmtradingco.com/rippotai_projects/luv_residence/banner.jpg"
+      "https://media.cmtradingco.com/rippotai_projects/luv_residence/4.png"
     ],
     "location": "GK-54, New Delhi",
     "projectId": "f61a5ff1-f2ad-48cf-8374-0e0b6f9a3666",
     "scope": "Interior Designing",
     "status": "draft",
+    "banner": "https://media.cmtradingco.com/rippotai_projects/luv_residence/banner.jpg",
     "title": "Gupta’s Residence"
   }
 ]

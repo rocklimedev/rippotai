@@ -59,6 +59,11 @@ const projectSchema = new mongoose.Schema({
     type: String,
     required: true, // Main image URL
   },
+  // ✅ NEW: Banner image (hero section)
+  banner: {
+    type: String,
+    required: true, // make false if optional
+  },
 
   images: [
     {

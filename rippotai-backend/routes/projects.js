@@ -24,11 +24,11 @@ const upload = multer({
 });
 
 // No need for separate single/array/fields — we use one instance
-const uploadBoth = upload.fields([
-  { name: "image", maxCount: 1 },
-  { name: "images", maxCount: 12 },
+const uploadFields = upload.fields([
+  { name: "image", maxCount: 1 }, // Main image
+  { name: "banner", maxCount: 1 }, // ← NEW: Banner image
+  { name: "images", maxCount: 20 }, // Gallery images
 ]);
-
 /* ────────────────────────────────────────────────
    ROUTES (unchanged)
 ───────────────────────────────────────────────── */
@@ -42,9 +42,9 @@ router.get("/:slug", ProjectsController.getProjectBySlug);
 
 router.get("/admin/:projectId", ProjectsController.getProjectById);
 
-router.post("/admin/", uploadBoth, ProjectsController.createProject);
+router.post("/admin/", uploadFields, ProjectsController.createProject);
 
-router.put("/admin/:projectId", uploadBoth, ProjectsController.updateProject);
+router.put("/admin/:projectId", uploadFields, ProjectsController.updateProject);
 
 router.patch(
   "/admin/:projectId/status",

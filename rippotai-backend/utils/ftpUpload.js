@@ -15,6 +15,9 @@ function bufferToStream(buffer) {
   return stream;
 }
 
+/**
+ * Stream → Buffer
+ */
 function createBufferWritable() {
   const chunks = [];
   const writable = new Writable({
@@ -28,7 +31,7 @@ function createBufferWritable() {
 }
 
 /**
- * 🔥 FINAL UPLOAD FUNCTION (ROBUST + FLEXIBLE)
+ * 🔥 FINAL FTP UPLOAD FUNCTION (FULLY FIXED)
  */
 async function uploadToFtp(buffer, filename, options = {}) {
   const client = new ftp.Client();
@@ -40,10 +43,7 @@ async function uploadToFtp(buffer, filename, options = {}) {
       process.env.MEDIA_BASE_URL || "https://media.cmtradingco.com"
     ).trim();
 
-    if (!baseUrl.includes("://")) {
-      baseUrl = "https://" + baseUrl;
-    }
-
+    if (!baseUrl.includes("://")) baseUrl = "https://" + baseUrl;
     baseUrl = baseUrl.replace(/\/+$/, "");
 
     // ==================== FILE NAME ====================
@@ -61,10 +61,7 @@ async function uploadToFtp(buffer, filename, options = {}) {
 
     if (!remoteDir.startsWith("/")) remoteDir = "/" + remoteDir;
 
-    // 🔥 CRITICAL FIX FOR 553 ERROR
-    // Ensure correct base path for hosting
-    let fullDir = `${remoteDir}`;
-    fullDir = fullDir.replace(/\/+$/, "");
+    const fullDir = remoteDir.replace(/\/+$/, "");
 
     console.log("📁 Upload dir:", fullDir);
 
@@ -75,36 +72,42 @@ async function uploadToFtp(buffer, filename, options = {}) {
       user: process.env.FTP_USER,
       password: process.env.FTP_PASSWORD,
       secure: process.env.FTP_SECURE === "true",
-      timeout: 0,
     });
 
     // ==================== ENSURE DIR ====================
     await client.ensureDir(fullDir);
 
-    // ==================== UPLOAD ====================
-    const remotePath = `${fullDir}/${uniqueName}`;
-
-    console.log("⬆️ Uploading:", remotePath);
-
-    await client.uploadFrom(bufferToStream(buffer), remotePath);
-
-    // ==================== PERMISSIONS ====================
+    // 🔥 SET FOLDER PERMISSION (755)
     try {
-      await client.send("SITE", `CHMOD 775 ${remotePath}`);
+      await client.send(`SITE CHMOD 755 ${fullDir}`);
     } catch (e) {
-      console.warn("CHMOD skipped");
+      console.warn("⚠️ Folder CHMOD skipped");
+    }
+
+    // 🔥 CRITICAL FIX → MOVE INTO DIRECTORY
+    await client.cd(fullDir);
+
+    // ==================== UPLOAD ====================
+    console.log("⬆️ Uploading:", uniqueName);
+
+    await client.uploadFrom(bufferToStream(buffer), uniqueName);
+
+    // 🔥 SET FILE PERMISSION (775) — RELATIVE PATH
+    try {
+      await client.send(`SITE CHMOD 775 ${uniqueName}`);
+    } catch (e) {
+      console.warn("⚠️ File CHMOD skipped");
     }
 
     // ==================== FINAL URL ====================
-    let finalUrl = `${baseUrl}${remoteDir}/${uniqueName}`;
-
+    let finalUrl = `${baseUrl}${fullDir}/${uniqueName}`;
     finalUrl = finalUrl.replace(/([^:]\/)\/+/g, "$1");
 
     console.log("✅ Uploaded:", finalUrl);
 
     return {
       url: finalUrl,
-      remotePath,
+      remotePath: `${fullDir}/${uniqueName}`,
     };
   } catch (error) {
     console.error("❌ FTP Upload Error:", error.message);
@@ -115,7 +118,7 @@ async function uploadToFtp(buffer, filename, options = {}) {
 }
 
 /**
- * Download
+ * 📥 DOWNLOAD FUNCTION
  */
 async function downloadFromFtp(ftpPath) {
   const client = new ftp.Client();
@@ -124,6 +127,7 @@ async function downloadFromFtp(ftpPath) {
   try {
     let remotePath = ftpPath;
 
+    // Convert URL → FTP path if needed
     if (ftpPath.startsWith("http")) {
       const url = new URL(ftpPath);
       remotePath = `/public_html${url.pathname}`;
@@ -135,15 +139,17 @@ async function downloadFromFtp(ftpPath) {
       user: process.env.FTP_USER,
       password: process.env.FTP_PASSWORD,
       secure: process.env.FTP_SECURE === "true",
-      timeout: 0,
     });
 
     const bufferWritable = createBufferWritable();
+
+    console.log("⬇️ Downloading:", remotePath);
+
     await client.downloadTo(bufferWritable, remotePath);
 
     return bufferWritable.getBuffer();
   } catch (err) {
-    console.error("FTP download error:", err);
+    console.error("❌ FTP download error:", err.message);
     throw new Error(`Download failed: ${err.message}`);
   } finally {
     client.close();
