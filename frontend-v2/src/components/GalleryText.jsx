@@ -9,7 +9,6 @@ export default function GalleryWithText({ project }) {
   const previewImages = allImages.slice(0, 5);
   const total = previewImages.length;
 
-  // Convert details string → paragraphs
   const detailBlocks = project.details
     ? project.details
         .split(/\n+/)
@@ -62,20 +61,22 @@ export default function GalleryWithText({ project }) {
 
         const imageSrc = `${item.src}?v=${project.updatedAt || ""}`;
 
-        // FEATURE IMAGE (full width)
+        // ✅ FEATURE IMAGE (NO CROP, CONTROLLED HEIGHT)
         if (item.isFeature) {
           return (
             <AnimateIn key={`img-${item.idx}`}>
-              <Image
-                src={imageSrc}
-                alt=""
-                width={1400}
-                height={900}
-                sizes="100vw"
-                quality={82}
-                unoptimized
-                className="w-full object-cover transition duration-700 hover:scale-[1.03]"
-              />
+              <div className="w-full flex justify-center max-h-[600px] overflow-hidden">
+                <Image
+                  src={imageSrc}
+                  alt=""
+                  width={1400}
+                  height={900}
+                  sizes="100vw"
+                  quality={82}
+                  unoptimized
+                  className="w-full h-auto max-h-[600px] object-contain transition duration-700 hover:scale-[1.03]"
+                />
+              </div>
             </AnimateIn>
           );
         }
@@ -87,31 +88,35 @@ export default function GalleryWithText({ project }) {
 
         return (
           <AnimateIn key={`pair-${item.idx}`}>
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-2 gap-8 items-center">
               {/* LEFT IMAGE */}
-              <Image
-                src={imageSrc}
-                alt=""
-                width={800}
-                height={600}
-                sizes="(max-width: 768px) 100vw, 50vw"
-                quality={82}
-                unoptimized
-                className="object-cover transition duration-700 hover:scale-105"
-              />
-
-              {/* RIGHT IMAGE */}
-              {hasNext && (
+              <div className="flex justify-center max-h-[420px]">
                 <Image
-                  src={`${nextItem.src}?v=${project.updatedAt || ""}`}
+                  src={imageSrc}
                   alt=""
                   width={800}
                   height={600}
                   sizes="(max-width: 768px) 100vw, 50vw"
                   quality={82}
                   unoptimized
-                  className="object-cover transition duration-700 hover:scale-105"
+                  className="w-full h-auto max-h-[420px] object-contain transition duration-700 hover:scale-105"
                 />
+              </div>
+
+              {/* RIGHT IMAGE */}
+              {hasNext && (
+                <div className="flex justify-center max-h-[420px]">
+                  <Image
+                    src={`${nextItem.src}?v=${project.updatedAt || ""}`}
+                    alt=""
+                    width={800}
+                    height={600}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    quality={82}
+                    unoptimized
+                    className="w-full h-auto max-h-[420px] object-contain transition duration-700 hover:scale-105"
+                  />
+                </div>
               )}
             </div>
           </AnimateIn>

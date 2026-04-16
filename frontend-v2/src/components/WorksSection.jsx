@@ -1,4 +1,3 @@
-// src/components/WorksSection.jsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -13,11 +12,17 @@ export const WorksSection = () => {
     data: projectsData,
     isLoading,
     isError,
-  } = useGetFeaturedProjectsQuery(6);
+  } = useGetFeaturedProjectsQuery(6); // Request max 6 from API
 
-  const projects = projectsData?.data ?? [];
+  // Filter: Only featured projects with priority > 0 (no zero priority projects)
+  const rawProjects = projectsData?.data ?? [];
 
-  // Responsive check
+  const projects = rawProjects
+    .filter(
+      (project) => project.featured === true && (project.priority ?? 0) > 0,
+    )
+    .slice(0, 6); // Strict limit to 6 projects
+
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -30,6 +35,7 @@ export const WorksSection = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Loading State
   if (isLoading) {
     return (
       <section style={{ backgroundColor: "#ffffff", padding: "80px 20px" }}>
@@ -44,6 +50,7 @@ export const WorksSection = () => {
     );
   }
 
+  // Hide section if no valid projects after filtering
   if (isError || projects.length === 0) {
     return null;
   }
@@ -57,7 +64,7 @@ export const WorksSection = () => {
       }}
     >
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        {/* Title */}
+        {/* Section Title */}
         <AnimateIn delay={0}>
           <div
             style={{
@@ -72,6 +79,7 @@ export const WorksSection = () => {
                 letterSpacing: "4px",
                 textTransform: "uppercase",
                 color: "#1a3c34",
+                fontWeight: 500,
               }}
             >
               WORKS
@@ -79,16 +87,16 @@ export const WorksSection = () => {
           </div>
         </AnimateIn>
 
-        {/* Grid */}
+        {/* Projects Grid */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", // ✅ FIXED HERE
+            gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
             gap: isMobile ? "24px" : "48px",
           }}
         >
           {projects.map((project, idx) => (
-            <AnimateIn key={project._id || project.slug} delay={0.1 * idx}>
+            <AnimateIn key={project._id || project.slug} delay={0.08 * idx}>
               <ProjectCard project={project} isMobile={isMobile} />
             </AnimateIn>
           ))}
@@ -98,7 +106,21 @@ export const WorksSection = () => {
         <div
           style={{ textAlign: "center", marginTop: isMobile ? "50px" : "80px" }}
         >
-          <Link href="/projects">SEE ALL PROJECTS →</Link>
+          <Link
+            href="/projects"
+            style={{
+              fontFamily: "'Lato', sans-serif",
+              fontSize: "15px",
+              letterSpacing: "2px",
+              textTransform: "uppercase",
+              color: "#1a3c34",
+              textDecoration: "none",
+              borderBottom: "2px solid #1a3c34",
+              paddingBottom: "4px",
+            }}
+          >
+            SEE ALL PROJECTS →
+          </Link>
         </div>
       </div>
     </section>
@@ -108,7 +130,12 @@ export const WorksSection = () => {
 const ProjectCard = ({ project, isMobile }) => {
   const [hovered, setHovered] = useState(false);
 
-  const imageSrc = `${project.image}?v=${project.updatedAt || project._id}`;
+  const imageSrc = project.image
+    ? `${project.image}?v=${project.updatedAt || Date.now()}`
+    : project.images?.[0]
+      ? `${project.images[0]}?v=${project.updatedAt || Date.now()}`
+      : "/placeholder.jpg";
+
   const title = project.title || "Untitled Project";
   const slug = project.slug;
 
@@ -117,11 +144,11 @@ const ProjectCard = ({ project, isMobile }) => {
   return (
     <Link
       href={`/project/${slug}`}
-      style={{ textDecoration: "none" }}
+      style={{ textDecoration: "none", color: "inherit" }}
       onMouseEnter={() => !isMobile && setHovered(true)}
       onMouseLeave={() => !isMobile && setHovered(false)}
     >
-      {/* Image */}
+      {/* Image Container */}
       <div
         style={{
           position: "relative",
@@ -130,6 +157,7 @@ const ProjectCard = ({ project, isMobile }) => {
           minHeight: isMobile ? "220px" : "auto",
           overflow: "hidden",
           borderRadius: "8px",
+          backgroundColor: "#f5f5f5",
         }}
       >
         <Image
@@ -137,23 +165,25 @@ const ProjectCard = ({ project, isMobile }) => {
           alt={title}
           fill
           sizes="(max-width: 768px) 100vw, 50vw"
-          quality={82}
+          quality={85}
           unoptimized
           style={{
             objectFit: "cover",
-            transition: "transform 0.5s ease",
-            transform: hovered ? "scale(1.03)" : "scale(1)",
+            transition: "transform 0.6s ease",
+            transform: hovered ? "scale(1.04)" : "scale(1)",
           }}
         />
       </div>
 
       {/* Title */}
-      <div style={{ paddingTop: "16px" }}>
+      <div style={{ paddingTop: "18px" }}>
         <h3
           style={{
             fontSize: isMobile ? "16px" : "18px",
             color: "#1a3c34",
-            lineHeight: "1.4",
+            lineHeight: "1.35",
+            fontWeight: 600,
+            letterSpacing: "-0.2px",
           }}
         >
           {title}

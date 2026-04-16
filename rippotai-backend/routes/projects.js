@@ -5,9 +5,9 @@ const multer = require("multer");
 const path = require("path");
 
 // ────────────────────────────────────────────────
-// Multer setup – MEMORY STORAGE (no disk writes)
+// Multer setup – MEMORY STORAGE
 // ────────────────────────────────────────────────
-const storage = multer.memoryStorage(); // ← crucial change
+const storage = multer.memoryStorage();
 
 const upload = multer({
   storage,
@@ -23,16 +23,15 @@ const upload = multer({
   },
 });
 
-// No need for separate single/array/fields — we use one instance
 const uploadFields = upload.fields([
   { name: "image", maxCount: 1 }, // Main image
-  { name: "banner", maxCount: 1 }, // ← NEW: Banner image
+  { name: "banner", maxCount: 1 }, // Banner image
   { name: "images", maxCount: 20 }, // Gallery images
 ]);
-/* ────────────────────────────────────────────────
-   ROUTES (unchanged)
-───────────────────────────────────────────────── */
-router.get("/", ProjectsController.getAllProjects);
+
+// ────────────────────────────────────────────────
+// PUBLIC ROUTES
+// ────────────────────────────────────────────────
 router.get("/public", ProjectsController.getPublicProjects);
 router.get("/featured", ProjectsController.getFeaturedProjects);
 router.get("/completed", ProjectsController.getCompletedProjects);
@@ -40,17 +39,36 @@ router.get("/drafts", ProjectsController.getDraftProjects);
 router.get("/location/:location", ProjectsController.getProjectsByLocation);
 router.get("/:slug", ProjectsController.getProjectBySlug);
 
-router.get("/admin/:projectId", ProjectsController.getProjectById);
+// ────────────────────────────────────────────────
+// ADMIN ROUTES
+// ────────────────────────────────────────────────
+router.get("/", ProjectsController.getAllProjects); // Get all projects (with pagination & search)
+router.get("/admin/:projectId", ProjectsController.getProjectById); // Get single project by projectId
 
+// Create & Update with file uploads
 router.post("/admin/", uploadFields, ProjectsController.createProject);
-
 router.put("/admin/:projectId", uploadFields, ProjectsController.updateProject);
 
+// Status Management
 router.patch(
   "/admin/:projectId/status",
   ProjectsController.updateProjectStatus,
 );
 
+// ✅ NEW: Priority Management
+router.patch(
+  "/admin/:projectId/priority",
+  ProjectsController.updateProjectPriority,
+);
+
+// ✅ NEW: Featured Management
+router.patch("/admin/:projectId/featured", ProjectsController.setFeatured); // Set featured true/false
+router.patch(
+  "/admin/:projectId/toggle-featured",
+  ProjectsController.toggleFeatured,
+); // Toggle featured
+
+// Delete Project
 router.delete("/admin/:projectId", ProjectsController.deleteProject);
 
 module.exports = router;

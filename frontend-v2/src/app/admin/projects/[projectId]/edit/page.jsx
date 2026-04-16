@@ -20,9 +20,7 @@ export default function EditProjectPage() {
     isLoading: isLoadingProject,
     isError,
     error,
-  } = useGetProjectByIdQuery(projectId, {
-    skip: !projectId,
-  });
+  } = useGetProjectByIdQuery(projectId, { skip: !projectId });
 
   const project = projectData?.data;
   const [updateProject, { isLoading: isUpdating }] = useUpdateProjectMutation();
@@ -36,12 +34,13 @@ export default function EditProjectPage() {
     location: "",
     scope: "",
     status: "draft",
+    priority: 0,
+    featured: false,
   });
 
   const [mainImageFile, setMainImageFile] = useState(null);
   const [mainImagePreview, setMainImagePreview] = useState(null);
 
-  // NEW: Banner states
   const [bannerImageFile, setBannerImageFile] = useState(null);
   const [bannerImagePreview, setBannerImagePreview] = useState(null);
 
@@ -63,59 +62,49 @@ export default function EditProjectPage() {
         location: project.location || "",
         scope: project.scope || "",
         status: project.status || "draft",
+        priority: project.priority ?? 0,
+        featured: project.featured ?? false,
       });
 
-      // Main Image
       setMainImagePreview(project.image || null);
-
-      // Banner Image
       setBannerImagePreview(project.banner || null);
-
-      // Gallery
       setKeptGalleryImages(project.images || []);
 
-      // Reset new uploads
-      setNewGalleryFiles([]);
-      setNewGalleryPreviews([]);
+      // Reset file states
       setMainImageFile(null);
       setBannerImageFile(null);
+      setNewGalleryFiles([]);
+      setNewGalleryPreviews([]);
     }
   }, [project]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormValues((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setFormValues((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
-  // Main Image Handler
+  // Image Handlers
   const handleMainImageSelect = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (!file.type.startsWith("image/")) {
-      setErrorMessage("Please select a valid image file");
-      return;
-    }
     setMainImageFile(file);
     const reader = new FileReader();
     reader.onloadend = () => setMainImagePreview(reader.result);
     reader.readAsDataURL(file);
   };
 
-  // Banner Image Handler
   const handleBannerImageSelect = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (!file.type.startsWith("image/")) {
-      setErrorMessage("Please select a valid image file");
-      return;
-    }
     setBannerImageFile(file);
     const reader = new FileReader();
     reader.onloadend = () => setBannerImagePreview(reader.result);
     reader.readAsDataURL(file);
   };
 
-  // Gallery Handlers
   const handleGallerySelect = (e) => {
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
@@ -160,38 +149,27 @@ export default function EditProjectPage() {
     try {
       const formData = new FormData();
 
-      // Text fields
       Object.entries(formValues).forEach(([key, value]) => {
         if (value !== undefined && value !== null) {
           formData.append(key, value);
         }
       });
 
-      // Main Image (only if changed)
-      if (mainImageFile) {
-        formData.append("image", mainImageFile);
-      }
+      if (mainImageFile) formData.append("image", mainImageFile);
+      if (bannerImageFile) formData.append("banner", bannerImageFile);
 
-      // Banner Image (only if changed)
-      if (bannerImageFile) {
-        formData.append("banner", bannerImageFile);
-      }
-
-      // Gallery handling
       if (keptGalleryImages.length > 0 || newGalleryFiles.length > 0) {
         formData.append("existingImages", JSON.stringify(keptGalleryImages));
-        newGalleryFiles.forEach((file) => {
-          formData.append("images", file);
-        });
+        newGalleryFiles.forEach((file) => formData.append("images", file));
       }
 
-      await updateProject({ projectId, formData: formData }).unwrap();
+      await updateProject({ projectId, formData }).unwrap();
 
       setSuccessMessage("Project updated successfully! Redirecting...");
-      setTimeout(() => router.push("/admin/projects"), 1800);
+      setTimeout(() => router.push("/admin/projects"), 1500);
     } catch (err) {
       console.error(err);
-      setErrorMessage(err.data?.message || "Failed to update project");
+      setErrorMessage(err?.data?.message || "Failed to update project");
     }
   };
 
@@ -261,7 +239,7 @@ export default function EditProjectPage() {
               name="title"
               value={formValues.title}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
@@ -274,7 +252,7 @@ export default function EditProjectPage() {
               name="category"
               value={formValues.category}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white"
               required
             >
               <option value="">Select category</option>
@@ -289,6 +267,41 @@ export default function EditProjectPage() {
           </div>
         </div>
 
+        {/* Priority & Featured */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Priority (Lower number = Higher priority)
+            </label>
+            <input
+              type="number"
+              name="priority"
+              value={formValues.priority}
+              onChange={handleChange}
+              min="0"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              0 = lowest, higher numbers = higher priority
+            </p>
+          </div>
+
+          <div className="flex items-center pt-8">
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                name="featured"
+                checked={formValues.featured}
+                onChange={handleChange}
+                className="w-5 h-5 accent-blue-600"
+              />
+              <span className="text-sm font-medium text-gray-700">
+                Mark as Featured
+              </span>
+            </label>
+          </div>
+        </div>
+
         {/* Status, Location, Scope */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
@@ -299,7 +312,7 @@ export default function EditProjectPage() {
               name="status"
               value={formValues.status}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white"
             >
               <option value="draft">Draft</option>
               <option value="working">In Progress</option>
@@ -317,7 +330,7 @@ export default function EditProjectPage() {
               name="location"
               value={formValues.location}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               placeholder="e.g. Delhi, India"
             />
           </div>
@@ -331,7 +344,7 @@ export default function EditProjectPage() {
               name="scope"
               value={formValues.scope}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               placeholder="e.g. 2500 sq ft"
             />
           </div>
@@ -347,7 +360,7 @@ export default function EditProjectPage() {
             value={formValues.description}
             onChange={handleChange}
             rows={3}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
@@ -361,7 +374,7 @@ export default function EditProjectPage() {
             value={formValues.details}
             onChange={handleChange}
             rows={10}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
@@ -412,8 +425,8 @@ export default function EditProjectPage() {
                   className="hidden"
                 />
               </label>
-              <p className="mt-2 text-xs text-gray-500 max-w-xs">
-                Recommended size: 1920 × 800 px (wide hero banner)
+              <p className="mt-2 text-xs text-gray-500">
+                Recommended: 1920 × 800 px
               </p>
             </div>
           </div>
@@ -465,9 +478,6 @@ export default function EditProjectPage() {
                   className="hidden"
                 />
               </label>
-              <p className="mt-2 text-xs text-gray-500">
-                Leave unchanged to keep current
-              </p>
             </div>
           </div>
         </div>
@@ -542,11 +552,10 @@ export default function EditProjectPage() {
           >
             Cancel
           </Link>
-
           <button
             type="submit"
             disabled={isUpdating}
-            className="inline-flex items-center px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="inline-flex items-center px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
           >
             {isUpdating ? (
               <>

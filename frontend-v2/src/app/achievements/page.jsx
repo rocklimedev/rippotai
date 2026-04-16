@@ -1,14 +1,7 @@
 "use client";
 
+import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardDescription,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Trophy, FileText, Building2, Calendar } from "lucide-react";
 import { AnimateIn } from "@/components/AnimateIn";
 import { aboutImage } from "@/lib/config";
@@ -20,7 +13,7 @@ const achievements = {
       org: "Indian Architecture Awards",
       year: "2024",
       description: "Recognized for innovative sustainable housing design.",
-      image: "/images/achievements/award1.jpg",
+      image: "/assets/awards.png",
     },
     {
       title: "Urban Excellence Award",
@@ -49,121 +42,76 @@ const achievements = {
     },
   ],
 };
+
 const AchievementCard = ({ item, icon: Icon }) => {
   return (
-    <div className="group overflow-hidden rounded-xl border bg-background hover:shadow-xl transition-all duration-300">
-      {/* Image */}
-      <div className="relative h-52 w-full overflow-hidden">
+    <div className="group bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500">
+      {/* Image Section - Full size, width controlled */}
+      <div className="relative bg-gray-50 flex items-center justify-center p-8 md:p-10">
         <img
           src={item.image}
           alt={item.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="w-full max-w-full h-auto max-h-[420px] object-contain transition-transform duration-700 group-hover:scale-[1.02]"
         />
 
-        {/* Optional overlay */}
-        <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition" />
+        {/* Year Badge */}
+        <div className="absolute top-6 right-6 bg-white/95 backdrop-blur-sm px-4 py-1.5 rounded-full text-xs font-medium flex items-center gap-2 shadow-sm">
+          <Calendar className="w-4 h-4 text-[#1a3c34]" />
+          {item.year}
+        </div>
       </div>
 
       {/* Content */}
-      <div className="p-5 space-y-3">
-        <div className="flex items-start justify-between">
-          <div>
-            <h3 className="text-lg font-medium">{item.title}</h3>
-            <p className="text-sm text-muted-foreground">{item.org}</p>
+      <div className="p-8 md:p-10">
+        <div className="flex items-center gap-3 mb-5">
+          <div className="w-11 h-11 rounded-full bg-[#1a3c34]/5 flex items-center justify-center flex-shrink-0">
+            <Icon className="w-5 h-5 text-[#d9af61]" />
           </div>
-          <Icon className="w-5 h-5 text-muted-foreground" />
+          <div>
+            <p className="text-sm text-gray-500 tracking-wide">{item.org}</p>
+          </div>
         </div>
 
-        <p className="text-sm text-muted-foreground">{item.description}</p>
+        <h3 className="text-2xl md:text-3xl font-light text-[#1a3c34] leading-tight mb-4">
+          {item.title}
+        </h3>
 
-        <div className="flex items-center justify-between">
-          <span className="inline-flex items-center gap-1 text-xs bg-muted px-2 py-1 rounded-md">
-            <Calendar className="w-3 h-3" />
-            {item.year}
-          </span>
-        </div>
+        <p className="text-gray-600 leading-relaxed text-[15.5px]">
+          {item.description}
+        </p>
       </div>
     </div>
   );
 };
+
 export default function AchievementsPage() {
   return (
     <>
-      {/* 🔥 Banner (same as Projects) */}
-      <section
-        style={{
-          position: "relative",
-          width: "100%",
-          height: "100vh",
-          overflow: "hidden",
-          backgroundColor: "#0a0a0a",
-        }}
-      >
+      {/* Hero Banner */}
+      <section className="relative h-screen min-h-[600px] overflow-hidden">
         <img
           src={aboutImage}
           alt="Achievements"
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            objectPosition: "center",
-          }}
+          className="absolute inset-0 w-full h-full object-cover"
         />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-black/70" />
 
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0.2))",
-          }}
-        />
-
-        <div
-          style={{
-            position: "absolute",
-            bottom: "60px",
-            left: "48px",
-          }}
-        >
-          <h1
-            style={{
-              fontFamily: "'Lato', sans-serif",
-              fontSize: "clamp(36px, 5vw, 56px)",
-              fontWeight: 300,
-              color: "#ffffff",
-              margin: 0,
-            }}
-          >
+        <div className="absolute bottom-16 left-6 md:left-12 z-10">
+          <div className="uppercase tracking-[4px] text-[#d9af61] text-sm font-medium mb-4">
+            RECOGNITION
+          </div>
+          <h1 className="text-white text-5xl md:text-6xl font-light tracking-tight">
             Achievements
           </h1>
-
-          <div
-            style={{
-              width: "40px",
-              height: "1px",
-              backgroundColor: "#d9af61",
-              marginTop: "20px",
-            }}
-          />
+          <div className="w-12 h-px bg-[#d9af61] mt-8" />
         </div>
       </section>
 
-      {/* 🔥 Intro Section (same spacing as Projects) */}
-      <section style={{ padding: "80px 48px", backgroundColor: "#ffffff" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <AnimateIn delay={0} distance={30} duration={1}>
-            <p
-              style={{
-                fontFamily: "'Lato', sans-serif",
-                fontSize: "16px",
-                fontWeight: 300,
-                color: "#666666",
-                lineHeight: 1.8,
-                maxWidth: "600px",
-                margin: 0,
-              }}
-            >
+      {/* Intro */}
+      <section className="py-20 md:py-28 bg-white">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <AnimateIn>
+            <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto">
               A record of our milestones — awards, research, and exhibitions
               that reflect our commitment to architectural excellence and
               innovation.
@@ -172,19 +120,36 @@ export default function AchievementsPage() {
         </div>
       </section>
 
-      {/* 🔥 Content Section */}
-      <section style={{ padding: "0 48px 120px", backgroundColor: "#ffffff" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+      {/* Main Content */}
+      <section className="pb-24 bg-white px-6">
+        <div className="max-w-6xl mx-auto">
           <Tabs defaultValue="awards" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-12">
-              <TabsTrigger value="awards">Awards</TabsTrigger>
-              <TabsTrigger value="papers">Research Papers</TabsTrigger>
-              <TabsTrigger value="exhibitions">Exhibitions</TabsTrigger>
-            </TabsList>
+            <div className="flex justify-center mb-12">
+              <TabsList className="bg-gray-100 p-1 rounded-full">
+                <TabsTrigger
+                  value="awards"
+                  className="px-8 py-3 rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm"
+                >
+                  Awards
+                </TabsTrigger>
+                <TabsTrigger
+                  value="papers"
+                  className="px-8 py-3 rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm"
+                >
+                  Research Papers
+                </TabsTrigger>
+                <TabsTrigger
+                  value="exhibitions"
+                  className="px-8 py-3 rounded-full data-[state=active]:bg-white data-[state=active]:shadow-sm"
+                >
+                  Exhibitions
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
             {/* Awards */}
-            <TabsContent value="awards">
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <TabsContent value="awards" className="mt-0">
+              <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
                 {achievements.awards.map((item, idx) => (
                   <AnimateIn key={idx} delay={0.1 * idx}>
                     <AchievementCard item={item} icon={Trophy} />
@@ -194,8 +159,8 @@ export default function AchievementsPage() {
             </TabsContent>
 
             {/* Papers */}
-            <TabsContent value="papers">
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <TabsContent value="papers" className="mt-0">
+              <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
                 {achievements.papers.map((item, idx) => (
                   <AnimateIn key={idx} delay={0.1 * idx}>
                     <AchievementCard item={item} icon={FileText} />
@@ -205,8 +170,8 @@ export default function AchievementsPage() {
             </TabsContent>
 
             {/* Exhibitions */}
-            <TabsContent value="exhibitions">
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <TabsContent value="exhibitions" className="mt-0">
+              <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
                 {achievements.exhibitions.map((item, idx) => (
                   <AnimateIn key={idx} delay={0.1 * idx}>
                     <AchievementCard item={item} icon={Building2} />

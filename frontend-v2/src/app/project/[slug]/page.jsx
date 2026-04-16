@@ -58,7 +58,7 @@ export default function ProjectDetailPage() {
   return (
     <main className="bg-white">
       {/* HERO */}
-      <section className="bg-white pt-16 md:pt-20 pb-12 md:pb-16 px-0">
+      <section className="bg-white pt-0 pb-12 md:pb-16 px-0">
         <div className="w-full">
           {/* 🔥 BIGGER FULL-WIDTH BANNER */}
           <div className="relative w-full aspect-[18/9] md:aspect-[26/9] overflow-hidden group">
