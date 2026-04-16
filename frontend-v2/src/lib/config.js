@@ -1,4 +1,5 @@
 import { Building2, Palette, Armchair, KeyRound } from "lucide-react";
+
 export const heroImages = [
   "https://static.cmtradingco.com/rippotai_projects/rippotai_images/1.png",
   "https://static.cmtradingco.com/rippotai_projects/rippotai_images/4.png",
@@ -102,30 +103,181 @@ export const processSteps = [
   },
 ];
 
+// lib/config.js
+
+
+
 export const services = [
   {
+    slug: "architecture",
     icon: Building2,
     title: "Architecture",
     description:
       "We create visually striking, functional spaces inspired by the simplicity and versatility of the cube.",
+
+    banner: "/assets/process.png",
+
+    intro: `
+      Our architectural approach blends creativity with precision. We design
+      spaces that are not only visually compelling but also deeply functional,
+      sustainable, and future-ready.
+    `,
+
+    features: [
+      "Concept design & spatial planning",
+      "3D visualization & walkthroughs",
+      "Sustainable & climate-responsive design",
+      "Residential & commercial architecture",
+    ],
+
+    process: [
+      "Understanding client vision & requirements",
+      "Concept sketches & ideation",
+      "Design development & approvals",
+      "Execution support & site coordination",
+    ],
+
+    deliverables: [
+      "Architectural drawings",
+      "3D renders",
+      "Material specifications",
+      "Execution-ready plans",
+    ],
+
+    gallery: [
+      "/assets/process.png",
+      "/assets/process.png",
+    ],
+
+    cta: "Start Your Architecture Project",
   },
+
   {
+    slug: "interiors",
     icon: Palette,
     title: "Interiors",
     description:
-      "Our interior designs blend style and practicality, tailored to reflect your personality and needs.",
+      "Our interior designs blend style and practicality.",
+
+    banner: "/assets/process.png",
+
+    intro: `
+      We design interiors that reflect your personality while maximizing
+      comfort and usability. Every detail is carefully curated to create
+      a cohesive and elegant space.
+    `,
+
+    features: [
+      "Space planning & layout optimization",
+      "Color, material & lighting design",
+      "Custom furniture integration",
+      "Residential & commercial interiors",
+    ],
+
+    process: [
+      "Mood board & concept creation",
+      "Layout planning",
+      "Material selection",
+      "Execution & styling",
+    ],
+
+    deliverables: [
+      "Interior layouts",
+      "3D renders",
+      "Furniture & decor plan",
+      "Execution drawings",
+    ],
+
+    gallery: [
+      "/assets/process.png",
+      "/assets/process.png",
+    ],
+
+    cta: "Design Your Interior Space",
   },
+
   {
+    slug: "furniture",
     icon: Armchair,
     title: "Furniture",
     description:
-      "Our niche furniture pieces are uniquely designed to reflect our brand's philosophy.",
+      "Our niche furniture pieces are uniquely designed.",
+
+    banner: "/assets/process.png",
+
+    intro: `
+      Our furniture pieces are crafted with precision and creativity,
+      designed to complement your space while standing out as statement pieces.
+    `,
+
+    features: [
+      "Custom furniture design",
+      "Premium materials & finishes",
+      "Ergonomic & functional design",
+      "Unique statement pieces",
+    ],
+
+    process: [
+      "Requirement discussion",
+      "Concept sketches",
+      "Material selection",
+      "Fabrication & delivery",
+    ],
+
+    deliverables: [
+      "Custom furniture pieces",
+      "Material samples",
+      "Design drawings",
+    ],
+
+    gallery: [
+      "/assets/process.png",
+      "/assets/process.png",
+    ],
+
+    cta: "Create Custom Furniture",
   },
+
   {
+    slug: "turnkey-projects",
     icon: KeyRound,
     title: "Turnkey Projects",
     description:
-      "End-to-end project delivery from concept to completion. We manage every detail — design, procurement, construction, and finishing — so you can move into a fully finished space without a worry.",
+      "End-to-end project delivery.",
+
+    banner: "/assets/process.png",
+
+    intro: `
+      We provide complete turnkey solutions, managing everything from concept
+      to completion. You get a fully finished, ready-to-use space without the stress.
+    `,
+
+    features: [
+      "End-to-end project management",
+      "Design + execution under one roof",
+      "Vendor & material coordination",
+      "Timeline & budget control",
+    ],
+
+    process: [
+      "Consultation & planning",
+      "Design & approvals",
+      "Execution & supervision",
+      "Final handover",
+    ],
+
+    deliverables: [
+      "Fully completed space",
+      "Quality assurance",
+      "Project documentation",
+    ],
+
+    gallery: [
+      "/assets/process.png",
+      "/assets/process.png",
+    ],
+
+    cta: "Start Turnkey Project",
   },
 ];
 export const teamMembers = [

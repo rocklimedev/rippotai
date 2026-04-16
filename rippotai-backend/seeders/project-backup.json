@@ -27,8 +27,8 @@
     ],
     "title": "Residential School for the Blind",
     "status": "draft",
-    "featured": false,
-    "projectId": "1db538e3-6f80-4211-b59a-d05525811051"
+    "projectId": "1db538e3-6f80-4211-b59a-d05525811051",
+    "featured": false
   },
   {
     "_id": "695f48fa1e9c4593195902b2",
@@ -49,8 +49,8 @@
     "details": "Lorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem Ipsum",
     "location": "DELHI",
     "scope": "Do nothing",
-    "featured": false,
-    "projectId": "de85d59d-3164-4f6a-8f44-478d2c00c611"
+    "projectId": "de85d59d-3164-4f6a-8f44-478d2c00c611",
+    "featured": false
   },
   {
     "_id": "6981a5c84ba888294d1bb827",
@@ -73,8 +73,8 @@
     "scope": "Interior Design, Space Planning, Display Design, Lighting Design",
     "status": "draft",
     "title": "Chhabra Marble & Sanitary Showroom",
-    "featured": false,
-    "projectId": "e80c1c89-d16a-48b6-a84e-439dda50f7b8"
+    "projectId": "e80c1c89-d16a-48b6-a84e-439dda50f7b8",
+    "featured": false
   },
   {
     "_id": "6981aa464ba888294d1bb845",
@@ -100,8 +100,8 @@
     "scope": "Planning & Designing",
     "status": "completed",
     "title": "Town Property office, Panchsheel park",
-    "featured": false,
-    "projectId": "0b386202-e703-4a53-8446-2c0cd4747a4c"
+    "projectId": "0b386202-e703-4a53-8446-2c0cd4747a4c",
+    "featured": false
   },
   {
     "_id": "6981aa464ba888294d1bb846",
@@ -125,8 +125,8 @@
     "scope": "Interior Designing",
     "status": "completed",
     "title": "Singh’s Residence",
-    "featured": false,
-    "projectId": "f6ed2d48-e72b-40c9-bb3d-7b6f8c5b88df"
+    "projectId": "f6ed2d48-e72b-40c9-bb3d-7b6f8c5b88df",
+    "featured": false
   },
   {
     "_id": "6981aa464ba888294d1bb847",
@@ -149,8 +149,8 @@
     "scope": "Interior Designing",
     "status": "completed",
     "title": "Goel's Residence Gurugram",
-    "featured": true,
-    "projectId": "232142c9-9478-4f62-acd8-7ff94cb946b7"
+    "projectId": "232142c9-9478-4f62-acd8-7ff94cb946b7",
+    "featured": true
   },
   {
     "_id": "6981aa464ba888294d1bb848",
@@ -180,8 +180,8 @@
     "scope": "Interior Designing",
     "status": "completed",
     "title": "Gupta's Residence, GK II",
-    "featured": false,
-    "projectId": "d825bad9-7a59-4aa4-b3be-d560598dea45"
+    "projectId": "d825bad9-7a59-4aa4-b3be-d560598dea45",
+    "featured": false
   },
   {
     "_id": "6981aa464ba888294d1bb849",
@@ -200,9 +200,9 @@
     "location": "Shalimar Bagh, New Delhi",
     "scope": "Interior Designing",
     "status": "completed",
-    "featured": false,
     "title": "Kohli's Residence, Shalimar Bagh",
-    "projectId": "644e4809-bf10-4bb3-94b6-11982af792d7"
+    "projectId": "644e4809-bf10-4bb3-94b6-11982af792d7",
+    "featured": false
   },
   {
     "_id": "6981aa464ba888294d1bb84a",
@@ -226,9 +226,9 @@
     "location": "Panchsheel Park, New Delhi",
     "scope": "Planning & Interior Designing",
     "status": "completed",
-    "featured": true,
     "title": "Vinay Khanna Law Chambers, Panchsheel Park",
-    "projectId": "58d64965-3c36-4cc1-94b0-510d6f234190"
+    "projectId": "58d64965-3c36-4cc1-94b0-510d6f234190",
+    "featured": true
   },
   {
     "_id": "6981aa464ba888294d1bb84b",
@@ -257,9 +257,9 @@
     "location": "KP-18, Pitampura, New Delhi",
     "scope": "Façade & Interior Designing",
     "status": "completed",
-    "featured": true,
     "title": "Nagpal's Residence, Pitampura",
-    "projectId": "a8cc3e34-04cb-4af8-9fb8-09cac9d456b7"
+    "projectId": "a8cc3e34-04cb-4af8-9fb8-09cac9d456b7",
+    "featured": true
   },
   {
     "_id": "6981aa464ba888294d1bb84c",
@@ -283,8 +283,8 @@
     "scope": "Planning & Designing",
     "status": "draft",
     "title": "CMRR Headquarters",
-    "featured": false,
-    "projectId": "93c29dcb-05dc-47c0-a7d4-c5546d998a9a"
+    "projectId": "93c29dcb-05dc-47c0-a7d4-c5546d998a9a",
+    "featured": false
   },
   {
     "_id": "6981aa464ba888294d1bb84d",
@@ -306,9 +306,9 @@
     "location": "Aligarh, Uttar Pradesh",
     "scope": "Planning & Designing",
     "status": "completed",
-    "featured": true,
     "title": "Moksh Dham , Aligarh",
-    "projectId": "9356d287-a96e-4aaf-88f7-5bc52308edd0"
+    "projectId": "9356d287-a96e-4aaf-88f7-5bc52308edd0",
+    "featured": true
   },
   {
     "_id": "6981aa474ba888294d1bb84e",
@@ -338,8 +338,8 @@
     "scope": "Planning & Designing",
     "status": "completed",
     "title": "Sky View Restaurant, Lucknow",
-    "featured": true,
-    "projectId": "d6b22237-c6d6-48c2-911c-bb0fa3507fe4"
+    "projectId": "d6b22237-c6d6-48c2-911c-bb0fa3507fe4",
+    "featured": true
   },
   {
     "_id": "6981aa474ba888294d1bb84f",
@@ -360,10 +360,10 @@
       "https://static.cmtradingco.com/rippotai_projects/b19_geetanjali_residence/banner.png"
     ],
     "location": "Geetanjali Marg, New Delhi",
-    "featured": true,
     "scope": "Terrace & Bespoke Furniture",
     "status": "completed",
     "title": "Khanna's residence, Geetanjali Marg",
-    "projectId": "4b18db13-d2df-4f6c-8dcb-1794cb347a4d"
+    "projectId": "4b18db13-d2df-4f6c-8dcb-1794cb347a4d",
+    "featured": true
   }
 ]

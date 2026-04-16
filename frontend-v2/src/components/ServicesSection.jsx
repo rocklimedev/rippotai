@@ -1,5 +1,9 @@
+"use client";
+
+import Link from "next/link"; // ✅ add this
 import { AnimateIn } from "./AnimateIn";
 import { services } from "@/lib/config";
+
 export const ServicesSection = () => {
   return (
     <section
@@ -52,6 +56,7 @@ export const ServicesSection = () => {
 
           {services.map((service, idx) => {
             const Icon = service.icon;
+
             return (
               <AnimateIn
                 key={idx}
@@ -59,76 +64,83 @@ export const ServicesSection = () => {
                 distance={60}
                 duration={1.3}
               >
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "100px 1fr",
-                    gap: "48px",
-                    alignItems: "start",
-                    marginBottom: idx < services.length - 1 ? "80px" : "0",
-                    position: "relative",
-                  }}
-                  className="service-item-grid"
+                {/* ✅ Wrap whole item */}
+                <Link
+                  href={`/services/${service.slug}`}
+                  style={{ textDecoration: "none" }}
                 >
-                  {/* Icon circle */}
                   <div
+                    className="service-item-grid"
                     style={{
-                      width: "100px",
-                      height: "100px",
-                      border: "1px solid #1a3c34",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      backgroundColor: "#ffffff",
+                      display: "grid",
+                      gridTemplateColumns: "100px 1fr",
+                      gap: "48px",
+                      alignItems: "start",
+                      marginBottom:
+                        idx < services.length - 1 ? "80px" : "0",
                       position: "relative",
-                      zIndex: 2,
+                      cursor: "pointer", // 👈 important UX
                     }}
                   >
-                    <Icon size={36} strokeWidth={1} color="#1a3c34" />
-                  </div>
-
-                  {/* Content */}
-                  <div style={{ paddingTop: "12px" }}>
-                    <h3
-                      style={{
-                        fontFamily: "'Lato', sans-serif",
-                        fontSize: "20px",
-                        fontWeight: 700,
-                        letterSpacing: "2px",
-                        textTransform: "uppercase",
-                        color: "#1a3c34",
-                        margin: 0,
-                        marginBottom: "16px",
-                      }}
-                    >
-                      {service.title}
-                    </h3>
-
-                    {/* Gold accent line */}
+                    {/* Icon circle */}
                     <div
                       style={{
-                        width: "30px",
-                        height: "1px",
-                        backgroundColor: "#d9af61",
-                        marginBottom: "16px",
-                      }}
-                    />
-
-                    <p
-                      style={{
-                        fontFamily: "'Lato', sans-serif",
-                        fontSize: "15px",
-                        fontWeight: 300,
-                        color: "#555555",
-                        lineHeight: 1.9,
-                        margin: 0,
-                        maxWidth: "500px",
+                        width: "100px",
+                        height: "100px",
+                        border: "1px solid #1a3c34",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundColor: "#ffffff",
+                        position: "relative",
+                        zIndex: 2,
                       }}
                     >
-                      {service.description}
-                    </p>
+                      <Icon size={36} strokeWidth={1} color="#1a3c34" />
+                    </div>
+
+                    {/* Content */}
+                    <div style={{ paddingTop: "12px" }}>
+                      <h3
+                        style={{
+                          fontFamily: "'Lato', sans-serif",
+                          fontSize: "20px",
+                          fontWeight: 700,
+                          letterSpacing: "2px",
+                          textTransform: "uppercase",
+                          color: "#1a3c34",
+                          margin: 0,
+                          marginBottom: "16px",
+                        }}
+                      >
+                        {service.title}
+                      </h3>
+
+                      <div
+                        style={{
+                          width: "30px",
+                          height: "1px",
+                          backgroundColor: "#d9af61",
+                          marginBottom: "16px",
+                        }}
+                      />
+
+                      <p
+                        style={{
+                          fontFamily: "'Lato', sans-serif",
+                          fontSize: "15px",
+                          fontWeight: 300,
+                          color: "#555555",
+                          lineHeight: 1.9,
+                          margin: 0,
+                          maxWidth: "500px",
+                        }}
+                      >
+                        {service.description}
+                      </p>
+                    </div>
                   </div>
-                </div>
+                </Link>
               </AnimateIn>
             );
           })}
