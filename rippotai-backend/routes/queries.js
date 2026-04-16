@@ -11,11 +11,11 @@ const {
 } = require("../controller/queriesController");
 
 // Query Routes
-router.post("/", createQuery); 
-router.get("/", getQueries); 
-router.get("/:id", getQuery); 
-router.put("/:id", updateQuery); 
-router.delete("/:id", deleteQuery); 
+router.post("/", createQuery);
+router.get("/", getQueries);
+router.get("/:id", getQuery);
+router.put("/:id", updateQuery);
+router.delete("/:id", deleteQuery);
 router.post("/:id/notes", addNote);
 
 module.exports = router;

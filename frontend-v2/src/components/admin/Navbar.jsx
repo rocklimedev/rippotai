@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Menu, User, LogOut } from "lucide-react";
+import { Menu, User, LogOut, Home } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export const Navbar = ({ onToggleSidebar, showMenu }) => {
@@ -22,10 +22,16 @@ export const Navbar = ({ onToggleSidebar, showMenu }) => {
 
   // ✅ LOGOUT FUNCTION
   const handleLogout = () => {
-    localStorage.removeItem("adminToken"); // remove token
+    localStorage.removeItem("adminToken");
     localStorage.removeItem("refreshToken");
-    setProfileOpen(false); // close dropdown
-    router.replace("/login"); // redirect
+    setProfileOpen(false);
+    router.replace("/login");
+  };
+
+  // ✅ BACK TO WEBSITE FUNCTION
+  const handleBackToSite = () => {
+    router.push("/"); // change if needed
+    setProfileOpen(false);
   };
 
   return (
@@ -54,10 +60,16 @@ export const Navbar = ({ onToggleSidebar, showMenu }) => {
           {profileOpen && (
             <div style={styles.dropdown}>
               <DropdownItem
+                icon={<Home size={16} />}
+                text="Back to Website"
+                onClick={handleBackToSite}
+              />
+
+              <DropdownItem
                 icon={<LogOut size={16} />}
                 text="Logout"
                 danger
-                onClick={handleLogout} // 🔥 IMPORTANT
+                onClick={handleLogout}
               />
             </div>
           )}
@@ -67,23 +79,31 @@ export const Navbar = ({ onToggleSidebar, showMenu }) => {
   );
 };
 
-const DropdownItem = ({ icon, text, danger, onClick }) => (
-  <div
-    onClick={onClick}
-    style={{
-      display: "flex",
-      alignItems: "center",
-      gap: 10,
-      padding: "12px 16px",
-      cursor: "pointer",
-      fontSize: 14,
-      color: danger ? "#ef4444" : "#374151",
-    }}
-  >
-    {icon}
-    {text}
-  </div>
-);
+const DropdownItem = ({ icon, text, danger, onClick }) => {
+  const [hover, setHover] = useState(false);
+
+  return (
+    <div
+      onClick={onClick}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 10,
+        padding: "12px 16px",
+        cursor: "pointer",
+        fontSize: 14,
+        color: danger ? "#ef4444" : "#374151",
+        background: hover ? "#f9fafb" : "transparent",
+        transition: "0.2s",
+      }}
+    >
+      {icon}
+      {text}
+    </div>
+  );
+};
 
 const styles = {
   header: {

@@ -24,14 +24,12 @@ export const Header = () => {
     document.body.style.overflow = menuOpen ? "hidden" : "auto";
   }, [menuOpen]);
 
-  const headerBg = scrolled ? "rgba(26, 60, 52, 0.6)" : "transparent";
-
   const scrollToSection = (href) => {
     setMenuOpen(false);
 
     if (href.startsWith("/")) {
       router.push(href);
-      window.scrollTo({ top: 0 });
+      window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
 
@@ -55,6 +53,7 @@ export const Header = () => {
 
   return (
     <>
+      {/* MAIN HEADER - No background when scrolled */}
       <header
         style={{
           position: "fixed",
@@ -62,14 +61,15 @@ export const Header = () => {
           left: 0,
           right: 0,
           zIndex: 1000,
-          transition: "background-color 0.4s ease",
+          backgroundColor: "transparent", // Always transparent
+          transition: "all 0.4s ease",
         }}
       >
         <div
           style={{
             maxWidth: "1400px",
             margin: "0 auto",
-            padding: "24px 48px",
+            padding: "20px 48px",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
@@ -92,7 +92,7 @@ export const Header = () => {
               }
               alt="Rippotai"
               style={{
-                height: "68px",
+                height: "62px",
                 width: "auto",
                 objectFit: "contain",
                 transition: "all 0.3s ease",
@@ -118,7 +118,7 @@ export const Header = () => {
         </div>
       </header>
 
-      {/* FULL SCREEN MENU */}
+      {/* FULL SCREEN MENU - Smaller Items */}
       <div
         style={{
           position: "fixed",
@@ -146,6 +146,7 @@ export const Header = () => {
           {[
             { label: "About", href: "/about" },
             { label: "Works", href: "/projects" },
+            { label: "Achievements", href: "/achivements" },
             { label: "Team", href: "/team" },
             { label: "Services", href: "/services" },
             { label: "Process", href: "/process" },
@@ -161,15 +162,16 @@ export const Header = () => {
               }}
               style={{
                 fontFamily: "'Lato', sans-serif",
-                fontSize: "clamp(22px, 5vw, 36px)",
+                fontSize: "clamp(18px, 4.5vw, 28px)",
                 fontWeight: 300,
-                letterSpacing: "4px",
+                letterSpacing: "3px",
                 textTransform: "uppercase",
                 color: "#ffffff",
                 textDecoration: "none",
-                padding: "18px 0",
+                padding: "14px 0",
                 transition: "all 0.3s ease",
                 textAlign: "center",
+                lineHeight: 1.2,
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.color = "#d9af61";

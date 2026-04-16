@@ -16,7 +16,7 @@ export const WhereItBegan = () => {
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
           gap: "80px",
-          alignItems: "start",
+          alignItems: "center",
         }}
         className="where-it-began-grid"
       >

@@ -58,21 +58,23 @@ export default function ProjectDetailPage() {
   return (
     <main className="bg-white">
       {/* HERO */}
-      <section className="bg-white pt-16 md:pt-20 pb-12 md:pb-16 px-4 sm:px-6 md:px-12 lg:px-16">
-        <div className="max-w-7xl mx-auto">
-          <div className="relative w-full max-w-6xl mx-auto aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-lg md:rounded-xl group">
+      <section className="bg-white pt-0 pb-12 md:pb-16 px-0">
+        <div className="w-full">
+          {/* 🔥 BIGGER FULL-WIDTH BANNER */}
+          <div className="w-full">
             <Image
               src={project.banner || "/placeholder.jpg"}
               alt={project.title}
-              fill
+              width={1920}
+              height={1080}
               priority
-              sizes="(max-width: 768px) 100vw, 80vw"
-              quality={82}
+              sizes="100vw"
+              quality={90}
               unoptimized
-              className="object-cover transition duration-700 group-hover:scale-105"
+              className="w-full h-auto object-contain"
             />
           </div>
-          <div className="max-w-6xl mx-auto mt-10 md:mt-12">
+          <div className="max-w-6xl mx-auto mt-10 md:mt-12 px-4 sm:px-6 md:px-12 lg:px-16">
             <div className="px-1 md:px-2">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light leading-tight max-w-3xl">
                 {project.title}

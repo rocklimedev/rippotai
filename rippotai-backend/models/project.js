@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-const slugify = require("slugify"); // npm install slugify
-const { v4: uuidv4 } = require("uuid"); // npm install uuid
+const slugify = require("slugify");
+const { v4: uuidv4 } = require("uuid");
 
 const projectSchema = new mongoose.Schema({
   // Public-facing big ID
@@ -30,11 +30,20 @@ const projectSchema = new mongoose.Schema({
     default: "draft",
     index: true,
   },
+
   featured: {
     type: Boolean,
     default: false,
     index: true,
   },
+
+  // ✅ NEW: Priority (lower = higher priority)
+  priority: {
+    type: Number,
+    default: 0, // 0 = lowest, 1+ = higher priority
+    index: true,
+  },
+
   location: {
     type: String,
     trim: true,
@@ -57,12 +66,17 @@ const projectSchema = new mongoose.Schema({
 
   image: {
     type: String,
-    required: true, // Main image URL
+    required: true,
+  },
+
+  banner: {
+    type: String,
+    required: true,
   },
 
   images: [
     {
-      type: String, // Gallery images
+      type: String,
     },
   ],
 
@@ -96,7 +110,7 @@ projectSchema.pre("save", async function (next) {
   while (
     await mongoose.models.Project.findOne({
       slug: uniqueSlug,
-      _id: { $ne: this._id }, // prevents conflict on updates
+      _id: { $ne: this._id },
     })
   ) {
     uniqueSlug = `${baseSlug}-${counter++}`;
@@ -106,7 +120,8 @@ projectSchema.pre("save", async function (next) {
   next();
 });
 
-// Compound & single-field indexes
+// ✅ Indexes (optimized for sorting by priority first)
+projectSchema.index({ priority: -1, createdAt: -1 });
 projectSchema.index({ status: 1, createdAt: -1 });
 projectSchema.index({ category: 1 });
 projectSchema.index({ slug: 1 });

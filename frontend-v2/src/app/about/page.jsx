@@ -1,11 +1,11 @@
-// app/about/page.jsx
-
 "use client";
+
 import { useEffect, useRef, useState } from "react";
 import { AnimateIn } from "@/components/AnimateIn";
 import { values, aboutImage } from "@/lib/config";
+
 /************************************
- * SMOOTH SCROLL HOOK
+ * SMOOTH SCROLL PROGRESS HOOK
  ************************************/
 const useScrollProgress = (ref) => {
   const [progress, setProgress] = useState(0);
@@ -18,6 +18,7 @@ const useScrollProgress = (ref) => {
         requestAnimationFrame(() => {
           const el = ref.current;
           if (!el) return;
+
           const rect = el.getBoundingClientRect();
           const scrollable = el.offsetHeight - window.innerHeight;
           const scrolled = -rect.top;
@@ -31,13 +32,13 @@ const useScrollProgress = (ref) => {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [ref]);
 
   return progress;
 };
 
 /************************************
- * HORIZONTAL SLIDER
+ * HORIZONTAL SLIDER (Vision & Mission)
  ************************************/
 const HorizontalSlider = () => {
   const containerRef = useRef(null);
@@ -87,19 +88,19 @@ const HorizontalSlider = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                padding: "0 10vw",
+                padding: "0 5vw", // Better mobile padding
               }}
             >
-              <div style={{ maxWidth: "700px" }}>
+              <div style={{ maxWidth: "720px", width: "100%" }}>
                 <div
                   style={{
                     fontFamily: "'Lato', sans-serif",
-                    fontSize: "12px",
+                    fontSize: "11px",
                     fontWeight: 500,
-                    letterSpacing: "4px",
+                    letterSpacing: "3px",
                     textTransform: "uppercase",
                     color: "#d9af61",
-                    marginBottom: "32px",
+                    marginBottom: "24px",
                   }}
                 >
                   {slide.label}
@@ -108,10 +109,11 @@ const HorizontalSlider = () => {
                 <h2
                   style={{
                     fontFamily: "'Lato', sans-serif",
-                    fontSize: "clamp(32px, 4vw, 48px)",
+                    fontSize: "clamp(28px, 6vw, 48px)",
                     fontWeight: 300,
                     color: "#1a3c34",
-                    marginBottom: "40px",
+                    marginBottom: "32px",
+                    lineHeight: 1.2,
                   }}
                 >
                   {slide.label}
@@ -120,10 +122,10 @@ const HorizontalSlider = () => {
                 <p
                   style={{
                     fontFamily: "'Lato', sans-serif",
-                    fontSize: "17px",
+                    fontSize: "clamp(15px, 4vw, 17px)",
                     fontWeight: 300,
                     color: "#555555",
-                    lineHeight: 2,
+                    lineHeight: 1.9,
                   }}
                 >
                   {slide.text}
@@ -133,15 +135,15 @@ const HorizontalSlider = () => {
           ))}
         </div>
 
-        {/* Progress indicators */}
+        {/* Progress Indicators */}
         <div
           style={{
             position: "absolute",
-            bottom: "48px",
+            bottom: "40px",
             left: "50%",
             transform: "translateX(-50%)",
             display: "flex",
-            gap: "12px",
+            gap: "10px",
           }}
         >
           {slides.map((_, idx) => (
@@ -154,7 +156,7 @@ const HorizontalSlider = () => {
                   progress >= idx / slides.length
                     ? "#d9af61"
                     : "rgba(26, 60, 52, 0.15)",
-                transition: "width 0.3s ease, background-color 0.3s ease",
+                transition: "all 0.3s ease",
               }}
             />
           ))}
@@ -164,6 +166,9 @@ const HorizontalSlider = () => {
   );
 };
 
+/************************************
+ * VALUES SLIDER
+ ************************************/
 const ValuesSlider = () => {
   const containerRef = useRef(null);
   const progress = useScrollProgress(containerRef);
@@ -184,16 +189,17 @@ const ValuesSlider = () => {
           backgroundColor: "#f5f1eb",
           display: "flex",
           alignItems: "center",
+          padding: "0 5vw",
         }}
       >
         {/* Header */}
-        <div style={{ position: "absolute", top: "48px", left: "10vw" }}>
+        <div style={{ position: "absolute", top: "40px", left: "5vw" }}>
           <div
             style={{
               fontFamily: "'Lato', sans-serif",
-              fontSize: "12px",
+              fontSize: "11px",
               fontWeight: 500,
-              letterSpacing: "4px",
+              letterSpacing: "3px",
               color: "#d9af61",
               marginBottom: "12px",
             }}
@@ -203,9 +209,10 @@ const ValuesSlider = () => {
           <h2
             style={{
               fontFamily: "'Lato', sans-serif",
-              fontSize: "clamp(28px, 3vw, 40px)",
+              fontSize: "clamp(26px, 5.5vw, 40px)",
               fontWeight: 300,
               color: "#1a3c34",
+              lineHeight: 1.2,
             }}
           >
             What drives us forward
@@ -228,16 +235,16 @@ const ValuesSlider = () => {
               key={idx}
               style={{
                 width: "100vw",
-                padding: "0 10vw",
+                padding: "0 5vw",
                 display: "flex",
                 alignItems: "center",
               }}
             >
               <div
                 style={{
-                  maxWidth: "600px",
-                  borderLeft: "2px solid #d9af61",
-                  padding: "32px 40px",
+                  maxWidth: "620px",
+                  borderLeft: "3px solid #d9af61",
+                  paddingLeft: "28px",
                 }}
               >
                 <div
@@ -246,7 +253,7 @@ const ValuesSlider = () => {
                     fontSize: "11px",
                     letterSpacing: "3px",
                     color: "#1a3c34",
-                    marginBottom: "16px",
+                    marginBottom: "12px",
                   }}
                 >
                   {val.title}
@@ -255,10 +262,11 @@ const ValuesSlider = () => {
                 <h3
                   style={{
                     fontFamily: "'Lato', sans-serif",
-                    fontSize: "clamp(28px, 3vw, 42px)",
+                    fontSize: "clamp(26px, 5vw, 42px)",
                     fontWeight: 300,
                     color: "#1a3c34",
                     marginBottom: "24px",
+                    lineHeight: 1.2,
                   }}
                 >
                   {val.title}
@@ -267,10 +275,10 @@ const ValuesSlider = () => {
                 <p
                   style={{
                     fontFamily: "'Lato', sans-serif",
-                    fontSize: "17px",
+                    fontSize: "clamp(15px, 4vw, 17px)",
                     fontWeight: 300,
                     color: "#555",
-                    lineHeight: 2,
+                    lineHeight: 1.9,
                   }}
                 >
                   {val.text}
@@ -280,15 +288,15 @@ const ValuesSlider = () => {
           ))}
         </div>
 
-        {/* Progress indicators */}
+        {/* Progress Indicators */}
         <div
           style={{
             position: "absolute",
-            bottom: "48px",
+            bottom: "40px",
             left: "50%",
             transform: "translateX(-50%)",
             display: "flex",
-            gap: "12px",
+            gap: "10px",
           }}
         >
           {values.map((_, idx) => {
@@ -317,17 +325,18 @@ const ValuesSlider = () => {
 };
 
 /************************************
- * MAIN PAGE
+ * MAIN ABOUT PAGE
  ************************************/
 export default function AboutPage() {
   return (
     <>
-      {/* Banner */}
+      {/* Hero Banner */}
       <section
         style={{
           position: "relative",
           width: "100%",
           height: "100vh",
+          minHeight: "600px",
           overflow: "hidden",
         }}
       >
@@ -345,16 +354,20 @@ export default function AboutPage() {
         <div
           style={{
             position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            backgroundColor: "rgba(0, 0, 0, 0.35)",
+            inset: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.4)",
           }}
         />
 
         {/* Heading */}
-        <div style={{ position: "absolute", bottom: 60, left: 48 }}>
+        <div
+          style={{
+            position: "absolute",
+            bottom: "15%",
+            left: "5vw",
+            right: "5vw",
+          }}
+        >
           <div
             style={{
               fontFamily: "'Lato', sans-serif",
@@ -362,7 +375,7 @@ export default function AboutPage() {
               letterSpacing: "3px",
               textTransform: "uppercase",
               color: "#d9af61",
-              marginBottom: 16,
+              marginBottom: "16px",
             }}
           >
             WHO WE ARE
@@ -371,9 +384,10 @@ export default function AboutPage() {
           <h1
             style={{
               fontFamily: "'Lato', sans-serif",
-              fontSize: "clamp(36px, 5vw, 56px)",
+              fontSize: "clamp(36px, 7vw, 56px)",
               fontWeight: 300,
               color: "#fff",
+              lineHeight: 1.1,
             }}
           >
             About Us
@@ -381,10 +395,10 @@ export default function AboutPage() {
 
           <div
             style={{
-              width: 40,
-              height: 1,
+              width: "40px",
+              height: "2px",
               backgroundColor: "#d9af61",
-              marginTop: 20,
+              marginTop: "24px",
             }}
           />
         </div>
@@ -392,18 +406,18 @@ export default function AboutPage() {
 
       <HorizontalSlider />
 
-      {/* About Text */}
-      <section style={{ padding: "120px 48px", backgroundColor: "#fff" }}>
-        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+      {/* About Text Section */}
+      <section style={{ padding: "100px 5vw 120px", backgroundColor: "#fff" }}>
+        <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
           <AnimateIn>
             <div
               style={{
                 fontFamily: "'Lato', sans-serif",
-                fontSize: 12,
-                letterSpacing: "4px",
+                fontSize: "11px",
+                letterSpacing: "3px",
                 textTransform: "uppercase",
                 color: "#d9af61",
-                marginBottom: 32,
+                marginBottom: "32px",
               }}
             >
               ABOUT US
@@ -414,11 +428,11 @@ export default function AboutPage() {
             <h2
               style={{
                 fontFamily: "'Lato', sans-serif",
-                fontSize: "clamp(24px, 3vw, 36px)",
+                fontSize: "clamp(24px, 5.5vw, 36px)",
                 fontWeight: 300,
                 color: "#1a3c34",
-                lineHeight: 1.6,
-                marginBottom: 40,
+                lineHeight: 1.5,
+                marginBottom: "40px",
               }}
             >
               We design spaces that inspire innovation, foster warmth, and shape
@@ -431,10 +445,10 @@ export default function AboutPage() {
             <p
               style={{
                 fontFamily: "'Lato', sans-serif",
-                fontSize: 16,
+                fontSize: "clamp(15px, 4vw, 17px)",
                 color: "#444",
                 lineHeight: 2,
-                marginBottom: 24,
+                marginBottom: "28px",
               }}
             >
               “Rippotai,” is inspired by the Japanese term for “cube,”
@@ -447,7 +461,7 @@ export default function AboutPage() {
             <p
               style={{
                 fontFamily: "'Lato', sans-serif",
-                fontSize: 16,
+                fontSize: "clamp(15px, 4vw, 17px)",
                 color: "#444",
                 lineHeight: 2,
               }}
@@ -462,18 +476,18 @@ export default function AboutPage() {
 
       <ValuesSlider />
 
-      {/* Our Story */}
-      <section style={{ padding: "120px 48px" }}>
-        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+      {/* Our Story Section */}
+      <section style={{ padding: "100px 5vw" }}>
+        <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
           <AnimateIn>
             <div
               style={{
                 fontFamily: "'Lato', sans-serif",
-                fontSize: 12,
-                letterSpacing: "4px",
+                fontSize: "11px",
+                letterSpacing: "3px",
                 textTransform: "uppercase",
                 color: "#d9af61",
-                marginBottom: 32,
+                marginBottom: "32px",
               }}
             >
               OUR STORY
@@ -484,10 +498,11 @@ export default function AboutPage() {
             <h2
               style={{
                 fontFamily: "'Lato', sans-serif",
-                fontSize: "clamp(24px, 3vw, 36px)",
+                fontSize: "clamp(24px, 5.5vw, 36px)",
                 fontWeight: 300,
                 color: "#1a3c34",
-                marginBottom: 48,
+                lineHeight: 1.5,
+                marginBottom: "48px",
               }}
             >
               Rippotai Architecture was founded on the belief that architecture
@@ -495,7 +510,9 @@ export default function AboutPage() {
             </h2>
           </AnimateIn>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 48 }}>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "60px" }}
+          >
             {[
               {
                 year: "The Beginning",
@@ -514,16 +531,21 @@ export default function AboutPage() {
                 <div
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "180px 1fr",
-                    gap: 48,
+                    gridTemplateColumns: "1fr",
+                    gap: "20px",
+                    "@media (min-width: 768px)": {
+                      gridTemplateColumns: "180px 1fr",
+                      gap: "48px",
+                    },
                   }}
                 >
                   <div
                     style={{
                       fontFamily: "'Lato', sans-serif",
-                      fontSize: 14,
+                      fontSize: "15px",
                       letterSpacing: "2px",
                       color: "#d9af61",
+                      fontWeight: 500,
                     }}
                   >
                     {item.year}
@@ -532,10 +554,10 @@ export default function AboutPage() {
                   <p
                     style={{
                       fontFamily: "'Lato', sans-serif",
-                      fontSize: 16,
+                      fontSize: "clamp(15px, 4vw, 17px)",
                       color: "#444",
                       lineHeight: 2,
-                      paddingBottom: 48,
+                      paddingBottom: idx < 2 ? "40px" : "0",
                       borderBottom:
                         idx < 2 ? "1px solid rgba(26,60,52,0.1)" : "none",
                     }}

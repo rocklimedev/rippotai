@@ -28,23 +28,6 @@ exports.createQuery = async (req, res, next) => {
 
     await query.save();
 
-    // Send emails
-    try {
-      await emailer(email, queryConfirmationEmail({ name, subject }));
-
-      await emailer(
-        process.env.ADMIN_EMAIL,
-        adminQueryNotificationEmail({
-          name,
-          email,
-          subject,
-          branch,
-        })
-      );
-    } catch (emailErr) {
-      console.error("Email error:", emailErr);
-    }
-
     return res.status(201).json({
       message: "Query created successfully",
       id: query._id,
@@ -90,7 +73,7 @@ exports.getQuery = async (req, res, next) => {
 
     const query = await Query.findOne(filter).populate(
       "assignedTo",
-      "name email"
+      "name email",
     );
 
     if (!query) {
@@ -117,7 +100,7 @@ exports.updateQuery = async (req, res, next) => {
     const query = await Query.findOneAndUpdate(
       { _id: req.params.id, branch },
       req.body,
-      { new: true }
+      { new: true },
     ).populate("assignedTo", "name email");
 
     if (!query) {

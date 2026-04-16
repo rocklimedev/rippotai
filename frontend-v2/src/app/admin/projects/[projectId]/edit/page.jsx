@@ -20,9 +20,8 @@ export default function EditProjectPage() {
     isLoading: isLoadingProject,
     isError,
     error,
-  } = useGetProjectByIdQuery(projectId, {
-    skip: !projectId,
-  });
+  } = useGetProjectByIdQuery(projectId, { skip: !projectId });
+
   const project = projectData?.data;
   const [updateProject, { isLoading: isUpdating }] = useUpdateProjectMutation();
 
@@ -35,14 +34,19 @@ export default function EditProjectPage() {
     location: "",
     scope: "",
     status: "draft",
+    priority: 0,
+    featured: false,
   });
 
   const [mainImageFile, setMainImageFile] = useState(null);
   const [mainImagePreview, setMainImagePreview] = useState(null);
 
-  const [keptGalleryImages, setKeptGalleryImages] = useState([]); // existing server URLs to keep
-  const [newGalleryFiles, setNewGalleryFiles] = useState([]); // new File objects
-  const [newGalleryPreviews, setNewGalleryPreviews] = useState([]); // new preview URLs
+  const [bannerImageFile, setBannerImageFile] = useState(null);
+  const [bannerImagePreview, setBannerImagePreview] = useState(null);
+
+  const [keptGalleryImages, setKeptGalleryImages] = useState([]);
+  const [newGalleryFiles, setNewGalleryFiles] = useState([]);
+  const [newGalleryPreviews, setNewGalleryPreviews] = useState([]);
 
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -58,34 +62,46 @@ export default function EditProjectPage() {
         location: project.location || "",
         scope: project.scope || "",
         status: project.status || "draft",
+        priority: project.priority ?? 0,
+        featured: project.featured ?? false,
       });
 
       setMainImagePreview(project.image || null);
+      setBannerImagePreview(project.banner || null);
       setKeptGalleryImages(project.images || []);
 
-      // Reset any pending uploads
+      // Reset file states
+      setMainImageFile(null);
+      setBannerImageFile(null);
       setNewGalleryFiles([]);
       setNewGalleryPreviews([]);
-      setMainImageFile(null);
     }
   }, [project]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormValues((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setFormValues((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
+  // Image Handlers
   const handleMainImageSelect = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (!file.type.startsWith("image/")) {
-      setErrorMessage("Please select a valid image file");
-      return;
-    }
-
     setMainImageFile(file);
     const reader = new FileReader();
     reader.onloadend = () => setMainImagePreview(reader.result);
+    reader.readAsDataURL(file);
+  };
+
+  const handleBannerImageSelect = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setBannerImageFile(file);
+    const reader = new FileReader();
+    reader.onloadend = () => setBannerImagePreview(reader.result);
     reader.readAsDataURL(file);
   };
 
@@ -102,7 +118,6 @@ export default function EditProjectPage() {
       }
     });
 
-    // Wait briefly for FileReaders (not ideal, but simple)
     setTimeout(() => {
       setNewGalleryPreviews((prev) => [...prev, ...previews]);
       setNewGalleryFiles((prev) => [...prev, ...files]);
@@ -123,7 +138,6 @@ export default function EditProjectPage() {
     setErrorMessage("");
     setSuccessMessage("");
 
-    // Basic validation
     if (!formValues.title.trim()) return setErrorMessage("Title is required");
     if (!formValues.category.trim())
       return setErrorMessage("Category is required");
@@ -135,33 +149,27 @@ export default function EditProjectPage() {
     try {
       const formData = new FormData();
 
-      // Append all text fields
       Object.entries(formValues).forEach(([key, value]) => {
         if (value !== undefined && value !== null) {
           formData.append(key, value);
         }
       });
 
-      // Main image - only if replaced
-      if (mainImageFile) {
-        formData.append("image", mainImageFile);
-      }
+      if (mainImageFile) formData.append("image", mainImageFile);
+      if (bannerImageFile) formData.append("banner", bannerImageFile);
 
-      // Gallery: kept existing + new uploads
       if (keptGalleryImages.length > 0 || newGalleryFiles.length > 0) {
         formData.append("existingImages", JSON.stringify(keptGalleryImages));
-        newGalleryFiles.forEach((file) => {
-          formData.append("images", file);
-        });
+        newGalleryFiles.forEach((file) => formData.append("images", file));
       }
 
-      // Send update
       await updateProject({ projectId, formData }).unwrap();
 
       setSuccessMessage("Project updated successfully! Redirecting...");
-      setTimeout(() => router.push("/admin/projects"), 1800);
+      setTimeout(() => router.push("/admin/projects"), 1500);
     } catch (err) {
-      setErrorMessage(err.data?.message || "Failed to update project");
+      console.error(err);
+      setErrorMessage(err?.data?.message || "Failed to update project");
     }
   };
 
@@ -179,7 +187,7 @@ export default function EditProjectPage() {
       <div className="container mx-auto px-4 py-8">
         <div className="bg-red-50 border border-red-200 text-red-800 p-6 rounded-lg">
           <h2 className="text-lg font-semibold">Error</h2>
-          <p>{error?.data?.message || "Project not found or failed to load"}</p>
+          <p>{error?.data?.message || "Project not found"}</p>
           <Link
             href="/admin/projects"
             className="mt-4 inline-block text-blue-600 hover:underline"
@@ -203,8 +211,7 @@ export default function EditProjectPage() {
         </Link>
         <h1 className="text-3xl font-bold text-gray-900">Edit Project</h1>
         <p className="mt-2 text-gray-600">
-          Update details for{" "}
-          <strong>{project.title || "Untitled Project"}</strong>
+          Updating: <strong>{project.title}</strong>
         </p>
       </div>
 
@@ -232,7 +239,7 @@ export default function EditProjectPage() {
               name="title"
               value={formValues.title}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
@@ -245,7 +252,7 @@ export default function EditProjectPage() {
               name="category"
               value={formValues.category}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white"
               required
             >
               <option value="">Select category</option>
@@ -260,7 +267,42 @@ export default function EditProjectPage() {
           </div>
         </div>
 
-        {/* Status + Location + Scope */}
+        {/* Priority & Featured */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Priority (Lower number = Higher priority)
+            </label>
+            <input
+              type="number"
+              name="priority"
+              value={formValues.priority}
+              onChange={handleChange}
+              min="0"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              0 = lowest, higher numbers = higher priority
+            </p>
+          </div>
+
+          <div className="flex items-center pt-8">
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                name="featured"
+                checked={formValues.featured}
+                onChange={handleChange}
+                className="w-5 h-5 accent-blue-600"
+              />
+              <span className="text-sm font-medium text-gray-700">
+                Mark as Featured
+              </span>
+            </label>
+          </div>
+        </div>
+
+        {/* Status, Location, Scope */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -270,7 +312,7 @@ export default function EditProjectPage() {
               name="status"
               value={formValues.status}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white"
             >
               <option value="draft">Draft</option>
               <option value="working">In Progress</option>
@@ -288,8 +330,8 @@ export default function EditProjectPage() {
               name="location"
               value={formValues.location}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="e.g. Mumbai, Maharashtra"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              placeholder="e.g. Delhi, India"
             />
           </div>
 
@@ -302,13 +344,13 @@ export default function EditProjectPage() {
               name="scope"
               value={formValues.scope}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               placeholder="e.g. 2500 sq ft"
             />
           </div>
         </div>
 
-        {/* Description */}
+        {/* Description & Details */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Short Description <span className="text-red-500">*</span>
@@ -318,12 +360,11 @@ export default function EditProjectPage() {
             value={formValues.description}
             onChange={handleChange}
             rows={3}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
 
-        {/* Detailed Content */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Detailed Content <span className="text-red-500">*</span>
@@ -333,15 +374,68 @@ export default function EditProjectPage() {
             value={formValues.details}
             onChange={handleChange}
             rows={10}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             required
           />
+        </div>
+
+        {/* Banner Image */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Banner / Hero Image
+          </label>
+          <div className="flex items-start gap-6">
+            <div className="flex-1">
+              {bannerImagePreview ? (
+                <div className="relative w-full max-w-3xl h-64 rounded-xl overflow-hidden border border-gray-200 bg-gray-50">
+                  <Image
+                    src={bannerImagePreview}
+                    alt="Banner preview"
+                    fill
+                    className="object-cover"
+                  />
+                  {bannerImageFile && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setBannerImageFile(null);
+                        setBannerImagePreview(project?.banner || null);
+                      }}
+                      className="absolute top-3 right-3 bg-white/90 hover:bg-white text-red-600 rounded-full p-2 shadow"
+                    >
+                      <X size={18} />
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div className="w-full max-w-3xl h-64 rounded-xl bg-gray-100 flex items-center justify-center text-gray-500">
+                  No banner image
+                </div>
+              )}
+            </div>
+
+            <div>
+              <label className="cursor-pointer inline-flex items-center px-5 py-3 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200">
+                <Upload size={18} className="mr-2" />
+                Change Banner Image
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleBannerImageSelect}
+                  className="hidden"
+                />
+              </label>
+              <p className="mt-2 text-xs text-gray-500">
+                Recommended: 1920 × 800 px
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Main Image */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Main / Cover Image
+            Main / Thumbnail Image
           </label>
           <div className="flex items-start gap-6 flex-wrap">
             <div className="flex-1 min-w-[200px]">
@@ -349,7 +443,7 @@ export default function EditProjectPage() {
                 <div className="relative w-64 h-48 rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
                   <Image
                     src={mainImagePreview}
-                    alt="Current main image"
+                    alt="Main image"
                     fill
                     className="object-cover"
                   />
@@ -360,7 +454,7 @@ export default function EditProjectPage() {
                         setMainImageFile(null);
                         setMainImagePreview(project?.image || null);
                       }}
-                      className="absolute top-2 right-2 bg-white/80 hover:bg-white text-red-600 rounded-full p-1.5 shadow-sm"
+                      className="absolute top-2 right-2 bg-white/80 hover:bg-white text-red-600 rounded-full p-1.5"
                     >
                       <X size={16} />
                     </button>
@@ -384,9 +478,6 @@ export default function EditProjectPage() {
                   className="hidden"
                 />
               </label>
-              <p className="mt-2 text-xs text-gray-500">
-                Leave unchanged to keep current image
-              </p>
             </div>
           </div>
         </div>
@@ -396,15 +487,13 @@ export default function EditProjectPage() {
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Gallery Images
           </label>
-
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {/* Kept (existing) images */}
             {keptGalleryImages.map((url, index) => (
               <div key={`kept-${index}`} className="relative group">
                 <div className="aspect-square rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
                   <Image
                     src={url}
-                    alt={`Gallery ${index + 1}`}
+                    alt={`Gallery ${index}`}
                     fill
                     className="object-cover"
                   />
@@ -412,20 +501,19 @@ export default function EditProjectPage() {
                 <button
                   type="button"
                   onClick={() => removeKeptImage(index)}
-                  className="absolute top-1 right-1 bg-white/90 hover:bg-white text-red-600 rounded-full p-1.5 shadow opacity-0 group-hover:opacity-100 transition"
+                  className="absolute top-1 right-1 bg-white/90 hover:bg-white text-red-600 rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition"
                 >
                   <Trash2 size={14} />
                 </button>
               </div>
             ))}
 
-            {/* New previews */}
             {newGalleryPreviews.map((preview, index) => (
               <div key={`new-${index}`} className="relative group">
                 <div className="aspect-square rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
                   <Image
                     src={preview}
-                    alt={`New ${index + 1}`}
+                    alt={`New ${index}`}
                     fill
                     className="object-cover"
                   />
@@ -433,20 +521,17 @@ export default function EditProjectPage() {
                 <button
                   type="button"
                   onClick={() => removeNewImage(index)}
-                  className="absolute top-1 right-1 bg-white/90 hover:bg-white text-red-600 rounded-full p-1.5 shadow opacity-0 group-hover:opacity-100 transition"
+                  className="absolute top-1 right-1 bg-white/90 hover:bg-white text-red-600 rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition"
                 >
                   <X size={14} />
                 </button>
               </div>
             ))}
 
-            {/* Add button */}
             <label className="aspect-square flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 hover:bg-gray-100 cursor-pointer transition">
               <Plus size={24} className="text-gray-400 mb-1" />
               <span className="text-xs text-gray-500 text-center">
-                Add more
-                <br />
-                images
+                Add more images
               </span>
               <input
                 type="file"
@@ -459,7 +544,7 @@ export default function EditProjectPage() {
           </div>
         </div>
 
-        {/* Form Actions */}
+        {/* Actions */}
         <div className="pt-6 border-t border-gray-200 flex justify-end gap-4">
           <Link
             href="/admin/projects"
@@ -467,16 +552,15 @@ export default function EditProjectPage() {
           >
             Cancel
           </Link>
-
           <button
             type="submit"
             disabled={isUpdating}
-            className="inline-flex items-center px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+            className="inline-flex items-center px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
           >
             {isUpdating ? (
               <>
                 <Loader2 size={18} className="animate-spin mr-2" />
-                Saving...
+                Saving Changes...
               </>
             ) : (
               "Save Changes"

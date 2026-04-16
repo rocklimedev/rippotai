@@ -5,7 +5,6 @@ import Link from "next/link";
 import { format } from "date-fns";
 import {
   FileText,
-  Briefcase,
   MessageSquare,
   Users,
   ArrowRight,
@@ -19,47 +18,37 @@ import { useGetProfileQuery } from "@/api/authApi";
 import { useGetApplicationsQuery } from "@/api/applicationsApi";
 import { useGetQueriesQuery } from "@/api/queriesApi";
 
+const BRANCH = "rippotai";
+
 export default function AdminDashboard() {
   // ───────────────── Fetch Data ─────────────────
   const { data: projectsResponse, isLoading: projectsLoading } =
-    useGetProjectsQuery({ limit: 5 });
+    useGetProjectsQuery({ page: 1, limit: 5 });
 
   const { data: jobsResponse, isLoading: jobsLoading } = useGetJobsQuery();
 
   const { data: queriesResponse, isLoading: queriesLoading } =
-    useGetQueriesQuery();
+    useGetQueriesQuery(BRANCH);
 
   const { data: applicationsResponse, isLoading: appsLoading } =
     useGetApplicationsQuery();
 
   const { data: profile, isLoading: profileLoading } = useGetProfileQuery();
 
-  // ───────────────── Safe Array Extraction ─────────────────
-  const projects = Array.isArray(projectsResponse?.data)
-    ? projectsResponse.data
-    : Array.isArray(projectsResponse)
-      ? projectsResponse
-      : [];
+  // ───────────────── Safe Extraction ─────────────────
+  const projects =
+    projectsResponse?.data?.data ||
+    projectsResponse?.data ||
+    projectsResponse ||
+    [];
 
-  const jobs = Array.isArray(jobsResponse?.data)
-    ? jobsResponse.data
-    : Array.isArray(jobsResponse)
-      ? jobsResponse
-      : [];
+  const jobs = jobsResponse?.data || jobsResponse || [];
 
-  const queries = Array.isArray(queriesResponse?.data)
-    ? queriesResponse.data
-    : Array.isArray(queriesResponse)
-      ? queriesResponse
-      : [];
+  const queries = queriesResponse?.data || queriesResponse || [];
 
-  const applications = Array.isArray(applicationsResponse?.data)
-    ? applicationsResponse.data
-    : Array.isArray(applicationsResponse)
-      ? applicationsResponse
-      : [];
+  const applications = applicationsResponse?.data || applicationsResponse || [];
 
-  // ───────────────── Derived Stats (NO STATE) ─────────────────
+  // ───────────────── Stats ─────────────────
   const stats = {
     projects: projects.length,
     jobs: jobs.length,
@@ -74,7 +63,7 @@ export default function AdminDashboard() {
     appsLoading ||
     profileLoading;
 
-  // ───────────────── Loading Screen ─────────────────
+  // ───────────────── Loading ─────────────────
   if (isLoading) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center">
@@ -84,24 +73,22 @@ export default function AdminDashboard() {
     );
   }
 
-  // ───────────────── Dashboard UI ─────────────────
+  // ───────────────── UI ─────────────────
   return (
     <div className="space-y-8">
-      {/* Welcome Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-            Welcome back
-            {profile?.name ? `, ${profile.name.split(" ")[0]}` : ""}!
-          </h1>
-          <p className="mt-2 text-gray-600">
-            Here's a quick overview of your admin dashboard
-          </p>
-        </div>
+      {/* Header */}
+      <div>
+        <h1 className="text-3xl font-bold text-gray-900">
+          Welcome back
+          {profile?.name ? `, ${profile.name.split(" ")[0]}` : ""}!
+        </h1>
+        <p className="text-gray-600 mt-2">
+          Here's a quick overview of your admin dashboard
+        </p>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <StatCard
           icon={<FileText size={24} />}
           title="Projects"
@@ -127,9 +114,9 @@ export default function AdminDashboard() {
         />
       </div>
 
-      {/* Recent Activity */}
+      {/* Recent */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Recent Projects */}
+        {/* Projects */}
         <RecentSection
           title="Recent Projects"
           items={projects.slice(0, 5)}
@@ -150,7 +137,7 @@ export default function AdminDashboard() {
           )}
         />
 
-        {/* Recent Inquiries */}
+        {/* Queries */}
         <RecentSection
           title="Recent Inquiries"
           items={queries.slice(0, 5)}
@@ -172,68 +159,59 @@ export default function AdminDashboard() {
   );
 }
 
-// ───────────────── Reusable Components ─────────────────
+// ───────────────── Components ─────────────────
 
 function StatCard({ icon, title, value, color, link }) {
-  const colorClasses = {
+  const colors = {
     blue: "bg-blue-100 text-blue-700",
-    green: "bg-green-100 text-green-700",
     purple: "bg-purple-100 text-purple-700",
     orange: "bg-orange-100 text-orange-700",
   };
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 hover:shadow-md transition-all">
-      <div className="flex items-center justify-between">
-        <div className={`p-3 rounded-lg ${colorClasses[color]}`}>{icon}</div>
+    <div className="bg-white border rounded-xl p-6 shadow-sm hover:shadow-md transition">
+      <div className="flex justify-between">
+        <div className={`p-3 rounded-lg ${colors[color]}`}>{icon}</div>
 
-        {link && (
-          <Link
-            href={link}
-            className="text-sm text-gray-500 hover:text-blue-600 flex items-center gap-1"
-          >
-            View all <ArrowRight size={14} />
-          </Link>
-        )}
+        <Link
+          href={link}
+          className="text-sm text-gray-500 hover:text-blue-600 flex items-center gap-1"
+        >
+          View <ArrowRight size={14} />
+        </Link>
       </div>
 
-      <h3 className="mt-4 text-lg font-medium text-gray-700">{title}</h3>
-      <p className="mt-1 text-3xl font-bold text-gray-900">{value}</p>
+      <h3 className="mt-4 text-gray-600">{title}</h3>
+      <p className="text-3xl font-bold">{value}</p>
     </div>
   );
 }
 
 function RecentSection({ title, items, emptyMessage, link, renderItem }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-      <div className="p-6 border-b border-gray-200 flex items-center justify-between">
-        <h3 className="text-lg font-semibold">{title}</h3>
-
-        {link && (
-          <Link
-            href={link}
-            className="text-sm text-blue-600 hover:underline flex items-center gap-1"
-          >
-            View all <ArrowRight size={16} />
-          </Link>
-        )}
+    <div className="bg-white border rounded-xl shadow-sm">
+      <div className="p-5 border-b flex justify-between">
+        <h3 className="font-semibold">{title}</h3>
+        <Link
+          href={link}
+          className="text-blue-600 text-sm flex items-center gap-1"
+        >
+          View all <ArrowRight size={14} />
+        </Link>
       </div>
 
-      {items?.length > 0 ? (
-        <div className="divide-y divide-gray-100">
+      {items?.length ? (
+        <div className="divide-y">
           {items.map((item) => (
-            <div
-              key={item._id || item.id}
-              className="p-5 hover:bg-gray-50 transition-colors"
-            >
+            <div key={item._id || item.id} className="p-4 hover:bg-gray-50">
               {renderItem(item)}
             </div>
           ))}
         </div>
       ) : (
-        <div className="p-10 text-center text-gray-500 flex flex-col items-center gap-2">
-          <AlertCircle size={32} className="text-gray-400" />
-          <p>{emptyMessage}</p>
+        <div className="p-10 text-center text-gray-500">
+          <AlertCircle className="mx-auto mb-2" />
+          {emptyMessage}
         </div>
       )}
     </div>

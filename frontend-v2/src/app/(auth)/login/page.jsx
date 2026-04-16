@@ -1,4 +1,3 @@
-// app/(auth)/login/page.jsx
 "use client";
 
 import { useState } from "react";
@@ -53,26 +52,26 @@ export default function AdminLoginPage() {
 
   return (
     <div
-      className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-cover bg-center relative"
+      className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-cover bg-center relative"
       style={{
         backgroundImage: "url('/assets/login_banner.png')",
       }}
     >
-      {/* Dark overlay for readability */}
-      <div className="absolute inset-0 bg-black/50"></div>
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/60"></div>
 
-      <div className="relative sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="text-center text-white">
-          <h2 className="mt-6 text-3xl font-bold tracking-tight">Login</h2>
-          <p className="mt-2 text-sm text-gray-200">
+      <div className="relative w-full max-w-md">
+        {/* Heading */}
+        <div className="text-center text-white mb-6">
+          <h2 className="text-2xl sm:text-3xl font-bold">Login</h2>
+          <p className="mt-1 text-xs sm:text-sm text-gray-200">
             Sign in to manage your dashboard
           </p>
         </div>
-      </div>
 
-      <div className="relative mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white/95 backdrop-blur py-8 px-4 shadow sm:rounded-lg sm:px-10 border border-gray-200">
-          <form className="space-y-6" onSubmit={handleSubmit}>
+        {/* Card */}
+        <div className="bg-white/95 backdrop-blur p-5 sm:p-8 shadow-lg rounded-xl border border-gray-200">
+          <form className="space-y-5" onSubmit={handleSubmit}>
             {/* Email */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
@@ -83,7 +82,7 @@ export default function AdminLoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value.trim())}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2 border"
+                className="mt-1 w-full rounded-md border px-3 py-2.5 text-sm focus:border-blue-500 focus:ring-blue-500"
                 placeholder="admin@example.com"
               />
             </div>
@@ -99,7 +98,7 @@ export default function AdminLoginPage() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2 border pr-10"
+                  className="w-full rounded-md border px-3 py-2.5 pr-10 text-sm focus:border-blue-500 focus:ring-blue-500"
                   placeholder="••••••••"
                 />
                 <button
@@ -118,9 +117,9 @@ export default function AdminLoginPage() {
 
             {/* Error */}
             {error && (
-              <div className="rounded-md bg-red-50 p-4 flex items-center">
-                <AlertCircle className="h-5 w-5 text-red-400 mr-2" />
-                <p className="text-sm text-red-700">{error}</p>
+              <div className="rounded-md bg-red-50 p-3 flex items-start">
+                <AlertCircle className="h-5 w-5 text-red-400 mr-2 mt-0.5" />
+                <p className="text-xs sm:text-sm text-red-700">{error}</p>
               </div>
             )}
 
@@ -128,7 +127,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full flex justify-center py-2.5 px-4 rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-60"
+              className="w-full flex justify-center items-center py-2.5 rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 active:scale-[0.98] transition disabled:opacity-60"
             >
               {isLoading ? (
                 <>
@@ -142,7 +141,7 @@ export default function AdminLoginPage() {
           </form>
 
           {/* Footer */}
-          <div className="mt-6 text-center text-sm">
+          <div className="mt-5 text-center text-xs sm:text-sm">
             <Link
               href="/"
               className="font-medium text-blue-600 hover:text-blue-500"
