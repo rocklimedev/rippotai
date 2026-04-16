@@ -70,10 +70,9 @@ export default function ProjectDetailPage() {
               sizes="100vw"
               quality={90}
               unoptimized
-              className="object-cover transition duration-700 group-hover:scale-110"
+              className="object-cover transition duration-700"
             />
           </div>
-
           <div className="max-w-6xl mx-auto mt-10 md:mt-12 px-4 sm:px-6 md:px-12 lg:px-16">
             <div className="px-1 md:px-2">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light leading-tight max-w-3xl">

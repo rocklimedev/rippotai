@@ -33,7 +33,7 @@ export default function ProjectGalleryPage() {
               sizes="100vw"
               quality={90}
               unoptimized
-              className="object-cover transition duration-700 group-hover:scale-105"
+              className="object-cover transition duration-700"
             />
           </div>
         </section>

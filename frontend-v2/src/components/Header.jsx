@@ -19,7 +19,7 @@ export const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Lock body scroll when menu is open
+  // Lock body scroll when menu open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "auto";
   }, [menuOpen]);
@@ -34,8 +34,11 @@ export const Header = () => {
     }
 
     if (href === "#") {
-      if (pathname !== "/") router.push("/");
-      else window.scrollTo({ top: 0, behavior: "smooth" });
+      if (pathname !== "/") {
+        router.push("/");
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
       return;
     }
 
@@ -50,7 +53,7 @@ export const Header = () => {
 
   return (
     <>
-      {/* Main Header */}
+      {/* MAIN HEADER - No background when scrolled */}
       <header
         style={{
           position: "fixed",
@@ -58,15 +61,15 @@ export const Header = () => {
           left: 0,
           right: 0,
           zIndex: 1000,
-          transition: "background-color 0.4s ease",
-          backgroundColor: scrolled ? "rgba(26, 60, 52, 0.95)" : "transparent",
+          backgroundColor: "transparent", // Always transparent
+          transition: "all 0.4s ease",
         }}
       >
         <div
           style={{
             maxWidth: "1400px",
             margin: "0 auto",
-            padding: "16px 20px",
+            padding: "20px 48px",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
@@ -89,9 +92,10 @@ export const Header = () => {
               }
               alt="Rippotai"
               style={{
-                height: "48px",
+                height: "62px",
                 width: "auto",
                 objectFit: "contain",
+                transition: "all 0.3s ease",
               }}
             />
           </a>
@@ -100,14 +104,13 @@ export const Header = () => {
             onClick={() => setMenuOpen(!menuOpen)}
             style={{
               fontFamily: "'Lato', sans-serif",
-              fontSize: "14px",
-              letterSpacing: "2px",
+              fontSize: "15px",
+              letterSpacing: "3px",
               textTransform: "uppercase",
               color: menuOpen ? "#ffffff" : scrolled ? "#1a3c34" : "#ffffff",
               background: "none",
               border: "none",
               cursor: "pointer",
-              padding: "10px 16px",
             }}
           >
             {menuOpen ? "CLOSE" : "MENU"}
@@ -115,7 +118,7 @@ export const Header = () => {
         </div>
       </header>
 
-      {/* Full Screen Menu - Fixed for Mobile */}
+      {/* FULL SCREEN MENU - Smaller Items */}
       <div
         style={{
           position: "fixed",
@@ -123,13 +126,12 @@ export const Header = () => {
           backgroundColor: "#1a3c34",
           zIndex: 999,
           display: "flex",
-          alignItems: "flex-start", // Changed from center
+          alignItems: "center",
           justifyContent: "center",
-          paddingTop: "100px", // ← Important: Space from top
           opacity: menuOpen ? 1 : 0,
           pointerEvents: menuOpen ? "all" : "none",
-          transition: "opacity 0.4s ease",
-          overflowY: "auto",
+          transition: "opacity 0.5s ease",
+          overflowX: "hidden",
         }}
       >
         <nav
@@ -138,22 +140,21 @@ export const Header = () => {
             flexDirection: "column",
             alignItems: "center",
             width: "100%",
-            maxWidth: "420px",
-            padding: "0 24px 40px",
+            padding: "0 20px",
           }}
         >
           {[
             { label: "About", href: "/about" },
             { label: "Works", href: "/projects" },
-            { label: "Achievements", href: "/achievements" },
+            { label: "Achievements", href: "/achivements" },
             { label: "Team", href: "/team" },
             { label: "Services", href: "/services" },
             { label: "Process", href: "/process" },
             { label: "Career", href: "/careers" },
             { label: "Contact", href: "/contact" },
-          ].map((item) => (
+          ].map((item, i) => (
             <a
-              key={item.label}
+              key={i}
               href={item.href}
               onClick={(e) => {
                 e.preventDefault();
@@ -161,24 +162,22 @@ export const Header = () => {
               }}
               style={{
                 fontFamily: "'Lato', sans-serif",
-                fontSize: "clamp(17px, 5.2vw, 26px)",
+                fontSize: "clamp(18px, 4.5vw, 28px)",
                 fontWeight: 300,
-                letterSpacing: "2px",
+                letterSpacing: "3px",
                 textTransform: "uppercase",
                 color: "#ffffff",
                 textDecoration: "none",
-                padding: "17px 0", // Good touch target
-                width: "100%",
-                textAlign: "center",
+                padding: "14px 0",
                 transition: "all 0.3s ease",
+                textAlign: "center",
+                lineHeight: 1.2,
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.color = "#d9af61";
-                e.currentTarget.style.letterSpacing = "4px";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.color = "#ffffff";
-                e.currentTarget.style.letterSpacing = "2px";
               }}
             >
               {item.label}
