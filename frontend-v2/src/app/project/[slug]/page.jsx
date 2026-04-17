@@ -58,73 +58,31 @@ export default function ProjectDetailPage() {
   return (
     <main className="bg-white">
       {/* HERO */}
-      <section className="bg-white pt-0 pb-12 md:pb-16 px-0">
-        <div className="w-full">
-          {/* 🔥 BIGGER FULL-WIDTH BANNER */}
-          <div className="w-full">
-            <Image
-              src={project.banner || "/placeholder.jpg"}
-              alt={project.title}
-              width={1920}
-              height={1080}
-              priority
-              sizes="100vw"
-              quality={90}
-              unoptimized
-              className="w-full h-auto object-contain"
-            />
+      {/* HERO */}
+      <section className="relative w-full h-screen">
+        <Image
+          src={project.banner || "/placeholder.jpg"}
+          alt={project.title}
+          fill
+          priority
+          sizes="100vw"
+          quality={90}
+          className="object-cover"
+        />
+
+        {/* optional overlay for readability */}
+        <div className="absolute inset-0 bg-black/20" />
+
+        {/* optional title on image */}
+        <div className="absolute bottom-10 left-6 md:left-16 text-white">
+          <div className="text-xs uppercase tracking-[3px] text-[#d9af61] mb-2">
+            {project.category}
           </div>
-          <div className="max-w-6xl mx-auto mt-10 md:mt-12 px-4 sm:px-6 md:px-12 lg:px-16">
-            <div className="px-1 md:px-2">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light leading-tight max-w-3xl">
-                {project.title}
-              </h1>
-              <div className="text-[10px] sm:text-xs tracking-[3px] uppercase text-[#d9af61] mb-3">
-                {project.category}
-              </div>
-            </div>
-
-            <div className="mt-10 md:mt-12 flex justify-center">
-              <div className="inline-grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-8 md:gap-x-12 gap-y-6 text-xs sm:text-sm md:text-base text-center">
-                {project.location && (
-                  <div>
-                    <span className="text-[#d9af61] uppercase tracking-wider text-[10px] block mb-1">
-                      Location
-                    </span>
-                    {project.location}
-                  </div>
-                )}
-
-                <div>
-                  <span className="text-[#d9af61] uppercase tracking-wider text-[10px] block mb-1">
-                    Year
-                  </span>
-                  {project.year || new Date(project.createdAt).getFullYear()}
-                </div>
-
-                {project.area && (
-                  <div>
-                    <span className="text-[#d9af61] uppercase tracking-wider text-[10px] block mb-1">
-                      Area
-                    </span>
-                    {project.area}
-                  </div>
-                )}
-
-                {project.scope && (
-                  <div>
-                    <span className="text-[#d9af61] uppercase tracking-wider text-[10px] block mb-1">
-                      Scope
-                    </span>
-                    {project.scope}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+          <h1 className="text-2xl md:text-4xl font-light max-w-3xl">
+            {project.title}
+          </h1>
         </div>
       </section>
-
       {/* CONTENT */}
       <section className="py-24 md:py-32 px-6 md:px-12 lg:px-16 bg-white">
         <div className="max-w-5xl mx-auto">
