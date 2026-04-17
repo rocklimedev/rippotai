@@ -112,6 +112,7 @@ exports.getPublicProjects = async (req, res) => {
             category: 1,
             location: 1,
             scope: 1,
+            description: 1,
             image: 1,
             banner: 1,
             images: 1,

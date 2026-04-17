@@ -12,17 +12,12 @@ export const WorksSection = () => {
     data: projectsData,
     isLoading,
     isError,
-  } = useGetFeaturedProjectsQuery(6); // Request max 6 from API
+  } = useGetFeaturedProjectsQuery(6);
 
-  // Filter: Only featured projects with priority > 0 (no zero priority projects)
   const rawProjects = projectsData?.data ?? [];
 
-  const projects = rawProjects
-    .filter(
-      (project) => project.featured === true && (project.priority ?? 0) > 0,
-    )
-    .slice(0, 6); // Strict limit to 6 projects
-
+  // ✅ null = show ALL by default
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -35,7 +30,21 @@ export const WorksSection = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Loading State
+  // FILTER LOGIC
+  const projects = rawProjects
+    .filter((project) => {
+      const isFeatured =
+        project.featured === true && (project.priority ?? 0) > 0;
+
+      const matchesCategory = !selectedCategory
+        ? true
+        : project.category?.toLowerCase() === selectedCategory.toLowerCase();
+
+      return isFeatured && matchesCategory;
+    })
+    .slice(0, 6);
+
+  // LOADING
   if (isLoading) {
     return (
       <section style={{ backgroundColor: "#ffffff", padding: "80px 20px" }}>
@@ -50,10 +59,8 @@ export const WorksSection = () => {
     );
   }
 
-  // Hide section if no valid projects after filtering
-  if (isError || projects.length === 0) {
-    return null;
-  }
+  // ERROR
+  if (isError) return null;
 
   return (
     <section
@@ -64,12 +71,12 @@ export const WorksSection = () => {
       }}
     >
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        {/* Section Title */}
+        {/* TITLE */}
         <AnimateIn delay={0}>
           <div
             style={{
               textAlign: "center",
-              marginBottom: isMobile ? "50px" : "80px",
+              marginBottom: isMobile ? "30px" : "40px",
             }}
           >
             <h2
@@ -87,7 +94,47 @@ export const WorksSection = () => {
           </div>
         </AnimateIn>
 
-        {/* Projects Grid */}
+        {/* CATEGORY FILTERS (NO "ALL") */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "10px",
+            marginBottom: isMobile ? "30px" : "60px",
+            width: "100%",
+          }}
+        >
+          {["Residential", "Commercial", "Institutional", "Hospitality"].map(
+            (cat) => (
+              <button
+                key={cat}
+                onClick={() =>
+                  setSelectedCategory((prev) => (prev === cat ? null : cat))
+                }
+                style={{
+                  flex: isMobile ? "1 1 45%" : "1",
+                  padding: "10px 14px",
+                  borderRadius: "20px",
+                  border: "1px solid #1a3c34",
+                  backgroundColor:
+                    selectedCategory === cat ? "#1a3c34" : "transparent",
+                  color: selectedCategory === cat ? "#fff" : "#1a3c34",
+                  cursor: "pointer",
+                  fontSize: "13px",
+                  letterSpacing: "1px",
+                  transition: "0.3s ease",
+                  textAlign: "center",
+                }}
+              >
+                {cat}
+              </button>
+            ),
+          )}
+        </div>
+
+        {/* GRID */}
         <div
           style={{
             display: "grid",
@@ -95,16 +142,35 @@ export const WorksSection = () => {
             gap: isMobile ? "24px" : "48px",
           }}
         >
-          {projects.map((project, idx) => (
-            <AnimateIn key={project._id || project.slug} delay={0.08 * idx}>
-              <ProjectCard project={project} isMobile={isMobile} />
-            </AnimateIn>
-          ))}
+          {projects.length === 0 ? (
+            <div
+              style={{
+                gridColumn: "1 / -1",
+                textAlign: "center",
+                padding: "60px 20px",
+                fontFamily: "'Lato', sans-serif",
+                color: "#1a3c34",
+                fontSize: "16px",
+                letterSpacing: "2px",
+              }}
+            >
+              NO PROJECTS FOUND
+            </div>
+          ) : (
+            projects.map((project, idx) => (
+              <AnimateIn key={project._id || project.slug} delay={0.08 * idx}>
+                <ProjectCard project={project} isMobile={isMobile} />
+              </AnimateIn>
+            ))
+          )}
         </div>
 
         {/* CTA */}
         <div
-          style={{ textAlign: "center", marginTop: isMobile ? "50px" : "80px" }}
+          style={{
+            textAlign: "center",
+            marginTop: isMobile ? "50px" : "80px",
+          }}
         >
           <Link
             href="/projects"
@@ -127,6 +193,10 @@ export const WorksSection = () => {
   );
 };
 
+/* =========================
+   PROJECT CARD
+========================= */
+
 const ProjectCard = ({ project, isMobile }) => {
   const [hovered, setHovered] = useState(false);
 
@@ -148,7 +218,6 @@ const ProjectCard = ({ project, isMobile }) => {
       onMouseEnter={() => !isMobile && setHovered(true)}
       onMouseLeave={() => !isMobile && setHovered(false)}
     >
-      {/* Image Container */}
       <div
         style={{
           position: "relative",
@@ -175,7 +244,6 @@ const ProjectCard = ({ project, isMobile }) => {
         />
       </div>
 
-      {/* Title */}
       <div style={{ paddingTop: "18px" }}>
         <h3
           style={{

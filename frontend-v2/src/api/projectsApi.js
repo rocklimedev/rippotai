@@ -51,18 +51,23 @@ export const projectsApi = createApi({
     }),
 
     getPublicProjects: builder.query({
-      query: ({ page = 1, limit = 6, category } = {}) => ({
+      query: ({ page = 1, limit = 6, category }) => ({
         url: "/projects/public",
-        params: { page, limit, category },
+        params: {
+          page,
+          limit,
+          ...(category && { category }), // Only send if category exists
+        },
       }),
-      serializeQueryArgs: ({ endpointName, queryArgs }) => {
-        const { page, category } = queryArgs || {};
-        return `${endpointName}-${page || 1}-${category || "all"}`;
+
+      serializeQueryArgs: ({ queryArgs }) => {
+        const { page = 1, category = "all" } = queryArgs;
+        return `publicProjects-page-${page}-cat-${category}`;
       },
+
       keepUnusedDataFor: 60,
       providesTags: [{ type: "Projects", id: "LIST" }],
     }),
-
     getCompletedProjects: builder.query({
       query: () => "/projects/completed",
       providesTags: [{ type: "Projects", id: "LIST" }],

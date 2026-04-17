@@ -1,9 +1,8 @@
 "use client";
-import { useState } from "react";
-import { AnimateIn } from "../../components/AnimateIn";
-import { useGetPublicProjectsQuery } from "@/api/projectsApi";
 
-// Import Shadcn Pagination components
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useGetPublicProjectsQuery } from "@/api/projectsApi";
 import {
   Pagination,
   PaginationContent,
@@ -13,20 +12,37 @@ import {
   PaginationPrevious,
   PaginationEllipsis,
 } from "@/components/ui/pagination";
+
 import { projectsImage } from "@/lib/config";
 import ProjectRow from "@/components/ProjectRow";
+import { AnimateIn } from "../../components/AnimateIn";
+
 export default function ProjectsPage() {
-  const [currentPage, setCurrentPage] = useState(1);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // Get values from URL
+  const urlPage = parseInt(searchParams.get("page")) || 1;
+  const urlCategory = searchParams.get("category") || null;
+
+  const [currentPage, setCurrentPage] = useState(urlPage);
+  const [selectedCategory, setSelectedCategory] = useState(urlCategory);
+
   const limit = 6;
 
+  // ================= API CALL =================
   const {
     data: apiResponse,
     isLoading,
     isError,
     error,
   } = useGetPublicProjectsQuery(
-    { page: currentPage, limit },
-    { keepUnusedDataFor: 60 },
+    {
+      page: currentPage,
+      limit,
+      ...(selectedCategory && { category: selectedCategory }),
+    },
+    { refetchOnMountOrArgChange: true },
   );
 
   const projects = apiResponse?.data ?? [];
@@ -41,18 +57,49 @@ export default function ProjectsPage() {
   const hasPrevious = currentPage > 1;
   const hasNext = currentPage < totalPages;
 
+  // ================= Sync URL with State =================
+  useEffect(() => {
+    setCurrentPage(urlPage);
+    setSelectedCategory(urlCategory);
+  }, [urlPage, urlCategory]);
+
+  // Update URL when state changes
+  const updateURL = (page, category) => {
+    const params = new URLSearchParams();
+
+    if (page > 1) params.set("page", page);
+    if (category) params.set("category", category);
+
+    const queryString = params.toString();
+    router.push(`/projects${queryString ? `?${queryString}` : ""}`, {
+      scroll: false,
+    });
+  };
+
+  // ================= HANDLERS =================
+  const handleCategoryChange = (cat) => {
+    const newCategory = selectedCategory === cat ? null : cat;
+    setSelectedCategory(newCategory);
+    setCurrentPage(1);
+    updateURL(1, newCategory);
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    updateURL(page, selectedCategory);
+  };
+
   const handlePrevious = () => {
-    if (hasPrevious) setCurrentPage((prev) => prev - 1);
+    if (hasPrevious) handlePageChange(currentPage - 1);
   };
 
   const handleNext = () => {
-    if (hasNext) setCurrentPage((prev) => prev + 1);
+    if (hasNext) handlePageChange(currentPage + 1);
   };
 
-  // Generate page numbers (with ellipsis logic)
   const getPageNumbers = () => {
     const pages = [];
-    const delta = 2; // show 2 pages before/after current
+    const delta = 2;
 
     for (let i = 1; i <= totalPages; i++) {
       if (
@@ -73,7 +120,7 @@ export default function ProjectsPage() {
 
   return (
     <>
-      {/* Banner Section - unchanged */}
+      {/* Banner */}
       <section
         style={{
           position: "relative",
@@ -82,26 +129,18 @@ export default function ProjectsPage() {
           overflow: "hidden",
           backgroundColor: "#0a0a0a",
         }}
-        data-testid="works-banner"
       >
         <img
           src={projectsImage}
           alt="Our Projects"
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            objectPosition: "center",
-            display: "block",
-          }}
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
         />
         <div
           style={{
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0.2))",
-            pointerEvents: "none",
+              "linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.3))",
           }}
         />
         <div
@@ -117,117 +156,97 @@ export default function ProjectsPage() {
               fontFamily: "'Lato', sans-serif",
               fontSize: "clamp(36px, 5vw, 56px)",
               fontWeight: 300,
-              color: "#ffffff",
-              margin: 0,
+              color: "#fff",
             }}
           >
             Our Projects
           </h1>
-          <div
-            style={{
-              width: "40px",
-              height: "1px",
-              backgroundColor: "#d9af61",
-              marginTop: "20px",
-            }}
-          />
         </div>
       </section>
 
-      {/* Intro Text - unchanged */}
-      <section style={{ padding: "80px 48px", backgroundColor: "#ffffff" }}>
+      {/* Intro */}
+      <section style={{ padding: "80px 48px", backgroundColor: "#fff" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <AnimateIn delay={0} distance={30} duration={1}>
+          <AnimateIn>
             <p
               style={{
                 fontFamily: "'Lato', sans-serif",
                 fontSize: "16px",
-                fontWeight: 300,
-                color: "#666666",
+                color: "#666",
                 lineHeight: 1.8,
-                maxWidth: "600px",
-                margin: 0,
               }}
             >
               A curated selection of our work across architecture, interiors,
-              and furniture design — each project shaped by precision, purpose,
-              and the enduring simplicity of the cube.
+              and furniture design.
             </p>
           </AnimateIn>
         </div>
       </section>
 
-      {/* Projects Grid + Pagination */}
-      <section style={{ padding: "0 48px 120px", backgroundColor: "#ffffff" }}>
+      {/* Category Filters */}
+      <section style={{ padding: "0 48px 40px" }}>
+        <div
+          style={{
+            display: "flex",
+            gap: "10px",
+            flexWrap: "wrap",
+            maxWidth: "1200px",
+            margin: "0 auto",
+          }}
+        >
+          {["Residential", "Commercial", "Institutional", "Hospitality"].map(
+            (cat) => (
+              <button
+                key={cat}
+                onClick={() => handleCategoryChange(cat)}
+                style={{
+                  flex: 1,
+                  padding: "12px 16px",
+                  borderRadius: "20px",
+                  border: "1px solid #1a3c34",
+                  backgroundColor:
+                    selectedCategory === cat ? "#1a3c34" : "transparent",
+                  color: selectedCategory === cat ? "#fff" : "#1a3c34",
+                  cursor: "pointer",
+                  fontSize: "13.5px",
+                  letterSpacing: "0.5px",
+                }}
+              >
+                {cat}
+              </button>
+            ),
+          )}
+        </div>
+      </section>
+
+      {/* Projects List */}
+      <section style={{ padding: "0 48px 120px", backgroundColor: "#fff" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           {isLoading ? (
-            <div
-              style={{
-                textAlign: "center",
-                padding: "120px 0",
-                fontFamily: "'Lato', sans-serif",
-                color: "#1a3c34",
-                fontSize: "18px",
-              }}
-            >
+            <div style={{ textAlign: "center", padding: "120px 0" }}>
               Loading projects...
             </div>
           ) : isError ? (
-            <div
-              style={{
-                textAlign: "center",
-                padding: "80px 0",
-                color: "#d32f2f",
-                fontSize: "16px",
-              }}
-            >
-              <p>Failed to load projects.</p>
-              <p style={{ fontSize: "14px", marginTop: "8px" }}>
-                {error?.data?.message || error?.message || "Unknown error"}
-              </p>
+            <div style={{ textAlign: "center", color: "red" }}>
+              {error?.data?.message || "Failed to load projects"}
             </div>
           ) : projects.length === 0 ? (
-            <div
-              style={{
-                textAlign: "center",
-                padding: "100px 0",
-                color: "#666",
-                fontSize: "17px",
-              }}
-            >
-              No projects found at the moment.
+            <div style={{ textAlign: "center", padding: "100px 0" }}>
+              No projects found.
             </div>
           ) : (
             <>
-              {/* Project Rows */}
-              {projects.map((project, idx) => {
-                const cacheBustedProject = {
-                  ...project,
-                  image: project.image
-                    ? `${project.image}?v=${project.updatedAt || Date.now()}`
-                    : project.image,
-                };
+              {projects.map((project, idx) => (
+                <AnimateIn key={project._id || project.slug}>
+                  <ProjectRow project={project} reverse={idx % 2 !== 0} />
+                </AnimateIn>
+              ))}
 
-                return (
-                  <AnimateIn
-                    key={project._id || project.slug}
-                    delay={0.1 * idx}
-                    distance={70}
-                    duration={1.3}
-                  >
-                    <ProjectRow
-                      project={cacheBustedProject}
-                      reverse={idx % 2 !== 0}
-                    />
-                  </AnimateIn>
-                );
-              })}
-              {/* Shadcn Pagination */}
+              {/* Pagination */}
               {totalPages > 1 && (
                 <div style={{ marginTop: "100px" }}>
                   <Pagination>
                     <PaginationContent>
-                      {/* Previous Button */}
                       <PaginationItem>
                         <PaginationPrevious
                           onClick={handlePrevious}
@@ -237,16 +256,14 @@ export default function ProjectsPage() {
                         />
                       </PaginationItem>
 
-                      {/* Page Numbers */}
-                      {getPageNumbers().map((page, index) => (
-                        <PaginationItem key={index}>
+                      {getPageNumbers().map((page, i) => (
+                        <PaginationItem key={i}>
                           {page === "ellipsis" ? (
                             <PaginationEllipsis />
                           ) : (
                             <PaginationLink
                               isActive={page === currentPage}
-                              onClick={() => setCurrentPage(page)}
-                              className="cursor-pointer"
+                              onClick={() => handlePageChange(page)}
                             >
                               {page}
                             </PaginationLink>
@@ -254,7 +271,6 @@ export default function ProjectsPage() {
                         </PaginationItem>
                       ))}
 
-                      {/* Next Button */}
                       <PaginationItem>
                         <PaginationNext
                           onClick={handleNext}

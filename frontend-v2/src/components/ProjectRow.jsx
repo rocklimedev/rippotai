@@ -7,7 +7,7 @@ export default function ProjectRow({ project, reverse }) {
   const displayDesc =
     project.description?.substring(0, 160) ||
     "A thoughtful integration of form and function, designed to resonate with those who inhabit the space — reflecting the cube's clarity and versatility.";
-
+  console.log(project);
   return (
     <Link
       href={`/project/${project.slug}`}
