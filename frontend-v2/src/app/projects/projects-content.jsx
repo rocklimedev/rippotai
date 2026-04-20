@@ -191,12 +191,16 @@ export default function ProjectsContent() {
                 style={{
                   flex: 1,
                   padding: "12px 16px",
-                  backgroundColor:
-                    selectedCategory === cat ? "#1a3c34" : "transparent",
-                  color: selectedCategory === cat ? "#fff" : "#1a3c34",
+                  backgroundColor: "transparent",
+                  color: selectedCategory === cat ? "#c6a15b" : "#1a3c34",
                   cursor: "pointer",
                   fontSize: "13.5px",
                   letterSpacing: "0.5px",
+                  border: "none",
+                  borderBottom:
+                    selectedCategory === cat
+                      ? "2px solid #c6a15b"
+                      : "2px solid transparent",
                 }}
               >
                 {cat}

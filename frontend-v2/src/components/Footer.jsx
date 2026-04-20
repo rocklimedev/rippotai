@@ -112,17 +112,16 @@ export const Footer = () => {
                     <Link
                       key={i}
                       href={link.href}
+                      className="footer-link"
                       style={{
                         fontFamily: "'Lato', sans-serif",
                         fontSize: "16px",
                         fontWeight: 300,
                         color: "#1a3c34",
                         textDecoration: "none",
-                        transition: "color 0.3s ease",
                         letterSpacing: "0.5px",
                         width: "fit-content",
                       }}
-                      className="hover-gold"
                     >
                       {link.label}
                     </Link>

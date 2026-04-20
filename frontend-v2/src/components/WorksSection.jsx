@@ -123,13 +123,17 @@ export const WorksSection = () => {
                 style={{
                   flex: isMobile ? "1 1 45%" : "1",
                   padding: "10px 14px",
-                  backgroundColor:
-                    selectedCategory === cat ? "#1a3c34" : "transparent",
-                  color: selectedCategory === cat ? "#fff" : "#1a3c34",
+                  backgroundColor: "transparent", // removed green background
+                  color: selectedCategory === cat ? "#c6a15b" : "#1a3c34",
                   cursor: "pointer",
                   fontSize: "13px",
                   letterSpacing: "1px",
                   textAlign: "center",
+                  border: "none",
+                  borderBottom:
+                    selectedCategory === cat
+                      ? "2px solid #c6a15b"
+                      : "2px solid transparent",
                 }}
               >
                 {cat}
@@ -137,7 +141,6 @@ export const WorksSection = () => {
             ),
           )}
         </div>
-
         {/* GRID */}
         <div
           style={{
