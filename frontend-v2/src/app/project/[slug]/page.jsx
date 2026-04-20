@@ -75,13 +75,67 @@ export default function ProjectDetailPage() {
 
         {/* optional title on image */}
         <div className="absolute bottom-10 left-6 md:left-16 text-white">
-          <div className="text-xs uppercase tracking-[3px] text-[#d9af61] mb-2">
+          <div className="text-sm md:text-base uppercase tracking-[4px] text-[#d9af61] mb-3">
             {project.category}
           </div>
-          <h1 className="text-2xl md:text-4xl font-light max-w-3xl">
+
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-light max-w-4xl leading-tight">
             {project.title}
           </h1>
         </div>
+      </section>
+      {/* HERO */}{" "}
+      <section className="bg-white pt-0 pb-12 md:pb-16 px-0">
+        {" "}
+        <div className="w-full">
+          <div className="max-w-6xl mx-auto mt-10 md:mt-12 px-4 sm:px-6 md:px-12 lg:px-16">
+            <div className="mt-10 md:mt-12 flex justify-center">
+              {" "}
+              <div className="inline-grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-8 md:gap-x-12 gap-y-6 text-xs sm:text-sm md:text-base text-center">
+                {" "}
+                {project.location && (
+                  <div>
+                    {" "}
+                    <span className="text-[#d9af61] uppercase tracking-wider text-[10px] block mb-1">
+                      {" "}
+                      Location{" "}
+                    </span>{" "}
+                    {project.location}{" "}
+                  </div>
+                )}{" "}
+                <div>
+                  {" "}
+                  <span className="text-[#d9af61] uppercase tracking-wider text-[10px] block mb-1">
+                    {" "}
+                    Year{" "}
+                  </span>{" "}
+                  {project.year ||
+                    new Date(project.createdAt).getFullYear()}{" "}
+                </div>{" "}
+                {project.area && (
+                  <div>
+                    {" "}
+                    <span className="text-[#d9af61] uppercase tracking-wider text-[10px] block mb-1">
+                      {" "}
+                      Area{" "}
+                    </span>{" "}
+                    {project.area}{" "}
+                  </div>
+                )}{" "}
+                {project.scope && (
+                  <div>
+                    {" "}
+                    <span className="text-[#d9af61] uppercase tracking-wider text-[10px] block mb-1">
+                      {" "}
+                      Scope{" "}
+                    </span>{" "}
+                    {project.scope}{" "}
+                  </div>
+                )}{" "}
+              </div>{" "}
+            </div>{" "}
+          </div>{" "}
+        </div>{" "}
       </section>
       {/* CONTENT */}
       <section className="py-24 md:py-32 px-6 md:px-12 lg:px-16 bg-white">
@@ -103,7 +157,6 @@ export default function ProjectDetailPage() {
           </AnimateIn>
         </div>
       </section>
-
       {/* GALLERY */}
       {project.images?.length > 0 && (
         <section className="px-6 md:px-12 pb-32 pt-16">
@@ -112,7 +165,6 @@ export default function ProjectDetailPage() {
           </div>
         </section>
       )}
-
       {/* NAVIGATION */}
       <section className="border-t py-16 px-6 md:px-12">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
