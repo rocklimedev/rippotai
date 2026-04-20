@@ -146,12 +146,12 @@ export const Header = () => {
           {[
             { label: "About", href: "/about" },
             { label: "Works", href: "/projects" },
-            { label: "Achievements", href: "/achievements" },
             { label: "Team", href: "/team" },
             { label: "Services", href: "/services" },
             { label: "Process", href: "/process" },
             { label: "Career", href: "/careers" },
             { label: "Contact", href: "/contact" },
+            { label: "Achievements", href: "/achievements" },
           ].map((item, i) => (
             <a
               key={i}

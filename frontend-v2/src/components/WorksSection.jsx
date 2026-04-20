@@ -5,18 +5,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { AnimateIn } from "./AnimateIn";
 
-import { useGetFeaturedProjectsQuery } from "@/api/projectsApi";
+import { useGetPublicProjectsQuery } from "@/api/projectsApi";
 
 export const WorksSection = () => {
   const {
     data: projectsData,
     isLoading,
     isError,
-  } = useGetFeaturedProjectsQuery(6);
+  } = useGetPublicProjectsQuery({
+    page: 1,
+    limit: 20,
+  });
 
   const rawProjects = projectsData?.data ?? [];
 
-  // ✅ null = show ALL by default
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -30,21 +32,29 @@ export const WorksSection = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // FILTER LOGIC
+  // ✅ ONLY CATEGORY FILTER HERE
   const projects = rawProjects
     .filter((project) => {
-      const isFeatured =
-        project.featured === true && (project.priority ?? 0) > 0;
-
       const matchesCategory = !selectedCategory
         ? true
         : project.category?.toLowerCase() === selectedCategory.toLowerCase();
 
-      return isFeatured && matchesCategory;
+      return matchesCategory;
     })
+
+    // ✅ FEATURED FIRST + PRIORITY SORT
+    .sort((a, b) => {
+      const aFeatured = a.featured ? 1 : 0;
+      const bFeatured = b.featured ? 1 : 0;
+
+      if (aFeatured !== bFeatured) return bFeatured - aFeatured;
+
+      return (a.priority ?? 0) - (b.priority ?? 0);
+    })
+
+    // ✅ HOME LIMIT
     .slice(0, 6);
 
-  // LOADING
   if (isLoading) {
     return (
       <section style={{ backgroundColor: "#ffffff", padding: "80px 20px" }}>
@@ -59,7 +69,6 @@ export const WorksSection = () => {
     );
   }
 
-  // ERROR
   if (isError) return null;
 
   return (
@@ -94,16 +103,14 @@ export const WorksSection = () => {
           </div>
         </AnimateIn>
 
-        {/* CATEGORY FILTERS (NO "ALL") */}
+        {/* FILTER */}
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
-            alignItems: "center",
             flexWrap: "wrap",
             gap: "10px",
             marginBottom: isMobile ? "30px" : "60px",
-            width: "100%",
           }}
         >
           {["Residential", "Commercial", "Institutional", "Hospitality"].map(
@@ -116,15 +123,12 @@ export const WorksSection = () => {
                 style={{
                   flex: isMobile ? "1 1 45%" : "1",
                   padding: "10px 14px",
-                  borderRadius: "20px",
-                  border: "1px solid #1a3c34",
                   backgroundColor:
                     selectedCategory === cat ? "#1a3c34" : "transparent",
                   color: selectedCategory === cat ? "#fff" : "#1a3c34",
                   cursor: "pointer",
                   fontSize: "13px",
                   letterSpacing: "1px",
-                  transition: "0.3s ease",
                   textAlign: "center",
                 }}
               >
@@ -148,10 +152,6 @@ export const WorksSection = () => {
                 gridColumn: "1 / -1",
                 textAlign: "center",
                 padding: "60px 20px",
-                fontFamily: "'Lato', sans-serif",
-                color: "#1a3c34",
-                fontSize: "16px",
-                letterSpacing: "2px",
               }}
             >
               NO PROJECTS FOUND
@@ -182,7 +182,6 @@ export const WorksSection = () => {
               color: "#1a3c34",
               textDecoration: "none",
               borderBottom: "2px solid #1a3c34",
-              paddingBottom: "4px",
             }}
           >
             SEE ALL PROJECTS →
@@ -192,7 +191,6 @@ export const WorksSection = () => {
     </section>
   );
 };
-
 /* =========================
    PROJECT CARD
 ========================= */

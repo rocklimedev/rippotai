@@ -45,6 +45,7 @@ export const navigationLinks = [
   { label: "Team", href: "/team" },
   { label: "Career", href: "/careers" },
   { label: "Contact", href: "/contact" },
+  { label: "Achivements", href: "/achievements" },
 ];
 
 export const socialLinks = [
@@ -104,10 +105,6 @@ export const processSteps = [
   },
 ];
 
-// lib/config.js
-
-
-
 export const services = [
   {
     slug: "architecture",
@@ -145,20 +142,52 @@ export const services = [
       "Execution-ready plans",
     ],
 
-    gallery: [
-      "/assets/process.png",
-      "/assets/process.png",
-    ],
+    gallery: ["/assets/process.png", "/assets/process.png"],
 
     cta: "Start Your Architecture Project",
   },
+  {
+    slug: "turnkey-projects",
+    icon: KeyRound,
+    title: "Turnkey Projects",
+    description: "End-to-end project delivery.",
 
+    banner: "/assets/process.png",
+
+    intro: `
+      We provide complete turnkey solutions, managing everything from concept
+      to completion. You get a fully finished, ready-to-use space without the stress.
+    `,
+
+    features: [
+      "End-to-end project management",
+      "Design + execution under one roof",
+      "Vendor & material coordination",
+      "Timeline & budget control",
+    ],
+
+    process: [
+      "Consultation & planning",
+      "Design & approvals",
+      "Execution & supervision",
+      "Final handover",
+    ],
+
+    deliverables: [
+      "Fully completed space",
+      "Quality assurance",
+      "Project documentation",
+    ],
+
+    gallery: ["/assets/process.png", "/assets/process.png"],
+
+    cta: "Start Turnkey Project",
+  },
   {
     slug: "interiors",
     icon: Palette,
     title: "Interiors",
-    description:
-      "Our interior designs blend style and practicality.",
+    description: "Our interior designs blend style and practicality.",
 
     banner: "/assets/process.png",
 
@@ -189,10 +218,7 @@ export const services = [
       "Execution drawings",
     ],
 
-    gallery: [
-      "/assets/process.png",
-      "/assets/process.png",
-    ],
+    gallery: ["/assets/process.png", "/assets/process.png"],
 
     cta: "Design Your Interior Space",
   },
@@ -201,8 +227,7 @@ export const services = [
     slug: "furniture",
     icon: Armchair,
     title: "Furniture",
-    description:
-      "Our niche furniture pieces are uniquely designed.",
+    description: "Our niche furniture pieces are uniquely designed.",
 
     banner: "/assets/process.png",
 
@@ -231,54 +256,9 @@ export const services = [
       "Design drawings",
     ],
 
-    gallery: [
-      "/assets/process.png",
-      "/assets/process.png",
-    ],
+    gallery: ["/assets/process.png", "/assets/process.png"],
 
     cta: "Create Custom Furniture",
-  },
-
-  {
-    slug: "turnkey-projects",
-    icon: KeyRound,
-    title: "Turnkey Projects",
-    description:
-      "End-to-end project delivery.",
-
-    banner: "/assets/process.png",
-
-    intro: `
-      We provide complete turnkey solutions, managing everything from concept
-      to completion. You get a fully finished, ready-to-use space without the stress.
-    `,
-
-    features: [
-      "End-to-end project management",
-      "Design + execution under one roof",
-      "Vendor & material coordination",
-      "Timeline & budget control",
-    ],
-
-    process: [
-      "Consultation & planning",
-      "Design & approvals",
-      "Execution & supervision",
-      "Final handover",
-    ],
-
-    deliverables: [
-      "Fully completed space",
-      "Quality assurance",
-      "Project documentation",
-    ],
-
-    gallery: [
-      "/assets/process.png",
-      "/assets/process.png",
-    ],
-
-    cta: "Start Turnkey Project",
   },
 ];
 export const teamMembers = [

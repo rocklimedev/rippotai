@@ -19,23 +19,6 @@ export const FounderMessage = () => {
           zIndex: 2,
         }}
       >
-        {/* Gold quotation mark */}
-        <AnimateIn delay={0} distance={30} duration={1}>
-          <span
-            style={{
-              fontFamily: "'Georgia', serif",
-              fontSize: "100px",
-              color: "rgba(217, 175, 97, 0.2)",
-              display: "block",
-              textAlign: "center",
-              lineHeight: 0.6,
-              userSelect: "none",
-            }}
-          >
-            {"\u201C"}
-          </span>
-        </AnimateIn>
-
         <AnimateIn delay={0.2} distance={50} duration={1.3}>
           <blockquote
             style={{
