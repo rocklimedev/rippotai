@@ -4,16 +4,7 @@ import { Trophy, Calendar } from "lucide-react";
 import { AnimateIn } from "@/components/AnimateIn";
 import { aboutImage } from "@/lib/config";
 import Image from "next/image";
-const achievements = [
-  {
-    title: "GROHE Bath & Design Awards 2025",
-    org: "AD",
-    year: "2025",
-    image1: "/assets/awards_1.png",
-    image2: "/assets/awards_2.png",
-  },
-];
-
+import { achievements } from "@/lib/config";
 
 const AchievementRow = ({ item }) => {
   return (
@@ -51,9 +42,15 @@ const AchievementRow = ({ item }) => {
         </p>
 
         <h3 className="text-3xl md:text-4xl font-light text-[#1a3c34] mb-6">
-          {item.title}
+          <a
+            href={item.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:underline"
+          >
+            {item.title}
+          </a>
         </h3>
-
       </div>
     </div>
   );

@@ -348,3 +348,13 @@ export const STATUS_LABELS = {
   completed: "Completed",
   prunned: "Pruned / Archived",
 };
+export const achievements = [
+  {
+    title: "GROHE Bath & Design Awards 2025",
+    org: "Architectural Digest",
+    year: "2025",
+    link: "https://www.architecturaldigest.in/sponsored/story/a-confluence-of-quiet-luxury-and-intelligent-design-meet-the-winners-of-the-grohe-bath-and-design-awards-2025/",
+    image1: "/assets/awards_1.png",
+    image2: "/assets/awards_2.png",
+  },
+];
