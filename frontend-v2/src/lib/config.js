@@ -77,7 +77,7 @@ export const googleMapsLink =
 export const processSteps = [
   {
     id: 1,
-    title: "BRIEFING",
+    title: "CONSULTATION",
     description:
       "Understanding context, constraints, and client vision to define architectural direction.",
     icon: "/assets/process_briefing.png",
