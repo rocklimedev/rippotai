@@ -3,48 +3,65 @@
 import { Trophy, Calendar } from "lucide-react";
 import { AnimateIn } from "@/components/AnimateIn";
 import { aboutImage } from "@/lib/config";
-
+import Image from "next/image";
 const achievements = [
   {
-    title: "Best Residential Design 2024",
-    org: "Indian Architecture Awards",
-    year: "2024",
+    title: "GROHE Bath & Design Awards 2025",
+    org: "GROHE",
+    year: "2025",
     description: "Recognized for innovative sustainable housing design.",
-    image: "/assets/awards.png",
+    image1: "/assets/awards_1.png",
+    image2: "/assets/awards_2.png",
   },
 ];
 
-const AchievementCard = ({ item }) => {
-  return (
-    <div className="group bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500">
-      <div className="relative bg-gray-50 flex items-center justify-center p-8 md:p-10">
-        <img
-          src={item.image}
-          alt={item.title}
-          className="w-full max-w-full h-auto max-h-[420px] object-contain transition-transform duration-700 group-hover:scale-[1.02]"
-        />
 
-        <div className="absolute top-6 right-6 bg-white/95 backdrop-blur-sm px-4 py-1.5 rounded-full text-xs font-medium flex items-center gap-2 shadow-sm">
-          <Calendar className="w-4 h-4 text-[#1a3c34]" />
-          {item.year}
+const AchievementRow = ({ item }) => {
+  return (
+    <div className="flex flex-col items-center gap-10">
+
+      {/* TOP: TWO IMAGES */}
+      <div className="grid grid-cols-2 gap-2">
+
+        <div className="flex justify-center">
+          <Image
+            src={item.image1}
+            alt={item.title}
+            width={500}
+            height={500}
+            className="w-full max-h-[320px] h-auto object-contain rounded-xl"
+          />
         </div>
+
+        <div className="flex justify-center">
+          <Image
+            src={item.image2}
+            alt={item.title}
+            width={500}
+            height={500}
+            className="w-full max-h-[320px] h-auto object-contain rounded-xl"
+          />
+        </div>
+
       </div>
 
-      <div className="p-8 md:p-10">
-        <p className="text-sm text-gray-500 tracking-wide mb-3">{item.org}</p>
+      {/* BOTTOM: TEXT */}
+      <div className="text-center max-w-2xl">
+        <p className="text-sm text-gray-500 tracking-wide mb-3">
+          {item.org} • {item.year}
+        </p>
 
-        <h3 className="text-2xl md:text-3xl font-light text-[#1a3c34] mb-4">
+        <h3 className="text-3xl md:text-4xl font-light text-[#1a3c34] mb-4">
           {item.title}
         </h3>
 
-        <p className="text-gray-600 leading-relaxed text-[15.5px]">
+        <p className="text-gray-600 leading-relaxed text-[16px]">
           {item.description}
         </p>
       </div>
     </div>
   );
 };
-
 export default function AchievementsPage() {
   return (
     <>
@@ -82,10 +99,10 @@ export default function AchievementsPage() {
 
       {/* Unified Grid (No Categories) */}
       <section className="pb-24 bg-white px-6 max-w-6xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
+        <div className="flex flex-col gap-20">
           {achievements.map((item, idx) => (
             <AnimateIn key={idx} delay={0.1 * idx}>
-              <AchievementCard item={item} />
+              <AchievementRow item={item} />
             </AnimateIn>
           ))}
         </div>
