@@ -45,7 +45,7 @@ export const navigationLinks = [
   { label: "Team", href: "/team" },
   { label: "Career", href: "/careers" },
   { label: "Contact", href: "/contact" },
-  { label: "Achivements", href: "/achievements" },
+  { label: "Achievements", href: "/achievements" },
 ];
 
 export const socialLinks = [

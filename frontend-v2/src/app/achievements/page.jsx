@@ -7,9 +7,8 @@ import Image from "next/image";
 const achievements = [
   {
     title: "GROHE Bath & Design Awards 2025",
-    org: "GROHE",
+    org: "AD",
     year: "2025",
-    description: "Recognized for innovative sustainable housing design.",
     image1: "/assets/awards_1.png",
     image2: "/assets/awards_2.png",
   },
@@ -18,18 +17,18 @@ const achievements = [
 
 const AchievementRow = ({ item }) => {
   return (
-    <div className="flex flex-col items-center gap-10">
+    <div className="flex flex-col items-center gap-16">
 
       {/* TOP: TWO IMAGES */}
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-2 gap-6 w-full max-w-5xl">
 
         <div className="flex justify-center">
           <Image
             src={item.image1}
             alt={item.title}
-            width={500}
-            height={500}
-            className="w-full max-h-[320px] h-auto object-contain rounded-xl"
+            width={800}
+            height={800}
+            className="w-full max-h-[500px] h-auto object-contain rounded-xl"
           />
         </div>
 
@@ -37,27 +36,24 @@ const AchievementRow = ({ item }) => {
           <Image
             src={item.image2}
             alt={item.title}
-            width={500}
-            height={500}
-            className="w-full max-h-[320px] h-auto object-contain rounded-xl"
+            width={800}
+            height={800}
+            className="w-full max-h-[500px] h-auto object-contain rounded-xl"
           />
         </div>
 
       </div>
 
       {/* BOTTOM: TEXT */}
-      <div className="text-center max-w-2xl">
-        <p className="text-sm text-gray-500 tracking-wide mb-3">
+      <div className="text-center max-w-3xl">
+        <p className="text-sm text-gray-500 tracking-wide mb-4">
           {item.org} • {item.year}
         </p>
 
-        <h3 className="text-3xl md:text-4xl font-light text-[#1a3c34] mb-4">
+        <h3 className="text-3xl md:text-4xl font-light text-[#1a3c34] mb-6">
           {item.title}
         </h3>
 
-        <p className="text-gray-600 leading-relaxed text-[16px]">
-          {item.description}
-        </p>
       </div>
     </div>
   );

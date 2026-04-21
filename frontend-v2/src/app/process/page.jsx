@@ -136,14 +136,6 @@ const ProcessCurveSlider = () => {
               const isPassed = idx < activeIndex;
               return (
                 <g key={idx}>
-                  {isActive && (
-                    <circle
-                      cx={node.cx}
-                      cy={node.cy}
-                      r="24"
-                      fill="rgba(217, 175, 97, 0.12)"
-                    />
-                  )}
                   <circle
                     cx={node.cx}
                     cy={node.cy}
