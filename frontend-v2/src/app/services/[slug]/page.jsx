@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
 import {
-  CheckCircle,
   ArrowRight,
   Layers,
   Workflow,
@@ -24,12 +23,13 @@ export default function ServiceDetailPage() {
   return (
     <>
       {/* ===== Banner ===== */}
-      <section className="relative h-[80vh] w-full">
+      <section className="relative h-screen w-full">
         <Image
           src={service.banner}
           alt={service.title}
           fill
           className="object-cover"
+          priority
         />
 
         <div className="absolute inset-0 bg-black/50" />
@@ -48,7 +48,7 @@ export default function ServiceDetailPage() {
         </p>
       </section>
 
-      {/* ===== Features ===== */}
+      {/* ===== Offerings ===== */}
       <section className="py-16 px-5 bg-muted">
         <div className="max-w-5xl mx-auto">
           <div className="flex items-center gap-2 mb-8">
@@ -57,11 +57,13 @@ export default function ServiceDetailPage() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
-            {service.features.map((item, i) => (
-              <Card key={i} className="border-none shadow-sm">
-                <CardContent className="flex items-start gap-3 p-5">
-                  <CheckCircle className="text-primary w-5 h-5 mt-1" />
-                  <span className="text-muted-foreground">{item}</span>
+            {service.offerings?.map((item, i) => (
+              <Card key={i} className="border-none shadow-sm hover:shadow-md transition">
+                <CardContent className="p-5">
+                  <h3 className="font-medium mb-2">{item.title}</h3>
+                  <p className="text-muted-foreground text-sm">
+                    {item.description}
+                  </p>
                 </CardContent>
               </Card>
             ))}
@@ -78,13 +80,19 @@ export default function ServiceDetailPage() {
           </div>
 
           <div className="space-y-6">
-            {service.process.map((step, i) => (
-              <Card key={i} className="shadow-sm">
+            {service.process?.map((item, i) => (
+              <Card key={i} className="shadow-sm hover:shadow-md transition">
                 <CardContent className="p-5 flex gap-4">
-                  <div className="font-bold text-primary">
-                    {String(i + 1).padStart(2, "0")}
+                  <div className="font-bold text-primary text-lg">
+                    {item.step}
                   </div>
-                  <p className="text-muted-foreground">{step}</p>
+
+                  <div>
+                    <h3 className="font-medium">{item.title}</h3>
+                    <p className="text-muted-foreground text-sm mt-1">
+                      {item.description}
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -101,10 +109,9 @@ export default function ServiceDetailPage() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
-            {service.deliverables.map((item, i) => (
-              <Card key={i} className="border-none shadow-sm">
-                <CardContent className="flex items-start gap-3 p-5">
-                  <CheckCircle className="text-primary w-5 h-5 mt-1" />
+            {service.deliverables?.map((item, i) => (
+              <Card key={i} className="border-none shadow-sm hover:shadow-md transition">
+                <CardContent className="p-5">
                   <span className="text-muted-foreground">{item}</span>
                 </CardContent>
               </Card>
@@ -119,7 +126,7 @@ export default function ServiceDetailPage() {
           <h2 className="text-2xl font-semibold mb-8">Gallery</h2>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {service.gallery.map((img, i) => (
+            {service.gallery?.map((img, i) => (
               <div
                 key={i}
                 className="relative h-[250px] rounded-2xl overflow-hidden"
