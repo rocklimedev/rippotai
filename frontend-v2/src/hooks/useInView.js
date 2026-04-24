@@ -1,5 +1,5 @@
-"use client";
-import { useEffect, useRef, useState } from "react";
+'use client';
+import { useEffect, useRef, useState } from 'react';
 
 export const useInView = (options = {}) => {
   const ref = useRef(null);
@@ -18,7 +18,7 @@ export const useInView = (options = {}) => {
       },
       {
         threshold: options.threshold || 0.15,
-        rootMargin: options.rootMargin || "0px 0px -60px 0px",
+        rootMargin: options.rootMargin || '0px 0px -60px 0px',
       },
     );
 

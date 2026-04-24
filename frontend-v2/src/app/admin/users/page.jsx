@@ -1,8 +1,8 @@
 // app/admin/users/page.jsx
-"use client";
+'use client';
 
-import { useState, useMemo, useEffect } from "react";
-import { format } from "date-fns";
+import { useState, useMemo, useEffect } from 'react';
+import { format } from 'date-fns';
 import {
   Users,
   Plus,
@@ -16,49 +16,49 @@ import {
   Loader2,
   AlertCircle,
   Shield,
-} from "lucide-react";
+} from 'lucide-react';
 import {
   useGetAllRolesQuery,
   useCreateRoleMutation,
   useUpdateRoleMutation,
   useDeleteRoleMutation,
   useGetAvailablePermissionsQuery,
-} from "@/api/rolesApi";
+} from '@/api/rolesApi';
 import {
   useGetAllUsersQuery,
   useDeleteUserMutation,
   useCreateUserMutation,
   useUpdateUserMutation,
-} from "@/api/usersApi";
-import styles from "./users.module.css";
+} from '@/api/usersApi';
+import styles from './users.module.css';
 
 export default function AdminUsersPage() {
-  const [activeTab, setActiveTab] = useState("users"); // "users" | "roles"
-  const [viewMode, setViewMode] = useState("table");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [activeTab, setActiveTab] = useState('users'); // "users" | "roles"
+  const [viewMode, setViewMode] = useState('table');
+  const [searchTerm, setSearchTerm] = useState('');
 
   // ── User Modal States ──
   const [isCreateUserModalOpen, setIsCreateUserModalOpen] = useState(false);
   const [isEditUserModalOpen, setIsEditUserModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   const [userFormData, setUserFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    role: "",
+    name: '',
+    email: '',
+    password: '',
+    role: '',
   });
-  const [userFormError, setUserFormError] = useState("");
+  const [userFormError, setUserFormError] = useState('');
 
   // ── Role Modal States ──
   const [isCreateRoleModalOpen, setIsCreateRoleModalOpen] = useState(false);
   const [isEditRoleModalOpen, setIsEditRoleModalOpen] = useState(false);
   const [editingRole, setEditingRole] = useState(null);
   const [roleFormData, setRoleFormData] = useState({
-    name: "",
-    description: "",
+    name: '',
+    description: '',
     permissions: [],
   });
-  const [roleFormError, setRoleFormError] = useState("");
+  const [roleFormError, setRoleFormError] = useState('');
 
   // ── Data Fetching ──
   // Users
@@ -115,41 +115,41 @@ export default function AdminUsersPage() {
   // ── User Form Helpers ──
   useEffect(() => {
     if (roles.length > 0 && !userFormData.role) {
-      setUserFormData((prev) => ({ ...prev, role: roles[0].name || "" }));
+      setUserFormData((prev) => ({ ...prev, role: roles[0].name || '' }));
     }
   }, [roles, userFormData.role]);
 
   useEffect(() => {
     if (isCreateUserModalOpen) {
       setUserFormData({
-        name: "",
-        email: "",
-        password: "",
-        role: roles.length > 0 ? roles[0].name || "" : "",
+        name: '',
+        email: '',
+        password: '',
+        role: roles.length > 0 ? roles[0].name || '' : '',
       });
-      setUserFormError("");
+      setUserFormError('');
     }
   }, [isCreateUserModalOpen, roles]);
 
   useEffect(() => {
     if (isEditUserModalOpen && editingUser) {
       setUserFormData({
-        name: editingUser.name || "",
-        email: editingUser.email || "",
-        password: "",
-        role: editingUser.role || (roles.length > 0 ? roles[0].name || "" : ""),
+        name: editingUser.name || '',
+        email: editingUser.email || '',
+        password: '',
+        role: editingUser.role || (roles.length > 0 ? roles[0].name || '' : ''),
       });
-      setUserFormError("");
+      setUserFormError('');
     }
   }, [isEditUserModalOpen, editingUser, roles]);
 
   const handleDeleteUser = async (userId) => {
-    if (!confirm("Delete this user permanently?")) return;
+    if (!confirm('Delete this user permanently?')) return;
     try {
       await deleteUser(userId).unwrap();
       refetchUsers();
     } catch (err) {
-      alert(err.data?.message || "Delete failed");
+      alert(err.data?.message || 'Delete failed');
     }
   };
 
@@ -161,36 +161,36 @@ export default function AdminUsersPage() {
   const handleUserInputChange = (e) => {
     const { name, value } = e.target;
     setUserFormData((prev) => ({ ...prev, [name]: value }));
-    setUserFormError("");
+    setUserFormError('');
   };
 
   const handleSubmitUser = async (e) => {
     e.preventDefault();
-    setUserFormError("");
+    setUserFormError('');
 
-    if (!userFormData.name.trim()) return setUserFormError("Name is required");
+    if (!userFormData.name.trim()) return setUserFormError('Name is required');
     if (!userFormData.email.trim())
-      return setUserFormError("Email is required");
+      return setUserFormError('Email is required');
     if (isCreateUserModalOpen && !userFormData.password.trim())
-      return setUserFormError("Password is required for new users");
-    if (!userFormData.role) return setUserFormError("Role is required");
+      return setUserFormError('Password is required for new users');
+    if (!userFormData.role) return setUserFormError('Role is required');
 
     try {
       if (isEditUserModalOpen && editingUser) {
         const payload = { ...userFormData };
         if (!payload.password?.trim()) delete payload.password;
         await updateUser({ id: editingUser._id, ...payload }).unwrap();
-        alert("User updated successfully!");
+        alert('User updated successfully!');
         setIsEditUserModalOpen(false);
         setEditingUser(null);
       } else {
         await createUser(userFormData).unwrap();
-        alert("User created successfully!");
+        alert('User created successfully!');
         setIsCreateUserModalOpen(false);
       }
       refetchUsers();
     } catch (err) {
-      setUserFormError(err.data?.message || "Failed to save user");
+      setUserFormError(err.data?.message || 'Failed to save user');
     }
   };
 
@@ -198,22 +198,22 @@ export default function AdminUsersPage() {
   useEffect(() => {
     if (isCreateRoleModalOpen) {
       setRoleFormData({
-        name: "",
-        description: "",
+        name: '',
+        description: '',
         permissions: [],
       });
-      setRoleFormError("");
+      setRoleFormError('');
     }
   }, [isCreateRoleModalOpen]);
 
   useEffect(() => {
     if (isEditRoleModalOpen && editingRole) {
       setRoleFormData({
-        name: editingRole.name || "",
-        description: editingRole.description || "",
+        name: editingRole.name || '',
+        description: editingRole.description || '',
         permissions: editingRole.permissions || [],
       });
-      setRoleFormError("");
+      setRoleFormError('');
     }
   }, [isEditRoleModalOpen, editingRole]);
 
@@ -225,7 +225,7 @@ export default function AdminUsersPage() {
   const handleRoleInputChange = (e) => {
     const { name, value } = e.target;
     setRoleFormData((prev) => ({ ...prev, [name]: value }));
-    setRoleFormError("");
+    setRoleFormError('');
   };
 
   const handlePermissionToggle = (permission) => {
@@ -239,15 +239,15 @@ export default function AdminUsersPage() {
       }
       return { ...prev, permissions: [...current, permission] };
     });
-    setRoleFormError("");
+    setRoleFormError('');
   };
 
   const handleSubmitRole = async (e) => {
     e.preventDefault();
-    setRoleFormError("");
+    setRoleFormError('');
 
     if (!roleFormData.name.trim())
-      return setRoleFormError("Role name is required");
+      return setRoleFormError('Role name is required');
 
     try {
       if (isEditRoleModalOpen && editingRole) {
@@ -255,28 +255,28 @@ export default function AdminUsersPage() {
           id: editingRole._id,
           ...roleFormData,
         }).unwrap();
-        alert("Role updated successfully!");
+        alert('Role updated successfully!');
         setIsEditRoleModalOpen(false);
         setEditingRole(null);
       } else {
         await createRole(roleFormData).unwrap();
-        alert("Role created successfully!");
+        alert('Role created successfully!');
         setIsCreateRoleModalOpen(false);
       }
       refetchRoles();
     } catch (err) {
-      setRoleFormError(err.data?.message || "Failed to save role");
+      setRoleFormError(err.data?.message || 'Failed to save role');
     }
   };
 
   const handleDeleteRole = async (roleId) => {
-    if (!confirm("Delete this role? Users assigned to it will lose it."))
+    if (!confirm('Delete this role? Users assigned to it will lose it.'))
       return;
     try {
       await deleteRole(roleId).unwrap();
       refetchRoles();
     } catch (err) {
-      alert(err.data?.message || "Delete failed");
+      alert(err.data?.message || 'Delete failed');
     }
   };
 
@@ -292,7 +292,7 @@ export default function AdminUsersPage() {
         <p>
           {usersError?.data?.message ||
             rolesError?.data?.message ||
-            "Could not load data"}
+            'Could not load data'}
         </p>
         <button
           onClick={() => {
@@ -313,20 +313,20 @@ export default function AdminUsersPage() {
       <header className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
-            {activeTab === "users" ? "Users" : "Roles"}
+            {activeTab === 'users' ? 'Users' : 'Roles'}
             <span className="ml-3 text-lg font-normal text-gray-600">
-              ({activeTab === "users" ? users.length : roles.length})
+              ({activeTab === 'users' ? users.length : roles.length})
             </span>
           </h1>
           <p className="mt-1 text-sm text-gray-500">
-            {activeTab === "users"
-              ? "Manage admin users and permissions"
-              : "Manage roles and permissions"}
+            {activeTab === 'users'
+              ? 'Manage admin users and permissions'
+              : 'Manage roles and permissions'}
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          {activeTab === "users" ? (
+          {activeTab === 'users' ? (
             <button
               onClick={() => setIsCreateUserModalOpen(true)}
               className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700 transition-colors"
@@ -348,21 +348,21 @@ export default function AdminUsersPage() {
       <div className="mb-6 border-b border-gray-200">
         <div className="flex space-x-8">
           <button
-            onClick={() => setActiveTab("users")}
+            onClick={() => setActiveTab('users')}
             className={`pb-4 text-sm font-medium transition-colors ${
-              activeTab === "users"
-                ? "border-b-2 border-blue-600 text-blue-600"
-                : "text-gray-500 hover:text-gray-700"
+              activeTab === 'users'
+                ? 'border-b-2 border-blue-600 text-blue-600'
+                : 'text-gray-500 hover:text-gray-700'
             }`}
           >
             Users
           </button>
           <button
-            onClick={() => setActiveTab("roles")}
+            onClick={() => setActiveTab('roles')}
             className={`pb-4 text-sm font-medium transition-colors ${
-              activeTab === "roles"
-                ? "border-b-2 border-blue-600 text-blue-600"
-                : "text-gray-500 hover:text-gray-700"
+              activeTab === 'roles'
+                ? 'border-b-2 border-blue-600 text-blue-600'
+                : 'text-gray-500 hover:text-gray-700'
             }`}
           >
             Roles
@@ -371,7 +371,7 @@ export default function AdminUsersPage() {
       </div>
 
       {/* Search & View Toggle (only for users tab for now) */}
-      {activeTab === "users" && (
+      {activeTab === 'users' && (
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-1 items-center gap-3">
             <div className="relative flex-1 max-w-md">
@@ -388,21 +388,21 @@ export default function AdminUsersPage() {
 
           <div className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white p-1">
             <button
-              onClick={() => setViewMode("table")}
+              onClick={() => setViewMode('table')}
               className={`rounded-md px-3 py-1.5 text-sm font-medium transition ${
-                viewMode === "table"
-                  ? "bg-gray-200 shadow-sm"
-                  : "text-gray-600 hover:bg-gray-100"
+                viewMode === 'table'
+                  ? 'bg-gray-200 shadow-sm'
+                  : 'text-gray-600 hover:bg-gray-100'
               }`}
             >
               <TableIcon size={16} className="inline" />
             </button>
             <button
-              onClick={() => setViewMode("card")}
+              onClick={() => setViewMode('card')}
               className={`rounded-md px-3 py-1.5 text-sm font-medium transition ${
-                viewMode === "card"
-                  ? "bg-gray-200 shadow-sm"
-                  : "text-gray-600 hover:bg-gray-100"
+                viewMode === 'card'
+                  ? 'bg-gray-200 shadow-sm'
+                  : 'text-gray-600 hover:bg-gray-100'
               }`}
             >
               <LayoutGrid size={16} className="inline" />
@@ -412,7 +412,7 @@ export default function AdminUsersPage() {
       )}
 
       {/* Content based on active tab */}
-      {activeTab === "users" ? (
+      {activeTab === 'users' ? (
         users.length === 0 ? (
           <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 bg-white p-12 text-center">
             <Users className="mb-4 h-12 w-12 text-gray-400" />
@@ -420,18 +420,18 @@ export default function AdminUsersPage() {
               No users found
             </h3>
             <p className="mt-2 text-sm text-gray-500">
-              {searchTerm ? "Try changing search term" : "Add your first user."}
+              {searchTerm ? 'Try changing search term' : 'Add your first user.'}
             </p>
             {searchTerm && (
               <button
-                onClick={() => setSearchTerm("")}
+                onClick={() => setSearchTerm('')}
                 className="mt-4 text-sm text-blue-600 hover:underline"
               >
                 Clear search
               </button>
             )}
           </div>
-        ) : viewMode === "table" ? (
+        ) : viewMode === 'table' ? (
           <UsersTable
             users={users}
             onDelete={handleDeleteUser}
@@ -461,14 +461,14 @@ export default function AdminUsersPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
             <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between z-10">
               <h2 className="text-xl font-bold text-gray-900">
-                {isEditUserModalOpen ? "Edit User" : "Add New User"}
+                {isEditUserModalOpen ? 'Edit User' : 'Add New User'}
               </h2>
               <button
                 onClick={() => {
                   setIsCreateUserModalOpen(false);
                   setIsEditUserModalOpen(false);
                   setEditingUser(null);
-                  setUserFormError("");
+                  setUserFormError('');
                 }}
                 className="p-2 rounded-full hover:bg-gray-100 transition"
               >
@@ -517,7 +517,7 @@ export default function AdminUsersPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {isEditUserModalOpen ? "New Password (optional)" : "Password"}{" "}
+                  {isEditUserModalOpen ? 'New Password (optional)' : 'Password'}{' '}
                   {!isEditUserModalOpen && (
                     <span className="text-red-500">*</span>
                   )}
@@ -531,8 +531,8 @@ export default function AdminUsersPage() {
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder={
                     isEditUserModalOpen
-                      ? "Leave blank to keep current"
-                      : "••••••••"
+                      ? 'Leave blank to keep current'
+                      : '••••••••'
                   }
                 />
               </div>
@@ -574,7 +574,7 @@ export default function AdminUsersPage() {
                     setIsCreateUserModalOpen(false);
                     setIsEditUserModalOpen(false);
                     setEditingUser(null);
-                    setUserFormError("");
+                    setUserFormError('');
                   }}
                   className="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition"
                 >
@@ -588,12 +588,12 @@ export default function AdminUsersPage() {
                   {isCreatingUser || isUpdatingUser ? (
                     <>
                       <Loader2 size={18} className="animate-spin" />
-                      {isEditUserModalOpen ? "Updating..." : "Creating..."}
+                      {isEditUserModalOpen ? 'Updating...' : 'Creating...'}
                     </>
                   ) : isEditUserModalOpen ? (
-                    "Update User"
+                    'Update User'
                   ) : (
-                    "Create User"
+                    'Create User'
                   )}
                 </button>
               </div>
@@ -608,14 +608,14 @@ export default function AdminUsersPage() {
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between z-10">
               <h2 className="text-xl font-bold text-gray-900">
-                {isEditRoleModalOpen ? "Edit Role" : "Create New Role"}
+                {isEditRoleModalOpen ? 'Edit Role' : 'Create New Role'}
               </h2>
               <button
                 onClick={() => {
                   setIsCreateRoleModalOpen(false);
                   setIsEditRoleModalOpen(false);
                   setEditingRole(null);
-                  setRoleFormError("");
+                  setRoleFormError('');
                 }}
                 className="p-2 rounded-full hover:bg-gray-100 transition"
               >
@@ -697,7 +697,7 @@ export default function AdminUsersPage() {
                     setIsCreateRoleModalOpen(false);
                     setIsEditRoleModalOpen(false);
                     setEditingRole(null);
-                    setRoleFormError("");
+                    setRoleFormError('');
                   }}
                   className="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition"
                 >
@@ -711,12 +711,12 @@ export default function AdminUsersPage() {
                   {isCreatingRole || isUpdatingRole ? (
                     <>
                       <Loader2 size={18} className="animate-spin" />
-                      {isEditRoleModalOpen ? "Updating..." : "Creating..."}
+                      {isEditRoleModalOpen ? 'Updating...' : 'Creating...'}
                     </>
                   ) : isEditRoleModalOpen ? (
-                    "Update Role"
+                    'Update Role'
                   ) : (
-                    "Create Role"
+                    'Create Role'
                   )}
                 </button>
               </div>
@@ -776,26 +776,26 @@ function UsersTable({ users, onDelete, onEdit, isDeleting }) {
               className="group hover:bg-gray-50 transition-colors"
             >
               <td className="px-4 py-3 font-medium text-gray-900">
-                {user.name || "—"}
+                {user.name || '—'}
               </td>
-              <td className="px-4 py-3 text-gray-600">{user.email || "—"}</td>
+              <td className="px-4 py-3 text-gray-600">{user.email || '—'}</td>
               <td className="px-4 py-3">
                 <span
                   className={`inline-flex px-2.5 py-0.5 text-xs font-medium rounded-full ${
-                    user.role === "Admin"
-                      ? "bg-purple-100 text-purple-800"
-                      : user.role === "HR"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-blue-100 text-blue-800"
+                    user.role === 'Admin'
+                      ? 'bg-purple-100 text-purple-800'
+                      : user.role === 'HR'
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-blue-100 text-blue-800'
                   }`}
                 >
-                  {user.role || "Unknown"}
+                  {user.role || 'Unknown'}
                 </span>
               </td>
               <td className="hidden md:table-cell px-4 py-3 text-gray-600">
                 {user.createdAt
-                  ? format(new Date(user.createdAt), "dd MMM yyyy")
-                  : "—"}
+                  ? format(new Date(user.createdAt), 'dd MMM yyyy')
+                  : '—'}
               </td>
               <td className="px-4 py-3 text-right">
                 <div className="flex items-center justify-end gap-2 opacity-70 group-hover:opacity-100 transition-opacity">
@@ -836,11 +836,11 @@ function UsersCards({ users, onDelete, onEdit, isDeleting }) {
           <div className="p-6">
             <div className="flex items-center gap-3">
               <div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 font-medium">
-                {user.name?.[0]?.toUpperCase() || "?"}
+                {user.name?.[0]?.toUpperCase() || '?'}
               </div>
               <div>
                 <h3 className="font-semibold text-gray-900">
-                  {user.name || "Unnamed"}
+                  {user.name || 'Unnamed'}
                 </h3>
                 <p className="text-sm text-gray-500">{user.email}</p>
               </div>
@@ -849,18 +849,18 @@ function UsersCards({ users, onDelete, onEdit, isDeleting }) {
             <div className="mt-4 flex flex-wrap gap-2">
               <span
                 className={`inline-flex px-2.5 py-0.5 text-xs font-medium rounded-full ${
-                  user.role === "Admin"
-                    ? "bg-purple-100 text-purple-800"
-                    : user.role === "HR"
-                      ? "bg-green-100 text-green-800"
-                      : "bg-blue-100 text-blue-800"
+                  user.role === 'Admin'
+                    ? 'bg-purple-100 text-purple-800'
+                    : user.role === 'HR'
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-blue-100 text-blue-800'
                 }`}
               >
-                {user.role || "Unknown"}
+                {user.role || 'Unknown'}
               </span>
               {user.createdAt && (
                 <span className="text-xs text-gray-500">
-                  Joined {format(new Date(user.createdAt), "MMM yyyy")}
+                  Joined {format(new Date(user.createdAt), 'MMM yyyy')}
                 </span>
               )}
             </div>
@@ -915,7 +915,7 @@ function RolesTable({ roles, onEdit, onDelete, isDeleting }) {
                 {role.name}
               </td>
               <td className="px-6 py-4 text-gray-600">
-                {role.description || "—"}
+                {role.description || '—'}
               </td>
               <td className="px-6 py-4 text-gray-600">
                 {role.permissions?.length || 0} permissions

@@ -1,5 +1,5 @@
 // components/admin/DataTable.jsx
-"use client";
+'use client';
 
 export default function DataTable({ columns, data }) {
   return (
@@ -33,34 +33,34 @@ export default function DataTable({ columns, data }) {
 
 const styles = {
   wrapper: {
-    background: "#ffffff",
-    border: "1px solid rgba(26,60,52,0.08)",
+    background: '#ffffff',
+    border: '1px solid rgba(26,60,52,0.08)',
   },
 
   table: {
-    width: "100%",
-    borderCollapse: "collapse",
+    width: '100%',
+    borderCollapse: 'collapse',
   },
 
   th: {
-    textAlign: "left",
-    padding: "18px 24px",
+    textAlign: 'left',
+    padding: '18px 24px',
     fontFamily: "'Lato', sans-serif",
     fontSize: 12,
     letterSpacing: 2,
-    textTransform: "uppercase",
-    color: "#1a3c34",
-    borderBottom: "1px solid rgba(26,60,52,0.08)",
+    textTransform: 'uppercase',
+    color: '#1a3c34',
+    borderBottom: '1px solid rgba(26,60,52,0.08)',
   },
 
   td: {
-    padding: "20px 24px",
+    padding: '20px 24px',
     fontFamily: "'Lato', sans-serif",
     fontSize: 15,
-    color: "#444",
+    color: '#444',
   },
 
   row: {
-    borderBottom: "1px solid rgba(26,60,52,0.06)",
+    borderBottom: '1px solid rgba(26,60,52,0.06)',
   },
 };

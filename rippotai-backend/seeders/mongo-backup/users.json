@@ -1,0 +1,54 @@
+[
+  {
+    "_id": "68d0dc3ba81980fbc6387ae4",
+    "name": "Dhruv Verma",
+    "email": "vermadhruv09112002@gmail.com",
+    "password": "$2b$10$wJ0BcM8gw22eakUApgfxyerGYqCEcTg8WA2GSj9zjJAG2Lic50bBG",
+    "roles": [
+      "Employee"
+    ],
+    "isActive": true,
+    "createdAt": "2025-09-22T05:18:51.413Z",
+    "updatedAt": "2025-09-22T05:55:52.480Z",
+    "__v": 0
+  },
+  {
+    "_id": "6996b3d5c7edadf890fc8c3e",
+    "name": "EKVAMEV SECRETARY",
+    "email": "demouser@gmail.com",
+    "password": "$2b$10$mEHOO4dnVGbpPcQwLM/ICeOYtN4yokEsIME4H6ux/His9S9nFz5Te",
+    "roles": [
+      "Employee"
+    ],
+    "isActive": true,
+    "createdAt": "2026-02-19T06:55:17.039Z",
+    "updatedAt": "2026-02-19T06:55:17.039Z",
+    "__v": 0
+  },
+  {
+    "_id": "69a2bffb70a2916f190e097c",
+    "name": "Bhav Lamba",
+    "email": "bhav.lamba@rocklime.com",
+    "password": "$2b$10$bfKPk3McVYwiGn.8.Es2S.oT9quN5FY6iaJSHodx.HNNdxaT14G0S",
+    "roles": [
+      "Employee"
+    ],
+    "isActive": true,
+    "createdAt": "2026-02-28T10:14:19.447Z",
+    "updatedAt": "2026-02-28T10:14:19.447Z",
+    "__v": 0
+  },
+  {
+    "_id": "69da2d241c77999f97264408",
+    "name": "Jayant",
+    "email": "jayant@rippotai.in",
+    "password": "$2b$10$PRuG5abndESd7xQqcQT2CeLaFr5MX/H1GumKp/khPq8Fne6/datLa",
+    "roles": [
+      "Employee"
+    ],
+    "isActive": true,
+    "createdAt": "2026-04-11T11:14:44.892Z",
+    "updatedAt": "2026-04-11T11:14:44.892Z",
+    "__v": 0
+  }
+]

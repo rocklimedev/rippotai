@@ -1,25 +1,25 @@
 // src/api/queriesApi.js
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { API_URL } from "@/lib/config";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { API_URL } from '@/lib/config';
 
 export const queriesApi = createApi({
-  reducerPath: "queriesApi",
+  reducerPath: 'queriesApi',
 
   baseQuery: fetchBaseQuery({
     baseUrl: `${API_URL}/queries`,
     prepareHeaders: (headers) => {
-      headers.set("Content-Type", "application/json");
+      headers.set('Content-Type', 'application/json');
 
-      const token = localStorage.getItem("adminToken");
+      const token = localStorage.getItem('adminToken');
       if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
+        headers.set('Authorization', `Bearer ${token}`);
       }
 
       return headers;
     },
   }),
 
-  tagTypes: ["Queries"],
+  tagTypes: ['Queries'],
 
   endpoints: (builder) => ({
     /**
@@ -28,10 +28,10 @@ export const queriesApi = createApi({
     createQuery: builder.mutation({
       query: ({ branch, name, email, subject, message }) => ({
         url: `/`,
-        method: "POST",
+        method: 'POST',
         body: { branch, name, email, subject, message },
       }),
-      invalidatesTags: [{ type: "Queries", id: "LIST" }],
+      invalidatesTags: [{ type: 'Queries', id: 'LIST' }],
     }),
 
     /**
@@ -46,12 +46,12 @@ export const queriesApi = createApi({
         Array.isArray(result)
           ? [
               ...result.map(({ _id }) => ({
-                type: "Queries",
+                type: 'Queries',
                 id: _id,
               })),
-              { type: "Queries", id: "LIST" },
+              { type: 'Queries', id: 'LIST' },
             ]
-          : [{ type: "Queries", id: "LIST" }],
+          : [{ type: 'Queries', id: 'LIST' }],
     }),
 
     /**
@@ -62,7 +62,7 @@ export const queriesApi = createApi({
         url: `/${id}`,
         params: { branch }, // 🔥 FIXED
       }),
-      providesTags: (result, error, { id }) => [{ type: "Queries", id }],
+      providesTags: (result, error, { id }) => [{ type: 'Queries', id }],
     }),
 
     /**
@@ -71,13 +71,13 @@ export const queriesApi = createApi({
     updateQuery: builder.mutation({
       query: ({ id, branch, ...updates }) => ({
         url: `/${id}`,
-        method: "PUT",
+        method: 'PUT',
         params: { branch }, // 🔥 consistent
         body: { ...updates, branch },
       }),
       invalidatesTags: (result, error, { id }) => [
-        { type: "Queries", id },
-        { type: "Queries", id: "LIST" },
+        { type: 'Queries', id },
+        { type: 'Queries', id: 'LIST' },
       ],
     }),
 
@@ -87,12 +87,12 @@ export const queriesApi = createApi({
     deleteQuery: builder.mutation({
       query: ({ id, branch }) => ({
         url: `/${id}`,
-        method: "DELETE",
+        method: 'DELETE',
         params: { branch }, // 🔥 FIXED
       }),
       invalidatesTags: (result, error, { id }) => [
-        { type: "Queries", id },
-        { type: "Queries", id: "LIST" },
+        { type: 'Queries', id },
+        { type: 'Queries', id: 'LIST' },
       ],
     }),
 
@@ -102,12 +102,12 @@ export const queriesApi = createApi({
     addNote: builder.mutation({
       query: ({ id, branch, text }) => ({
         url: `/${id}/notes`,
-        method: "POST",
+        method: 'POST',
         body: { text, branch }, // 🔥 required
       }),
       invalidatesTags: (result, error, { id }) => [
-        { type: "Queries", id },
-        { type: "Queries", id: "LIST" },
+        { type: 'Queries', id },
+        { type: 'Queries', id: 'LIST' },
       ],
     }),
   }),

@@ -1,21 +1,21 @@
 // app/ClientLayout.tsx
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
-import { FloatingCTA } from "@/components/FloatingCTA";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
-import { Toaster } from "@/components/ui/sonner";
-import { InteractiveGrid } from "@/components/InteractiveGrid";
+import { FloatingCTA } from '@/components/FloatingCTA';
+import { Header } from '@/components/Header';
+import { Footer } from '@/components/Footer';
+import { Toaster } from '@/components/ui/sonner';
+import { InteractiveGrid } from '@/components/InteractiveGrid';
 
-import ScrollToTop from "@/hooks/scrollToTop";
+import ScrollToTop from '@/hooks/scrollToTop';
 export default function ClientLayout({ children }) {
   const pathname = usePathname();
 
   // Routes where layout should NOT appear
-  const noLayoutRoutes = ["/login", "/403", "/500", "/admin"];
+  const noLayoutRoutes = ['/login', '/403', '/500', '/admin'];
 
   const isNoLayoutPage = noLayoutRoutes.some(
     (route) => pathname === route || pathname.startsWith(`${route}/`),
@@ -24,8 +24,8 @@ export default function ClientLayout({ children }) {
   return (
     <div
       style={{
-        minHeight: "100vh",
-        backgroundColor: "#ffffff",
+        minHeight: '100vh',
+        backgroundColor: '#ffffff',
       }}
     >
       <ScrollToTop />

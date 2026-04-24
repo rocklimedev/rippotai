@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import {
   FileText,
   Plus,
@@ -9,7 +9,7 @@ import {
   Table as TableIcon,
   LayoutGrid,
   RefreshCw,
-} from "lucide-react";
+} from 'lucide-react';
 
 import {
   useGetProjectsQuery,
@@ -17,11 +17,11 @@ import {
   useUpdateProjectStatusMutation,
   useUpdateProjectPriorityMutation,
   useToggleFeaturedMutation,
-} from "@/api/projectsApi";
+} from '@/api/projectsApi';
 
-import styles from "./projects.module.css";
-import ProjectsCards from "@/components/ProjectsCards";
-import ProjectsTable from "@/components/ProjectsTable";
+import styles from './projects.module.css';
+import ProjectsCards from '@/components/ProjectsCards';
+import ProjectsTable from '@/components/ProjectsTable';
 
 import {
   Pagination,
@@ -30,19 +30,19 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
+} from '@/components/ui/pagination';
 
 const TABS = [
-  { id: "all", label: "All Projects" },
-  { id: "draft", label: "Drafts" },
-  { id: "published", label: "Published" },
-  { id: "featured", label: "Featured" },
+  { id: 'all', label: 'All Projects' },
+  { id: 'draft', label: 'Drafts' },
+  { id: 'published', label: 'Published' },
+  { id: 'featured', label: 'Featured' },
 ];
 
 export default function AdminProjectsPage() {
-  const [activeTab, setActiveTab] = useState("all");
-  const [viewMode, setViewMode] = useState("table");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [activeTab, setActiveTab] = useState('all');
+  const [viewMode, setViewMode] = useState('table');
+  const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
 
   // Query with proper priority sorting (0 = lowest priority)
@@ -57,15 +57,15 @@ export default function AdminProjectsPage() {
     limit: 10,
     search: searchTerm,
     status:
-      activeTab === "draft"
-        ? "draft"
-        : activeTab === "published"
-          ? "working,completed"
-          : activeTab === "featured"
+      activeTab === 'draft'
+        ? 'draft'
+        : activeTab === 'published'
+          ? 'working,completed'
+          : activeTab === 'featured'
             ? undefined // Featured is handled separately if needed
             : undefined,
-    sort: "priority",
-    order: "asc", // Lower number = higher priority (1 appears before 2, 0 at bottom)
+    sort: 'priority',
+    order: 'asc', // Lower number = higher priority (1 appears before 2, 0 at bottom)
   });
 
   const [deleteProject, { isLoading: isDeleting }] = useDeleteProjectMutation();
@@ -86,29 +86,29 @@ export default function AdminProjectsPage() {
   // ================= HANDLERS =================
 
   const handleDelete = async (projectId) => {
-    if (!confirm("Delete this project permanently?")) return;
+    if (!confirm('Delete this project permanently?')) return;
 
     try {
       await deleteProject(projectId).unwrap();
       refetch();
     } catch (err) {
-      alert(err?.data?.message || "Delete failed");
+      alert(err?.data?.message || 'Delete failed');
     }
   };
 
   const handleStatusToggle = async (projectId, current) => {
     const nextStatus =
-      current === "draft"
-        ? "working"
-        : current === "working"
-          ? "completed"
-          : "draft";
+      current === 'draft'
+        ? 'working'
+        : current === 'working'
+          ? 'completed'
+          : 'draft';
 
     try {
       await updateStatus({ id: projectId, status: nextStatus }).unwrap();
       refetch();
     } catch (err) {
-      alert(err?.data?.message || "Status update failed");
+      alert(err?.data?.message || 'Status update failed');
     }
   };
 
@@ -117,7 +117,7 @@ export default function AdminProjectsPage() {
       await toggleFeatured(projectId).unwrap();
       refetch();
     } catch (err) {
-      alert(err?.data?.message || "Failed to update featured");
+      alert(err?.data?.message || 'Failed to update featured');
     }
   };
 
@@ -133,7 +133,7 @@ export default function AdminProjectsPage() {
       }).unwrap();
       // No need to refetch manually — RTK Query invalidates tags automatically
     } catch (err) {
-      alert(err?.data?.message || "Priority update failed");
+      alert(err?.data?.message || 'Priority update failed');
     }
   };
 
@@ -148,7 +148,7 @@ export default function AdminProjectsPage() {
           Error Loading Projects
         </h1>
         <p className="mt-2 text-gray-600">
-          {error?.data?.message || "Could not load projects"}
+          {error?.data?.message || 'Could not load projects'}
         </p>
         <button
           onClick={refetch}
@@ -166,7 +166,7 @@ export default function AdminProjectsPage() {
       <header className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold md:text-3xl">
-            Projects{" "}
+            Projects{' '}
             <span className="ml-3 text-lg text-gray-600">({total})</span>
           </h1>
           <p className="text-sm text-gray-500">Manage your portfolio entries</p>
@@ -189,8 +189,8 @@ export default function AdminProjectsPage() {
               onClick={() => setActiveTab(tab.id)}
               className={`pb-4 text-sm font-medium transition-colors ${
                 activeTab === tab.id
-                  ? "text-blue-600 border-b-2 border-blue-600"
-                  : "text-gray-500 hover:text-gray-700"
+                  ? 'text-blue-600 border-b-2 border-blue-600'
+                  : 'text-gray-500 hover:text-gray-700'
               }`}
             >
               {tab.label}
@@ -217,22 +217,22 @@ export default function AdminProjectsPage() {
 
         <div className="flex border border-gray-300 rounded-lg p-1 bg-white">
           <button
-            onClick={() => setViewMode("table")}
+            onClick={() => setViewMode('table')}
             className={`px-4 py-2 rounded-md transition-colors ${
-              viewMode === "table"
-                ? "bg-gray-100 text-gray-900"
-                : "text-gray-500 hover:text-gray-700"
+              viewMode === 'table'
+                ? 'bg-gray-100 text-gray-900'
+                : 'text-gray-500 hover:text-gray-700'
             }`}
             title="Table View"
           >
             <TableIcon size={18} />
           </button>
           <button
-            onClick={() => setViewMode("card")}
+            onClick={() => setViewMode('card')}
             className={`px-4 py-2 rounded-md transition-colors ${
-              viewMode === "card"
-                ? "bg-gray-100 text-gray-900"
-                : "text-gray-500 hover:text-gray-700"
+              viewMode === 'card'
+                ? 'bg-gray-100 text-gray-900'
+                : 'text-gray-500 hover:text-gray-700'
             }`}
             title="Card View"
           >
@@ -243,8 +243,8 @@ export default function AdminProjectsPage() {
 
       {/* Content Area */}
       {projects.length === 0 ? (
-        <EmptyState searchTerm={searchTerm} clear={() => setSearchTerm("")} />
-      ) : viewMode === "table" ? (
+        <EmptyState searchTerm={searchTerm} clear={() => setSearchTerm('')} />
+      ) : viewMode === 'table' ? (
         <ProjectsTable
           projects={projects}
           onDelete={handleDelete}
@@ -272,7 +272,7 @@ export default function AdminProjectsPage() {
             <PaginationItem>
               <PaginationPrevious
                 onClick={() => setPage((p) => Math.max(p - 1, 1))}
-                className={page === 1 ? "pointer-events-none opacity-50" : ""}
+                className={page === 1 ? 'pointer-events-none opacity-50' : ''}
               />
             </PaginationItem>
 
@@ -291,7 +291,7 @@ export default function AdminProjectsPage() {
               <PaginationNext
                 onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
                 className={
-                  page === totalPages ? "pointer-events-none opacity-50" : ""
+                  page === totalPages ? 'pointer-events-none opacity-50' : ''
                 }
               />
             </PaginationItem>
@@ -311,8 +311,8 @@ function EmptyState({ searchTerm, clear }) {
       <h3 className="text-xl font-medium text-gray-700">No projects found</h3>
       <p className="mt-2 text-gray-500">
         {searchTerm
-          ? "Try adjusting your search term"
-          : "No projects match the current filter"}
+          ? 'Try adjusting your search term'
+          : 'No projects match the current filter'}
       </p>
       {searchTerm && (
         <button

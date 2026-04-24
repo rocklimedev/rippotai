@@ -1,49 +1,49 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { useLoginMutation } from "@/api/authApi";
-import { Eye, EyeOff, Loader2, AlertCircle } from "lucide-react";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { useLoginMutation } from '@/api/authApi';
+import { Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react';
 
 export default function AdminLoginPage() {
   const router = useRouter();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const [login] = useLoginMutation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setError('');
     setIsLoading(true);
 
     try {
       const result = await login({ email, password }).unwrap();
 
       if (result.accessToken) {
-        localStorage.setItem("adminToken", result.accessToken);
+        localStorage.setItem('adminToken', result.accessToken);
 
         if (result.refreshToken) {
-          localStorage.setItem("refreshToken", result.refreshToken);
+          localStorage.setItem('refreshToken', result.refreshToken);
         }
 
         const urlParams = new URLSearchParams(window.location.search);
-        const redirectTo = urlParams.get("redirect") || "/admin/";
+        const redirectTo = urlParams.get('redirect') || '/admin/';
 
         window.location.href = redirectTo;
       } else {
-        setError("Login succeeded but no access token was received.");
+        setError('Login succeeded but no access token was received.');
       }
     } catch (err) {
       setError(
         err.data?.message ||
           err.message ||
-          "Invalid credentials. Please try again.",
+          'Invalid credentials. Please try again.',
       );
     } finally {
       setIsLoading(false);
@@ -94,7 +94,7 @@ export default function AdminLoginPage() {
               </label>
               <div className="mt-1 relative">
                 <input
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword ? 'text' : 'password'}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -135,7 +135,7 @@ export default function AdminLoginPage() {
                   Signing in...
                 </>
               ) : (
-                "Sign in"
+                'Sign in'
               )}
             </button>
           </form>

@@ -1,22 +1,22 @@
-import { aboutImage } from "@/lib/config";
-import { AnimateIn } from "./AnimateIn";
+import { aboutImage } from '@/lib/config';
+import { AnimateIn } from './AnimateIn';
 
 export const WhereItBegan = () => {
   return (
     <section
       style={{
-        backgroundColor: "#ffffff",
-        padding: "120px 48px",
+        backgroundColor: '#ffffff',
+        padding: '120px 48px',
       }}
     >
       <div
         style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "80px",
-          alignItems: "center",
+          maxWidth: '1200px',
+          margin: '0 auto',
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '80px',
+          alignItems: 'center',
         }}
         className="where-it-began-grid"
       >
@@ -26,13 +26,13 @@ export const WhereItBegan = () => {
             <h2
               style={{
                 fontFamily: "'Lato', sans-serif",
-                fontSize: "clamp(28px, 3.5vw, 42px)",
+                fontSize: 'clamp(28px, 3.5vw, 42px)',
                 fontWeight: 300,
-                color: "#1a3c34",
-                letterSpacing: "1px",
+                color: '#1a3c34',
+                letterSpacing: '1px',
                 lineHeight: 1.2,
                 margin: 0,
-                marginBottom: "40px",
+                marginBottom: '40px',
               }}
             >
               About Us
@@ -43,16 +43,16 @@ export const WhereItBegan = () => {
             <p
               style={{
                 fontFamily: "'Lato', sans-serif",
-                fontSize: "16px",
+                fontSize: '16px',
                 fontWeight: 300,
-                color: "#444444",
+                color: '#444444',
                 lineHeight: 1.9,
                 margin: 0,
-                marginBottom: "20px",
+                marginBottom: '20px',
               }}
             >
-              {"\u201CRippotai,\u201D"} is inspired by the Japanese term for{" "}
-              {"\u201Ccube,\u201D"} symbolizing the fundamental form of objects
+              {'\u201CRippotai,\u201D'} is inspired by the Japanese term for{' '}
+              {'\u201Ccube,\u201D'} symbolizing the fundamental form of objects
               and the essence of design.
             </p>
           </AnimateIn>
@@ -61,12 +61,12 @@ export const WhereItBegan = () => {
             <p
               style={{
                 fontFamily: "'Lato', sans-serif",
-                fontSize: "16px",
+                fontSize: '16px',
                 fontWeight: 300,
-                color: "#444444",
+                color: '#444444',
                 lineHeight: 1.9,
                 margin: 0,
-                marginBottom: "20px",
+                marginBottom: '20px',
               }}
             >
               In geometry, the cube stands as a primary shape, a building block
@@ -80,12 +80,12 @@ export const WhereItBegan = () => {
             <p
               style={{
                 fontFamily: "'Lato', sans-serif",
-                fontSize: "16px",
+                fontSize: '16px',
                 fontWeight: 300,
-                color: "#444444",
+                color: '#444444',
                 lineHeight: 1.9,
                 margin: 0,
-                marginBottom: "20px",
+                marginBottom: '20px',
               }}
             >
               The functionality of a cube, with its capacity to be stacked,
@@ -99,9 +99,9 @@ export const WhereItBegan = () => {
             <p
               style={{
                 fontFamily: "'Lato', sans-serif",
-                fontSize: "16px",
+                fontSize: '16px',
                 fontWeight: 300,
-                color: "#444444",
+                color: '#444444',
                 lineHeight: 1.9,
                 margin: 0,
               }}
@@ -117,18 +117,18 @@ export const WhereItBegan = () => {
         <AnimateIn delay={0.2} distance={60} duration={1.4}>
           <div
             style={{
-              position: "relative",
-              overflow: "hidden",
+              position: 'relative',
+              overflow: 'hidden',
             }}
           >
             <img
               src={aboutImage}
               alt="Rippotai team"
               style={{
-                width: "100%",
-                height: "auto",
-                display: "block",
-                objectFit: "cover",
+                width: '100%',
+                height: 'auto',
+                display: 'block',
+                objectFit: 'cover',
               }}
             />
           </div>

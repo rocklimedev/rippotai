@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { useEffect, useState, useRef, useCallback } from "react";
-import { processImage, processSteps } from "@/lib/config";
+import Image from 'next/image';
+import { useEffect, useState, useRef, useCallback } from 'react';
+import { processImage, processSteps } from '@/lib/config';
 
 const ProcessCurveSlider = () => {
   const containerRef = useRef(null);
@@ -26,9 +26,9 @@ const ProcessCurveSlider = () => {
         rafRef.current = requestAnimationFrame(updateProgress);
       }
     };
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener('scroll', handleScroll);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, [updateProgress]);
@@ -56,14 +56,14 @@ const ProcessCurveSlider = () => {
   ];
 
   const cardPositions = [
-    { left: "12.5%", top: "18%", align: "center" },
-    { left: "37.5%", top: "55%", align: "center" },
-    { left: "62.5%", top: "22%", align: "center" },
-    { left: "87.5%", top: "55%", align: "center" },
+    { left: '12.5%', top: '18%', align: 'center' },
+    { left: '37.5%', top: '55%', align: 'center' },
+    { left: '62.5%', top: '22%', align: 'center' },
+    { left: '87.5%', top: '55%', align: 'center' },
   ];
 
   const curvePath =
-    "M 0,500 C 200,500 250,650 500,650 S 1000,280 1500,280 S 2000,680 2500,680 S 3000,300 3500,300 C 3750,300 4000,400 4000,400";
+    'M 0,500 C 200,500 250,650 500,650 S 1000,280 1500,280 S 2000,680 2500,680 S 3000,300 3500,300 C 3750,300 4000,400 4000,400';
 
   const pathRef = useRef(null);
   const [pathLength, setPathLength] = useState(5200);
@@ -79,38 +79,38 @@ const ProcessCurveSlider = () => {
   return (
     <div
       ref={containerRef}
-      style={{ height: "500vh", position: "relative" }}
+      style={{ height: '500vh', position: 'relative' }}
       data-testid="process-curve-slider"
     >
       <div
         style={{
-          position: "sticky",
+          position: 'sticky',
           top: 0,
-          height: "100vh",
-          overflow: "hidden",
-          backgroundColor: "#ffffff",
+          height: '100vh',
+          overflow: 'hidden',
+          backgroundColor: '#ffffff',
         }}
       >
         <div
           style={{
-            width: "400vw",
-            height: "100%",
-            position: "relative",
+            width: '400vw',
+            height: '100%',
+            position: 'relative',
             transform: `translateX(-${panPercent}%) scale(${scale})`,
             transformOrigin: `${panPercent + 12.5}% 50%`,
-            willChange: "transform",
+            willChange: 'transform',
           }}
         >
           <svg
             viewBox="0 0 4000 1000"
             preserveAspectRatio="none"
             style={{
-              position: "absolute",
+              position: 'absolute',
               top: 0,
               left: 0,
-              width: "100%",
-              height: "100%",
-              pointerEvents: "none",
+              width: '100%',
+              height: '100%',
+              pointerEvents: 'none',
             }}
           >
             <path
@@ -139,8 +139,8 @@ const ProcessCurveSlider = () => {
                   <circle
                     cx={node.cx}
                     cy={node.cy}
-                    r={isActive ? "14" : "8"}
-                    fill={isActive || isPassed ? "#d9af61" : "transparent"}
+                    r={isActive ? '14' : '8'}
+                    fill={isActive || isPassed ? '#d9af61' : 'transparent'}
                     stroke="#d9af61"
                     strokeWidth="2"
                   />
@@ -161,40 +161,40 @@ const ProcessCurveSlider = () => {
               <div
                 key={idx}
                 style={{
-                  position: "absolute",
+                  position: 'absolute',
                   left: pos.left,
                   top: pos.top,
-                  transform: "translate(-50%, 0)",
+                  transform: 'translate(-50%, 0)',
                   textAlign: pos.align,
                   opacity: isActive ? 1 : isPassed ? 0.5 : 0.25,
                   zIndex: 2,
-                  maxWidth: "320px",
+                  maxWidth: '320px',
                 }}
                 data-testid={`process-step-${idx}`}
               >
                 <div
                   style={{
                     fontFamily: "'Lato', sans-serif",
-                    fontSize: "13px",
+                    fontSize: '13px',
                     fontWeight: 500,
-                    letterSpacing: "4px",
-                    color: "#d9af61",
-                    marginBottom: "16px",
+                    letterSpacing: '4px',
+                    color: '#d9af61',
+                    marginBottom: '16px',
                   }}
                 >
-                  {String(step.id).padStart(2, "0")}
+                  {String(step.id).padStart(2, '0')}
                 </div>
 
                 <h3
                   style={{
                     fontFamily: "'Lato', sans-serif",
-                    fontSize: isActive ? "clamp(24px, 2.5vw, 32px)" : "20px",
+                    fontSize: isActive ? 'clamp(24px, 2.5vw, 32px)' : '20px',
                     fontWeight: 300,
-                    letterSpacing: "3px",
-                    textTransform: "uppercase",
-                    color: "#1a3c34",
+                    letterSpacing: '3px',
+                    textTransform: 'uppercase',
+                    color: '#1a3c34',
                     margin: 0,
-                    marginBottom: "16px",
+                    marginBottom: '16px',
                   }}
                 >
                   {step.title}
@@ -203,13 +203,13 @@ const ProcessCurveSlider = () => {
                 <p
                   style={{
                     fontFamily: "'Lato', sans-serif",
-                    fontSize: "15px",
+                    fontSize: '15px',
                     fontWeight: 300,
-                    color: "#555555",
+                    color: '#555555',
                     lineHeight: 1.9,
                     margin: 0,
-                    maxHeight: isActive ? "200px" : "0px",
-                    overflow: "hidden",
+                    maxHeight: isActive ? '200px' : '0px',
+                    overflow: 'hidden',
                     opacity: isActive ? 1 : 0,
                   }}
                 >
@@ -229,10 +229,10 @@ export default function ProcessPage() {
     <>
       <section
         style={{
-          position: "relative",
-          width: "100%",
-          height: "100vh",
-          overflow: "hidden",
+          position: 'relative',
+          width: '100%',
+          height: '100vh',
+          overflow: 'hidden',
         }}
       >
         <Image
@@ -242,38 +242,38 @@ export default function ProcessPage() {
           priority
           sizes="100vw"
           style={{
-            objectFit: "cover",
-            objectPosition: "center 40%", // 👈 better framing
+            objectFit: 'cover',
+            objectPosition: 'center 40%', // 👈 better framing
           }}
         />
 
         {/* Overlay */}
         <div
           style={{
-            position: "absolute",
+            position: 'absolute',
             inset: 0,
-            background: "rgba(0,0,0,0.45)",
+            background: 'rgba(0,0,0,0.45)',
           }}
         />
 
         {/* Text */}
         <div
           style={{
-            position: "absolute",
-            bottom: "8%",
-            left: "5%",
-            right: "5%",
-            maxWidth: "800px",
-            color: "#fff",
+            position: 'absolute',
+            bottom: '8%',
+            left: '5%',
+            right: '5%',
+            maxWidth: '800px',
+            color: '#fff',
             zIndex: 2,
           }}
         >
           <div
             style={{
-              fontSize: "clamp(10px,2vw,12px)",
-              letterSpacing: "3px",
-              color: "#d9af61",
-              marginBottom: "10px",
+              fontSize: 'clamp(10px,2vw,12px)',
+              letterSpacing: '3px',
+              color: '#d9af61',
+              marginBottom: '10px',
             }}
           >
             HOW WE WORK
@@ -281,7 +281,7 @@ export default function ProcessPage() {
 
           <h1
             style={{
-              fontSize: "clamp(32px,6vw,56px)",
+              fontSize: 'clamp(32px,6vw,56px)',
               fontWeight: 300,
               margin: 0,
             }}
@@ -291,10 +291,10 @@ export default function ProcessPage() {
 
           <div
             style={{
-              width: "40px",
-              height: "1px",
-              background: "#d9af61",
-              marginTop: "18px",
+              width: '40px',
+              height: '1px',
+              background: '#d9af61',
+              marginTop: '18px',
             }}
           />
         </div>

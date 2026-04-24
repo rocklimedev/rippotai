@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { useParams } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
-import { PhotoProvider, PhotoView } from "react-photo-view";
-import "react-photo-view/dist/react-photo-view.css";
+import { useParams } from 'next/navigation';
+import Image from 'next/image';
+import Link from 'next/link';
+import { PhotoProvider, PhotoView } from 'react-photo-view';
+import 'react-photo-view/dist/react-photo-view.css';
 
-import { useGetProjectBySlugQuery } from "@/api/projectsApi";
+import { useGetProjectBySlugQuery } from '@/api/projectsApi';
 
 export default function ProjectGalleryPage() {
   const params = useParams();
   const slug = Array.isArray(params?.slug) ? params.slug[0] : params?.slug;
 
   const { data, isLoading } = useGetProjectBySlugQuery(slug, {
-    skip: !slug || typeof slug !== "string",
+    skip: !slug || typeof slug !== 'string',
   });
 
   const project = data?.data;
@@ -46,10 +46,10 @@ export default function ProjectGalleryPage() {
           <div className="mb-16 flex flex-col gap-10 sm:flex-row sm:justify-between sm:items-start">
             <h1 className="text-4xl md:text-5xl font-light text-[#1a3c34] leading-tight sm:max-w-[65%]">
               {isLoading
-                ? "Loading..."
+                ? 'Loading...'
                 : project?.title
                   ? `${project.title} — Gallery`
-                  : "Gallery"}
+                  : 'Gallery'}
             </h1>
 
             {slug && (
@@ -78,7 +78,7 @@ export default function ProjectGalleryPage() {
             <PhotoProvider maskOpacity={0.92} photoClosable speed={() => 320}>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 {images.map((img, i) => {
-                  const imageSrc = `${img}?v=${project?.updatedAt || ""}`;
+                  const imageSrc = `${img}?v=${project?.updatedAt || ''}`;
 
                   return (
                     <PhotoView key={i} src={imageSrc}>

@@ -1,0 +1,70 @@
+[
+  {
+    "_id": "69c8d41e74275deafb89a4b8",
+    "name": "Alyssa Stone",
+    "email": "alyssa@turbojot.com",
+    "subject": "Please give it a try!",
+    "message": "Phone: 2158218810\n\nHi! My name is Alyssa and I’d love to invite you to try TurboJot. I actually founded the company. It’s built to automate contact form submissions at scale. Simply upload a list of URLs and TurboJot automatically finds and submits contact forms on those sites. It beats cold email and paid ads on ROI and costs just $0.10 per submission. Powered by a rotating IP network, stealth browser, AI captcha solving, and human-like browsing behavior. You can sign up for free and give it a try here. I’d really appreciate the support! https://www.turbojot.com/",
+    "status": "new",
+    "priority": "medium",
+    "notes": [],
+    "createdAt": "2026-03-29T07:26:22.281Z",
+    "updatedAt": "2026-03-29T07:26:22.281Z",
+    "__v": 0
+  },
+  {
+    "_id": "69c8d43474275deafb89a4ba",
+    "name": "Alyssa Stone",
+    "email": "alyssa@turbojot.com",
+    "subject": "Please give it a try!",
+    "message": "Hi! My name is Alyssa and I’d love to invite you to try TurboJot. I actually founded the company. It’s built to automate contact form submissions at scale. Simply upload a list of URLs and TurboJot automatically finds and submits contact forms on those sites. It beats cold email and paid ads on ROI and costs just $0.10 per submission. Powered by a rotating IP network, stealth browser, AI captcha solving, and human-like browsing behavior. You can sign up for free and give it a try here. I’d really appreciate the support! https://www.turbojot.com/",
+    "status": "new",
+    "priority": "medium",
+    "notes": [],
+    "createdAt": "2026-03-29T07:26:44.809Z",
+    "updatedAt": "2026-03-29T07:26:44.809Z",
+    "__v": 0
+  },
+  {
+    "_id": "69cf75efc488606f2f91427f",
+    "branch": "chhabra_marble",
+    "name": "XCVXVXCV XCVXCVCX",
+    "email": "SDFSDFS@GMAIL.COM",
+    "subject": "General Inquiry from Contact Form",
+    "message": "SDFSDFDSFDSF",
+    "status": "new",
+    "priority": "medium",
+    "notes": [],
+    "createdAt": "2026-04-03T08:10:23.005Z",
+    "updatedAt": "2026-04-03T08:10:23.005Z",
+    "__v": 0
+  },
+  {
+    "_id": "69cf763dc488606f2f914281",
+    "branch": "chhabra_marble",
+    "name": "SADASD ASDASD",
+    "email": "VVEW@GMIAL.COM",
+    "subject": "General Inquiry from Contact Form",
+    "message": "SDFSDFSDF",
+    "status": "new",
+    "priority": "medium",
+    "notes": [],
+    "createdAt": "2026-04-03T08:11:41.462Z",
+    "updatedAt": "2026-04-03T08:11:41.462Z",
+    "__v": 0
+  },
+  {
+    "_id": "69d0b8de93be06ac88676b38",
+    "branch": "chhabra_marble",
+    "name": "fggfhfgh dgdfgfdg",
+    "email": "dsfgdsfg@gmail.com",
+    "subject": "General Inquiry from Contact Form",
+    "message": "sdgdfgdsfg",
+    "status": "new",
+    "priority": "medium",
+    "notes": [],
+    "createdAt": "2026-04-04T07:08:14.369Z",
+    "updatedAt": "2026-04-04T07:08:14.369Z",
+    "__v": 0
+  }
+]

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { AnimateIn } from "./AnimateIn";
-import Image from "next/image";
-import Link from "next/link";
+import { AnimateIn } from './AnimateIn';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function GalleryWithText({ project }) {
   const allImages = project.images || [];
@@ -23,7 +23,7 @@ export default function GalleryWithText({ project }) {
     const isFeature = idx === 0 || idx === total - 1;
 
     items.push({
-      type: "image",
+      type: 'image',
       src: img,
       idx,
       isFeature,
@@ -35,7 +35,7 @@ export default function GalleryWithText({ project }) {
       textIdx < detailBlocks.length
     ) {
       items.push({
-        type: "text",
+        type: 'text',
         body: detailBlocks[textIdx],
       });
       textIdx++;
@@ -46,7 +46,7 @@ export default function GalleryWithText({ project }) {
     <div className="space-y-20">
       {items.map((item, i) => {
         // TEXT BLOCK
-        if (item.type === "text") {
+        if (item.type === 'text') {
           return (
             <AnimateIn key={`text-${i}`}>
               <div className="max-w-2xl mx-auto text-center md:text-left">
@@ -59,7 +59,7 @@ export default function GalleryWithText({ project }) {
           );
         }
 
-        const imageSrc = `${item.src}?v=${project.updatedAt || ""}`;
+        const imageSrc = `${item.src}?v=${project.updatedAt || ''}`;
 
         // ✅ FEATURE IMAGE (NO CROP, CONTROLLED HEIGHT)
         if (item.isFeature) {
@@ -84,7 +84,7 @@ export default function GalleryWithText({ project }) {
         // CHECK FOR PAIR
         const nextItem = items[i + 1];
         const hasNext =
-          nextItem && nextItem.type === "image" && !nextItem.isFeature;
+          nextItem && nextItem.type === 'image' && !nextItem.isFeature;
 
         return (
           <AnimateIn key={`pair-${item.idx}`}>
@@ -107,7 +107,7 @@ export default function GalleryWithText({ project }) {
               {hasNext && (
                 <div className="flex justify-center max-h-[420px]">
                   <Image
-                    src={`${nextItem.src}?v=${project.updatedAt || ""}`}
+                    src={`${nextItem.src}?v=${project.updatedAt || ''}`}
                     alt=""
                     width={800}
                     height={600}

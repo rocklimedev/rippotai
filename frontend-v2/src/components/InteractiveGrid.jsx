@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback } from 'react';
 
 export const InteractiveGrid = ({ cellSize = 60 }) => {
   const canvasRef = useRef(null);
@@ -9,7 +9,7 @@ export const InteractiveGrid = ({ cellSize = 60 }) => {
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     const dpr = window.devicePixelRatio || 1;
     const w = dimRef.current.w;
     const h = dimRef.current.h;
@@ -36,28 +36,34 @@ export const InteractiveGrid = ({ cellSize = 60 }) => {
 
         // Horizontal line
         if (i < Math.ceil(w / cellSize)) {
-          const midDist = Math.sqrt((x + cellSize / 2 - mx) ** 2 + (y - my) ** 2);
+          const midDist = Math.sqrt(
+            (x + cellSize / 2 - mx) ** 2 + (y - my) ** 2,
+          );
           const lp = Math.max(0, 1 - midDist / radius);
           ctx.beginPath();
           ctx.moveTo(x, y);
           ctx.lineTo(x + cellSize, y);
-          ctx.strokeStyle = lp > 0
-            ? `rgba(217, 175, 97, ${0.07 + lp * 0.15})`
-            : `rgba(26, 60, 52, 0.07)`;
+          ctx.strokeStyle =
+            lp > 0
+              ? `rgba(217, 175, 97, ${0.07 + lp * 0.15})`
+              : `rgba(26, 60, 52, 0.07)`;
           ctx.lineWidth = lp > 0 ? 0.4 + lp * 0.5 : 0.4;
           ctx.stroke();
         }
 
         // Vertical line
         if (j < startRow + visibleRows) {
-          const midDist2 = Math.sqrt((x - mx) ** 2 + (y + cellSize / 2 - my) ** 2);
+          const midDist2 = Math.sqrt(
+            (x - mx) ** 2 + (y + cellSize / 2 - my) ** 2,
+          );
           const lp2 = Math.max(0, 1 - midDist2 / radius);
           ctx.beginPath();
           ctx.moveTo(x, y);
           ctx.lineTo(x, y + cellSize);
-          ctx.strokeStyle = lp2 > 0
-            ? `rgba(217, 175, 97, ${0.07 + lp2 * 0.15})`
-            : `rgba(26, 60, 52, 0.07)`;
+          ctx.strokeStyle =
+            lp2 > 0
+              ? `rgba(217, 175, 97, ${0.07 + lp2 * 0.15})`
+              : `rgba(26, 60, 52, 0.07)`;
           ctx.lineWidth = lp2 > 0 ? 0.4 + lp2 * 0.5 : 0.4;
           ctx.stroke();
         }
@@ -86,8 +92,8 @@ export const InteractiveGrid = ({ cellSize = 60 }) => {
       const h = window.innerHeight;
       canvas.width = w * dpr;
       canvas.height = h * dpr;
-      canvas.style.width = w + "px";
-      canvas.style.height = h + "px";
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
       dimRef.current = { w, h };
     };
 
@@ -100,15 +106,15 @@ export const InteractiveGrid = ({ cellSize = 60 }) => {
     };
 
     resize();
-    window.addEventListener("resize", resize);
-    window.addEventListener("mousemove", handleMouse);
-    document.addEventListener("mouseleave", handleLeave);
+    window.addEventListener('resize', resize);
+    window.addEventListener('mousemove', handleMouse);
+    document.addEventListener('mouseleave', handleLeave);
     rafRef.current = requestAnimationFrame(draw);
 
     return () => {
-      window.removeEventListener("resize", resize);
-      window.removeEventListener("mousemove", handleMouse);
-      document.removeEventListener("mouseleave", handleLeave);
+      window.removeEventListener('resize', resize);
+      window.removeEventListener('mousemove', handleMouse);
+      document.removeEventListener('mouseleave', handleLeave);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, [draw]);
@@ -117,14 +123,14 @@ export const InteractiveGrid = ({ cellSize = 60 }) => {
     <canvas
       ref={canvasRef}
       style={{
-        position: "fixed",
+        position: 'fixed',
         top: 0,
         left: 0,
-        width: "100%",
-        height: "100%",
-        pointerEvents: "none",
+        width: '100%',
+        height: '100%',
+        pointerEvents: 'none',
         zIndex: 9,
-        mixBlendMode: "darken",
+        mixBlendMode: 'darken',
       }}
     />
   );

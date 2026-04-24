@@ -1,20 +1,20 @@
-"use client";
-import { useState } from "react";
-import { AnimateIn } from "@/components/AnimateIn";
-import { toast } from "sonner";
-import { MapPin, Mail, Phone } from "lucide-react";
-import { useCreateQueryMutation } from "@/api/queriesApi";
-import { contactImage, contactInfo, googleMapsLink } from "@/lib/config";
+'use client';
+import { useState } from 'react';
+import { AnimateIn } from '@/components/AnimateIn';
+import { toast } from 'sonner';
+import { MapPin, Mail, Phone } from 'lucide-react';
+import { useCreateQueryMutation } from '@/api/queriesApi';
+import { contactImage, contactInfo, googleMapsLink } from '@/lib/config';
 
 export default function ContactPage() {
   const [createQuery, { isLoading: pending }] = useCreateQueryMutation();
-  
+
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    subject: "",
-    message: "",
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: '',
   });
 
   const handleChange = (e) => {
@@ -23,28 +23,28 @@ export default function ContactPage() {
   };
 
   const inputStyle = {
-    width: "100%",
-    padding: "14px 16px",
+    width: '100%',
+    padding: '14px 16px',
     fontFamily: "'Lato', sans-serif",
-    fontSize: "15px",
+    fontSize: '15px',
     fontWeight: 300,
-    color: "#1a3c34",
-    backgroundColor: "#ffffff",
-    border: "1px solid rgba(26, 60, 52, 0.2)",
-    outline: "none",
-    transition: "border-color 0.3s ease",
-    boxSizing: "border-box",
+    color: '#1a3c34',
+    backgroundColor: '#ffffff',
+    border: '1px solid rgba(26, 60, 52, 0.2)',
+    outline: 'none',
+    transition: 'border-color 0.3s ease',
+    boxSizing: 'border-box',
   };
 
   const labelStyle = {
     fontFamily: "'Lato', sans-serif",
-    fontSize: "12px",
+    fontSize: '12px',
     fontWeight: 500,
-    letterSpacing: "2px",
-    textTransform: "uppercase",
-    color: "#1a3c34",
-    marginBottom: "8px",
-    display: "block",
+    letterSpacing: '2px',
+    textTransform: 'uppercase',
+    color: '#1a3c34',
+    marginBottom: '8px',
+    display: 'block',
   };
 
   const handleSubmit = async (e) => {
@@ -53,7 +53,7 @@ export default function ContactPage() {
     const { name, email, phone, subject, message } = formData;
 
     if (!name || !email || !subject || !message) {
-      toast.error("Please fill in all required fields");
+      toast.error('Please fill in all required fields');
       return;
     }
 
@@ -64,7 +64,7 @@ export default function ContactPage() {
 
     try {
       await createQuery({
-        branch: "rippotai",           // ✅ Fixed: Now sending branch
+        branch: 'rippotai', // ✅ Fixed: Now sending branch
         name,
         email,
         subject,
@@ -75,15 +75,15 @@ export default function ContactPage() {
 
       // Reset form
       setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        subject: "",
-        message: "",
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: '',
       });
     } catch (err) {
       const errorMsg =
-        err?.data?.message || err?.message || "Failed to send message.";
+        err?.data?.message || err?.message || 'Failed to send message.';
       toast.error(errorMsg);
     }
   };
@@ -93,49 +93,49 @@ export default function ContactPage() {
       {/* Banner */}
       <section
         style={{
-          position: "relative",
-          width: "100%",
-          height: "100vh",
-          overflow: "hidden",
-          backgroundColor: "#0a0a0a",
+          position: 'relative',
+          width: '100%',
+          height: '100vh',
+          overflow: 'hidden',
+          backgroundColor: '#0a0a0a',
         }}
       >
         <img
           src={contactImage}
           alt="Contact Rippotai"
           style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            objectPosition: "center top",
-            display: "block",
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: 'center top',
+            display: 'block',
           }}
         />
 
         {/* Overlay */}
         <div
           style={{
-            position: "absolute",
+            position: 'absolute',
             inset: 0,
-            backgroundColor: "rgba(0, 0, 0, 0.4)",
+            backgroundColor: 'rgba(0, 0, 0, 0.4)',
           }}
         />
 
         {/* Text */}
         <div
           style={{
-            position: "absolute",
-            bottom: "60px",
-            left: "48px",
+            position: 'absolute',
+            bottom: '60px',
+            left: '48px',
             zIndex: 2,
           }}
         >
           <h1
             style={{
               fontFamily: "'Lato', sans-serif",
-              fontSize: "clamp(36px, 5vw, 56px)",
+              fontSize: 'clamp(36px, 5vw, 56px)',
               fontWeight: 300,
-              color: "#ffffff",
+              color: '#ffffff',
               margin: 0,
             }}
           >
@@ -144,24 +144,24 @@ export default function ContactPage() {
 
           <div
             style={{
-              width: "40px",
-              height: "1px",
-              backgroundColor: "#d9af61",
-              marginTop: "20px",
+              width: '40px',
+              height: '1px',
+              backgroundColor: '#d9af61',
+              marginTop: '20px',
             }}
           />
         </div>
       </section>
 
       {/* Contact Content */}
-      <section style={{ padding: "100px 48px" }}>
+      <section style={{ padding: '100px 48px' }}>
         <div
           style={{
-            maxWidth: "1200px",
-            margin: "0 auto",
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "80px",
+            maxWidth: '1200px',
+            margin: '0 auto',
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '80px',
           }}
           className="contact-grid"
         >
@@ -171,10 +171,10 @@ export default function ContactPage() {
               <form onSubmit={handleSubmit}>
                 <div
                   style={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
-                    gap: "24px",
-                    marginBottom: "24px",
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: '24px',
+                    marginBottom: '24px',
                   }}
                 >
                   <div>
@@ -203,10 +203,10 @@ export default function ContactPage() {
 
                 <div
                   style={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
-                    gap: "24px",
-                    marginBottom: "24px",
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: '24px',
+                    marginBottom: '24px',
                   }}
                 >
                   <div>
@@ -232,7 +232,7 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                <div style={{ marginBottom: "32px" }}>
+                <div style={{ marginBottom: '32px' }}>
                   <label style={labelStyle}>Message</label>
                   <textarea
                     name="message"
@@ -240,7 +240,7 @@ export default function ContactPage() {
                     onChange={handleChange}
                     required
                     rows={5}
-                    style={{ ...inputStyle, resize: "vertical" }}
+                    style={{ ...inputStyle, resize: 'vertical' }}
                   />
                 </div>
 
@@ -249,19 +249,19 @@ export default function ContactPage() {
                   disabled={pending}
                   style={{
                     fontFamily: "'Lato', sans-serif",
-                    fontSize: "13px",
+                    fontSize: '13px',
                     fontWeight: 500,
-                    letterSpacing: "3px",
-                    textTransform: "uppercase",
-                    color: "#ffffff",
-                    backgroundColor: "#1a3c34",
-                    border: "none",
-                    padding: "16px 48px",
-                    cursor: "pointer",
+                    letterSpacing: '3px',
+                    textTransform: 'uppercase',
+                    color: '#ffffff',
+                    backgroundColor: '#1a3c34',
+                    border: 'none',
+                    padding: '16px 48px',
+                    cursor: 'pointer',
                     opacity: pending ? 0.8 : 1,
                   }}
                 >
-                  {pending ? "Sending..." : "Send Message"}
+                  {pending ? 'Sending...' : 'Send Message'}
                 </button>
               </form>
             </AnimateIn>
@@ -270,26 +270,26 @@ export default function ContactPage() {
           {/* Right - Info + Map */}
           <div>
             <AnimateIn delay={0.1} distance={50} duration={1.2}>
-              <div style={{ marginBottom: "48px" }}>
+              <div style={{ marginBottom: '48px' }}>
                 <div
                   style={{
-                    display: "flex",
-                    gap: "16px",
-                    alignItems: "start",
-                    marginBottom: "24px",
+                    display: 'flex',
+                    gap: '16px',
+                    alignItems: 'start',
+                    marginBottom: '24px',
                   }}
                 >
                   <MapPin
                     size={18}
                     color="#d9af61"
-                    style={{ marginTop: "3px", flexShrink: 0 }}
+                    style={{ marginTop: '3px', flexShrink: 0 }}
                   />
                   <p
                     style={{
                       fontFamily: "'Lato', sans-serif",
-                      fontSize: "15px",
+                      fontSize: '15px',
                       fontWeight: 300,
-                      color: "#444444",
+                      color: '#444444',
                       lineHeight: 1.7,
                       margin: 0,
                     }}
@@ -299,10 +299,10 @@ export default function ContactPage() {
                 </div>
                 <div
                   style={{
-                    display: "flex",
-                    gap: "16px",
-                    alignItems: "center",
-                    marginBottom: "24px",
+                    display: 'flex',
+                    gap: '16px',
+                    alignItems: 'center',
+                    marginBottom: '24px',
                   }}
                 >
                   <Mail size={18} color="#d9af61" style={{ flexShrink: 0 }} />
@@ -310,34 +310,34 @@ export default function ContactPage() {
                     href={`mailto:${contactInfo.email}`}
                     style={{
                       fontFamily: "'Lato', sans-serif",
-                      fontSize: "15px",
+                      fontSize: '15px',
                       fontWeight: 300,
-                      color: "#444444",
-                      textDecoration: "none",
-                      transition: "color 0.3s ease",
+                      color: '#444444',
+                      textDecoration: 'none',
+                      transition: 'color 0.3s ease',
                     }}
-                    onMouseEnter={(e) => (e.target.style.color = "#d9af61")}
-                    onMouseLeave={(e) => (e.target.style.color = "#444444")}
+                    onMouseEnter={(e) => (e.target.style.color = '#d9af61')}
+                    onMouseLeave={(e) => (e.target.style.color = '#444444')}
                   >
                     {contactInfo.email}
                   </a>
                 </div>
                 <div
-                  style={{ display: "flex", gap: "16px", alignItems: "center" }}
+                  style={{ display: 'flex', gap: '16px', alignItems: 'center' }}
                 >
                   <Phone size={18} color="#d9af61" style={{ flexShrink: 0 }} />
                   <a
                     href={`tel:${contactInfo.phone}`}
                     style={{
                       fontFamily: "'Lato', sans-serif",
-                      fontSize: "15px",
+                      fontSize: '15px',
                       fontWeight: 300,
-                      color: "#444444",
-                      textDecoration: "none",
-                      transition: "color 0.3s ease",
+                      color: '#444444',
+                      textDecoration: 'none',
+                      transition: 'color 0.3s ease',
                     }}
-                    onMouseEnter={(e) => (e.target.style.color = "#d9af61")}
-                    onMouseLeave={(e) => (e.target.style.color = "#444444")}
+                    onMouseEnter={(e) => (e.target.style.color = '#d9af61')}
+                    onMouseLeave={(e) => (e.target.style.color = '#444444')}
                   >
                     {contactInfo.phone}
                   </a>
@@ -348,13 +348,13 @@ export default function ContactPage() {
             {/* Google Maps */}
             <AnimateIn delay={0.3} distance={40} duration={1.2}>
               <div
-                style={{ width: "100%", height: "350px", overflow: "hidden" }}
+                style={{ width: '100%', height: '350px', overflow: 'hidden' }}
               >
                 <iframe
                   src="https://maps.google.com/maps?q=Rippotai+Architecture,+487/64,+National+Market,+Peeragarhi,+Paschim+Vihar,+New+Delhi,+Delhi+110087&t=&z=16&ie=UTF8&iwloc=&output=embed"
                   width="100%"
                   height="350"
-                  style={{ border: 0, filter: "grayscale(0.5)" }}
+                  style={{ border: 0, filter: 'grayscale(0.5)' }}
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
@@ -366,19 +366,19 @@ export default function ContactPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
-                  display: "inline-block",
-                  marginTop: "16px",
+                  display: 'inline-block',
+                  marginTop: '16px',
                   fontFamily: "'Lato', sans-serif",
-                  fontSize: "12px",
+                  fontSize: '12px',
                   fontWeight: 500,
-                  letterSpacing: "2px",
-                  textTransform: "uppercase",
-                  color: "#1a3c34",
-                  textDecoration: "none",
-                  transition: "color 0.3s ease",
+                  letterSpacing: '2px',
+                  textTransform: 'uppercase',
+                  color: '#1a3c34',
+                  textDecoration: 'none',
+                  transition: 'color 0.3s ease',
                 }}
-                onMouseEnter={(e) => (e.target.style.color = "#d9af61")}
-                onMouseLeave={(e) => (e.target.style.color = "#1a3c34")}
+                onMouseEnter={(e) => (e.target.style.color = '#d9af61')}
+                onMouseLeave={(e) => (e.target.style.color = '#1a3c34')}
               >
                 Get Directions
               </a>

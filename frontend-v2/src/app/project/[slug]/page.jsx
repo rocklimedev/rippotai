@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import { notFound, useParams } from "next/navigation";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import GalleryWithText from "@/components/GalleryText";
-import { AnimateIn } from "@/components/AnimateIn";
+import Image from 'next/image';
+import Link from 'next/link';
+import { notFound, useParams } from 'next/navigation';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
+import GalleryWithText from '@/components/GalleryText';
+import { AnimateIn } from '@/components/AnimateIn';
 
 import {
   useGetProjectBySlugQuery,
   useGetPublicProjectsQuery,
-} from "@/api/projectsApi";
+} from '@/api/projectsApi';
 
 export default function ProjectDetailPage() {
   const params = useParams();
@@ -61,7 +61,7 @@ export default function ProjectDetailPage() {
       {/* HERO */}
       <section className="relative w-full h-screen">
         <Image
-          src={project.banner || "/placeholder.jpg"}
+          src={project.banner || '/placeholder.jpg'}
           alt={project.title}
           fill
           priority
@@ -84,58 +84,58 @@ export default function ProjectDetailPage() {
           </h1>
         </div>
       </section>
-      {/* HERO */}{" "}
+      {/* HERO */}{' '}
       <section className="bg-white pt-0 pb-12 md:pb-16 px-0">
-        {" "}
+        {' '}
         <div className="w-full">
           <div className="max-w-6xl mx-auto mt-10 md:mt-12 px-4 sm:px-6 md:px-12 lg:px-16">
             <div className="mt-10 md:mt-12 flex justify-center">
-              {" "}
+              {' '}
               <div className="inline-grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-8 md:gap-x-12 gap-y-6 text-xs sm:text-sm md:text-base text-center">
-                {" "}
+                {' '}
                 {project.location && (
                   <div>
-                    {" "}
+                    {' '}
                     <span className="text-[#d9af61] uppercase tracking-wider text-[10px] block mb-1">
-                      {" "}
-                      Location{" "}
-                    </span>{" "}
-                    {project.location}{" "}
+                      {' '}
+                      Location{' '}
+                    </span>{' '}
+                    {project.location}{' '}
                   </div>
-                )}{" "}
+                )}{' '}
                 <div>
-                  {" "}
+                  {' '}
                   <span className="text-[#d9af61] uppercase tracking-wider text-[10px] block mb-1">
-                    {" "}
-                    Year{" "}
-                  </span>{" "}
+                    {' '}
+                    Year{' '}
+                  </span>{' '}
                   {project.year ||
-                    new Date(project.createdAt).getFullYear()}{" "}
-                </div>{" "}
+                    new Date(project.createdAt).getFullYear()}{' '}
+                </div>{' '}
                 {project.area && (
                   <div>
-                    {" "}
+                    {' '}
                     <span className="text-[#d9af61] uppercase tracking-wider text-[10px] block mb-1">
-                      {" "}
-                      Area{" "}
-                    </span>{" "}
-                    {project.area}{" "}
+                      {' '}
+                      Area{' '}
+                    </span>{' '}
+                    {project.area}{' '}
                   </div>
-                )}{" "}
+                )}{' '}
                 {project.scope && (
                   <div>
-                    {" "}
+                    {' '}
                     <span className="text-[#d9af61] uppercase tracking-wider text-[10px] block mb-1">
-                      {" "}
-                      Scope{" "}
-                    </span>{" "}
-                    {project.scope}{" "}
+                      {' '}
+                      Scope{' '}
+                    </span>{' '}
+                    {project.scope}{' '}
                   </div>
-                )}{" "}
-              </div>{" "}
-            </div>{" "}
-          </div>{" "}
-        </div>{" "}
+                )}{' '}
+              </div>{' '}
+            </div>{' '}
+          </div>{' '}
+        </div>{' '}
       </section>
       {/* CONTENT */}
       <section className="py-24 md:py-32 px-6 md:px-12 lg:px-16 bg-white">

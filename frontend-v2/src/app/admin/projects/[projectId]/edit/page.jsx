@@ -1,15 +1,15 @@
 // app/admin/projects/[projectId]/edit/page.jsx
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
-import Image from "next/image";
+import { useState, useEffect } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import Image from 'next/image';
 import {
   useGetProjectByIdQuery,
   useUpdateProjectMutation,
-} from "@/api/projectsApi";
-import { ArrowLeft, Upload, X, Loader2, Trash2, Plus } from "lucide-react";
-import Link from "next/link";
+} from '@/api/projectsApi';
+import { ArrowLeft, Upload, X, Loader2, Trash2, Plus } from 'lucide-react';
+import Link from 'next/link';
 
 export default function EditProjectPage() {
   const { projectId } = useParams();
@@ -27,13 +27,13 @@ export default function EditProjectPage() {
 
   // Form state
   const [formValues, setFormValues] = useState({
-    title: "",
-    category: "",
-    description: "",
-    details: "",
-    location: "",
-    scope: "",
-    status: "draft",
+    title: '',
+    category: '',
+    description: '',
+    details: '',
+    location: '',
+    scope: '',
+    status: 'draft',
     priority: 0,
     featured: false,
   });
@@ -48,20 +48,20 @@ export default function EditProjectPage() {
   const [newGalleryFiles, setNewGalleryFiles] = useState([]);
   const [newGalleryPreviews, setNewGalleryPreviews] = useState([]);
 
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   // Populate form when project loads
   useEffect(() => {
     if (project) {
       setFormValues({
-        title: project.title || "",
-        category: project.category || "",
-        description: project.description || "",
-        details: project.details || "",
-        location: project.location || "",
-        scope: project.scope || "",
-        status: project.status || "draft",
+        title: project.title || '',
+        category: project.category || '',
+        description: project.description || '',
+        details: project.details || '',
+        location: project.location || '',
+        scope: project.scope || '',
+        status: project.status || 'draft',
         priority: project.priority ?? 0,
         featured: project.featured ?? false,
       });
@@ -82,7 +82,7 @@ export default function EditProjectPage() {
     const { name, value, type, checked } = e.target;
     setFormValues((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === 'checkbox' ? checked : value,
     }));
   };
 
@@ -111,7 +111,7 @@ export default function EditProjectPage() {
 
     const previews = [];
     files.forEach((file) => {
-      if (file.type.startsWith("image/")) {
+      if (file.type.startsWith('image/')) {
         const reader = new FileReader();
         reader.onloadend = () => previews.push(reader.result);
         reader.readAsDataURL(file);
@@ -135,16 +135,16 @@ export default function EditProjectPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage("");
-    setSuccessMessage("");
+    setErrorMessage('');
+    setSuccessMessage('');
 
-    if (!formValues.title.trim()) return setErrorMessage("Title is required");
+    if (!formValues.title.trim()) return setErrorMessage('Title is required');
     if (!formValues.category.trim())
-      return setErrorMessage("Category is required");
+      return setErrorMessage('Category is required');
     if (!formValues.description.trim())
-      return setErrorMessage("Description is required");
+      return setErrorMessage('Description is required');
     if (!formValues.details.trim())
-      return setErrorMessage("Details are required");
+      return setErrorMessage('Details are required');
 
     try {
       const formData = new FormData();
@@ -155,21 +155,21 @@ export default function EditProjectPage() {
         }
       });
 
-      if (mainImageFile) formData.append("image", mainImageFile);
-      if (bannerImageFile) formData.append("banner", bannerImageFile);
+      if (mainImageFile) formData.append('image', mainImageFile);
+      if (bannerImageFile) formData.append('banner', bannerImageFile);
 
       if (keptGalleryImages.length > 0 || newGalleryFiles.length > 0) {
-        formData.append("existingImages", JSON.stringify(keptGalleryImages));
-        newGalleryFiles.forEach((file) => formData.append("images", file));
+        formData.append('existingImages', JSON.stringify(keptGalleryImages));
+        newGalleryFiles.forEach((file) => formData.append('images', file));
       }
 
       await updateProject({ projectId, formData }).unwrap();
 
-      setSuccessMessage("Project updated successfully! Redirecting...");
-      setTimeout(() => router.push("/admin/projects"), 1500);
+      setSuccessMessage('Project updated successfully! Redirecting...');
+      setTimeout(() => router.push('/admin/projects'), 1500);
     } catch (err) {
       console.error(err);
-      setErrorMessage(err?.data?.message || "Failed to update project");
+      setErrorMessage(err?.data?.message || 'Failed to update project');
     }
   };
 
@@ -187,7 +187,7 @@ export default function EditProjectPage() {
       <div className="container mx-auto px-4 py-8">
         <div className="bg-red-50 border border-red-200 text-red-800 p-6 rounded-lg">
           <h2 className="text-lg font-semibold">Error</h2>
-          <p>{error?.data?.message || "Project not found"}</p>
+          <p>{error?.data?.message || 'Project not found'}</p>
           <Link
             href="/admin/projects"
             className="mt-4 inline-block text-blue-600 hover:underline"
@@ -563,7 +563,7 @@ export default function EditProjectPage() {
                 Saving Changes...
               </>
             ) : (
-              "Save Changes"
+              'Save Changes'
             )}
           </button>
         </div>

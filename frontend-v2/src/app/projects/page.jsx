@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
-import { Suspense } from "react";
-import ProjectsContent from "./projects-content";
+import { Suspense } from 'react';
+import ProjectsContent from './projects-content';
 
 export default function ProjectsPage() {
   return (

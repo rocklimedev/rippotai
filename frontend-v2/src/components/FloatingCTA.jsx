@@ -1,6 +1,6 @@
-"use client";
-import { useState } from "react";
-import { Phone } from "lucide-react";
+'use client';
+import { useState } from 'react';
+import { Phone } from 'lucide-react';
 
 const WhatsAppIcon = () => (
   <svg
@@ -21,30 +21,30 @@ const WhatsAppIcon = () => (
 export const FloatingCTA = () => {
   const [whatsappHovered, setWhatsappHovered] = useState(false);
   const [phoneHovered, setPhoneHovered] = useState(false);
-  const phoneNumber = "918882830560";
+  const phoneNumber = '918882830560';
 
   return (
     <div
       style={{
-        position: "fixed",
-        bottom: "32px",
-        right: "32px",
+        position: 'fixed',
+        bottom: '32px',
+        right: '32px',
         zIndex: 900,
-        display: "flex",
-        flexDirection: "column",
-        gap: "16px",
-        alignItems: "flex-end",
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px',
+        alignItems: 'flex-end',
       }}
     >
       {/* Phone CTA */}
       <a
         href="tel:8882830560"
         style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "0px",
-          textDecoration: "none",
-          position: "relative",
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0px',
+          textDecoration: 'none',
+          position: 'relative',
         }}
         onMouseEnter={() => setPhoneHovered(true)}
         onMouseLeave={() => setPhoneHovered(false)}
@@ -52,25 +52,25 @@ export const FloatingCTA = () => {
         {/* Expandable label */}
         <div
           style={{
-            overflow: "hidden",
-            maxWidth: whatsappHovered || phoneHovered ? "160px" : "0px",
+            overflow: 'hidden',
+            maxWidth: whatsappHovered || phoneHovered ? '160px' : '0px',
             opacity: phoneHovered ? 1 : 0,
-            transition: "max-width 0.4s ease, opacity 0.3s ease",
-            whiteSpace: "nowrap",
+            transition: 'max-width 0.4s ease, opacity 0.3s ease',
+            whiteSpace: 'nowrap',
           }}
         >
           <span
             style={{
               fontFamily: "'Lato', sans-serif",
-              fontSize: "13px",
+              fontSize: '13px',
               fontWeight: 500,
-              color: "#1a3c34",
-              letterSpacing: "1px",
-              backgroundColor: "#ffffff",
-              padding: "10px 16px",
-              display: "inline-block",
-              border: "1px solid rgba(26, 60, 52, 0.15)",
-              marginRight: "8px",
+              color: '#1a3c34',
+              letterSpacing: '1px',
+              backgroundColor: '#ffffff',
+              padding: '10px 16px',
+              display: 'inline-block',
+              border: '1px solid rgba(26, 60, 52, 0.15)',
+              marginRight: '8px',
             }}
           >
             Call Us
@@ -80,22 +80,22 @@ export const FloatingCTA = () => {
         {/* Icon button */}
         <div
           style={{
-            width: "52px",
-            height: "52px",
-            backgroundColor: "#1a3c34",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "#ffffff",
-            position: "relative",
+            width: '52px',
+            height: '52px',
+            backgroundColor: '#1a3c34',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#ffffff',
+            position: 'relative',
             flexShrink: 0,
-            transition: "transform 0.3s ease",
-            transform: phoneHovered ? "scale(1.08)" : "scale(1)",
+            transition: 'transform 0.3s ease',
+            transform: phoneHovered ? 'scale(1.08)' : 'scale(1)',
           }}
         >
           {/* Pulse rings */}
-          <div className="cta-pulse-ring" style={{ animationDelay: "0s" }} />
-          <div className="cta-pulse-ring" style={{ animationDelay: "1s" }} />
+          <div className="cta-pulse-ring" style={{ animationDelay: '0s' }} />
+          <div className="cta-pulse-ring" style={{ animationDelay: '1s' }} />
           <Phone size={22} strokeWidth={1.5} />
         </div>
       </a>
@@ -106,11 +106,11 @@ export const FloatingCTA = () => {
         target="_blank"
         rel="noopener noreferrer"
         style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "0px",
-          textDecoration: "none",
-          position: "relative",
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0px',
+          textDecoration: 'none',
+          position: 'relative',
         }}
         onMouseEnter={() => setWhatsappHovered(true)}
         onMouseLeave={() => setWhatsappHovered(false)}
@@ -118,25 +118,25 @@ export const FloatingCTA = () => {
         {/* Expandable label */}
         <div
           style={{
-            overflow: "hidden",
-            maxWidth: whatsappHovered ? "200px" : "0px",
+            overflow: 'hidden',
+            maxWidth: whatsappHovered ? '200px' : '0px',
             opacity: whatsappHovered ? 1 : 0,
-            transition: "max-width 0.4s ease, opacity 0.3s ease",
-            whiteSpace: "nowrap",
+            transition: 'max-width 0.4s ease, opacity 0.3s ease',
+            whiteSpace: 'nowrap',
           }}
         >
           <span
             style={{
               fontFamily: "'Lato', sans-serif",
-              fontSize: "13px",
+              fontSize: '13px',
               fontWeight: 500,
-              color: "#1a3c34",
-              letterSpacing: "1px",
-              backgroundColor: "#ffffff",
-              padding: "10px 16px",
-              display: "inline-block",
-              border: "1px solid rgba(26, 60, 52, 0.15)",
-              marginRight: "8px",
+              color: '#1a3c34',
+              letterSpacing: '1px',
+              backgroundColor: '#ffffff',
+              padding: '10px 16px',
+              display: 'inline-block',
+              border: '1px solid rgba(26, 60, 52, 0.15)',
+              marginRight: '8px',
             }}
           >
             Chat on WhatsApp
@@ -146,22 +146,22 @@ export const FloatingCTA = () => {
         {/* Icon button */}
         <div
           style={{
-            width: "52px",
-            height: "52px",
-            backgroundColor: "#1a3c34",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "#ffffff",
-            position: "relative",
+            width: '52px',
+            height: '52px',
+            backgroundColor: '#1a3c34',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#ffffff',
+            position: 'relative',
             flexShrink: 0,
-            transition: "transform 0.3s ease",
-            transform: whatsappHovered ? "scale(1.08)" : "scale(1)",
+            transition: 'transform 0.3s ease',
+            transform: whatsappHovered ? 'scale(1.08)' : 'scale(1)',
           }}
         >
           {/* Pulse rings */}
-          <div className="cta-pulse-ring" style={{ animationDelay: "0s" }} />
-          <div className="cta-pulse-ring" style={{ animationDelay: "1s" }} />
+          <div className="cta-pulse-ring" style={{ animationDelay: '0s' }} />
+          <div className="cta-pulse-ring" style={{ animationDelay: '1s' }} />
 
           {/* WhatsApp SVG icon */}
           <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">

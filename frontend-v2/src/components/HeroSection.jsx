@@ -1,6 +1,6 @@
-"use client";
-import { useState, useEffect, useCallback } from "react";
-import { heroImages } from "@/lib/config";
+'use client';
+import { useState, useEffect, useCallback } from 'react';
+import { heroImages } from '@/lib/config';
 export const HeroSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loadedImages, setLoadedImages] = useState(new Set());
@@ -28,11 +28,11 @@ export const HeroSection = () => {
   return (
     <section
       style={{
-        position: "relative",
-        width: "100%",
-        height: "100vh",
-        overflow: "hidden",
-        backgroundColor: "#0a0a0a",
+        position: 'relative',
+        width: '100%',
+        height: '100vh',
+        overflow: 'hidden',
+        backgroundColor: '#0a0a0a',
       }}
     >
       {/* Slideshow images */}
@@ -40,16 +40,16 @@ export const HeroSection = () => {
         <div
           key={idx}
           style={{
-            position: "absolute",
+            position: 'absolute',
             top: 0,
             left: 0,
-            width: "100%",
-            height: "100%",
+            width: '100%',
+            height: '100%',
             backgroundImage: `url(${src})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
             opacity: idx === currentIndex ? 1 : 0,
-            transition: "opacity 2s ease-in-out",
+            transition: 'opacity 2s ease-in-out',
           }}
         />
       ))}
@@ -57,12 +57,12 @@ export const HeroSection = () => {
       {/* Dark overlay */}
       <div
         style={{
-          position: "absolute",
+          position: 'absolute',
           top: 0,
           left: 0,
-          width: "100%",
-          height: "100%",
-          backgroundColor: "rgba(0, 0, 0, 0.4)",
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'rgba(0, 0, 0, 0.4)',
           zIndex: 1,
         }}
       />
@@ -70,22 +70,22 @@ export const HeroSection = () => {
       {/* Content removed - clean banner */}
       <div
         style={{
-          position: "relative",
+          position: 'relative',
           zIndex: 2,
-          height: "100%",
+          height: '100%',
         }}
       />
 
       {/* Slide indicators */}
       <div
         style={{
-          position: "absolute",
-          bottom: "40px",
-          left: "50%",
-          transform: "translateX(-50%)",
+          position: 'absolute',
+          bottom: '40px',
+          left: '50%',
+          transform: 'translateX(-50%)',
           zIndex: 2,
-          display: "flex",
-          gap: "12px",
+          display: 'flex',
+          gap: '12px',
         }}
       >
         {heroImages.map((_, idx) => (
@@ -93,14 +93,14 @@ export const HeroSection = () => {
             key={idx}
             onClick={() => setCurrentIndex(idx)}
             style={{
-              width: idx === currentIndex ? "32px" : "8px",
-              height: "2px",
+              width: idx === currentIndex ? '32px' : '8px',
+              height: '2px',
               backgroundColor:
-                idx === currentIndex ? "#d9af61" : "rgba(255, 255, 255, 0.4)",
-              border: "none",
-              cursor: "pointer",
+                idx === currentIndex ? '#d9af61' : 'rgba(255, 255, 255, 0.4)',
+              border: 'none',
+              cursor: 'pointer',
               padding: 0,
-              transition: "all 0.4s ease",
+              transition: 'all 0.4s ease',
             }}
             aria-label={`Go to slide ${idx + 1}`}
           />

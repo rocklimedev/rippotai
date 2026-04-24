@@ -1,10 +1,10 @@
 // components/admin/AdminLayout.jsx
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import Sidebar from "@/components/admin/Sidebar";
-import { Navbar } from "@/components/admin/Navbar";
+import { useEffect, useState } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+import Sidebar from '@/components/admin/Sidebar';
+import { Navbar } from '@/components/admin/Navbar';
 export default function AdminLayout({ children }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -16,18 +16,18 @@ export default function AdminLayout({ children }) {
   useEffect(() => {
     const check = () => setIsDesktop(window.innerWidth >= 1024);
     check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
   }, []);
   useEffect(() => {
     // Skip auth check for non-admin routes
-    if (!pathname.startsWith("/admin")) {
+    if (!pathname.startsWith('/admin')) {
       setIsAuthorized(true);
       setIsCheckingAuth(false);
       return;
     }
 
-    const token = localStorage.getItem("adminToken");
+    const token = localStorage.getItem('adminToken');
 
     if (!token) {
       // Redirect to login and preserve the current path
@@ -73,7 +73,7 @@ export default function AdminLayout({ children }) {
 
         <main
           className="flex-1 overflow-y-auto p-6 md:p-10 lg:p-12"
-          style={{ background: "#f5f1eb" }}
+          style={{ background: '#f5f1eb' }}
         >
           <div className="mx-auto max-w-7xl">{children}</div>
         </main>

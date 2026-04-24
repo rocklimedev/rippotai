@@ -1,12 +1,12 @@
 // app/admin/projects/new/page.jsx
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { useCreateProjectMutation } from "@/api/projectsApi";
-import { Plus, X, Upload, Loader2, ArrowLeft } from "lucide-react";
-import Link from "next/link";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { useCreateProjectMutation } from '@/api/projectsApi';
+import { Plus, X, Upload, Loader2, ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 
 export default function NewProjectPage() {
   const router = useRouter();
@@ -14,13 +14,13 @@ export default function NewProjectPage() {
 
   // Form state with Priority & Featured
   const [formData, setFormData] = useState({
-    title: "",
-    category: "",
-    description: "",
-    details: "",
-    location: "",
-    scope: "",
-    status: "draft",
+    title: '',
+    category: '',
+    description: '',
+    details: '',
+    location: '',
+    scope: '',
+    status: 'draft',
     priority: 0,
     featured: false,
   });
@@ -34,7 +34,7 @@ export default function NewProjectPage() {
   const [galleryImages, setGalleryImages] = useState([]);
   const [galleryPreviews, setGalleryPreviews] = useState([]);
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
   const handleInputChange = (e) => {
@@ -42,9 +42,9 @@ export default function NewProjectPage() {
     setFormData((prev) => ({
       ...prev,
       [name]:
-        type === "checkbox"
+        type === 'checkbox'
           ? checked
-          : name === "priority"
+          : name === 'priority'
             ? parseInt(value) || 0
             : value,
     }));
@@ -54,8 +54,8 @@ export default function NewProjectPage() {
   const handleMainImageChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (!file.type.startsWith("image/")) {
-      setError("Please select a valid image file");
+    if (!file.type.startsWith('image/')) {
+      setError('Please select a valid image file');
       return;
     }
     setMainImage(file);
@@ -68,8 +68,8 @@ export default function NewProjectPage() {
   const handleBannerImageChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (!file.type.startsWith("image/")) {
-      setError("Please select a valid image file");
+    if (!file.type.startsWith('image/')) {
+      setError('Please select a valid image file');
       return;
     }
     setBannerImage(file);
@@ -87,7 +87,7 @@ export default function NewProjectPage() {
     const validFiles = [];
 
     files.forEach((file) => {
-      if (file.type.startsWith("image/")) {
+      if (file.type.startsWith('image/')) {
         validFiles.push(file);
         const reader = new FileReader();
         reader.onloadend = () => newPreviews.push(reader.result);
@@ -108,54 +108,54 @@ export default function NewProjectPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setError('');
     setSuccess(false);
 
     // Validation
-    if (!formData.title.trim()) return setError("Project title is required");
-    if (!formData.category.trim()) return setError("Category is required");
+    if (!formData.title.trim()) return setError('Project title is required');
+    if (!formData.category.trim()) return setError('Category is required');
     if (!formData.description.trim())
-      return setError("Short description is required");
+      return setError('Short description is required');
     if (!formData.details.trim())
-      return setError("Detailed content is required");
-    if (!mainImage) return setError("Main project image is required");
-    if (!bannerImage) return setError("Banner image is required");
+      return setError('Detailed content is required');
+    if (!mainImage) return setError('Main project image is required');
+    if (!bannerImage) return setError('Banner image is required');
 
     try {
       const formDataToSend = new FormData();
 
       // Append all form fields
-      formDataToSend.append("title", formData.title.trim());
-      formDataToSend.append("category", formData.category.trim());
-      formDataToSend.append("description", formData.description.trim());
-      formDataToSend.append("details", formData.details.trim());
-      formDataToSend.append("status", formData.status);
-      formDataToSend.append("priority", formData.priority);
-      formDataToSend.append("featured", formData.featured);
+      formDataToSend.append('title', formData.title.trim());
+      formDataToSend.append('category', formData.category.trim());
+      formDataToSend.append('description', formData.description.trim());
+      formDataToSend.append('details', formData.details.trim());
+      formDataToSend.append('status', formData.status);
+      formDataToSend.append('priority', formData.priority);
+      formDataToSend.append('featured', formData.featured);
 
       if (formData.location?.trim())
-        formDataToSend.append("location", formData.location.trim());
+        formDataToSend.append('location', formData.location.trim());
       if (formData.scope?.trim())
-        formDataToSend.append("scope", formData.scope.trim());
+        formDataToSend.append('scope', formData.scope.trim());
 
       // Files
-      formDataToSend.append("image", mainImage);
-      formDataToSend.append("banner", bannerImage);
+      formDataToSend.append('image', mainImage);
+      formDataToSend.append('banner', bannerImage);
 
       galleryImages.forEach((file) => {
-        formDataToSend.append("images", file);
+        formDataToSend.append('images', file);
       });
 
       await createProject(formDataToSend).unwrap();
 
       setSuccess(true);
       setTimeout(() => {
-        router.push("/admin/projects");
+        router.push('/admin/projects');
       }, 1500);
     } catch (err) {
-      console.error("Create project error:", err);
+      console.error('Create project error:', err);
       setError(
-        err?.data?.message || "Failed to create project. Please try again.",
+        err?.data?.message || 'Failed to create project. Please try again.',
       );
     }
   };
@@ -392,7 +392,7 @@ export default function NewProjectPage() {
         {/* Main Image */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Main Project Image (Thumbnail){" "}
+            Main Project Image (Thumbnail){' '}
             <span className="text-red-500">*</span>
           </label>
           <div className="flex items-start gap-6">
@@ -496,7 +496,7 @@ export default function NewProjectPage() {
                 Creating Project...
               </>
             ) : (
-              "Create Project"
+              'Create Project'
             )}
           </button>
         </div>

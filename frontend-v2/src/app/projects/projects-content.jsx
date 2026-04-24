@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useMemo } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useGetPublicProjectsQuery } from "@/api/projectsApi";
+import { useMemo } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useGetPublicProjectsQuery } from '@/api/projectsApi';
 import {
   Pagination,
   PaginationContent,
@@ -11,19 +11,19 @@ import {
   PaginationNext,
   PaginationPrevious,
   PaginationEllipsis,
-} from "@/components/ui/pagination";
+} from '@/components/ui/pagination';
 
-import { projectsImage } from "@/lib/config";
-import ProjectRow from "@/components/ProjectRow";
-import { AnimateIn } from "../../components/AnimateIn";
+import { projectsImage } from '@/lib/config';
+import ProjectRow from '@/components/ProjectRow';
+import { AnimateIn } from '../../components/AnimateIn';
 
 export default function ProjectsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   // ✅ Read directly from URL (no extra state needed)
-  const currentPage = parseInt(searchParams.get("page") || "1", 10);
-  const selectedCategory = searchParams.get("category") || null;
+  const currentPage = parseInt(searchParams.get('page') || '1', 10);
+  const selectedCategory = searchParams.get('category') || null;
 
   const limit = 6;
 
@@ -58,11 +58,11 @@ export default function ProjectsContent() {
   const updateURL = (page, category) => {
     const params = new URLSearchParams();
 
-    if (page > 1) params.set("page", page);
-    if (category) params.set("category", category);
+    if (page > 1) params.set('page', page);
+    if (category) params.set('category', category);
 
     const queryString = params.toString();
-    router.push(`/projects${queryString ? `?${queryString}` : ""}`, {
+    router.push(`/projects${queryString ? `?${queryString}` : ''}`, {
       scroll: false,
     });
   };
@@ -99,9 +99,9 @@ export default function ProjectsContent() {
         pages.push(i);
       } else if (
         (i === currentPage - delta - 1 || i === currentPage + delta + 1) &&
-        !pages.includes("ellipsis")
+        !pages.includes('ellipsis')
       ) {
-        pages.push("ellipsis");
+        pages.push('ellipsis');
       }
     }
     return pages;
@@ -112,40 +112,40 @@ export default function ProjectsContent() {
       {/* Banner */}
       <section
         style={{
-          position: "relative",
-          width: "100%",
-          height: "100vh",
-          overflow: "hidden",
-          backgroundColor: "#0a0a0a",
+          position: 'relative',
+          width: '100%',
+          height: '100vh',
+          overflow: 'hidden',
+          backgroundColor: '#0a0a0a',
         }}
       >
         <img
           src={projectsImage}
           alt="Our Projects"
-          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />
         <div
           style={{
-            position: "absolute",
+            position: 'absolute',
             inset: 0,
             background:
-              "linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.3))",
+              'linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.3))',
           }}
         />
         <div
           style={{
-            position: "absolute",
-            bottom: "60px",
-            left: "48px",
+            position: 'absolute',
+            bottom: '60px',
+            left: '48px',
             zIndex: 2,
           }}
         >
           <h1
             style={{
               fontFamily: "'Lato', sans-serif",
-              fontSize: "clamp(36px, 5vw, 56px)",
+              fontSize: 'clamp(36px, 5vw, 56px)',
               fontWeight: 300,
-              color: "#fff",
+              color: '#fff',
             }}
           >
             Our Projects
@@ -154,14 +154,14 @@ export default function ProjectsContent() {
       </section>
 
       {/* Intro */}
-      <section style={{ padding: "80px 48px", backgroundColor: "#fff" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+      <section style={{ padding: '80px 48px', backgroundColor: '#fff' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <AnimateIn>
             <p
               style={{
                 fontFamily: "'Lato', sans-serif",
-                fontSize: "16px",
-                color: "#666",
+                fontSize: '16px',
+                color: '#666',
                 lineHeight: 1.8,
               }}
             >
@@ -173,34 +173,34 @@ export default function ProjectsContent() {
       </section>
 
       {/* Category Filters */}
-      <section style={{ padding: "0 48px 40px" }}>
+      <section style={{ padding: '0 48px 40px' }}>
         <div
           style={{
-            display: "flex",
-            gap: "10px",
-            flexWrap: "wrap",
-            maxWidth: "1200px",
-            margin: "0 auto",
+            display: 'flex',
+            gap: '10px',
+            flexWrap: 'wrap',
+            maxWidth: '1200px',
+            margin: '0 auto',
           }}
         >
-          {["Residential", "Commercial", "Institutional", "Hospitality"].map(
+          {['Residential', 'Commercial', 'Institutional', 'Hospitality'].map(
             (cat) => (
               <button
                 key={cat}
                 onClick={() => handleCategoryChange(cat)}
                 style={{
                   flex: 1,
-                  padding: "12px 16px",
-                  backgroundColor: "transparent",
-                  color: selectedCategory === cat ? "#c6a15b" : "#1a3c34",
-                  cursor: "pointer",
-                  fontSize: "13.5px",
-                  letterSpacing: "0.5px",
-                  border: "none",
+                  padding: '12px 16px',
+                  backgroundColor: 'transparent',
+                  color: selectedCategory === cat ? '#c6a15b' : '#1a3c34',
+                  cursor: 'pointer',
+                  fontSize: '13.5px',
+                  letterSpacing: '0.5px',
+                  border: 'none',
                   borderBottom:
                     selectedCategory === cat
-                      ? "2px solid #c6a15b"
-                      : "2px solid transparent",
+                      ? '2px solid #c6a15b'
+                      : '2px solid transparent',
                 }}
               >
                 {cat}
@@ -211,18 +211,18 @@ export default function ProjectsContent() {
       </section>
 
       {/* Projects List */}
-      <section style={{ padding: "0 48px 120px", backgroundColor: "#fff" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+      <section style={{ padding: '0 48px 120px', backgroundColor: '#fff' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           {isLoading ? (
-            <div style={{ textAlign: "center", padding: "120px 0" }}>
+            <div style={{ textAlign: 'center', padding: '120px 0' }}>
               Loading projects...
             </div>
           ) : isError ? (
-            <div style={{ textAlign: "center", color: "red" }}>
-              {error?.data?.message || "Failed to load projects"}
+            <div style={{ textAlign: 'center', color: 'red' }}>
+              {error?.data?.message || 'Failed to load projects'}
             </div>
           ) : projects.length === 0 ? (
-            <div style={{ textAlign: "center", padding: "100px 0" }}>
+            <div style={{ textAlign: 'center', padding: '100px 0' }}>
               No projects found.
             </div>
           ) : (
@@ -235,21 +235,21 @@ export default function ProjectsContent() {
 
               {/* Pagination */}
               {totalPages > 1 && (
-                <div style={{ marginTop: "100px" }}>
+                <div style={{ marginTop: '100px' }}>
                   <Pagination>
                     <PaginationContent>
                       <PaginationItem>
                         <PaginationPrevious
                           onClick={handlePrevious}
                           className={
-                            !hasPrevious ? "pointer-events-none opacity-50" : ""
+                            !hasPrevious ? 'pointer-events-none opacity-50' : ''
                           }
                         />
                       </PaginationItem>
 
                       {pageNumbers.map((page, i) => (
                         <PaginationItem key={i}>
-                          {page === "ellipsis" ? (
+                          {page === 'ellipsis' ? (
                             <PaginationEllipsis />
                           ) : (
                             <PaginationLink
@@ -266,7 +266,7 @@ export default function ProjectsContent() {
                         <PaginationNext
                           onClick={handleNext}
                           className={
-                            !hasNext ? "pointer-events-none opacity-50" : ""
+                            !hasNext ? 'pointer-events-none opacity-50' : ''
                           }
                         />
                       </PaginationItem>

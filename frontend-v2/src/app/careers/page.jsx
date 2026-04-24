@@ -1,38 +1,38 @@
-"use client";
-import { useState } from "react";
-import { useCreateApplicationMutation } from "@/api/applicationsApi";
-import { AnimateIn } from "@/components/AnimateIn";
-import { toast } from "sonner";
-import { careerImage } from "@/lib/config";
+'use client';
+import { useState } from 'react';
+import { useCreateApplicationMutation } from '@/api/applicationsApi';
+import { AnimateIn } from '@/components/AnimateIn';
+import { toast } from 'sonner';
+import { careerImage } from '@/lib/config';
 export default function CareerPage() {
   const [createApplication, { isLoading: pending }] =
     useCreateApplicationMutation();
 
-  const [fileName, setFileName] = useState("");
+  const [fileName, setFileName] = useState('');
 
   const inputStyle = {
-    width: "100%",
-    padding: "14px 16px",
+    width: '100%',
+    padding: '14px 16px',
     fontFamily: "'Lato', sans-serif",
-    fontSize: "15px",
+    fontSize: '15px',
     fontWeight: 300,
-    color: "#1a3c34",
-    backgroundColor: "#ffffff",
-    border: "1px solid rgba(26, 60, 52, 0.2)",
-    outline: "none",
-    transition: "border-color 0.3s ease",
-    boxSizing: "border-box",
+    color: '#1a3c34',
+    backgroundColor: '#ffffff',
+    border: '1px solid rgba(26, 60, 52, 0.2)',
+    outline: 'none',
+    transition: 'border-color 0.3s ease',
+    boxSizing: 'border-box',
   };
 
   const labelStyle = {
     fontFamily: "'Lato', sans-serif",
-    fontSize: "12px",
+    fontSize: '12px',
     fontWeight: 500,
-    letterSpacing: "2px",
-    textTransform: "uppercase",
-    color: "#1a3c34",
-    marginBottom: "8px",
-    display: "block",
+    letterSpacing: '2px',
+    textTransform: 'uppercase',
+    color: '#1a3c34',
+    marginBottom: '8px',
+    display: 'block',
   };
 
   const handleSubmit = async (e) => {
@@ -47,21 +47,21 @@ export default function CareerPage() {
     try {
       // Call RTK Query mutation with a plain object; the mutation will construct FormData
       await createApplication({
-        name: formData.get("name"),
-        email: formData.get("email"),
-        phone: formData.get("phone"),
-        designation: formData.get("designation"),
-        interestedIn: formData.get("interestedIn"),
-        coverLetter: formData.get("coverLetter") || "", // optional
+        name: formData.get('name'),
+        email: formData.get('email'),
+        phone: formData.get('phone'),
+        designation: formData.get('designation'),
+        interestedIn: formData.get('interestedIn'),
+        coverLetter: formData.get('coverLetter') || '', // optional
         resume: resumeFile,
       }).unwrap();
 
       toast.success("Application submitted successfully! We'll be in touch.");
       e.target.reset();
-      setFileName("");
+      setFileName('');
     } catch (err) {
       const errorMsg =
-        err?.data?.message || err?.message || "Failed to submit application.";
+        err?.data?.message || err?.message || 'Failed to submit application.';
       console.log(err);
       toast.error(errorMsg);
     }
@@ -72,40 +72,40 @@ export default function CareerPage() {
       {/* Banner */}
       <section
         style={{
-          position: "relative",
-          width: "100%",
-          minHeight: "100vh",
-          height: "100dvh", // fixes mobile viewport issues
+          position: 'relative',
+          width: '100%',
+          minHeight: '100vh',
+          height: '100dvh', // fixes mobile viewport issues
           backgroundImage: `url(${careerImage})`, // ✅ fixed
-          backgroundSize: "cover",
-          backgroundPosition: "center top",
-          backgroundRepeat: "no-repeat",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center top',
+          backgroundRepeat: 'no-repeat',
         }}
       >
         {/* Overlay */}
         <div
           style={{
-            position: "absolute",
+            position: 'absolute',
             inset: 0,
-            backgroundColor: "rgba(0, 0, 0, 0.4)",
+            backgroundColor: 'rgba(0, 0, 0, 0.4)',
           }}
         />
 
         {/* Text */}
         <div
           style={{
-            position: "absolute",
-            bottom: "60px",
-            left: "48px",
+            position: 'absolute',
+            bottom: '60px',
+            left: '48px',
             zIndex: 2,
           }}
         >
           <h1
             style={{
               fontFamily: "'Lato', sans-serif",
-              fontSize: "clamp(36px, 5vw, 56px)",
+              fontSize: 'clamp(36px, 5vw, 56px)',
               fontWeight: 300,
-              color: "#ffffff",
+              color: '#ffffff',
               margin: 0,
             }}
           >
@@ -114,25 +114,25 @@ export default function CareerPage() {
 
           <div
             style={{
-              width: "40px",
-              height: "1px",
-              backgroundColor: "#d9af61",
-              marginTop: "20px",
+              width: '40px',
+              height: '1px',
+              backgroundColor: '#d9af61',
+              marginTop: '20px',
             }}
           />
         </div>
       </section>
-      <section style={{ padding: "100px 48px", backgroundColor: "#fff" }}>
-        <div style={{ maxWidth: "700px", margin: "0 auto" }}>
+      <section style={{ padding: '100px 48px', backgroundColor: '#fff' }}>
+        <div style={{ maxWidth: '700px', margin: '0 auto' }}>
           <AnimateIn delay={0} distance={40} duration={1}>
             <p
               style={{
                 fontFamily: "'Lato', sans-serif",
-                fontSize: "16px",
+                fontSize: '16px',
                 fontWeight: 300,
-                color: "#666666",
+                color: '#666666',
                 lineHeight: 1.8,
-                marginBottom: "60px",
+                marginBottom: '60px',
               }}
             >
               We are always looking for talented individuals who share our
@@ -144,36 +144,36 @@ export default function CareerPage() {
           <AnimateIn delay={0.2} distance={50} duration={1.2}>
             <form onSubmit={handleSubmit}>
               {/* Full Name */}
-              <div style={{ marginBottom: "32px" }}>
+              <div style={{ marginBottom: '32px' }}>
                 <label style={labelStyle}>Full Name</label>
                 <input type="text" name="name" required style={inputStyle} />
               </div>
 
               {/* Phone */}
-              <div style={{ marginBottom: "32px" }}>
+              <div style={{ marginBottom: '32px' }}>
                 <label style={labelStyle}>Phone Number</label>
                 <input type="tel" name="phone" style={inputStyle} />
               </div>
 
               {/* Email */}
-              <div style={{ marginBottom: "32px" }}>
+              <div style={{ marginBottom: '32px' }}>
                 <label style={labelStyle}>Email</label>
                 <input type="email" name="email" required style={inputStyle} />
               </div>
 
               {/* Designation */}
-              <div style={{ marginBottom: "32px" }}>
+              <div style={{ marginBottom: '32px' }}>
                 <label style={labelStyle}>Current Designation</label>
                 <input type="text" name="designation" style={inputStyle} />
               </div>
 
               {/* Interested In */}
-              <div style={{ marginBottom: "32px" }}>
+              <div style={{ marginBottom: '32px' }}>
                 <label style={labelStyle}>Interested In</label>
                 <select
                   name="interestedIn"
                   required
-                  style={{ ...inputStyle, appearance: "none" }}
+                  style={{ ...inputStyle, appearance: 'none' }}
                 >
                   <option value="">Select a department</option>
                   <option value="Architecture">Architecture</option>
@@ -186,23 +186,23 @@ export default function CareerPage() {
               </div>
 
               {/* Portfolio / Resume */}
-              <div style={{ marginBottom: "48px" }}>
+              <div style={{ marginBottom: '48px' }}>
                 <label style={labelStyle}>Upload Portfolio / Resume</label>
                 <label
                   style={{
                     ...inputStyle,
-                    display: "flex",
-                    alignItems: "center",
-                    cursor: "pointer",
-                    color: fileName ? "#1a3c34" : "#999999",
+                    display: 'flex',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                    color: fileName ? '#1a3c34' : '#999999',
                   }}
                 >
-                  {fileName || "Choose a file (PDF, ZIP, max 5MB recommended)"}
+                  {fileName || 'Choose a file (PDF, ZIP, max 5MB recommended)'}
                   <input
                     type="file"
                     name="portfolio"
                     accept=".pdf,.zip,.doc,.docx"
-                    style={{ display: "none" }}
+                    style={{ display: 'none' }}
                     onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) setFileName(file.name);
@@ -216,19 +216,19 @@ export default function CareerPage() {
                 disabled={pending}
                 style={{
                   fontFamily: "'Lato', sans-serif",
-                  fontSize: "13px",
+                  fontSize: '13px',
                   fontWeight: 500,
-                  letterSpacing: "3px",
-                  textTransform: "uppercase",
-                  color: "#ffffff",
-                  backgroundColor: "#1a3c34",
-                  border: "none",
-                  padding: "16px 48px",
-                  cursor: "pointer",
-                  transition: "background-color 0.3s ease",
+                  letterSpacing: '3px',
+                  textTransform: 'uppercase',
+                  color: '#ffffff',
+                  backgroundColor: '#1a3c34',
+                  border: 'none',
+                  padding: '16px 48px',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.3s ease',
                 }}
               >
-                {pending ? "Submitting..." : "Submit Application"}
+                {pending ? 'Submitting...' : 'Submit Application'}
               </button>
             </form>
           </AnimateIn>

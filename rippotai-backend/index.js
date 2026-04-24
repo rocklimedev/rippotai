@@ -53,7 +53,6 @@ const corsOptions = {
 // Use CORS globally
 app.use(cors(corsOptions));
 
-
 // Rate limiter for authentication routes
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 mins

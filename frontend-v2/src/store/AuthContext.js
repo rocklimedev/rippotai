@@ -1,5 +1,5 @@
 // src/store/AuthContext.js
-"use client"; // ← This must be the very first line
+'use client'; // ← This must be the very first line
 
 import React, {
   createContext,
@@ -7,13 +7,13 @@ import React, {
   useEffect,
   useCallback,
   useContext,
-} from "react";
+} from 'react';
 import {
   useLoginMutation,
   useLogoutMutation,
   useGetProfileQuery,
   useRefreshTokenMutation,
-} from "../api/rippotaiApi";
+} from '../api/rippotaiApi';
 
 export const AuthContext = createContext(undefined);
 
@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
   // Lazy initialization – only runs on client, safe defaults on server
   const [authState, setAuthState] = useState(() => {
     // During SSR / build (server) → no localStorage → safe defaults
-    if (typeof window === "undefined") {
+    if (typeof window === 'undefined') {
       return {
         isAuthenticated: false,
         user: null,
@@ -34,8 +34,8 @@ export const AuthProvider = ({ children }) => {
     return {
       isAuthenticated: false,
       user: null,
-      token: localStorage.getItem("adminToken") || null,
-      refreshToken: localStorage.getItem("refreshToken") || null,
+      token: localStorage.getItem('adminToken') || null,
+      refreshToken: localStorage.getItem('refreshToken') || null,
     };
   });
 
@@ -53,10 +53,10 @@ export const AuthProvider = ({ children }) => {
     try {
       await logout().unwrap();
     } catch (error) {
-      console.error("Logout failed:", error);
+      console.error('Logout failed:', error);
     }
-    localStorage.removeItem("adminToken");
-    localStorage.removeItem("refreshToken");
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('refreshToken');
 
     setAuthState({
       isAuthenticated: false,
@@ -86,8 +86,8 @@ export const AuthProvider = ({ children }) => {
             refreshToken: authState.refreshToken,
           }).unwrap();
 
-          localStorage.setItem("adminToken", response.accessToken);
-          localStorage.setItem("refreshToken", response.refreshToken);
+          localStorage.setItem('adminToken', response.accessToken);
+          localStorage.setItem('refreshToken', response.refreshToken);
 
           setAuthState((prev) => ({
             ...prev,
@@ -96,7 +96,7 @@ export const AuthProvider = ({ children }) => {
             isAuthenticated: true,
           }));
         } catch (err) {
-          console.error("Token refresh failed:", err);
+          console.error('Token refresh failed:', err);
           handleLogout();
         }
       }
@@ -114,8 +114,8 @@ export const AuthProvider = ({ children }) => {
     async ({ email, password }) => {
       try {
         const response = await login({ email, password }).unwrap();
-        localStorage.setItem("adminToken", response.accessToken);
-        localStorage.setItem("refreshToken", response.refreshToken);
+        localStorage.setItem('adminToken', response.accessToken);
+        localStorage.setItem('refreshToken', response.refreshToken);
 
         setAuthState({
           isAuthenticated: true,
@@ -126,8 +126,8 @@ export const AuthProvider = ({ children }) => {
 
         return { success: true };
       } catch (error) {
-        console.error("Login failed:", error);
-        return { success: false, error: error.data?.message || "Login failed" };
+        console.error('Login failed:', error);
+        return { success: false, error: error.data?.message || 'Login failed' };
       }
     },
     [login],
@@ -152,7 +152,7 @@ export const AuthProvider = ({ children }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within AuthProvider");
+    throw new Error('useAuth must be used within AuthProvider');
   }
   return context;
 };

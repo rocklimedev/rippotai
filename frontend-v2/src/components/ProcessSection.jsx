@@ -1,27 +1,27 @@
-import { processSteps } from "@/lib/config";
-import { Separator } from "./ui/separator";
-import { AnimateIn } from "./AnimateIn";
+import { processSteps } from '@/lib/config';
+import { Separator } from './ui/separator';
+import { AnimateIn } from './AnimateIn';
 
 export const ProcessSection = () => {
   return (
     <section
       id="process"
       style={{
-        backgroundColor: "#fafafa",
-        padding: "120px 48px",
+        backgroundColor: '#fafafa',
+        padding: '120px 48px',
       }}
     >
-      <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+      <div style={{ maxWidth: '800px', margin: '0 auto' }}>
         {/* Section title */}
-        <div style={{ textAlign: "center", marginBottom: "80px" }}>
+        <div style={{ textAlign: 'center', marginBottom: '80px' }}>
           <h2
             style={{
               fontFamily: "'Lato', sans-serif",
-              fontSize: "14px",
+              fontSize: '14px',
               fontWeight: 500,
-              letterSpacing: "4px",
-              textTransform: "uppercase",
-              color: "#1a3c34",
+              letterSpacing: '4px',
+              textTransform: 'uppercase',
+              color: '#1a3c34',
               margin: 0,
             }}
           >
@@ -29,10 +29,10 @@ export const ProcessSection = () => {
           </h2>
           <div
             style={{
-              width: "30px",
-              height: "1px",
-              backgroundColor: "#d9af61",
-              margin: "16px auto 0",
+              width: '30px',
+              height: '1px',
+              backgroundColor: '#d9af61',
+              margin: '16px auto 0',
             }}
           />
         </div>
@@ -49,30 +49,30 @@ export const ProcessSection = () => {
               <div>
                 <div
                   style={{
-                    display: "grid",
-                    gridTemplateColumns: "auto 1fr",
-                    gap: "32px",
-                    alignItems: "center",
-                    padding: "40px 0",
+                    display: 'grid',
+                    gridTemplateColumns: 'auto 1fr',
+                    gap: '32px',
+                    alignItems: 'center',
+                    padding: '40px 0',
                   }}
                   className="process-step-grid"
                 >
                   {/* Step icon */}
                   <div
                     style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
                     }}
                   >
                     <img
                       src={step.icon}
                       alt={step.title}
                       style={{
-                        width: "auto",
-                        height: "80px",
-                        objectFit: "contain",
-                        display: "block",
+                        width: 'auto',
+                        height: '80px',
+                        objectFit: 'contain',
+                        display: 'block',
                       }}
                     />
                   </div>
@@ -82,13 +82,13 @@ export const ProcessSection = () => {
                     <h3
                       style={{
                         fontFamily: "'Lato', sans-serif",
-                        fontSize: "14px",
+                        fontSize: '14px',
                         fontWeight: 600,
-                        letterSpacing: "3px",
-                        textTransform: "uppercase",
-                        color: "#1a3c34",
+                        letterSpacing: '3px',
+                        textTransform: 'uppercase',
+                        color: '#1a3c34',
                         margin: 0,
-                        marginBottom: "12px",
+                        marginBottom: '12px',
                       }}
                     >
                       {step.title}
@@ -96,9 +96,9 @@ export const ProcessSection = () => {
                     <p
                       style={{
                         fontFamily: "'Lato', sans-serif",
-                        fontSize: "15px",
+                        fontSize: '15px',
                         fontWeight: 300,
-                        color: "#555555",
+                        color: '#555555',
                         lineHeight: 1.8,
                         margin: 0,
                       }}
@@ -111,8 +111,8 @@ export const ProcessSection = () => {
                 {idx < processSteps.length - 1 && (
                   <Separator
                     style={{
-                      backgroundColor: "rgba(26, 60, 52, 0.1)",
-                      height: "1px",
+                      backgroundColor: 'rgba(26, 60, 52, 0.1)',
+                      height: '1px',
                     }}
                   />
                 )}

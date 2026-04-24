@@ -1,10 +1,10 @@
 // src/components/Providers.js
-"use client";
+'use client';
 
-import { useRef, useEffect } from "react";
-import { Provider } from "react-redux";
-import { setupListeners } from "@reduxjs/toolkit/query";
-import { makeStore } from "../store";
+import { useRef, useEffect } from 'react';
+import { Provider } from 'react-redux';
+import { setupListeners } from '@reduxjs/toolkit/query';
+import { makeStore } from '../store';
 export default function Providers({ children }) {
   const storeRef = useRef(null);
 

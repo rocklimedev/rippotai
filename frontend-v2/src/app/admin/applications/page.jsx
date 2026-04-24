@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { format } from "date-fns";
-import { useGetDashboardStatsQuery } from "@/api/applicationsApi";
+import { useState, useEffect } from 'react';
+import { format } from 'date-fns';
+import { useGetDashboardStatsQuery } from '@/api/applicationsApi';
 import {
   useGetApplicationsQuery,
   useUpdateApplicationStatusMutation,
   useDeleteApplicationMutation,
-} from "@/api/applicationsApi";
-import { Loader2, RefreshCw } from "lucide-react";
-import styles from "./jobs.module.css";
+} from '@/api/applicationsApi';
+import { Loader2, RefreshCw } from 'lucide-react';
+import styles from './jobs.module.css';
 
 export default function AdminApplicationsPage() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
 
   // Fetch applications with server-side filtering
   const {
@@ -47,16 +47,16 @@ export default function AdminApplicationsPage() {
     try {
       await updateStatus({ id, status: newStatus }).unwrap();
     } catch (err) {
-      console.error("Failed to update status:", err);
+      console.error('Failed to update status:', err);
     }
   };
 
   const handleDelete = async (id) => {
-    if (!confirm("Are you sure you want to delete this application?")) return;
+    if (!confirm('Are you sure you want to delete this application?')) return;
     try {
       await deleteApplication(id).unwrap();
     } catch (err) {
-      console.error("Failed to delete application:", err);
+      console.error('Failed to delete application:', err);
     }
   };
 
@@ -72,7 +72,7 @@ export default function AdminApplicationsPage() {
     return (
       <div className={styles.container}>
         <h1 className="text-2xl font-bold text-red-600">Error</h1>
-        <p>{error?.data?.message || "Could not load applications"}</p>
+        <p>{error?.data?.message || 'Could not load applications'}</p>
         <button
           onClick={refetch}
           className="mt-4 flex items-center gap-2 text-blue-600 hover:underline"
@@ -87,7 +87,7 @@ export default function AdminApplicationsPage() {
       {/* Header & Filters */}
       <header className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
-          Job Applications{" "}
+          Job Applications{' '}
           <span className="ml-3 text-lg font-normal text-gray-600">
             ({filteredApplications.length})
           </span>
@@ -121,8 +121,8 @@ export default function AdminApplicationsPage() {
           </h3>
           <p className="mt-2 text-sm text-gray-500">
             {searchTerm || statusFilter
-              ? "Try changing your search or filter"
-              : "No applications submitted yet."}
+              ? 'Try changing your search or filter'
+              : 'No applications submitted yet.'}
           </p>
         </div>
       ) : (
@@ -170,16 +170,16 @@ export default function AdminApplicationsPage() {
                     {app.interestedIn}
                   </td>
                   <td className="px-4 py-3 text-gray-600">
-                    {app.phone || "—"}
+                    {app.phone || '—'}
                   </td>
                   <td className="px-4 py-3 text-gray-600">
                     {app.createdAt
-                      ? format(new Date(app.createdAt), "dd MMM yyyy")
-                      : "—"}
+                      ? format(new Date(app.createdAt), 'dd MMM yyyy')
+                      : '—'}
                   </td>
                   <td className="px-4 py-3">
                     <select
-                      value={app.status || "Pending"}
+                      value={app.status || 'Pending'}
                       onChange={(e) =>
                         handleStatusChange(app._id, e.target.value)
                       }
@@ -202,7 +202,7 @@ export default function AdminApplicationsPage() {
                         View
                       </a>
                     ) : (
-                      "—"
+                      '—'
                     )}
                   </td>
                   <td className="px-4 py-3 text-right flex gap-2 justify-end">

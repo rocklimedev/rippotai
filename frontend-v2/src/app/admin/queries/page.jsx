@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useState, useMemo } from "react";
-import { format } from "date-fns";
+import { useState, useMemo } from 'react';
+import { format } from 'date-fns';
 import {
   MessageSquare,
   Search,
@@ -11,13 +11,13 @@ import {
   RefreshCw,
   X,
   Mail,
-} from "lucide-react";
-import { useGetQueriesQuery, useDeleteQueryMutation } from "@/api/queriesApi";
-import styles from "./queries.module.css";
+} from 'lucide-react';
+import { useGetQueriesQuery, useDeleteQueryMutation } from '@/api/queriesApi';
+import styles from './queries.module.css';
 
 export default function AdminQueriesPage() {
-  const [viewMode, setViewMode] = useState("table");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [viewMode, setViewMode] = useState('table');
+  const [searchTerm, setSearchTerm] = useState('');
   const [selectedQuery, setSelectedQuery] = useState(null);
 
   // ✅ FIXED: Now fetching only for "rippotai" branch
@@ -27,7 +27,7 @@ export default function AdminQueriesPage() {
     isError,
     error,
     refetch,
-  } = useGetQueriesQuery("rippotai");
+  } = useGetQueriesQuery('rippotai');
 
   const queries = useMemo(() => {
     let list = Array.isArray(rawQueries) ? rawQueries : rawQueries?.data || [];
@@ -39,7 +39,7 @@ export default function AdminQueriesPage() {
           q.name?.toLowerCase().includes(term) ||
           q.email?.toLowerCase().includes(term) ||
           q.subject?.toLowerCase().includes(term) ||
-          q.message?.toLowerCase().includes(term)
+          q.message?.toLowerCase().includes(term),
       );
     }
 
@@ -49,15 +49,15 @@ export default function AdminQueriesPage() {
   const [deleteQuery, { isLoading: isDeleting }] = useDeleteQueryMutation();
 
   const handleDelete = async (queryId) => {
-    if (!confirm("Delete this inquiry permanently? This cannot be undone."))
+    if (!confirm('Delete this inquiry permanently? This cannot be undone.'))
       return;
 
     try {
-      await deleteQuery({ branch: "rippotai", id: queryId }).unwrap(); // ✅ Fixed
+      await deleteQuery({ branch: 'rippotai', id: queryId }).unwrap(); // ✅ Fixed
       refetch();
       if (selectedQuery?._id === queryId) setSelectedQuery(null);
     } catch (err) {
-      alert(err?.data?.message || "Failed to delete inquiry");
+      alert(err?.data?.message || 'Failed to delete inquiry');
     }
   };
 
@@ -70,7 +70,7 @@ export default function AdminQueriesPage() {
     return (
       <div className={styles.container}>
         <h1 className="text-2xl font-bold text-red-600">Error</h1>
-        <p>{error?.data?.message || "Could not load inquiries"}</p>
+        <p>{error?.data?.message || 'Could not load inquiries'}</p>
         <button
           onClick={refetch}
           className="mt-4 flex items-center gap-2 text-blue-600 hover:underline"
@@ -115,21 +115,21 @@ export default function AdminQueriesPage() {
 
         <div className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white p-1">
           <button
-            onClick={() => setViewMode("table")}
+            onClick={() => setViewMode('table')}
             className={`rounded-md px-3 py-1.5 text-sm font-medium transition ${
-              viewMode === "table"
-                ? "bg-gray-200 shadow-sm"
-                : "text-gray-600 hover:bg-gray-100"
+              viewMode === 'table'
+                ? 'bg-gray-200 shadow-sm'
+                : 'text-gray-600 hover:bg-gray-100'
             }`}
           >
             <TableIcon size={16} className="inline" />
           </button>
           <button
-            onClick={() => setViewMode("card")}
+            onClick={() => setViewMode('card')}
             className={`rounded-md px-3 py-1.5 text-sm font-medium transition ${
-              viewMode === "card"
-                ? "bg-gray-200 shadow-sm"
-                : "text-gray-600 hover:bg-gray-100"
+              viewMode === 'card'
+                ? 'bg-gray-200 shadow-sm'
+                : 'text-gray-600 hover:bg-gray-100'
             }`}
           >
             <LayoutGrid size={16} className="inline" />
@@ -145,19 +145,19 @@ export default function AdminQueriesPage() {
           </h3>
           <p className="mt-2 text-sm text-gray-500">
             {searchTerm
-              ? "Try changing your search term"
-              : "New messages from the Rippotai contact form will appear here."}
+              ? 'Try changing your search term'
+              : 'New messages from the Rippotai contact form will appear here.'}
           </p>
           {searchTerm && (
             <button
-              onClick={() => setSearchTerm("")}
+              onClick={() => setSearchTerm('')}
               className="mt-4 text-sm text-blue-600 hover:underline"
             >
               Clear search
             </button>
           )}
         </div>
-      ) : viewMode === "table" ? (
+      ) : viewMode === 'table' ? (
         <QueriesTable
           queries={queries}
           onDelete={handleDelete}
@@ -195,20 +195,20 @@ export default function AdminQueriesPage() {
                   <label className="block text-sm font-medium text-gray-500 mb-1">
                     Name
                   </label>
-                  <p className="text-gray-900">{selectedQuery.name || "—"}</p>
+                  <p className="text-gray-900">{selectedQuery.name || '—'}</p>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-500 mb-1">
                     Email
                   </label>
-                  <p className="text-gray-900">{selectedQuery.email || "—"}</p>
+                  <p className="text-gray-900">{selectedQuery.email || '—'}</p>
                 </div>
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-500 mb-1">
                     Subject
                   </label>
                   <p className="text-gray-900 font-medium">
-                    {selectedQuery.subject || "No subject"}
+                    {selectedQuery.subject || 'No subject'}
                   </p>
                 </div>
                 <div className="md:col-span-2">
@@ -219,9 +219,9 @@ export default function AdminQueriesPage() {
                     {selectedQuery.createdAt
                       ? format(
                           new Date(selectedQuery.createdAt),
-                          "dd MMMM yyyy • hh:mm a"
+                          'dd MMMM yyyy • hh:mm a',
                         )
-                      : "—"}
+                      : '—'}
                   </p>
                 </div>
               </div>
@@ -231,7 +231,7 @@ export default function AdminQueriesPage() {
                   Message
                 </label>
                 <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 whitespace-pre-wrap text-gray-800">
-                  {selectedQuery.message || "No message content"}
+                  {selectedQuery.message || 'No message content'}
                 </div>
               </div>
             </div>
@@ -251,7 +251,7 @@ export default function AdminQueriesPage() {
                 disabled={isDeleting}
                 className="px-5 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 transition flex items-center gap-2"
               >
-                {isDeleting ? "Deleting..." : "Delete Inquiry"}
+                {isDeleting ? 'Deleting...' : 'Delete Inquiry'}
               </button>
             </div>
           </div>
@@ -285,15 +285,21 @@ function QueriesTable({ queries, onDelete, onView, isDeleting }) {
       <table className="w-full text-sm">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-4 py-3 text-left font-medium text-gray-700">Name</th>
+            <th className="px-4 py-3 text-left font-medium text-gray-700">
+              Name
+            </th>
             <th className="hidden md:table-cell px-4 py-3 text-left font-medium text-gray-700">
               Email
             </th>
-            <th className="px-4 py-3 text-left font-medium text-gray-700">Subject</th>
+            <th className="px-4 py-3 text-left font-medium text-gray-700">
+              Subject
+            </th>
             <th className="hidden lg:table-cell px-4 py-3 text-left font-medium text-gray-700">
               Received
             </th>
-            <th className="px-4 py-3 text-right font-medium text-gray-700">Actions</th>
+            <th className="px-4 py-3 text-right font-medium text-gray-700">
+              Actions
+            </th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-100">
@@ -303,18 +309,18 @@ function QueriesTable({ queries, onDelete, onView, isDeleting }) {
               className="group hover:bg-gray-50 transition-colors"
             >
               <td className="px-4 py-3 font-medium text-gray-900">
-                {query.name || "—"}
+                {query.name || '—'}
               </td>
               <td className="hidden md:table-cell px-4 py-3 text-gray-600">
-                {query.email || "—"}
+                {query.email || '—'}
               </td>
               <td className="px-4 py-3 text-gray-700 truncate max-w-xs">
-                {query.subject || "No subject"}
+                {query.subject || 'No subject'}
               </td>
               <td className="hidden lg:table-cell px-4 py-3 text-gray-600">
                 {query.createdAt
-                  ? format(new Date(query.createdAt), "dd MMM yyyy")
-                  : "—"}
+                  ? format(new Date(query.createdAt), 'dd MMM yyyy')
+                  : '—'}
               </td>
               <td className="px-4 py-3 text-right">
                 <div className="flex items-center justify-end gap-2 opacity-70 group-hover:opacity-100 transition-opacity">
@@ -356,14 +362,14 @@ function QueriesCards({ queries, onDelete, onView, isDeleting }) {
             <div className="flex items-start justify-between">
               <div>
                 <h3 className="font-semibold text-gray-900 mb-1">
-                  {query.name || "Anonymous"}
+                  {query.name || 'Anonymous'}
                 </h3>
                 <p className="text-sm text-gray-600 mb-2">{query.email}</p>
               </div>
               <span className="text-xs text-gray-500">
                 {query.createdAt
-                  ? format(new Date(query.createdAt), "dd MMM")
-                  : "—"}
+                  ? format(new Date(query.createdAt), 'dd MMM')
+                  : '—'}
               </span>
             </div>
 
@@ -372,7 +378,7 @@ function QueriesCards({ queries, onDelete, onView, isDeleting }) {
             </h4>
 
             <p className="mt-2 text-sm text-gray-600 line-clamp-3">
-              {query.message || "No message content"}
+              {query.message || 'No message content'}
             </p>
 
             <div className="mt-5 flex justify-end gap-3">

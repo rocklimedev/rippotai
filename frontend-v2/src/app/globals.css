@@ -3,11 +3,11 @@
 /* ────────────────────────────────────────────────
    1. ALL @import rules MUST come FIRST
 ───────────────────────────────────────────────── */
-@import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap");
-@import url("https://fonts.cdnfonts.com/css/neuropol-2");
+@import 'tailwindcss';
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
+@import url('https://fonts.cdnfonts.com/css/neuropol-2');
 .rocklime-link {
-  font-family: "Neuropol", sans-serif;
+  font-family: 'Neuropol', sans-serif;
   letter-spacing: 2px;
   font-size: 13px;
   text-decoration: none;
@@ -29,7 +29,7 @@ html {
 }
 
 body {
-  font-family: "Lato", sans-serif;
+  font-family: 'Lato', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -206,7 +206,7 @@ footer {
 }
 
 .hover-underline::after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: 0;
   left: 0;
@@ -303,7 +303,7 @@ footer {
 }
 
 .footer-link::after {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   bottom: -3px;

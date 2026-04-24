@@ -1,18 +1,16 @@
-"use client";
+'use client';
 
-import { Trophy, Calendar } from "lucide-react";
-import { AnimateIn } from "@/components/AnimateIn";
-import { aboutImage } from "@/lib/config";
-import Image from "next/image";
-import { achievements } from "@/lib/config";
+import { Trophy, Calendar } from 'lucide-react';
+import { AnimateIn } from '@/components/AnimateIn';
+import { aboutImage } from '@/lib/config';
+import Image from 'next/image';
+import { achievements } from '@/lib/config';
 
 const AchievementRow = ({ item }) => {
   return (
     <div className="flex flex-col items-center gap-16">
-
       {/* TOP: TWO IMAGES */}
       <div className="grid grid-cols-2 gap-6 w-full max-w-5xl">
-
         <div className="flex justify-center">
           <Image
             src={item.image1}
@@ -32,7 +30,6 @@ const AchievementRow = ({ item }) => {
             className="w-full max-h-[500px] h-auto object-contain rounded-xl"
           />
         </div>
-
       </div>
 
       {/* BOTTOM: TEXT */}

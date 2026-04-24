@@ -1,23 +1,23 @@
 // src/api/projectsApi.js
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { API_URL } from "@/lib/config";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { API_URL } from '@/lib/config';
 
 export const projectsApi = createApi({
-  reducerPath: "projectsApi",
+  reducerPath: 'projectsApi',
   baseQuery: fetchBaseQuery({
     baseUrl: API_URL,
     prepareHeaders: (headers, { endpoint }) => {
       // Don't set Content-Type for formData (file uploads)
-      if (!["createProject", "updateProject"].includes(endpoint)) {
-        headers.set("Content-Type", "application/json");
+      if (!['createProject', 'updateProject'].includes(endpoint)) {
+        headers.set('Content-Type', 'application/json');
       }
-      const token = localStorage.getItem("adminToken");
-      if (token) headers.set("Authorization", `Bearer ${token}`);
+      const token = localStorage.getItem('adminToken');
+      if (token) headers.set('Authorization', `Bearer ${token}`);
       return headers;
     },
   }),
 
-  tagTypes: ["Projects"],
+  tagTypes: ['Projects'],
 
   endpoints: (builder) => ({
     // ────────────────────────────────────────────────
@@ -26,23 +26,23 @@ export const projectsApi = createApi({
 
     getProjects: builder.query({
       query: (params = {}) => ({
-        url: "/projects",
+        url: '/projects',
         params: {
           page: params.page || 1,
           limit: params.limit || 10,
           category: params.category,
           status: params.status,
           search: params.search,
-          sort: params.sort || "priority",
-          order: params.order || "asc", // "asc" = lower number first (higher priority)
+          sort: params.sort || 'priority',
+          order: params.order || 'asc', // "asc" = lower number first (higher priority)
         },
       }),
       providesTags: (result) => {
-        const tags = [{ type: "Projects", id: "LIST" }];
+        const tags = [{ type: 'Projects', id: 'LIST' }];
         if (result?.data?.data?.length) {
           result.data.data.forEach((project) => {
             if (project?._id) {
-              tags.push({ type: "Projects", id: project._id });
+              tags.push({ type: 'Projects', id: project._id });
             }
           });
         }
@@ -52,7 +52,7 @@ export const projectsApi = createApi({
 
     getPublicProjects: builder.query({
       query: ({ page = 1, limit = 6, category }) => ({
-        url: "/projects/public",
+        url: '/projects/public',
         params: {
           page,
           limit,
@@ -61,40 +61,40 @@ export const projectsApi = createApi({
       }),
 
       serializeQueryArgs: ({ queryArgs }) => {
-        const { page = 1, category = "all" } = queryArgs;
+        const { page = 1, category = 'all' } = queryArgs;
         return `publicProjects-page-${page}-cat-${category}`;
       },
 
       keepUnusedDataFor: 60,
-      providesTags: [{ type: "Projects", id: "LIST" }],
+      providesTags: [{ type: 'Projects', id: 'LIST' }],
     }),
     getCompletedProjects: builder.query({
-      query: () => "/projects/completed",
-      providesTags: [{ type: "Projects", id: "LIST" }],
+      query: () => '/projects/completed',
+      providesTags: [{ type: 'Projects', id: 'LIST' }],
     }),
 
     getDraftProjects: builder.query({
-      query: () => "/projects/drafts", // Note: You had /projects/drafts but controller uses /projects/draft
-      providesTags: [{ type: "Projects", id: "LIST" }],
+      query: () => '/projects/drafts', // Note: You had /projects/drafts but controller uses /projects/draft
+      providesTags: [{ type: 'Projects', id: 'LIST' }],
     }),
 
     getProjectsByLocation: builder.query({
       query: (location) => `/projects/location/${location}`,
-      providesTags: [{ type: "Projects", id: "LIST" }],
+      providesTags: [{ type: 'Projects', id: 'LIST' }],
     }),
 
     getFeaturedProjects: builder.query({
       query: (limit = 6) => ({
-        url: "/projects/featured",
+        url: '/projects/featured',
         params: { limit },
       }),
       keepUnusedDataFor: 60,
-      providesTags: [{ type: "Projects", id: "LIST" }],
+      providesTags: [{ type: 'Projects', id: 'LIST' }],
     }),
 
     getProjectById: builder.query({
       query: (id) => `/projects/admin/${id}`,
-      providesTags: (result, error, id) => [{ type: "Projects", id }],
+      providesTags: (result, error, id) => [{ type: 'Projects', id }],
     }),
 
     getProjectBySlug: builder.query({
@@ -104,7 +104,7 @@ export const projectsApi = createApi({
       keepUnusedDataFor: 300,
       providesTags: (result) =>
         result
-          ? [{ type: "Projects", id: result._id || result.projectId }]
+          ? [{ type: 'Projects', id: result._id || result.projectId }]
           : [],
     }),
 
@@ -114,34 +114,34 @@ export const projectsApi = createApi({
 
     createProject: builder.mutation({
       query: (formData) => ({
-        url: "/projects/admin/",
-        method: "POST",
+        url: '/projects/admin/',
+        method: 'POST',
         body: formData,
       }),
-      invalidatesTags: [{ type: "Projects", id: "LIST" }],
+      invalidatesTags: [{ type: 'Projects', id: 'LIST' }],
     }),
 
     updateProject: builder.mutation({
       query: ({ projectId, formData }) => ({
         url: `/projects/admin/${projectId}`,
-        method: "PUT",
+        method: 'PUT',
         body: formData,
       }),
       invalidatesTags: (result, error, { projectId }) => [
-        { type: "Projects", id: projectId },
-        { type: "Projects", id: "LIST" },
+        { type: 'Projects', id: projectId },
+        { type: 'Projects', id: 'LIST' },
       ],
     }),
 
     updateProjectStatus: builder.mutation({
       query: ({ id, status }) => ({
         url: `/projects/admin/${id}/status`,
-        method: "PATCH",
+        method: 'PATCH',
         body: { status },
       }),
       invalidatesTags: (result, error, { id }) => [
-        { type: "Projects", id },
-        { type: "Projects", id: "LIST" },
+        { type: 'Projects', id },
+        { type: 'Projects', id: 'LIST' },
       ],
     }),
 
@@ -149,12 +149,12 @@ export const projectsApi = createApi({
     updateProjectPriority: builder.mutation({
       query: ({ id, priority }) => ({
         url: `/projects/admin/${id}/priority`,
-        method: "PATCH",
+        method: 'PATCH',
         body: { priority: Number(priority) }, // Ensure it's a number
       }),
       invalidatesTags: (result, error, { id }) => [
-        { type: "Projects", id },
-        { type: "Projects", id: "LIST" },
+        { type: 'Projects', id },
+        { type: 'Projects', id: 'LIST' },
       ],
     }),
 
@@ -162,12 +162,12 @@ export const projectsApi = createApi({
     setFeatured: builder.mutation({
       query: ({ id, featured }) => ({
         url: `/projects/admin/${id}/featured`,
-        method: "PATCH",
+        method: 'PATCH',
         body: { featured: !!featured },
       }),
       invalidatesTags: (result, error, { id }) => [
-        { type: "Projects", id },
-        { type: "Projects", id: "LIST" },
+        { type: 'Projects', id },
+        { type: 'Projects', id: 'LIST' },
       ],
     }),
 
@@ -175,22 +175,22 @@ export const projectsApi = createApi({
     toggleFeatured: builder.mutation({
       query: (id) => ({
         url: `/projects/admin/${id}/toggle-featured`,
-        method: "PATCH",
+        method: 'PATCH',
       }),
       invalidatesTags: (result, error, id) => [
-        { type: "Projects", id },
-        { type: "Projects", id: "LIST" },
+        { type: 'Projects', id },
+        { type: 'Projects', id: 'LIST' },
       ],
     }),
 
     deleteProject: builder.mutation({
       query: (id) => ({
         url: `/projects/admin/${id}`,
-        method: "DELETE",
+        method: 'DELETE',
       }),
       invalidatesTags: (result, error, id) => [
-        { type: "Projects", id },
-        { type: "Projects", id: "LIST" },
+        { type: 'Projects', id },
+        { type: 'Projects', id: 'LIST' },
       ],
     }),
   }),

@@ -1,18 +1,13 @@
-"use client";
+'use client';
 
-import { useParams } from "next/navigation";
-import Image from "next/image";
-import { services } from "@/lib/config";
+import { useParams } from 'next/navigation';
+import Image from 'next/image';
+import { services } from '@/lib/config';
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 
-import {
-  ArrowRight,
-  Layers,
-  Workflow,
-  Package,
-} from "lucide-react";
+import { ArrowRight, Layers, Workflow, Package } from 'lucide-react';
 
 export default function ServiceDetailPage() {
   const { slug } = useParams();
@@ -35,9 +30,7 @@ export default function ServiceDetailPage() {
         <div className="absolute inset-0 bg-black/50" />
 
         <div className="absolute bottom-[10%] left-[5%] text-white">
-          <h1 className="text-5xl font-light tracking-wide">
-            {service.title}
-          </h1>
+          <h1 className="text-5xl font-light tracking-wide">{service.title}</h1>
         </div>
       </section>
 
@@ -58,7 +51,10 @@ export default function ServiceDetailPage() {
 
           <div className="grid md:grid-cols-2 gap-6">
             {service.offerings?.map((item, i) => (
-              <Card key={i} className="border-none shadow-sm hover:shadow-md transition">
+              <Card
+                key={i}
+                className="border-none shadow-sm hover:shadow-md transition"
+              >
                 <CardContent className="p-5">
                   <h3 className="font-medium mb-2">{item.title}</h3>
                   <p className="text-muted-foreground text-sm">
@@ -100,57 +96,11 @@ export default function ServiceDetailPage() {
         </div>
       </section>
 
-      {/* ===== Deliverables ===== */}
-      <section className="py-16 px-5 bg-muted">
-        <div className="max-w-5xl mx-auto">
-          <div className="flex items-center gap-2 mb-8">
-            <Package className="w-5 h-5 text-primary" />
-            <h2 className="text-2xl font-semibold">Deliverables</h2>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            {service.deliverables?.map((item, i) => (
-              <Card key={i} className="border-none shadow-sm hover:shadow-md transition">
-                <CardContent className="p-5">
-                  <span className="text-muted-foreground">{item}</span>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== Gallery ===== */}
-      <section className="py-16 px-5">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl font-semibold mb-8">Gallery</h2>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {service.gallery?.map((img, i) => (
-              <div
-                key={i}
-                className="relative h-[250px] rounded-2xl overflow-hidden"
-              >
-                <Image
-                  src={img}
-                  alt="gallery"
-                  fill
-                  className="object-cover hover:scale-105 transition duration-500"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ===== CTA ===== */}
       <section className="py-20 px-5 bg-primary text-white text-center">
         <h2 className="text-3xl mb-6">{service.cta}</h2>
 
-        <Button
-          size="lg"
-          className="bg-white text-black hover:bg-white/90"
-        >
+        <Button size="lg" className="bg-white text-black hover:bg-white/90">
           Contact Us
           <ArrowRight className="ml-2 w-4 h-4" />
         </Button>

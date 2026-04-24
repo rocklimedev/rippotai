@@ -1,54 +1,54 @@
 // app/layout.tsx
-import { GeistSans } from "geist/font/sans";
-import { GeistMono } from "geist/font/mono";
-import "./globals.css";
-import Providers from "./Providers";
-import ClientLayout from "./ClientLayout"; // ← new file we'll create
+import { GeistSans } from 'geist/font/sans';
+import { GeistMono } from 'geist/font/mono';
+import './globals.css';
+import Providers from './Providers';
+import ClientLayout from './ClientLayout'; // ← new file we'll create
 
 export const metadata = {
-  title: "Rippotai Architecture | Best Architecture Firm in New Delhi, India",
+  title: 'Rippotai Architecture | Best Architecture Firm in New Delhi, India',
   description:
-    "Rippotai Architecture is a leading architecture and interior design firm in New Delhi, specializing in residential, institutional, and innovative projects. Explore our portfolio of modern, sustainable designs.",
+    'Rippotai Architecture is a leading architecture and interior design firm in New Delhi, specializing in residential, institutional, and innovative projects. Explore our portfolio of modern, sustainable designs.',
   keywords:
-    "architecture firm New Delhi, interior designers Delhi, residential architects India, institutional architecture, modern home design Delhi, Rippotai Architecture",
-  robots: "index, follow",
-  authors: [{ name: "Rippotai Architecture" }],
+    'architecture firm New Delhi, interior designers Delhi, residential architects India, institutional architecture, modern home design Delhi, Rippotai Architecture',
+  robots: 'index, follow',
+  authors: [{ name: 'Rippotai Architecture' }],
   icons: {
-    icon: "/logo.png",
+    icon: '/logo.png',
   },
   openGraph: {
     title:
-      "Rippotai Architecture | Innovative Architecture & Interior Design in New Delhi",
+      'Rippotai Architecture | Innovative Architecture & Interior Design in New Delhi',
     description:
-      "Discover award-winning residential and institutional projects by Rippotai Architecture, a premier design firm in New Delhi, India.",
-    url: "https://rippotaiarchitecture.com/",
-    siteName: "Rippotai Architecture",
+      'Discover award-winning residential and institutional projects by Rippotai Architecture, a premier design firm in New Delhi, India.',
+    url: 'https://rippotaiarchitecture.com/',
+    siteName: 'Rippotai Architecture',
     images: [
       {
-        url: "https://rippotaiarchitecture.com/logo.png",
+        url: 'https://rippotaiarchitecture.com/logo.png',
         width: 1200,
         height: 630,
       },
     ],
-    locale: "en_IN",
-    type: "website",
+    locale: 'en_IN',
+    type: 'website',
   },
   twitter: {
-    card: "summary_large_image",
+    card: 'summary_large_image',
     title:
-      "Rippotai Architecture | Innovative Architecture & Interior Design in New Delhi",
+      'Rippotai Architecture | Innovative Architecture & Interior Design in New Delhi',
     description:
-      "Discover award-winning residential and institutional projects by Rippotai Architecture, a premier design firm in New Delhi, India.",
-    images: ["https://rippotaiarchitecture.com/logo.png"],
+      'Discover award-winning residential and institutional projects by Rippotai Architecture, a premier design firm in New Delhi, India.',
+    images: ['https://rippotaiarchitecture.com/logo.png'],
   },
   alternates: {
-    canonical: "https://rippotaiarchitecture.com/",
+    canonical: 'https://rippotaiarchitecture.com/',
   },
-  manifest: "/manifest.json",
+  manifest: '/manifest.json',
 };
 
 export const viewport = {
-  width: "device-width",
+  width: 'device-width',
   initialScale: 1,
 };
 

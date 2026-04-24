@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { Pencil, MoreVertical, Eye, Trash2, Star } from "lucide-react";
-import { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { getStatusColor } from "@/lib/utils";
+import { Pencil, MoreVertical, Eye, Trash2, Star } from 'lucide-react';
+import { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { getStatusColor } from '@/lib/utils';
 
 export default function ProjectsTable({
   projects,
@@ -83,13 +83,13 @@ export default function ProjectsTable({
                     className={`w-16 border rounded px-3 py-1.5 text-center text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all
                       ${
                         project.priority === 0
-                          ? "bg-gray-50 text-gray-400 border-gray-300"
-                          : "bg-white text-gray-900 border-gray-300"
+                          ? 'bg-gray-50 text-gray-400 border-gray-300'
+                          : 'bg-white text-gray-900 border-gray-300'
                       }`}
                     title={
                       project.priority === 0
-                        ? "0 = No Priority (shows at bottom)"
-                        : ""
+                        ? '0 = No Priority (shows at bottom)'
+                        : ''
                     }
                   />
                   {project.priority === 0 && (
@@ -120,28 +120,28 @@ export default function ProjectsTable({
 
                 {/* Title */}
                 <td className="px-4 py-3 font-medium text-gray-900">
-                  {project.title || "—"}
+                  {project.title || '—'}
                 </td>
 
                 {/* Category */}
                 <td className="hidden px-4 py-3 md:table-cell text-gray-600">
-                  {project.category || "—"}
+                  {project.category || '—'}
                 </td>
 
                 {/* Featured */}
                 <td className="px-4 py-3 text-center">
                   <button
                     onClick={() => onToggleFeatured(projectId)}
-                    className={`transition-colors ${project.featured ? "text-yellow-500" : "text-gray-300 hover:text-yellow-400"}`}
+                    className={`transition-colors ${project.featured ? 'text-yellow-500' : 'text-gray-300 hover:text-yellow-400'}`}
                     title={
                       project.featured
-                        ? "Remove from featured"
-                        : "Mark as featured"
+                        ? 'Remove from featured'
+                        : 'Mark as featured'
                     }
                   >
                     <Star
                       size={20}
-                      className={project.featured ? "fill-current" : ""}
+                      className={project.featured ? 'fill-current' : ''}
                     />
                   </button>
                 </td>
@@ -153,13 +153,13 @@ export default function ProjectsTable({
                       project.status,
                     )}`}
                   >
-                    {project.status || "unknown"}
+                    {project.status || 'unknown'}
                   </span>
                 </td>
 
                 {/* Location */}
                 <td className="hidden px-4 py-3 md:table-cell text-gray-600">
-                  {project.location || "—"}
+                  {project.location || '—'}
                 </td>
 
                 {/* Actions */}

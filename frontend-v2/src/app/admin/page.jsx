@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { format } from "date-fns";
-import { FileText, MessageSquare, Users, ArrowRight } from "lucide-react";
+import Link from 'next/link';
+import { format } from 'date-fns';
+import { FileText, MessageSquare, Users, ArrowRight } from 'lucide-react';
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Badge } from '@/components/ui/badge';
 
-import { useGetProjectsQuery } from "@/api/projectsApi";
-import { useGetApplicationsQuery } from "@/api/applicationsApi";
-import { useGetQueriesQuery } from "@/api/queriesApi";
-import { useGetProfileQuery } from "@/api/authApi";
+import { useGetProjectsQuery } from '@/api/projectsApi';
+import { useGetApplicationsQuery } from '@/api/applicationsApi';
+import { useGetQueriesQuery } from '@/api/queriesApi';
+import { useGetProfileQuery } from '@/api/authApi';
 
-const BRANCH = "rippotai";
+const BRANCH = 'rippotai';
 
 export default function AdminDashboard() {
   // ─────────────── API Calls ───────────────
@@ -38,22 +38,22 @@ export default function AdminDashboard() {
   // ─────────────── Stats ───────────────
   const stats = [
     {
-      title: "Projects",
+      title: 'Projects',
       value: projects.length,
       icon: FileText,
-      link: "/admin/projects",
+      link: '/admin/projects',
     },
     {
-      title: "Inquiries",
+      title: 'Inquiries',
       value: queries.length,
       icon: MessageSquare,
-      link: "/admin/queries",
+      link: '/admin/queries',
     },
     {
-      title: "Applications",
+      title: 'Applications',
       value: applications.length,
       icon: Users,
-      link: "/admin/applications",
+      link: '/admin/applications',
     },
   ];
 
@@ -77,7 +77,7 @@ export default function AdminDashboard() {
       <div>
         <h1 className="text-3xl font-bold">
           Welcome back
-          {profile?.name ? `, ${profile.name.split(" ")[0]}` : ""} 👋
+          {profile?.name ? `, ${profile.name.split(' ')[0]}` : ''} 👋
         </h1>
         <p className="text-muted-foreground mt-1">
           Here’s what’s happening today.
@@ -123,13 +123,13 @@ export default function AdminDashboard() {
           empty="No projects found"
           render={(item) => (
             <>
-              <p className="font-medium truncate">{item.title || "Untitled"}</p>
+              <p className="font-medium truncate">{item.title || 'Untitled'}</p>
               <div className="text-xs text-muted-foreground flex gap-2">
-                <Badge variant="secondary">{item.category || "General"}</Badge>
+                <Badge variant="secondary">{item.category || 'General'}</Badge>
                 <span>
                   {item.createdAt
-                    ? format(new Date(item.createdAt), "dd MMM yyyy")
-                    : "—"}
+                    ? format(new Date(item.createdAt), 'dd MMM yyyy')
+                    : '—'}
                 </span>
               </div>
             </>
@@ -145,10 +145,10 @@ export default function AdminDashboard() {
           render={(item) => (
             <>
               <p className="font-medium truncate">
-                {item.subject || "No subject"}
+                {item.subject || 'No subject'}
               </p>
               <p className="text-xs text-muted-foreground truncate">
-                {item.name || "Anonymous"} • {item.email || "—"}
+                {item.name || 'Anonymous'} • {item.email || '—'}
               </p>
             </>
           )}

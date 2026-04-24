@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { Pencil, MoreVertical, Eye, Trash2, Star } from "lucide-react";
-import { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { getStatusColor } from "@/lib/utils";
+import { Pencil, MoreVertical, Eye, Trash2, Star } from 'lucide-react';
+import { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { getStatusColor } from '@/lib/utils';
 
 export default function ProjectsCards({
   projects,
@@ -47,15 +47,15 @@ export default function ProjectsCards({
                 onClick={() => onToggleFeatured(projectId)}
                 className="absolute left-3 top-3 z-20 rounded-full bg-white/90 p-2 shadow hover:bg-white transition-all"
                 title={
-                  project.featured ? "Remove from featured" : "Mark as featured"
+                  project.featured ? 'Remove from featured' : 'Mark as featured'
                 }
               >
                 <Star
                   size={18}
                   className={`transition-colors ${
                     project.featured
-                      ? "text-yellow-500 fill-current"
-                      : "text-gray-400"
+                      ? 'text-yellow-500 fill-current'
+                      : 'text-gray-400'
                   }`}
                 />
               </button>
@@ -76,13 +76,13 @@ export default function ProjectsCards({
                   className={`w-16 text-xs px-3 py-1 rounded-md border bg-white/90 shadow focus:outline-none focus:ring-1 focus:ring-blue-500 text-center
                     ${
                       project.priority === 0
-                        ? "text-gray-400 border-gray-300"
-                        : "text-gray-900 border-gray-300"
+                        ? 'text-gray-400 border-gray-300'
+                        : 'text-gray-900 border-gray-300'
                     }`}
                   title={
                     project.priority === 0
-                      ? "0 = No Priority (shows at bottom)"
-                      : "Priority (lower number = higher priority)"
+                      ? '0 = No Priority (shows at bottom)'
+                      : 'Priority (lower number = higher priority)'
                   }
                 />
                 {project.priority === 0 && (
@@ -99,7 +99,7 @@ export default function ProjectsCards({
                     project.status,
                   )}`}
                 >
-                  {project.status || "unknown"}
+                  {project.status || 'unknown'}
                 </span>
               </div>
 
@@ -152,10 +152,10 @@ export default function ProjectsCards({
             {/* Card Content */}
             <div className="p-4">
               <h3 className="line-clamp-2 font-semibold leading-tight text-gray-900">
-                {project.title || "Untitled Project"}
+                {project.title || 'Untitled Project'}
               </h3>
               <p className="mt-1 text-xs text-gray-600">
-                {project.category || "—"} • {project.location || "No location"}
+                {project.category || '—'} • {project.location || 'No location'}
               </p>
             </div>
           </div>
