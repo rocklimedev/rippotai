@@ -2,7 +2,7 @@
 
 import { Trophy, Calendar } from 'lucide-react';
 import { AnimateIn } from '@/components/AnimateIn';
-import { aboutImage } from '@/lib/config';
+import { achievementsImage } from '@/lib/config';
 import Image from 'next/image';
 import { achievements } from '@/lib/config';
 
@@ -58,7 +58,7 @@ export default function AchievementsPage() {
       {/* Hero */}
       <section className="relative h-screen min-h-[600px] overflow-hidden">
         <img
-          src={aboutImage}
+          src={achievementsImage}
           alt="Achievements"
           className="absolute inset-0 w-full h-full object-cover"
         />

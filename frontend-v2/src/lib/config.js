@@ -36,6 +36,7 @@ export const careerImage = '/assets/careers_banner.png';
 export const projectsImage = '/assets/projects_banner_main.jpg';
 export const servicesImage = '/assets/services.png';
 export const teamImage = '/assets/team.jpg';
+export const achievementsImage = '/assets/achievements.jpeg';
 
 export const navigationLinks = [
   { label: 'Home', href: '/' },
