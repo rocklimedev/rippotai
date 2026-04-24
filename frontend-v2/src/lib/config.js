@@ -113,7 +113,7 @@ export const services = [
     description:
       'We create visually striking, functional spaces inspired by the simplicity and versatility of the cube.',
 
-    banner: '/assets/process.png',
+    banner: '/assets/services_architecture.jpeg',
 
     intro: `
       Our architectural approach blends creativity with precision. We design
@@ -205,7 +205,7 @@ export const services = [
     title: 'Turnkey Projects',
     description: 'End-to-end project delivery.',
 
-    banner: '/assets/process.png',
+    banner: '/assets/services_turnkey.jpeg',
 
     intro: `
       We provide complete turnkey solutions, managing everything from concept
@@ -297,7 +297,7 @@ export const services = [
     title: 'Interiors',
     description: 'Our interior designs blend style and practicality.',
 
-    banner: '/assets/process.png',
+    banner: '/assets/services_interior.png',
 
     intro: `
       We design interiors that reflect your personality while maximizing
@@ -337,7 +337,7 @@ export const services = [
           'Layered lighting strategies that enhance mood, functionality, and spatial depth.',
       },
       {
-        title: 'Working Drawings (GFC)',
+        title: 'Working Drawings',
         description:
           'Detailed execution drawings ensuring clarity on-site and precise implementation.',
       },
@@ -370,7 +370,7 @@ export const services = [
       },
       {
         step: '05',
-        title: 'Working Drawings (GFC)',
+        title: 'Working Drawings',
         description:
           'Preparation of detailed drawings for smooth and accurate execution on-site.',
       },

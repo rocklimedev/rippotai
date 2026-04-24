@@ -226,7 +226,7 @@
     "title": "Kohli's Residence, Shalimar Bagh",
     "projectId": "644e4809-bf10-4bb3-94b6-11982af792d7",
     "featured": false,
-    "priority": 8
+    "priority": 18
   },
   {
     "_id": "6981aa464ba888294d1bb84a",
@@ -421,7 +421,7 @@
     "projectId": "4f590281-7c72-45b9-b63e-49f92b96fe04",
     "scope": "Interior Designing",
     "status": "completed",
-    "title": "Gupta’s Residence II",
+    "title": "The Tropical Home",
     "banner": "https://media.cmtradingco.com/rippotai_projects/gupta_residence_two/banner.jpg",
     "priority": 15
   },
@@ -463,7 +463,8 @@
     "scope": "Terrace & Bespoke Furniture",
     "status": "working",
     "title": "Banga’s Residence",
-    "priority": 7
+    "priority": 8,
+    "banner": "https://media.cmtradingco.com/rippotai_projects/bangas_residence/banner.png"
   },
   {
     "_id": "69dcd587d4b38daebe7caa36",
@@ -539,11 +540,11 @@
       "https://media.cmtradingco.com/rippotai_projects/sehaj/8.jpg",
       "https://media.cmtradingco.com/rippotai_projects/sehaj/9.jpg"
     ],
-    "location": "",
+    "location": "Vindyachal Apartments, Pashchim Vihar",
     "priority": 7,
     "projectId": "7703be8b-7659-499f-a3b0-1c5e9ffb5de8",
-    "scope": "",
-    "status": "working",
+    "scope": "Turnkey",
+    "status": "completed",
     "title": "Sehaj"
   }
 ]

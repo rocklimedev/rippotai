@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import { services } from '@/lib/config';
-
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
@@ -77,7 +77,7 @@ export default function ServiceDetailPage() {
 
           <div className="space-y-6">
             {service.process?.map((item, i) => (
-              <Card key={i} className="shadow-sm hover:shadow-md transition">
+              <Card key={i} className="border-none shadow-none">
                 <CardContent className="p-5 flex gap-4">
                   <div className="font-bold text-primary text-lg">
                     {item.step}
@@ -100,10 +100,12 @@ export default function ServiceDetailPage() {
       <section className="py-20 px-5 bg-primary text-white text-center">
         <h2 className="text-3xl mb-6">{service.cta}</h2>
 
-        <Button size="lg" className="bg-white text-black hover:bg-white/90">
-          Contact Us
-          <ArrowRight className="ml-2 w-4 h-4" />
-        </Button>
+        <Link href="/contact">
+          <Button size="lg" className="bg-white text-black hover:bg-white/90">
+            Contact Us
+            <ArrowRight className="ml-2 w-4 h-4" />
+          </Button>
+        </Link>
       </section>
     </>
   );
