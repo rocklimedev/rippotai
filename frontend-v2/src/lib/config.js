@@ -337,7 +337,7 @@ export const services = [
           "Layered lighting strategies that enhance mood, functionality, and spatial depth.",
       },
       {
-        title: "Working Drawings (GFC)",
+        title: "Working Drawings",
         description:
           "Detailed execution drawings ensuring clarity on-site and precise implementation.",
       },
@@ -370,7 +370,7 @@ export const services = [
       },
       {
         step: "05",
-        title: "Working Drawings (GFC)",
+        title: "Working Drawings",
         description:
           "Preparation of detailed drawings for smooth and accurate execution on-site.",
       },
