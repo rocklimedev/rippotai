@@ -14,9 +14,8 @@ import {
 } from '@/components/ui/pagination';
 
 import { projectsImage } from '@/lib/config';
-import ProjectRow from '@/components/ProjectRow';
-import { AnimateIn } from '../../components/AnimateIn';
-
+import ProjectRow from '@/components/projects/ProjectRow';
+import { AnimateIn } from '@/components/layouts/AnimateIn';
 export default function ProjectsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();

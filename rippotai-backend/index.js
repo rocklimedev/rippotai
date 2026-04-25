@@ -2,29 +2,42 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const connectDB = require("./config/db");
-const errorHandler = require("./middleware/errorHandler");
 const path = require("path");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 
-// Load environment variables
+const sequelize = require("./config"); // ✅ NEW
+const errorHandler = require("./middleware/errorHandler");
+
+// Load env
 dotenv.config();
 
-// Initialize Express
 const app = express();
 
-// Connect to MongoDB
+// ----------------------
+// DATABASE CONNECTION (Sequelize)
+// ----------------------
+const connectDB = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("✅ MySQL Connected");
+
+    await sequelize.sync(); // ⚠️ use { alter: true } in dev only
+    console.log("✅ Models Synced");
+  } catch (error) {
+    console.error("❌ DB Connection Failed:", error.message);
+    process.exit(1);
+  }
+};
+
 connectDB();
 
 // ----------------------
 // Middleware
 // ----------------------
 
-// Helmet for security headers
 app.use(helmet());
 
-// CORS configuration
 const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:3001",
@@ -50,21 +63,18 @@ const corsOptions = {
   credentials: true,
 };
 
-// Use CORS globally
 app.use(cors(corsOptions));
 
-// Rate limiter for authentication routes
+// Rate limiter
 const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 mins
-  max: 20, // max 20 requests per IP
+  windowMs: 15 * 60 * 1000,
+  max: 20,
   message: "Too many requests. Try again later.",
 });
 
-// Parse JSON and URL-encoded payloads
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static uploads
 app.use("/uploads", express.static(path.join(__dirname, "Uploads")));
 
 // ----------------------
@@ -74,18 +84,19 @@ app.use("/api/queries", require("./routes/queries"));
 app.use("/api/projects", require("./routes/projects"));
 app.use("/api/careers", require("./routes/application"));
 app.use("/api/users", require("./routes/user"));
-app.use("/api/auth", authLimiter, require("./routes/auth")); // rate limiter applied
+app.use("/api/auth", authLimiter, require("./routes/auth"));
 app.use("/api/roles", require("./routes/roles"));
 
 // ----------------------
-// Error Handling
+// Error Handler
 // ----------------------
 app.use(errorHandler);
 
 // ----------------------
-// Start Server
+// Server Start
 // ----------------------
 const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });

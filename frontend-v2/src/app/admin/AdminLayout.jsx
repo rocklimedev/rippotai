@@ -1,13 +1,14 @@
-// components/admin/AdminLayout.jsx
 'use client';
 
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Sidebar from '@/components/admin/Sidebar';
 import { Navbar } from '@/components/admin/Navbar';
+import { toast } from '@/hooks/use-toast';
 export default function AdminLayout({ children }) {
   const router = useRouter();
   const pathname = usePathname();
+
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -19,6 +20,7 @@ export default function AdminLayout({ children }) {
     window.addEventListener('resize', check);
     return () => window.removeEventListener('resize', check);
   }, []);
+
   useEffect(() => {
     // Skip auth check for non-admin routes
     if (!pathname.startsWith('/admin')) {
@@ -30,19 +32,27 @@ export default function AdminLayout({ children }) {
     const token = localStorage.getItem('adminToken');
 
     if (!token) {
-      // Redirect to login and preserve the current path
+      // ✅ SHOW TOAST BEFORE REDIRECT
+      toast({
+        title: 'Unauthorized',
+        description: 'Please login to continue.',
+        variant: 'destructive',
+      });
+
       const redirectPath = encodeURIComponent(
         pathname + window.location.search,
       );
-      router.replace(`/login?redirect=${redirectPath}`);
+
+      setTimeout(() => {
+        router.replace(`/login?redirect=${redirectPath}`);
+      }, 800);
     } else {
-      // Token exists → assume authorized (you can add optional verification later)
       setIsAuthorized(true);
       setIsCheckingAuth(false);
     }
   }, [pathname, router]);
 
-  // Show full-screen loading while checking
+  // Loading screen
   if (isCheckingAuth) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -54,7 +64,6 @@ export default function AdminLayout({ children }) {
     );
   }
 
-  // If not authorized → don't render anything (redirect already happened)
   if (!isAuthorized) return null;
 
   return (
@@ -67,7 +76,7 @@ export default function AdminLayout({ children }) {
 
       <div className="flex-1 flex flex-col overflow-hidden">
         <Navbar
-          showMenu={!isDesktop} // 👈 show only on mobile/tablet
+          showMenu={!isDesktop}
           onToggleSidebar={() => setSidebarOpen(true)}
         />
 

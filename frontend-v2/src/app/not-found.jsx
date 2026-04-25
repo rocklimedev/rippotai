@@ -1,8 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { AnimateIn } from '@/components/AnimateIn';
-
+import { AnimateIn } from '@/components/layouts/AnimateIn';
 export default function NotFound() {
   return (
     <section

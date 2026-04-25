@@ -1,13 +1,13 @@
 // app/page.jsx
 export const dynamic = 'force-dynamic';
-import { ProcessSection } from '@/components/ProcessSection';
-import { WorksSection } from '@/components/WorksSection';
-import { HeroSection } from '@/components/HeroSection';
-import { QuoteSection } from '@/components/QuoteSection';
+import { ProcessSection } from '@/components/sections/ProcessSection';
+import { WorksSection } from '@/components/sections/WorksSection';
+import { HeroSection } from '@/components/sections/HeroSection';
+import { QuoteSection } from '@/components/sections/QuoteSection';
 import { WhereItBegan } from '@/components/WhereItBegan';
-import { ServicesSection } from '@/components/ServicesSection';
+import { ServicesSection } from '@/components/sections/ServicesSection';
 import { FounderMessage } from '@/components/FounderMessage';
-import FadeInSection from '@/components/FadeInSection'; // ← new client component
+import FadeInSection from '@/components/sections/FadeInSection'; // ← new client component
 
 // ──────────────────────────────────────────────
 export default function HomePage() {

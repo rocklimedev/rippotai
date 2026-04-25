@@ -1,155 +1,98 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Menu, User, LogOut, Home } from 'lucide-react';
+import { Menu, User, LogOut, Home, ChevronDown } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
-export const Navbar = ({ onToggleSidebar, showMenu }) => {
-  const [profileOpen, setProfileOpen] = useState(false);
-  const dropdownRef = useRef(null);
+export const Navbar = ({ onToggleSidebar, showMenu = true }) => {
   const router = useRouter();
-
-  useEffect(() => {
-    function handleClickOutside(e) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setProfileOpen(false);
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
 
   // ✅ LOGOUT FUNCTION
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
     localStorage.removeItem('refreshToken');
-    setProfileOpen(false);
     router.replace('/login');
   };
 
-  // ✅ BACK TO WEBSITE FUNCTION
+  // ✅ BACK TO WEBSITE
   const handleBackToSite = () => {
-    router.push('/'); // change if needed
-    setProfileOpen(false);
+    router.push('/');
   };
 
   return (
-    <header style={styles.header}>
-      {/* LEFT */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+    <header className="h-16 bg-white border-b border-gray-200 sticky top-0 z-50 flex items-center px-6">
+      {/* LEFT SIDE - Menu Toggle */}
+      <div className="flex items-center gap-4">
         {showMenu && (
-          <button onClick={onToggleSidebar} style={styles.menuBtn}>
-            <Menu size={22} />
-          </button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onToggleSidebar}
+            className="text-gray-600 hover:text-gray-900"
+          >
+            <Menu size={24} />
+          </Button>
         )}
+
+        {/* Optional: You can add logo or title here */}
+        <div className="font-semibold text-xl tracking-tight text-gray-900 hidden sm:block">
+          Admin Portal
+        </div>
       </div>
 
-      {/* RIGHT */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
-        <div ref={dropdownRef} style={{ position: 'relative' }}>
-          <button
-            onClick={() => setProfileOpen(!profileOpen)}
-            style={styles.profileBtn}
-          >
-            <div style={styles.avatar}>
-              <User size={18} />
-            </div>
-          </button>
+      {/* RIGHT SIDE - Profile Dropdown */}
+      <div className="ml-auto flex items-center gap-4">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              className="flex items-center gap-3 px-2 hover:bg-gray-100 rounded-full"
+            >
+              <Avatar className="h-9 w-9 border border-gray-200">
+                <AvatarFallback className="bg-gray-100 text-gray-700">
+                  <User size={18} />
+                </AvatarFallback>
+              </Avatar>
+              <div className="hidden md:flex flex-col items-start">
+                <span className="text-sm font-medium text-gray-900">Admin</span>
+                <span className="text-xs text-gray-500 -mt-0.5">
+                  Administrator
+                </span>
+              </div>
+              <ChevronDown size={16} className="text-gray-400" />
+            </Button>
+          </DropdownMenuTrigger>
 
-          {profileOpen && (
-            <div style={styles.dropdown}>
-              <DropdownItem
-                icon={<Home size={16} />}
-                text="Back to Website"
-                onClick={handleBackToSite}
-              />
+          <DropdownMenuContent align="end" className="w-56 mt-2">
+            <DropdownMenuItem
+              onClick={handleBackToSite}
+              className="cursor-pointer flex items-center gap-3 py-2.5"
+            >
+              <Home size={18} className="text-gray-500" />
+              <span>Back to Website</span>
+            </DropdownMenuItem>
 
-              <DropdownItem
-                icon={<LogOut size={16} />}
-                text="Logout"
-                danger
-                onClick={handleLogout}
-              />
-            </div>
-          )}
-        </div>
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem
+              onClick={handleLogout}
+              className="cursor-pointer flex items-center gap-3 py-2.5 text-red-600 focus:text-red-600"
+            >
+              <LogOut size={18} />
+              <span>Logout</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </header>
   );
-};
-
-const DropdownItem = ({ icon, text, danger, onClick }) => {
-  const [hover, setHover] = useState(false);
-
-  return (
-    <div
-      onClick={onClick}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: 10,
-        padding: '12px 16px',
-        cursor: 'pointer',
-        fontSize: 14,
-        color: danger ? '#ef4444' : '#374151',
-        background: hover ? '#f9fafb' : 'transparent',
-        transition: '0.2s',
-      }}
-    >
-      {icon}
-      {text}
-    </div>
-  );
-};
-
-const styles = {
-  header: {
-    height: 64,
-    background: '#ffffff',
-    borderBottom: '1px solid #e5e7eb',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '0 20px',
-    position: 'sticky',
-    top: 0,
-    zIndex: 50,
-  },
-
-  menuBtn: {
-    background: 'none',
-    border: 'none',
-    cursor: 'pointer',
-  },
-
-  profileBtn: {
-    background: 'none',
-    border: 'none',
-    cursor: 'pointer',
-  },
-
-  avatar: {
-    width: 36,
-    height: 36,
-    borderRadius: '50%',
-    background: '#e5e7eb',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  dropdown: {
-    position: 'absolute',
-    right: 0,
-    top: 48,
-    width: 180,
-    background: '#ffffff',
-    borderRadius: 10,
-    boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
-    border: '1px solid #e5e7eb',
-    overflow: 'hidden',
-  },
 };

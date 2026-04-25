@@ -1,150 +1,262 @@
-const User = require("../models/user");
-const Role = require("../models/roles");
+const { User, Role, Sequelize } = require("../models");
+const { Op } = Sequelize;
 
 /**
  * @desc Get all users
- * @route GET /api/users
  */
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find();
-    res.status(200).json({ success: true, data: users });
+    const users = await User.findAll({
+      attributes: { exclude: ["password"] },
+      include: {
+        model: Role,
+        as: "role",
+        attributes: ["id", "name"],
+      },
+      order: [["createdAt", "DESC"]],
+    });
+
+    res.status(200).json({
+      success: true,
+      data: users,
+    });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Server error", error });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: error.message,
+    });
   }
 };
 
 /**
- * @desc Get single user by ID
- * @route GET /api/users/:id
+ * @desc Get single user
  */
 exports.getUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).select("-password");
+    const user = await User.findByPk(req.params.id, {
+      attributes: { exclude: ["password"] },
+      include: {
+        model: Role,
+        as: "role",
+        attributes: ["id", "name"],
+      },
+    });
+
     if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
     }
-    res.status(200).json({ success: true, data: user });
+
+    res.status(200).json({
+      success: true,
+      data: user,
+    });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Server error", error });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: error.message,
+    });
   }
 };
 
 /**
- * @desc Create new user
- * @route POST /api/users
+ * @desc Create user
  */
 exports.createUser = async (req, res) => {
   try {
-    const { name, email, password, roles } = req.body;
+    const { name, email, password, role } = req.body;
 
-    // Ensure roles exist in Role collection
-    if (roles && roles.length > 0) {
-      const validRoles = await Role.find({ name: { $in: roles } });
-      if (validRoles.length !== roles.length) {
-        return res
-          .status(400)
-          .json({ success: false, message: "Invalid roles provided" });
-      }
+    // ✅ Find role
+    let roleData;
+
+    if (role) {
+      roleData = await Role.findOne({
+        where: { name: role },
+      });
     }
 
-    const user = await User.create({ name, email, password, roles });
-    res
-      .status(201)
-      .json({ success: true, data: { ...user._doc, password: undefined } });
+    if (!roleData) {
+      roleData = await Role.findOne({
+        where: { name: "Employee" },
+      });
+    }
+
+    if (!roleData) {
+      return res.status(400).json({
+        success: false,
+        message: "Role not found",
+      });
+    }
+
+    const user = await User.create({
+      name,
+      email,
+      password,
+      roleId: roleData.id,
+    });
+
+    const userData = user.toJSON();
+    delete userData.password;
+
+    res.status(201).json({
+      success: true,
+      data: userData,
+    });
   } catch (error) {
-    if (error.code === 11000) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Email already exists" });
+    if (error.name === "SequelizeUniqueConstraintError") {
+      return res.status(400).json({
+        success: false,
+        message: "Email already exists",
+      });
     }
-    res.status(500).json({ success: false, message: "Server error", error });
+
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: error.message,
+    });
   }
 };
 
 /**
- * @desc Update user by ID
- * @route PUT /api/users/:id
+ * @desc Update user
  */
 exports.updateUser = async (req, res) => {
   try {
-    const { name, email, roles, isActive } = req.body;
-    const user = await User.findById(req.params.id);
+    const { name, email, role, isActive } = req.body;
 
-    if (!user)
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
+    const user = await User.findByPk(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
 
     if (name) user.name = name;
     if (email) user.email = email;
-    if (roles) user.roles = roles;
     if (typeof isActive === "boolean") user.isActive = isActive;
 
+    // ✅ Update role
+    if (role) {
+      const roleData = await Role.findOne({
+        where: { name: role },
+      });
+
+      if (!roleData) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid role",
+        });
+      }
+
+      user.roleId = roleData.id;
+    }
+
     await user.save();
-    res
-      .status(200)
-      .json({ success: true, data: { ...user._doc, password: undefined } });
+
+    const updatedUser = await User.findByPk(user.id, {
+      attributes: { exclude: ["password"] },
+      include: {
+        model: Role,
+        as: "role",
+        attributes: ["id", "name"],
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      data: updatedUser,
+    });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Server error", error });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: error.message,
+    });
   }
 };
 
 /**
  * @desc Delete user
- * @route DELETE /api/users/:id
  */
 exports.deleteUser = async (req, res) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.id);
-    if (!user)
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
+    const user = await User.findByPk(req.params.id);
 
-    res
-      .status(200)
-      .json({ success: true, message: "User deleted successfully" });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    await user.destroy();
+
+    res.status(200).json({
+      success: true,
+      message: "User deleted successfully",
+    });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Server error", error });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: error.message,
+    });
   }
 };
 
 /**
- * @desc Assign roles to a user
- * @route PATCH /api/users/:id/roles
+ * @desc Assign role (single)
  */
-exports.assignRoles = async (req, res) => {
+exports.assignRole = async (req, res) => {
   try {
-    const { roles } = req.body;
-    if (!roles || roles.length === 0) {
-      return res
-        .status(400)
-        .json({ success: false, message: "No roles provided" });
+    const { role } = req.body;
+
+    if (!role) {
+      return res.status(400).json({
+        success: false,
+        message: "Role is required",
+      });
     }
 
-    const validRoles = await Role.find({ name: { $in: roles } });
-    if (validRoles.length !== roles.length) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid roles provided" });
+    const roleData = await Role.findOne({
+      where: { name: role },
+    });
+
+    if (!roleData) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid role",
+      });
     }
 
-    const user = await User.findById(req.params.id);
-    if (!user)
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
+    const user = await User.findByPk(req.params.id);
 
-    user.roles = roles;
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    user.roleId = roleData.id;
     await user.save();
 
-    res
-      .status(200)
-      .json({ success: true, message: "Roles updated", data: user });
+    res.status(200).json({
+      success: true,
+      message: "Role updated successfully",
+    });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Server error", error });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: error.message,
+    });
   }
 };

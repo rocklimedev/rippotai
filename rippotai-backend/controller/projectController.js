@@ -1,6 +1,8 @@
-const Project = require("../models/project");
+const db = require("../models"); // ← This loads models/index.js
+const Project = db.Project;
 const slugify = require("slugify");
 const { uploadToFtp } = require("../utils/ftpUpload");
+const { Op, literal } = require("sequelize"); // Import Op and literal
 
 // ────────────────────────────────────────────────
 // Helper for consistent responses
@@ -22,7 +24,7 @@ const sendResponse = (
 };
 
 // ────────────────────────────────────────────────
-// TRANSFORMER - Handles banner logic
+// TRANSFORMER - Handles banner logic (unchanged)
 // ────────────────────────────────────────────────
 const transformProject = (project) => {
   if (!project) return project;
@@ -54,27 +56,22 @@ const transformProject = (project) => {
 };
 
 // ────────────────────────────────────────────────
-// COMMON SORTING PIPELINE (Priority 0 = lowest)
+// COMMON PRIORITY SORT (Priority 0 = lowest → goes to bottom)
 // ────────────────────────────────────────────────
-const getPrioritySort = (order = "asc") => {
+const getPriorityOrder = (order = "asc") => {
+  const direction = order === "desc" ? "DESC" : "ASC";
+
   return [
-    {
-      $addFields: {
-        effectivePriority: {
-          $cond: {
-            if: { $eq: ["$priority", 0] },
-            then: 999999, // 0 priority goes to the bottom
-            else: "$priority",
-          },
-        },
-      },
-    },
-    {
-      $sort: {
-        effectivePriority: order === "desc" ? -1 : 1,
-        createdAt: -1, // Newest first as secondary sort
-      },
-    },
+    [
+      literal(`
+        CASE 
+          WHEN priority = 0 THEN 999999 
+          ELSE priority 
+        END
+      `),
+      direction,
+    ],
+    ["createdAt", "DESC"], // Newest first as secondary sort
   ];
 };
 
@@ -88,44 +85,38 @@ exports.getPublicProjects = async (req, res) => {
 
     const pageNum = Math.max(1, parseInt(page, 10));
     const limitNum = Math.min(50, Math.max(1, parseInt(limit, 10)));
+    const offset = (pageNum - 1) * limitNum;
 
-    const filter = {
-      status: { $in: ["working", "completed"] },
+    const where = {
+      status: { [Op.in]: ["working", "completed"] },
     };
 
     if (category?.trim()) {
-      filter.category = category.trim();
+      where.category = category.trim();
     }
 
-    const skip = (pageNum - 1) * limitNum;
-
-    const [projects, total] = await Promise.all([
-      Project.aggregate([
-        { $match: filter },
-        ...getPrioritySort("asc"), // Priority 1 = highest, 0 = lowest
-        { $skip: skip },
-        { $limit: limitNum },
-        {
-          $project: {
-            title: 1,
-            slug: 1,
-            category: 1,
-            location: 1,
-            scope: 1,
-            description: 1,
-            image: 1,
-            banner: 1,
-            images: 1,
-            status: 1,
-            createdAt: 1,
-            projectId: 1,
-            featured: 1,
-            priority: 1,
-          },
-        },
-      ]),
-      Project.countDocuments(filter),
-    ]);
+    const { count: total, rows: projects } = await Project.findAndCountAll({
+      where,
+      order: getPriorityOrder("asc"),
+      limit: limitNum,
+      offset,
+      attributes: [
+        "title",
+        "slug",
+        "category",
+        "location",
+        "scope",
+        "description",
+        "image",
+        "banner",
+        "images",
+        "status",
+        "createdAt",
+        "projectId",
+        "featured",
+        "priority",
+      ],
+    });
 
     sendResponse(res, 200, true, projects.map(transformProject), null, {
       pagination: {
@@ -143,15 +134,16 @@ exports.getPublicProjects = async (req, res) => {
 
 exports.getProjectBySlug = async (req, res) => {
   try {
-    const project = await Project.findOne({ slug: req.params.slug })
-      .select("-__v")
-      .lean();
+    const project = await Project.findOne({
+      where: { slug: req.params.slug },
+      attributes: { exclude: ["__v"] }, // __v not present in Sequelize, but safe
+    });
 
     if (!project) {
       return sendResponse(res, 404, false, null, "Project not found");
     }
 
-    sendResponse(res, 200, true, transformProject(project));
+    sendResponse(res, 200, true, transformProject(project.toJSON()));
   } catch (error) {
     console.error(error);
     sendResponse(res, 500, false, null, "Server error");
@@ -176,42 +168,40 @@ exports.getAllProjects = async (req, res) => {
 
     const pageNumber = Math.max(parseInt(page), 1);
     const pageSize = Math.max(parseInt(limit), 1);
-    const skip = (pageNumber - 1) * pageSize;
+    const offset = (pageNumber - 1) * pageSize;
 
-    const filter = {};
+    const where = {};
 
-    if (category?.trim()) filter.category = category.trim();
+    if (category?.trim()) where.category = category.trim();
 
     if (status?.trim()) {
       if (status.includes(",")) {
-        filter.status = { $in: status.split(",").map((s) => s.trim()) };
+        where.status = { [Op.in]: status.split(",").map((s) => s.trim()) };
       } else {
-        filter.status = status.trim();
+        where.status = status.trim();
       }
     }
 
     if (search?.trim()) {
-      const regex = new RegExp(search.trim(), "i");
-      filter.$or = [
-        { title: regex },
-        { category: regex },
-        { location: regex },
-        { projectId: regex },
+      const regex = `%${search.trim()}%`; // For LIKE
+      where[Op.or] = [
+        { title: { [Op.like]: regex } },
+        { category: { [Op.like]: regex } },
+        { location: { [Op.like]: regex } },
+        { projectId: { [Op.like]: regex } },
       ];
     }
 
-    const projects = await Project.aggregate([
-      { $match: filter },
-      ...getPrioritySort(order), // Uses effectivePriority (0 → bottom)
-      { $skip: skip },
-      { $limit: pageSize },
-      { $project: { __v: 0 } },
-    ]);
-
-    const total = await Project.countDocuments(filter);
+    const { count: total, rows: projects } = await Project.findAndCountAll({
+      where,
+      order: getPriorityOrder(order), // Uses our CASE logic
+      limit: pageSize,
+      offset,
+      attributes: { exclude: ["createdAt", "updatedAt"] }, // adjust as needed
+    });
 
     sendResponse(res, 200, true, {
-      data: projects.map(transformProject),
+      data: projects.map((p) => transformProject(p.toJSON())),
       total,
       page: pageNumber,
       limit: pageSize,
@@ -225,15 +215,16 @@ exports.getAllProjects = async (req, res) => {
 
 exports.getProjectById = async (req, res) => {
   try {
-    const project = await Project.findOne({ projectId: req.params.projectId })
-      .select("-__v")
-      .lean();
+    const project = await Project.findOne({
+      where: { projectId: req.params.projectId },
+      attributes: { exclude: ["createdAt", "updatedAt"] },
+    });
 
     if (!project) {
       return sendResponse(res, 404, false, null, "Project not found");
     }
 
-    sendResponse(res, 200, true, transformProject(project));
+    sendResponse(res, 200, true, transformProject(project.toJSON()));
   } catch (error) {
     console.error(error);
     sendResponse(res, 500, false, null, "Server error");
@@ -241,7 +232,7 @@ exports.getProjectById = async (req, res) => {
 };
 
 // ────────────────────────────────────────────────
-// CREATE & UPDATE (No change needed here)
+// CREATE & UPDATE
 // ────────────────────────────────────────────────
 
 exports.createProject = async (req, res) => {
@@ -300,7 +291,7 @@ exports.createProject = async (req, res) => {
       }
     }
 
-    const project = new Project({
+    const project = await Project.create({
       title: title.trim(),
       category: category.trim(),
       description: description.trim(),
@@ -312,16 +303,14 @@ exports.createProject = async (req, res) => {
       location: location?.trim(),
       scope: scope?.trim(),
       featured: featured === "true" || featured === true,
-      priority: parseInt(priority) || 0, // 0 = no priority
+      priority: parseInt(priority) || 0,
     });
-
-    await project.save();
 
     sendResponse(
       res,
       201,
       true,
-      transformProject(project.toObject()),
+      transformProject(project.toJSON()),
       "Project created successfully",
     );
   } catch (error) {
@@ -332,9 +321,13 @@ exports.createProject = async (req, res) => {
 
 exports.updateProject = async (req, res) => {
   try {
-    const existing = await Project.findOne({ projectId: req.params.projectId });
-    if (!existing)
+    const existing = await Project.findOne({
+      where: { projectId: req.params.projectId },
+    });
+
+    if (!existing) {
       return sendResponse(res, 404, false, null, "Project not found");
+    }
 
     const updateData = {};
 
@@ -402,17 +395,23 @@ exports.updateProject = async (req, res) => {
 
     updateData.images = finalImages;
 
-    const updated = await Project.findOneAndUpdate(
-      { projectId: req.params.projectId },
-      updateData,
-      { new: true, runValidators: true },
-    ).lean();
+    const [updatedCount] = await Project.update(updateData, {
+      where: { projectId: req.params.projectId },
+    });
+
+    if (updatedCount === 0) {
+      return sendResponse(res, 404, false, null, "Project not found");
+    }
+
+    const updated = await Project.findOne({
+      where: { projectId: req.params.projectId },
+    });
 
     sendResponse(
       res,
       200,
       true,
-      transformProject(updated),
+      transformProject(updated.toJSON()),
       "Project updated successfully",
     );
   } catch (error) {
@@ -438,20 +437,24 @@ exports.updateProjectPriority = async (req, res) => {
       );
     }
 
-    const project = await Project.findOneAndUpdate(
-      { projectId: req.params.projectId },
+    const [updatedCount] = await Project.update(
       { priority: parseInt(priority) || 0 },
-      { new: true, runValidators: true },
-    ).lean();
+      { where: { projectId: req.params.projectId } },
+    );
 
-    if (!project)
+    if (updatedCount === 0) {
       return sendResponse(res, 404, false, null, "Project not found");
+    }
+
+    const project = await Project.findOne({
+      where: { projectId: req.params.projectId },
+    });
 
     sendResponse(
       res,
       200,
       true,
-      transformProject(project),
+      transformProject(project.toJSON()),
       "Priority updated successfully",
     );
   } catch (error) {
@@ -462,9 +465,13 @@ exports.updateProjectPriority = async (req, res) => {
 
 exports.toggleFeatured = async (req, res) => {
   try {
-    const project = await Project.findOne({ projectId: req.params.projectId });
-    if (!project)
+    const project = await Project.findOne({
+      where: { projectId: req.params.projectId },
+    });
+
+    if (!project) {
       return sendResponse(res, 404, false, null, "Project not found");
+    }
 
     project.featured = !project.featured;
     await project.save();
@@ -473,7 +480,7 @@ exports.toggleFeatured = async (req, res) => {
       res,
       200,
       true,
-      transformProject(project.toObject()),
+      transformProject(project.toJSON()),
       `Project ${project.featured ? "featured" : "unfeatured"} successfully`,
     );
   } catch (error) {
@@ -485,20 +492,25 @@ exports.toggleFeatured = async (req, res) => {
 exports.setFeatured = async (req, res) => {
   try {
     const { featured } = req.body;
-    const project = await Project.findOneAndUpdate(
-      { projectId: req.params.projectId },
-      { featured: !!featured },
-      { new: true, runValidators: true },
-    ).lean();
 
-    if (!project)
+    const [updatedCount] = await Project.update(
+      { featured: !!featured },
+      { where: { projectId: req.params.projectId } },
+    );
+
+    if (updatedCount === 0) {
       return sendResponse(res, 404, false, null, "Project not found");
+    }
+
+    const project = await Project.findOne({
+      where: { projectId: req.params.projectId },
+    });
 
     sendResponse(
       res,
       200,
       true,
-      transformProject(project),
+      transformProject(project.toJSON()),
       `Project ${featured ? "marked as featured" : "removed from featured"} successfully`,
     );
   } catch (error) {
@@ -514,20 +526,24 @@ exports.updateProjectStatus = async (req, res) => {
       return sendResponse(res, 400, false, null, "Invalid status value");
     }
 
-    const project = await Project.findOneAndUpdate(
-      { projectId: req.params.projectId },
+    const [updatedCount] = await Project.update(
       { status },
-      { new: true, runValidators: true },
-    ).lean();
+      { where: { projectId: req.params.projectId } },
+    );
 
-    if (!project)
+    if (updatedCount === 0) {
       return sendResponse(res, 404, false, null, "Project not found");
+    }
+
+    const project = await Project.findOne({
+      where: { projectId: req.params.projectId },
+    });
 
     sendResponse(
       res,
       200,
       true,
-      transformProject(project),
+      transformProject(project.toJSON()),
       "Status updated successfully",
     );
   } catch (error) {
@@ -538,11 +554,13 @@ exports.updateProjectStatus = async (req, res) => {
 
 exports.deleteProject = async (req, res) => {
   try {
-    const project = await Project.findOneAndDelete({
-      projectId: req.params.projectId,
+    const deletedCount = await Project.destroy({
+      where: { projectId: req.params.projectId },
     });
-    if (!project)
+
+    if (deletedCount === 0) {
       return sendResponse(res, 404, false, null, "Project not found");
+    }
 
     sendResponse(res, 200, true, null, "Project deleted successfully");
   } catch (error) {
@@ -552,7 +570,7 @@ exports.deleteProject = async (req, res) => {
 };
 
 // ────────────────────────────────────────────────
-// OTHER LIST ENDPOINTS (Consistent priority sorting)
+// OTHER LIST ENDPOINTS
 // ────────────────────────────────────────────────
 
 exports.getFeaturedProjects = async (req, res) => {
@@ -560,30 +578,33 @@ exports.getFeaturedProjects = async (req, res) => {
     const { limit = "6" } = req.query;
     const limitNum = Math.min(50, Math.max(1, parseInt(limit, 10)));
 
-    const projects = await Project.aggregate([
-      { $match: { featured: true } },
-      ...getPrioritySort("asc"),
-      { $limit: limitNum },
-      {
-        $project: {
-          title: 1,
-          slug: 1,
-          category: 1,
-          location: 1,
-          scope: 1,
-          image: 1,
-          banner: 1,
-          images: 1,
-          status: 1,
-          createdAt: 1,
-          projectId: 1,
-          featured: 1,
-          priority: 1,
-        },
-      },
-    ]);
+    const projects = await Project.findAll({
+      where: { featured: true },
+      order: getPriorityOrder("asc"),
+      limit: limitNum,
+      attributes: [
+        "title",
+        "slug",
+        "category",
+        "location",
+        "scope",
+        "image",
+        "banner",
+        "images",
+        "status",
+        "createdAt",
+        "projectId",
+        "featured",
+        "priority",
+      ],
+    });
 
-    sendResponse(res, 200, true, projects.map(transformProject));
+    sendResponse(
+      res,
+      200,
+      true,
+      projects.map((p) => transformProject(p.toJSON())),
+    );
   } catch (error) {
     console.error(error);
     sendResponse(res, 500, false, null, "Failed to fetch featured projects");
@@ -592,15 +613,17 @@ exports.getFeaturedProjects = async (req, res) => {
 
 exports.getCompletedProjects = async (req, res) => {
   try {
-    const projects = await Project.aggregate([
-      { $match: { status: "completed" } },
-      ...getPrioritySort("asc"),
-      {
-        $project: { __v: 0 },
-      },
-    ]);
+    const projects = await Project.findAll({
+      where: { status: "completed" },
+      order: getPriorityOrder("asc"),
+    });
 
-    sendResponse(res, 200, true, projects.map(transformProject));
+    sendResponse(
+      res,
+      200,
+      true,
+      projects.map((p) => transformProject(p.toJSON())),
+    );
   } catch (error) {
     console.error(error);
     sendResponse(res, 500, false, null, "Error fetching completed projects");
@@ -609,18 +632,20 @@ exports.getCompletedProjects = async (req, res) => {
 
 exports.getProjectsByLocation = async (req, res) => {
   try {
-    const projects = await Project.aggregate([
-      {
-        $match: {
-          location: req.params.location?.trim(),
-          status: { $in: ["working", "completed"] },
-        },
+    const projects = await Project.findAll({
+      where: {
+        location: req.params.location?.trim(),
+        status: { [Op.in]: ["working", "completed"] },
       },
-      ...getPrioritySort("asc"),
-      { $project: { __v: 0 } },
-    ]);
+      order: getPriorityOrder("asc"),
+    });
 
-    sendResponse(res, 200, true, projects.map(transformProject));
+    sendResponse(
+      res,
+      200,
+      true,
+      projects.map((p) => transformProject(p.toJSON())),
+    );
   } catch (error) {
     console.error(error);
     sendResponse(res, 500, false, null, "Error fetching projects by location");
@@ -629,13 +654,17 @@ exports.getProjectsByLocation = async (req, res) => {
 
 exports.getDraftProjects = async (req, res) => {
   try {
-    const projects = await Project.aggregate([
-      { $match: { status: "draft" } },
-      ...getPrioritySort("asc"),
-      { $project: { __v: 0 } },
-    ]);
+    const projects = await Project.findAll({
+      where: { status: "draft" },
+      order: getPriorityOrder("asc"),
+    });
 
-    sendResponse(res, 200, true, projects.map(transformProject));
+    sendResponse(
+      res,
+      200,
+      true,
+      projects.map((p) => transformProject(p.toJSON())),
+    );
   } catch (error) {
     console.error(error);
     sendResponse(res, 500, false, null, "Error fetching draft projects");

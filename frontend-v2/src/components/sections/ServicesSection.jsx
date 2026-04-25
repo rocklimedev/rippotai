@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link'; // ✅ add this
-import { AnimateIn } from './AnimateIn';
+import { AnimateIn } from '../AnimateIn';
 import { services } from '@/lib/config';
 
 export const ServicesSection = () => {

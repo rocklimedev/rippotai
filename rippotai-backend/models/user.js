@@ -1,51 +1,90 @@
-const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
-const userSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: [true, "Name is required"],
-    },
-    email: {
-      type: String,
-      required: [true, "Email is required"],
-      unique: true,
-      lowercase: true,
-    },
-    password: {
-      type: String,
-      required: [true, "Password is required"],
-    },
-    roles: {
-      type: [String],
-      required: true,
-      default: ["Employee"],
-    },
-    isActive: {
-      type: Boolean,
-      default: true,
-    },
-    lastLogin: Date,
-  },
-  { timestamps: true }
-);
+module.exports = (sequelize, DataTypes) => {
+  const User = sequelize.define(
+    "User",
+    {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+      },
 
-// Pre-save hook: hash password if modified
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
-  this.password = await bcrypt.hash(this.password, 10);
-  next();
-});
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Name is required" },
+        },
+      },
 
-// Instance method: check password
-userSchema.methods.comparePassword = async function (candidatePassword) {
-  return bcrypt.compare(candidatePassword, this.password);
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+          isEmail: { msg: "Valid email required" },
+          notEmpty: { msg: "Email is required" },
+        },
+      },
+
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+
+      roleId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: "roles",
+          key: "id",
+        },
+      },
+
+      isActive: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+      },
+
+      lastLogin: {
+        type: DataTypes.DATE,
+      },
+    },
+    {
+      tableName: "users",
+      timestamps: true,
+
+      hooks: {
+        beforeCreate: async (user) => {
+          if (user.password) {
+            user.password = await bcrypt.hash(user.password, 10);
+          }
+        },
+
+        beforeUpdate: async (user) => {
+          if (user.changed("password")) {
+            user.password = await bcrypt.hash(user.password, 10);
+          }
+        },
+      },
+    },
+  );
+
+  // 🔐 Compare password
+  User.prototype.comparePassword = async function (candidatePassword) {
+    return bcrypt.compare(candidatePassword, this.password);
+  };
+
+  // 🎯 Check role
+  User.prototype.hasRole = function (roleName) {
+    return this.role && this.role.name === roleName;
+  };
+  User.associate = (models) => {
+    User.belongsTo(models.Role, {
+      foreignKey: "roleId",
+      as: "role",
+    });
+  };
+  return User;
 };
-
-// Instance method: check role
-userSchema.methods.hasRole = function (role) {
-  return this.roles.includes(role);
-};
-
-module.exports = mongoose.model("User", userSchema);

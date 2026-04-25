@@ -1,22 +1,29 @@
-// controllers/roleController.js
-const Role = require("../models/roles");
-const User = require("../models/user"); // for optional user count
+const { Role, User, Sequelize } = require("../models");
+const { Op } = Sequelize;
 
 /**
  * @desc Get all roles
  * @route GET /api/roles
- * @access Private (Admin)
  */
 exports.getAllRoles = async (req, res) => {
   try {
-    const roles = await Role.find().sort({ name: 1 });
+    const roles = await Role.findAll({
+      order: [["name", "ASC"]],
+    });
 
-    // Optional: add user count per role
+    // ✅ Add user count per role
     const rolesWithCount = await Promise.all(
       roles.map(async (role) => {
-        const userCount = await User.countDocuments({ roles: role.name });
+        const userCount = await User.count({
+          where: {
+            roles: {
+              [Op.like]: `%${role.name}%`, // ⚠️ JSON workaround
+            },
+          },
+        });
+
         return {
-          ...role._doc,
+          ...role.toJSON(),
           userCount,
         };
       }),
@@ -39,11 +46,11 @@ exports.getAllRoles = async (req, res) => {
 /**
  * @desc Get single role by ID
  * @route GET /api/roles/:id
- * @access Private (Admin)
  */
 exports.getRoleById = async (req, res) => {
   try {
-    const role = await Role.findById(req.params.id);
+    const role = await Role.findByPk(req.params.id);
+
     if (!role) {
       return res.status(404).json({
         success: false,
@@ -51,12 +58,20 @@ exports.getRoleById = async (req, res) => {
       });
     }
 
-    // Optional: user count
-    const userCount = await User.countDocuments({ roles: role.name });
+    const userCount = await User.count({
+      where: {
+        roles: {
+          [Op.like]: `%${role.name}%`,
+        },
+      },
+    });
 
     res.status(200).json({
       success: true,
-      data: { ...role._doc, userCount },
+      data: {
+        ...role.toJSON(),
+        userCount,
+      },
     });
   } catch (error) {
     res.status(500).json({
@@ -70,7 +85,6 @@ exports.getRoleById = async (req, res) => {
 /**
  * @desc Create new role
  * @route POST /api/roles
- * @access Private (Admin)
  */
 exports.createRole = async (req, res) => {
   try {
@@ -83,8 +97,11 @@ exports.createRole = async (req, res) => {
       });
     }
 
-    // Validate name is unique (already handled by schema unique: true, but explicit check)
-    const existingRole = await Role.findOne({ name });
+    // ✅ Check uniqueness
+    const existingRole = await Role.findOne({
+      where: { name },
+    });
+
     if (existingRole) {
       return res.status(400).json({
         success: false,
@@ -104,13 +121,13 @@ exports.createRole = async (req, res) => {
       data: role,
     });
   } catch (error) {
-    if (error.code === 11000) {
+    if (error.name === "SequelizeUniqueConstraintError") {
       return res.status(400).json({
         success: false,
         message: "Role name must be unique",
       });
     }
-    console.log(error);
+
     res.status(500).json({
       success: false,
       message: "Server error",
@@ -122,13 +139,13 @@ exports.createRole = async (req, res) => {
 /**
  * @desc Update role
  * @route PUT /api/roles/:id
- * @access Private (Admin)
  */
 exports.updateRole = async (req, res) => {
   try {
     const { name, description, permissions } = req.body;
 
-    const role = await Role.findById(req.params.id);
+    const role = await Role.findByPk(req.params.id);
+
     if (!role) {
       return res.status(404).json({
         success: false,
@@ -136,15 +153,19 @@ exports.updateRole = async (req, res) => {
       });
     }
 
-    // If name is changed → check uniqueness
+    // ✅ Check unique name if changed
     if (name && name !== role.name) {
-      const existing = await Role.findOne({ name });
+      const existing = await Role.findOne({
+        where: { name },
+      });
+
       if (existing) {
         return res.status(400).json({
           success: false,
           message: "Role name already exists",
         });
       }
+
       role.name = name;
     }
 
@@ -170,11 +191,11 @@ exports.updateRole = async (req, res) => {
 /**
  * @desc Delete role
  * @route DELETE /api/roles/:id
- * @access Private (Admin)
  */
 exports.deleteRole = async (req, res) => {
   try {
-    const role = await Role.findById(req.params.id);
+    const role = await Role.findByPk(req.params.id);
+
     if (!role) {
       return res.status(404).json({
         success: false,
@@ -182,8 +203,15 @@ exports.deleteRole = async (req, res) => {
       });
     }
 
-    // Optional: Check if any users have this role
-    const usersWithRole = await User.countDocuments({ roles: role.name });
+    // ✅ Check if users assigned
+    const usersWithRole = await User.count({
+      where: {
+        roles: {
+          [Op.like]: `%${role.name}%`,
+        },
+      },
+    });
+
     if (usersWithRole > 0) {
       return res.status(400).json({
         success: false,
@@ -191,7 +219,7 @@ exports.deleteRole = async (req, res) => {
       });
     }
 
-    await Role.findByIdAndDelete(req.params.id);
+    await role.destroy();
 
     res.status(200).json({
       success: true,
@@ -207,9 +235,8 @@ exports.deleteRole = async (req, res) => {
 };
 
 /**
- * @desc Get all available permissions (static list)
+ * @desc Get all available permissions
  * @route GET /api/roles/permissions
- * @access Private (Admin)
  */
 exports.getAvailablePermissions = async (req, res) => {
   const permissions = [
@@ -219,7 +246,6 @@ exports.getAvailablePermissions = async (req, res) => {
     "manage_queries",
     "manage_jobs",
     "view_dashboard",
-    // Add more as needed
   ];
 
   res.status(200).json({

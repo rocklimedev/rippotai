@@ -4,22 +4,20 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useLoginMutation } from '@/api/authApi';
-import { Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react';
-
+import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { toast } from '@/hooks/use-toast';
 export default function AdminLoginPage() {
   const router = useRouter();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const [login] = useLoginMutation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
     setIsLoading(true);
 
     try {
@@ -32,19 +30,33 @@ export default function AdminLoginPage() {
           localStorage.setItem('refreshToken', result.refreshToken);
         }
 
+        toast({
+          title: 'Login successful',
+          description: 'Redirecting to dashboard...',
+        });
+
         const urlParams = new URLSearchParams(window.location.search);
         const redirectTo = urlParams.get('redirect') || '/admin/';
 
-        window.location.href = redirectTo;
+        setTimeout(() => {
+          router.push(redirectTo);
+        }, 800);
       } else {
-        setError('Login succeeded but no access token was received.');
+        toast({
+          title: 'Error',
+          description: 'No access token received.',
+          variant: 'destructive',
+        });
       }
     } catch (err) {
-      setError(
-        err.data?.message ||
+      toast({
+        title: 'Login failed',
+        description:
+          err.data?.message ||
           err.message ||
           'Invalid credentials. Please try again.',
-      );
+        variant: 'destructive',
+      });
     } finally {
       setIsLoading(false);
     }
@@ -114,14 +126,6 @@ export default function AdminLoginPage() {
                 </button>
               </div>
             </div>
-
-            {/* Error */}
-            {error && (
-              <div className="rounded-md bg-red-50 p-3 flex items-start">
-                <AlertCircle className="h-5 w-5 text-red-400 mr-2 mt-0.5" />
-                <p className="text-xs sm:text-sm text-red-700">{error}</p>
-              </div>
-            )}
 
             {/* Button */}
             <button

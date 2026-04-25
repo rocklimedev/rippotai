@@ -3,8 +3,10 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
-const items = [
+const navItems = [
   { name: 'Dashboard', path: '/admin/' },
   { name: 'Projects', path: '/admin/projects' },
   { name: 'Applications', path: '/admin/applications' },
@@ -15,115 +17,91 @@ const items = [
 export default function Sidebar({ open, setOpen, isDesktop }) {
   const pathname = usePathname();
 
-  const sidebarStyle = isDesktop
-    ? {
-        position: 'sticky',
-        top: 0,
-        height: '100vh',
-      }
-    : {
-        position: 'fixed',
-        left: open ? 0 : '-100%',
-        top: 0,
-        height: '100vh',
-        zIndex: 1000,
-        transition: 'left 0.3s ease',
-      };
-
   return (
     <>
-      {/* Overlay for mobile */}
+      {/* Mobile Overlay */}
       {!isDesktop && open && (
-        <div style={styles.overlay} onClick={() => setOpen(false)} />
+        <div
+          className="fixed inset-0 bg-black/60 z-40 lg:hidden"
+          onClick={() => setOpen(false)}
+        />
       )}
 
-      <aside style={{ ...styles.sidebar, ...sidebarStyle }}>
-        {/* Close button on mobile */}
+      {/* Sidebar */}
+      <aside
+        className={`
+          fixed lg:sticky top-0 left-0 h-screen w-72 bg-[#1a3c34] text-white 
+          flex flex-col z-50 transition-all duration-300
+          ${!isDesktop && !open ? '-translate-x-full' : 'translate-x-0'}
+          lg:translate-x-0
+        `}
+      >
+        {/* Mobile Close Button */}
         {!isDesktop && (
-          <button style={styles.closeBtn} onClick={() => setOpen(false)}>
-            ✕
-          </button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setOpen(false)}
+            className="absolute top-4 right-4 text-white hover:bg-white/10 lg:hidden"
+          >
+            <X size={24} />
+          </Button>
         )}
 
         {/* Logo */}
-        <div style={styles.logo}>
+        <div className="px-8 pt-10 pb-12">
           <Image
             src="/assets/logo_mono.png"
             alt="Rippotai"
             width={160}
             height={60}
+            className="brightness-110"
+            priority
           />
         </div>
 
-        {/* Nav */}
-        <nav style={styles.nav}>
-          {items.map((item) => {
-            const active = pathname === item.path;
+        {/* Navigation */}
+        <nav className="flex-1 px-6">
+          <div className="space-y-1">
+            {navItems.map((item) => {
+              const isActive =
+                pathname === item.path ||
+                (item.path === '/admin/' && pathname === '/admin');
 
-            return (
-              <Link
-                key={item.path}
-                href={item.path}
-                style={{
-                  ...styles.link,
-                  ...(active ? styles.active : {}),
-                }}
-                onClick={() => !isDesktop && setOpen(false)}
-              >
-                {item.name}
-              </Link>
-            );
-          })}
+              return (
+                <Link
+                  key={item.path}
+                  href={item.path}
+                  onClick={() => !isDesktop && setOpen(false)}
+                  className={`
+                    flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium
+                    transition-all duration-200 group
+                    ${
+                      isActive
+                        ? 'bg-white/10 text-white border-l-4 border-[#d9af61]'
+                        : 'text-white/70 hover:text-white hover:bg-white/5'
+                    }
+                  `}
+                >
+                  <span
+                    className={isActive ? 'text-[#d9af61]' : 'text-white/50'}
+                  >
+                    •
+                  </span>
+                  {item.name}
+                </Link>
+              );
+            })}
+          </div>
         </nav>
+
+        {/* Footer / Version Info (Optional) */}
+        <div className="p-6 mt-auto border-t border-white/10">
+          <p className="text-xs text-white/40 text-center">
+            Rippotai Admin • v1.0
+          </p>
+        </div>
       </aside>
     </>
   );
 }
-
-const styles = {
-  sidebar: {
-    width: 260,
-    background: '#1a3c34',
-    color: '#fff',
-    padding: '40px 28px',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-
-  logo: { marginBottom: 60 },
-
-  nav: { display: 'flex', flexDirection: 'column', gap: 18 },
-
-  link: {
-    fontSize: 14,
-    letterSpacing: 2,
-    textTransform: 'uppercase',
-    color: 'rgba(255,255,255,0.7)',
-    textDecoration: 'none',
-    paddingLeft: 10,
-    borderLeft: '2px solid transparent',
-  },
-
-  active: {
-    color: '#ffffff',
-    borderLeft: '2px solid #d9af61',
-  },
-
-  closeBtn: {
-    position: 'absolute',
-    top: 16,
-    right: 16,
-    fontSize: 24,
-    background: 'none',
-    border: 'none',
-    color: '#fff',
-    cursor: 'pointer',
-  },
-
-  overlay: {
-    position: 'fixed',
-    inset: 0,
-    background: 'rgba(0,0,0,0.45)',
-    zIndex: 999,
-  },
-};

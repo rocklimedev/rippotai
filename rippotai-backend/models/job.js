@@ -1,12 +1,43 @@
-const mongoose = require("mongoose");
+module.exports = (sequelize, DataTypes) => {
+  const Job = sequelize.define(
+    "Job",
+    {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+      },
 
-const jobSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  category: { type: String, required: true },
-  location: { type: String, required: true },
-  description: { type: String, required: true },
-  details: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
-});
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
 
-module.exports = mongoose.model("Job", jobSchema);
+      category: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+
+      location: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+
+      details: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+    },
+    {
+      tableName: "jobs",
+      timestamps: true, // replaces createdAt
+    },
+  );
+
+  return Job;
+};

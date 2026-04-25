@@ -20,8 +20,8 @@ import {
 } from '@/api/projectsApi';
 
 import styles from './projects.module.css';
-import ProjectsCards from '@/components/ProjectsCards';
-import ProjectsTable from '@/components/ProjectsTable';
+import ProjectsCards from '@/components/projects/ProjectsCards';
+import ProjectsTable from '@/components/projects/ProjectsTable';
 
 import {
   Pagination,

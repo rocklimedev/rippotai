@@ -1,138 +1,163 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const User = require("../models/user");
-const Role = require("../models/roles");
 
-// Helper: generate access + refresh tokens
+const { User, Role, Sequelize } = require("../models");
+const { Op } = Sequelize;
+
+// ------------------- TOKEN HELPER -------------------
 const generateTokens = (user) => {
-  const payload = { id: user._id, email: user.email, roles: user.roles };
+  const payload = {
+    id: user.id,
+    email: user.email,
+    role: user.role?.name, // ✅ single role
+  };
 
   const accessToken = jwt.sign(payload, process.env.JWT_SECRET, {
-    expiresIn: "15m", // short-lived token
+    expiresIn: "15m",
   });
 
   const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {
-    expiresIn: "7d", // longer validity
+    expiresIn: "7d",
   });
 
   return { accessToken, refreshToken };
 };
 
-// ------------------- AUTH CONTROLLERS -------------------
-
-// Register new user (Admin only in dashboard)
+// ------------------- REGISTER -------------------
 exports.register = async (req, res, next) => {
   try {
-    const { name, email, password, roles } = req.body;
+    const { name, email, password, role } = req.body;
 
     if (!name || !email || !password) {
-      return res
-        .status(400)
-        .json({ message: "Name, email, and password are required." });
+      return res.status(400).json({
+        message: "Name, email, and password are required.",
+      });
     }
 
-    // Check if email already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser)
-      return res.status(400).json({ message: "Email already registered." });
-
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Assign roles (default to "Employee" if none provided)
-    let assignedRoles = [];
-    if (roles?.length) {
-      // assign only existing roles
-      const validRoles = await Role.find({ name: { $in: roles } });
-      assignedRoles = validRoles.map((r) => r.name);
-    } else {
-      // fallback to Employee
-      const employeeRole = await Role.findOne({ name: "Employee" });
-      if (employeeRole) assignedRoles.push(employeeRole.name);
-      else assignedRoles.push("Employee"); // fallback to string
-    }
-    const newUser = new User({
-      name,
-      email,
-      password: hashedPassword,
-      roles: assignedRoles,
+    // ✅ Check existing user
+    const existingUser = await User.findOne({
+      where: { email },
     });
 
-    await newUser.save();
+    if (existingUser) {
+      return res.status(400).json({
+        message: "Email already registered.",
+      });
+    }
 
-    res
-      .status(201)
-      .json({ message: "User registered successfully", user: newUser });
+    // ✅ Find role
+    let roleData;
+
+    if (role) {
+      roleData = await Role.findOne({
+        where: { name: role },
+      });
+    }
+
+    // Default role = Employee
+    if (!roleData) {
+      roleData = await Role.findOne({
+        where: { name: "Employee" },
+      });
+    }
+
+    if (!roleData) {
+      return res.status(400).json({
+        message: "Default role not found. Seed roles first.",
+      });
+    }
+
+    // ✅ Create user (password auto-hashed)
+    const newUser = await User.create({
+      name,
+      email,
+      password,
+      roleId: roleData.id,
+    });
+
+    res.status(201).json({
+      message: "User registered successfully",
+      user: newUser,
+    });
   } catch (error) {
     next(error);
   }
 };
 
-// Login user
+// ------------------- LOGIN -------------------
 exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    console.log("Login attempt:", { email });
+
     if (!email || !password) {
-      return res
-        .status(400)
-        .json({ message: "Email and password are required." });
-    }
-
-    const user = await User.findOne({ email });
-    console.log(
-      "User found:",
-      user ? { email: user.email, hasPassword: !!user.password } : null,
-    );
-    if (!user) {
-      return res.status(401).json({ message: "Invalid email or password." });
-    }
-
-    if (!user.password) {
-      return res.status(401).json({
-        message: "User account lacks a password. Please reset your password.",
+      return res.status(400).json({
+        message: "Email and password are required.",
       });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    console.log("Password match:", isMatch);
+    const user = await User.findOne({
+      where: { email },
+      include: {
+        model: Role,
+        as: "role",
+      },
+    });
+
+    if (!user) {
+      return res.status(401).json({
+        message: "Invalid email or password.",
+      });
+    }
+
+    const isMatch = await user.comparePassword(password);
+
     if (!isMatch) {
-      return res.status(401).json({ message: "Invalid email or password." });
+      return res.status(401).json({
+        message: "Invalid email or password.",
+      });
     }
 
     const tokens = generateTokens(user);
+
     res.status(200).json({
       message: "Login successful",
       user: {
-        id: user._id,
+        id: user.id,
         name: user.name,
         email: user.email,
-        roles: user.roles,
+        role: user.role?.name,
       },
       ...tokens,
     });
   } catch (error) {
-    console.error("Login error:", error);
     next(error);
   }
 };
 
-// Refresh access token
+// ------------------- REFRESH TOKEN -------------------
 exports.refreshToken = async (req, res, next) => {
   try {
     const { token } = req.body;
-    if (!token)
-      return res.status(401).json({ message: "Refresh token required." });
+
+    if (!token) {
+      return res.status(401).json({
+        message: "Refresh token required.",
+      });
+    }
 
     jwt.verify(token, process.env.JWT_REFRESH_SECRET, (err, decoded) => {
-      if (err)
-        return res.status(403).json({ message: "Invalid refresh token." });
+      if (err) {
+        return res.status(403).json({
+          message: "Invalid refresh token.",
+        });
+      }
 
       const payload = {
         id: decoded.id,
         email: decoded.email,
-        roles: decoded.roles,
+        role: decoded.role,
       };
+
       const accessToken = jwt.sign(payload, process.env.JWT_SECRET, {
         expiresIn: "15m",
       });
@@ -144,11 +169,22 @@ exports.refreshToken = async (req, res, next) => {
   }
 };
 
-// Get logged-in user's profile
+// ------------------- GET PROFILE -------------------
 exports.getProfile = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user.id).select("-password");
-    if (!user) return res.status(404).json({ message: "User not found." });
+    const user = await User.findByPk(req.user.id, {
+      attributes: { exclude: ["password"] },
+      include: {
+        model: Role,
+        as: "role",
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found.",
+      });
+    }
 
     res.status(200).json(user);
   } catch (error) {
@@ -156,11 +192,12 @@ exports.getProfile = async (req, res, next) => {
   }
 };
 
-// Logout (invalidate refresh token client-side)
-exports.logout = async (req, res) => {
+// ------------------- LOGOUT -------------------
+exports.logout = async (req, res, next) => {
   try {
-    // Ideally, store refresh tokens in DB/Redis to blacklist on logout
-    res.status(200).json({ message: "Logged out successfully" });
+    res.status(200).json({
+      message: "Logged out successfully",
+    });
   } catch (error) {
     next(error);
   }

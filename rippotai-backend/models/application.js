@@ -1,30 +1,68 @@
-const mongoose = require("mongoose");
+module.exports = (sequelize, DataTypes) => {
+  const Application = sequelize.define(
+    "Application",
+    {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+      },
 
-const applicationSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true },
-  phone: { type: String }, // optional
-  designation: { type: String }, // optional
-  interestedIn: {
-    type: String,
-    required: true,
-    enum: [
-      "Architecture",
-      "Interior Design",
-      "Furniture Design",
-      "Project Management",
-      "3D Visualization",
-      "Other",
-    ],
-  },
-  resume: { type: String, required: true }, // corresponds to portfolio
-  coverLetter: { type: String }, // optional
-  status: {
-    type: String,
-    enum: ["Pending", "Reviewed", "Shortlisted", "Rejected"],
-    default: "Pending", // default status for new applications
-  },
-  createdAt: { type: Date, default: Date.now },
-});
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
 
-module.exports = mongoose.model("Application", applicationSchema);
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          isEmail: true,
+        },
+      },
+
+      phone: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+
+      designation: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+
+      interestedIn: {
+        type: DataTypes.ENUM(
+          "Architecture",
+          "Interior Design",
+          "Furniture Design",
+          "Project Management",
+          "3D Visualization",
+          "Other",
+        ),
+        allowNull: false,
+      },
+
+      resume: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+
+      coverLetter: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+
+      status: {
+        type: DataTypes.ENUM("Pending", "Reviewed", "Shortlisted", "Rejected"),
+        defaultValue: "Pending",
+      },
+    },
+    {
+      tableName: "applications",
+      timestamps: true, // handles createdAt automatically
+    },
+  );
+
+  return Application;
+};

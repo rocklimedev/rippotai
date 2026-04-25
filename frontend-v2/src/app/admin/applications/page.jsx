@@ -2,20 +2,28 @@
 
 import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
-import { useGetDashboardStatsQuery } from '@/api/applicationsApi';
 import {
   useGetApplicationsQuery,
   useUpdateApplicationStatusMutation,
   useDeleteApplicationMutation,
+  useGetDashboardStatsQuery,
 } from '@/api/applicationsApi';
 import { Loader2, RefreshCw } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import Modal from '@/components/layouts/Modal';
 import styles from './jobs.module.css';
 
 export default function AdminApplicationsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
 
-  // Fetch applications with server-side filtering
+  // ✅ MODAL STATE
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedApp, setSelectedApp] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const { toast } = useToast();
+
   const {
     data: applicationsData,
     isLoading,
@@ -29,9 +37,22 @@ export default function AdminApplicationsPage() {
 
   const { data: dashboardStats } = useGetDashboardStatsQuery();
 
+  // ✅ ERROR TOAST
+  useEffect(() => {
+    if (isError) {
+      toast({
+        title: 'Error',
+        description: error?.data?.message || 'Could not load applications',
+        variant: 'destructive',
+      });
+    }
+  }, [isError, error, toast]);
+
+  // FILTER
   const filteredApplications =
     applicationsData?.applications?.filter((app) => {
       const term = searchTerm.toLowerCase();
+
       const matchesSearch =
         app.name?.toLowerCase().includes(term) ||
         app.email?.toLowerCase().includes(term) ||
@@ -43,23 +64,58 @@ export default function AdminApplicationsPage() {
       return matchesSearch && matchesStatus;
     }) || [];
 
-  const handleStatusChange = async (id, newStatus) => {
+  // ✅ STATUS UPDATE
+  const handleStatusChange = async (id, newStatus, name) => {
     try {
       await updateStatus({ id, status: newStatus }).unwrap();
+
+      toast({
+        title: 'Status Updated',
+        description: `${name} marked as ${newStatus}`,
+      });
     } catch (err) {
-      console.error('Failed to update status:', err);
+      toast({
+        title: 'Error',
+        description: 'Failed to update application status',
+        variant: 'destructive',
+      });
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!confirm('Are you sure you want to delete this application?')) return;
+  // ✅ OPEN MODAL
+  const openDeleteModal = (app) => {
+    setSelectedApp(app);
+    setIsModalOpen(true);
+  };
+
+  // ✅ DELETE CONFIRM
+  const handleDelete = async () => {
+    if (!selectedApp) return;
+
+    setIsDeleting(true);
+
     try {
-      await deleteApplication(id).unwrap();
+      await deleteApplication(selectedApp._id).unwrap();
+
+      toast({
+        title: 'Application Deleted',
+        description: `${selectedApp.name}'s application removed`,
+      });
+
+      setIsModalOpen(false);
+      setSelectedApp(null);
     } catch (err) {
-      console.error('Failed to delete application:', err);
+      toast({
+        title: 'Error',
+        description: 'Failed to delete application',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsDeleting(false);
     }
   };
 
+  // LOADING
   if (isLoading)
     return (
       <div className={styles.container}>
@@ -68,6 +124,7 @@ export default function AdminApplicationsPage() {
       </div>
     );
 
+  // ERROR UI
   if (isError)
     return (
       <div className={styles.container}>
@@ -84,28 +141,30 @@ export default function AdminApplicationsPage() {
 
   return (
     <div className={`${styles.container} min-h-screen bg-gray-50 pb-20`}>
-      {/* Header & Filters */}
+      {/* HEADER */}
       <header className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
-          Job Applications{' '}
+          Job Applications
           <span className="ml-3 text-lg font-normal text-gray-600">
             ({filteredApplications.length})
           </span>
         </h1>
+
         <div className="flex gap-2">
           <input
             type="text"
-            placeholder="Search by name, email, job..."
+            placeholder="Search..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+            className="rounded-lg border px-4 py-2"
           />
+
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+            className="rounded-lg border px-4 py-2"
           >
-            <option value="">All Statuses</option>
+            <option value="">All</option>
             <option value="Pending">Pending</option>
             <option value="Reviewed">Reviewed</option>
             <option value="Shortlisted">Shortlisted</option>
@@ -114,90 +173,62 @@ export default function AdminApplicationsPage() {
         </div>
       </header>
 
+      {/* TABLE */}
       {filteredApplications.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 bg-white p-12 text-center">
-          <h3 className="text-lg font-medium text-gray-900">
-            No applications found
-          </h3>
-          <p className="mt-2 text-sm text-gray-500">
-            {searchTerm || statusFilter
-              ? 'Try changing your search or filter'
-              : 'No applications submitted yet.'}
-          </p>
+        <div className="text-center p-10 bg-white rounded-xl border">
+          No applications found
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
+        <div className="overflow-x-auto rounded-xl border bg-white">
           <table className="w-full text-sm">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-4 py-3 text-left font-medium text-gray-700">
-                  Name
-                </th>
-                <th className="px-4 py-3 text-left font-medium text-gray-700">
-                  Email
-                </th>
-                <th className="px-4 py-3 text-left font-medium text-gray-700">
-                  Applied For
-                </th>
-                <th className="px-4 py-3 text-left font-medium text-gray-700">
-                  Phone
-                </th>
-                <th className="px-4 py-3 text-left font-medium text-gray-700">
-                  Submitted
-                </th>
-                <th className="px-4 py-3 text-left font-medium text-gray-700">
-                  Status
-                </th>
-                <th className="px-4 py-3 text-right font-medium text-gray-700">
-                  Resume
-                </th>
-                <th className="px-4 py-3 text-right font-medium text-gray-700">
-                  Actions
-                </th>
+                <th className="p-3 text-left">Name</th>
+                <th className="p-3 text-left">Email</th>
+                <th className="p-3 text-left">Role</th>
+                <th className="p-3 text-left">Phone</th>
+                <th className="p-3 text-left">Date</th>
+                <th className="p-3 text-left">Status</th>
+                <th className="p-3 text-right">Resume</th>
+                <th className="p-3 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+
+            <tbody>
               {filteredApplications.map((app) => (
-                <tr
-                  key={app._id}
-                  className="hover:bg-gray-50 transition-colors"
-                >
-                  <td className="px-4 py-3 font-medium text-gray-900">
-                    {app.name}
-                  </td>
-                  <td className="px-4 py-3 text-gray-600">{app.email}</td>
-                  <td className="px-4 py-3 text-gray-600">
-                    {app.interestedIn}
-                  </td>
-                  <td className="px-4 py-3 text-gray-600">
-                    {app.phone || '—'}
-                  </td>
-                  <td className="px-4 py-3 text-gray-600">
+                <tr key={app._id} className="border-t">
+                  <td className="p-3">{app.name}</td>
+                  <td className="p-3">{app.email}</td>
+                  <td className="p-3">{app.interestedIn}</td>
+                  <td className="p-3">{app.phone || '—'}</td>
+
+                  <td className="p-3">
                     {app.createdAt
                       ? format(new Date(app.createdAt), 'dd MMM yyyy')
                       : '—'}
                   </td>
-                  <td className="px-4 py-3">
+
+                  <td className="p-3">
                     <select
                       value={app.status || 'Pending'}
                       onChange={(e) =>
-                        handleStatusChange(app._id, e.target.value)
+                        handleStatusChange(app._id, e.target.value, app.name)
                       }
-                      className="rounded border border-gray-300 px-2 py-1"
+                      className="border rounded px-2 py-1"
                     >
-                      <option value="Pending">Pending</option>
-                      <option value="Reviewed">Reviewed</option>
-                      <option value="Shortlisted">Shortlisted</option>
-                      <option value="Rejected">Rejected</option>
+                      <option>Pending</option>
+                      <option>Reviewed</option>
+                      <option>Shortlisted</option>
+                      <option>Rejected</option>
                     </select>
                   </td>
-                  <td className="px-4 py-3 text-right">
+
+                  <td className="p-3 text-right">
                     {app.resume ? (
                       <a
                         href={app.resume}
                         target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline"
+                        className="text-blue-600"
                       >
                         View
                       </a>
@@ -205,10 +236,11 @@ export default function AdminApplicationsPage() {
                       '—'
                     )}
                   </td>
-                  <td className="px-4 py-3 text-right flex gap-2 justify-end">
+
+                  <td className="p-3 text-right">
                     <button
-                      onClick={() => handleDelete(app._id)}
-                      className="text-red-600 hover:underline"
+                      onClick={() => openDeleteModal(app)}
+                      className="text-red-600"
                     >
                       Delete
                     </button>
@@ -219,6 +251,20 @@ export default function AdminApplicationsPage() {
           </table>
         </div>
       )}
+
+      {/* ✅ MODAL */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleDelete}
+        title="Delete Application"
+        description={`Are you sure you want to delete ${
+          selectedApp?.name || 'this application'
+        }?`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        loading={isDeleting}
+      />
     </div>
   );
 }

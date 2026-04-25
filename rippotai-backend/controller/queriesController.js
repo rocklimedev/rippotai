@@ -1,14 +1,14 @@
-const Query = require("../models/queries");
+const { Query, User, Sequelize } = require("../models");
+const { Op } = Sequelize;
+
 const {
   emailer,
   queryConfirmationEmail,
   adminQueryNotificationEmail,
 } = require("../middleware/sendEmail");
 
-/**
- * CREATE QUERY
- */
-exports.createQuery = async (req, res, next) => {
+// ------------------- CREATE QUERY -------------------
+exports.createQuery = async (req, res) => {
   try {
     const { name, email, subject, message, branch } = req.body;
 
@@ -18,19 +18,17 @@ exports.createQuery = async (req, res, next) => {
       });
     }
 
-    const query = new Query({
+    const query = await Query.create({
       name,
       email,
       subject,
       message,
-      branch, // ✅ branch added
+      branch,
     });
-
-    await query.save();
 
     return res.status(201).json({
       message: "Query created successfully",
-      id: query._id,
+      id: query.id,
     });
   } catch (err) {
     console.error("Error in createQuery:", err);
@@ -40,19 +38,25 @@ exports.createQuery = async (req, res, next) => {
   }
 };
 
-/**
- * GET ALL QUERIES (FILTER BY BRANCH)
- */
+// ------------------- GET ALL QUERIES -------------------
 exports.getQueries = async (req, res, next) => {
   try {
     const { branch } = req.query;
 
-    const filter = {};
-    if (branch) filter.branch = branch; // ✅ filter applied
+    const where = {};
+    if (branch) where.branch = branch;
 
-    const queries = await Query.find(filter)
-      .populate("assignedTo", "name email")
-      .sort({ createdAt: -1 });
+    const queries = await Query.findAll({
+      where,
+      include: [
+        {
+          model: User,
+          as: "assignee",
+          attributes: ["id", "name", "email"],
+        },
+      ],
+      order: [["createdAt", "DESC"]],
+    });
 
     res.json(queries);
   } catch (err) {
@@ -61,20 +65,24 @@ exports.getQueries = async (req, res, next) => {
   }
 };
 
-/**
- * GET SINGLE QUERY (BRANCH SAFE)
- */
+// ------------------- GET SINGLE QUERY -------------------
 exports.getQuery = async (req, res, next) => {
   try {
     const { branch } = req.query;
 
-    const filter = { _id: req.params.id };
-    if (branch) filter.branch = branch;
+    const where = { id: req.params.id };
+    if (branch) where.branch = branch;
 
-    const query = await Query.findOne(filter).populate(
-      "assignedTo",
-      "name email",
-    );
+    const query = await Query.findOne({
+      where,
+      include: [
+        {
+          model: User,
+          as: "assignee",
+          attributes: ["id", "name", "email"],
+        },
+      ],
+    });
 
     if (!query) {
       return res.status(404).json({ message: "Query not found" });
@@ -86,9 +94,7 @@ exports.getQuery = async (req, res, next) => {
   }
 };
 
-/**
- * UPDATE QUERY (BRANCH SAFE)
- */
+// ------------------- UPDATE QUERY -------------------
 exports.updateQuery = async (req, res, next) => {
   try {
     const { branch } = req.body;
@@ -97,15 +103,18 @@ exports.updateQuery = async (req, res, next) => {
       return res.status(400).json({ message: "Branch is required" });
     }
 
-    const query = await Query.findOneAndUpdate(
-      { _id: req.params.id, branch },
-      req.body,
-      { new: true },
-    ).populate("assignedTo", "name email");
+    const query = await Query.findOne({
+      where: {
+        id: req.params.id,
+        branch,
+      },
+    });
 
     if (!query) {
       return res.status(404).json({ message: "Query not found" });
     }
+
+    await query.update(req.body);
 
     res.json(query);
   } catch (err) {
@@ -113,9 +122,7 @@ exports.updateQuery = async (req, res, next) => {
   }
 };
 
-/**
- * DELETE QUERY (BRANCH SAFE)
- */
+// ------------------- DELETE QUERY -------------------
 exports.deleteQuery = async (req, res, next) => {
   try {
     const { branch } = req.query;
@@ -124,14 +131,18 @@ exports.deleteQuery = async (req, res, next) => {
       return res.status(400).json({ message: "Branch is required" });
     }
 
-    const deleted = await Query.findOneAndDelete({
-      _id: req.params.id,
-      branch,
+    const query = await Query.findOne({
+      where: {
+        id: req.params.id,
+        branch,
+      },
     });
 
-    if (!deleted) {
+    if (!query) {
       return res.status(404).json({ message: "Query not found" });
     }
+
+    await query.destroy();
 
     res.json({ message: "Query deleted" });
   } catch (err) {
@@ -139,9 +150,7 @@ exports.deleteQuery = async (req, res, next) => {
   }
 };
 
-/**
- * ADD NOTE TO QUERY (BRANCH SAFE)
- */
+// ------------------- ADD NOTE -------------------
 exports.addNote = async (req, res, next) => {
   try {
     const { branch, text } = req.body;
@@ -153,21 +162,26 @@ exports.addNote = async (req, res, next) => {
     }
 
     const query = await Query.findOne({
-      _id: req.params.id,
-      branch,
+      where: {
+        id: req.params.id,
+        branch,
+      },
     });
 
     if (!query) {
       return res.status(404).json({ message: "Query not found" });
     }
 
-    query.notes.push({
+    // ✅ JSON-based notes (same as your model)
+    const notes = query.notes || [];
+
+    notes.push({
       text,
-      author: req.user?._id, // safe optional chaining
+      author: req.user?.id || null,
+      createdAt: new Date(),
     });
 
-    await query.save();
-    await query.populate("notes.author", "name email");
+    await query.update({ notes });
 
     res.json(query);
   } catch (err) {

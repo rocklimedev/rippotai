@@ -6,7 +6,7 @@ const {
   createUser,
   updateUser,
   deleteUser,
-  assignRoles,
+  assignRole,
 } = require("../controller/userController"); // Path to your controller file
 
 // @route   GET /api/users
@@ -31,6 +31,6 @@ router.delete("/:id", deleteUser);
 
 // @route   PATCH /api/users/:id/roles
 // @desc    Assign roles to a user
-router.patch("/:id/roles", assignRoles);
+router.patch("/:id/roles", assignRole);
 
 module.exports = router;
