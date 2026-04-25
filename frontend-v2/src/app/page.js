@@ -4,9 +4,9 @@ import { ProcessSection } from '@/components/sections/ProcessSection';
 import { WorksSection } from '@/components/sections/WorksSection';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { QuoteSection } from '@/components/sections/QuoteSection';
-import { WhereItBegan } from '@/components/WhereItBegan';
+import { WhereItBegan } from '@/components/sections/WhereItBegan';
 import { ServicesSection } from '@/components/sections/ServicesSection';
-import { FounderMessage } from '@/components/FounderMessage';
+import { FounderMessage } from '@/components/layouts/FounderMessage';
 import FadeInSection from '@/components/sections/FadeInSection'; // ← new client component
 
 // ──────────────────────────────────────────────

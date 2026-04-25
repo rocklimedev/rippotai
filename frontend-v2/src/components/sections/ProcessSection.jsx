@@ -1,7 +1,6 @@
 import { processSteps } from '@/lib/config';
 import { Separator } from '../ui/separator';
-import { AnimateIn } from '../AnimateIn';
-
+import { AnimateIn } from '../layouts/AnimateIn';
 export const ProcessSection = () => {
   return (
     <section

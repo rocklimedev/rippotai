@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { AnimateIn } from '@/components/AnimateIn';
+import { AnimateIn } from '@/components/layouts/AnimateIn';
 import { toast } from 'sonner';
 import { MapPin, Mail, Phone } from 'lucide-react';
 import { useCreateQueryMutation } from '@/api/queriesApi';

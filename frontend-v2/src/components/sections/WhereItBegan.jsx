@@ -1,5 +1,5 @@
 import { aboutImage } from '@/lib/config';
-import { AnimateIn } from './AnimateIn';
+import { AnimateIn } from '../layouts/AnimateIn';
 
 export const WhereItBegan = () => {
   return (

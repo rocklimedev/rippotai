@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link'; // ✅ IMPORT THIS
-import { AnimateIn } from '@/components/AnimateIn';
+import { AnimateIn } from '@/components/layouts/AnimateIn';
 import { services, servicesImage } from '@/lib/config';
 
 export default function ServicesPage() {

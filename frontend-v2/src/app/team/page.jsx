@@ -1,7 +1,7 @@
 // app/team/page.jsx
 'use client';
 import Image from 'next/image';
-import { AnimateIn } from '../../components/AnimateIn'; // adjust path
+import { AnimateIn } from '@/components/layouts/AnimateIn';
 import { teamImage, teamMembers } from '@/lib/config';
 
 export default function TeamPage() {

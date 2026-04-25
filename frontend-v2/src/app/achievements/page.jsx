@@ -1,7 +1,7 @@
 'use client';
 
 import { Trophy, Calendar } from 'lucide-react';
-import { AnimateIn } from '@/components/AnimateIn';
+import { AnimateIn } from '@/components/layouts/AnimateIn';
 import { achievementsImage } from '@/lib/config';
 import Image from 'next/image';
 import { achievements } from '@/lib/config';

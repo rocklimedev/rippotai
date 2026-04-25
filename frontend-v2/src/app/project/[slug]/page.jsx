@@ -5,8 +5,7 @@ import Link from 'next/link';
 import { notFound, useParams } from 'next/navigation';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import GalleryWithText from '@/components/layouts/GalleryText';
-import { AnimateIn } from '@/components/AnimateIn';
-
+import { AnimateIn } from '@/components/layouts/AnimateIn';
 import {
   useGetProjectBySlugQuery,
   useGetPublicProjectsQuery,

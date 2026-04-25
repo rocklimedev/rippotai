@@ -1,4 +1,4 @@
-import { AnimateIn } from '../AnimateIn';
+import { AnimateIn } from '../layouts/AnimateIn';
 
 export const QuoteSection = () => {
   return (

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { AnimateIn } from '@/components/AnimateIn';
+import { AnimateIn } from '@/components/layouts/AnimateIn';
 import { values, aboutImage } from '@/lib/config';
 
 /************************************
