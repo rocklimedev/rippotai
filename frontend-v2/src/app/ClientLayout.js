@@ -13,7 +13,14 @@ export default function ClientLayout({ children }) {
   const pathname = usePathname();
 
   // Routes where layout should NOT appear
-  const noLayoutRoutes = ['/login', '/403', '/500', '/admin'];
+  const noLayoutRoutes = [
+    '/login',
+    '/403',
+    '/500',
+    '/admin',
+    '/discover',
+    '/discover/*',
+  ];
 
   const isNoLayoutPage = noLayoutRoutes.some(
     (route) => pathname === route || pathname.startsWith(`${route}/`),
