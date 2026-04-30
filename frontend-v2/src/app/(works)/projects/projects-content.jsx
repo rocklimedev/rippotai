@@ -11,19 +11,11 @@ import {
   PaginationNext,
   PaginationPrevious,
   PaginationEllipsis,
-<<<<<<< HEAD:frontend-v2/src/app/projects/projects-content.jsx
 } from '@/components/ui/pagination';
 
 import { projectsImage } from '@/lib/config';
 import ProjectRow from '@/components/projects/ProjectRow';
 import { AnimateIn } from '@/components/layouts/AnimateIn';
-=======
-} from "@/components/ui/pagination";
-
-import { projectsImage } from "@/lib/config";
-import ProjectRow from "@/components/ProjectRow";
-import { AnimateIn } from "@/components/AnimateIn";
->>>>>>> 993ce79 (added the landing pages):frontend-v2/src/app/(works)/projects/projects-content.jsx
 export default function ProjectsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
