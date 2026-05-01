@@ -5,7 +5,7 @@ export const SITE = {
       brandFull: 'Rippotai Architecture',
       tagline: 'Residential Architecture | Consultation | Execution Thinking',
       hero: {
-        headline: 'Your Home.\nThought Through.\nBuilt Right.',
+        headline: 'From First Thought To Final Key.\nWe Handle It All.',
         primaryCta: 'Book a Consultation Call',
       },
       heroSlides: [
@@ -28,7 +28,7 @@ export const SITE = {
       ],
       problem: {
         headline:
-          'Designing a home sounds exciting…\nuntil it turns into endless decisions.',
+          'A fully managed home-building \nprocess, without your day-to-day\n involvement.',
         points: [
           'Too many materials.',
           'Too many opinions.',

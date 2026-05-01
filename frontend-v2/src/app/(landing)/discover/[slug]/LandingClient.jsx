@@ -34,17 +34,20 @@ export default function LandingClient({ slug, config }) {
         <Problem data={config.problem} />
 
         <Shift data={config.shift} onConsult={onConsult} />
+        <VisualProof data={config.visualProof} />
 
         <WhatYouGet data={config.whatYouGet} />
-
-        <VisualProof data={config.visualProof} />
 
         <FinalCTA data={config.finalCta} onConsult={onConsult} />
       </main>
 
       <Footer />
       <StickyConsultBar onConsult={onConsult} />
-      <ConsultationDialog open={open} onOpenChange={setOpen} />
+      <ConsultationDialog
+        open={open}
+        onOpenChange={setOpen}
+        slug="discover-rippotai"
+      />
     </>
   );
 }

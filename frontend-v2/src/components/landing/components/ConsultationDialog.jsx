@@ -14,20 +14,23 @@ import { Loader2, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useCreateQueryMutation } from '@/api/queriesApi';
 
-export default function ConsultationDialog({ open, onOpenChange }) {
+export default function ConsultationDialog({ open, onOpenChange, slug = '' }) {
   const [createQuery] = useCreateQueryMutation();
 
   const [form, setForm] = useState({
     name: '',
-    phone: '',
     email: '',
-    subject: '',
     message: '',
   });
 
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState({});
+
+  // Auto-generated subject
+  const generatedSubject = `DISCOVER ${slug
+    ?.replace(/-/g, ' ')
+    ?.toUpperCase()} CTA`;
 
   const handleChange = (key) => (e) => {
     setForm((prev) => ({
@@ -50,19 +53,8 @@ export default function ConsultationDialog({ open, onOpenChange }) {
       e.name = 'Please enter your name.';
     }
 
-    if (
-      !form.phone.trim() ||
-      !/^[+\d][\d\s\-()]{5,}$/.test(form.phone.trim())
-    ) {
-      e.phone = 'Please enter a valid phone number.';
-    }
-
     if (form.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email.trim())) {
       e.email = 'Please enter a valid email.';
-    }
-
-    if (!form.subject.trim()) {
-      e.subject = 'Please enter a subject.';
     }
 
     setErrors(e);
@@ -78,18 +70,14 @@ export default function ConsultationDialog({ open, onOpenChange }) {
     setSubmitting(true);
 
     try {
-      let finalMessage = form.message.trim();
-
-      if (form.phone.trim()) {
-        finalMessage = `Phone: ${form.phone}\n\n${finalMessage}`;
-      }
+      const finalMessage = form.message.trim() || 'Consultation Request';
 
       await createQuery({
         branch: 'rippotai',
         name: form.name.trim(),
         email: form.email.trim(),
-        subject: form.subject.trim(),
-        message: finalMessage || 'Consultation Request',
+        subject: generatedSubject,
+        message: finalMessage,
       }).unwrap();
 
       setSuccess(true);
@@ -114,9 +102,7 @@ export default function ConsultationDialog({ open, onOpenChange }) {
 
         setForm({
           name: '',
-          phone: '',
           email: '',
-          subject: '',
           message: '',
         });
 
@@ -133,23 +119,10 @@ export default function ConsultationDialog({ open, onOpenChange }) {
         <div className="grid grid-cols-1">
           {/* Top Header */}
           <div className="bg-[#1A3C34] px-6 sm:px-8 pt-8 pb-6 text-white">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="w-8 h-px bg-[#D9AF61]" />
-
-              <span className="text-[10px] tracking-[0.3em] uppercase font-bold text-[#D9AF61]">
-                Consultation
-              </span>
-            </div>
-
             <DialogHeader className="space-y-2 text-left">
               <DialogTitle className="text-3xl font-light tracking-tight">
                 Start your project.
               </DialogTitle>
-
-              <DialogDescription className="text-sm text-white/75 font-light">
-                Share your requirements and our team will reach out within 24
-                hours.
-              </DialogDescription>
             </DialogHeader>
           </div>
 
@@ -193,30 +166,12 @@ export default function ConsultationDialog({ open, onOpenChange }) {
               />
 
               <Field
-                label="Phone"
-                value={form.phone}
-                onChange={handleChange('phone')}
-                placeholder="+91 ____ ____ __"
-                error={errors.phone}
-                required
-              />
-
-              <Field
                 label="Email"
                 value={form.email}
                 onChange={handleChange('email')}
                 placeholder="you@email.com"
                 error={errors.email}
                 type="email"
-              />
-
-              <Field
-                label="Subject"
-                value={form.subject}
-                onChange={handleChange('subject')}
-                placeholder="Project subject"
-                error={errors.subject}
-                required
               />
 
               {/* Message */}
@@ -255,10 +210,6 @@ export default function ConsultationDialog({ open, onOpenChange }) {
                   </>
                 )}
               </button>
-
-              <p className="text-center text-[10px] uppercase tracking-[0.2em] text-[#9CA3AF]">
-                Limited consultations · Curated architectural experiences
-              </p>
             </form>
           )}
         </div>

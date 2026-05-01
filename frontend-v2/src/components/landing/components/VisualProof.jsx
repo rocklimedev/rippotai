@@ -23,37 +23,23 @@ export default function VisualProof({ data }) {
         </div>
 
         {/* Gallery */}
-        <div className="grid grid-cols-1 md:grid-cols-12 auto-rows-[260px] gap-4">
-          {data?.images?.map((img, i) => {
-            const layouts = [
-              'md:col-span-7 md:row-span-2',
-              'md:col-span-5 md:row-span-1',
-              'md:col-span-5 md:row-span-1',
-              'md:col-span-4 md:row-span-1',
-              'md:col-span-4 md:row-span-1',
-              'md:col-span-4 md:row-span-1',
-              'md:col-span-12 md:row-span-2',
-            ];
+        <div className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
+          {data?.images?.map((img, i) => (
+            <figure
+              key={i}
+              className="relative overflow-hidden rounded-[2rem] group break-inside-avoid"
+            >
+              {/* Image */}
+              <img
+                src={img.url}
+                alt={img.alt}
+                className="w-full h-auto object-contain transition-transform duration-1000 ease-out group-hover:scale-[1.02]"
+              />
 
-            return (
-              <figure
-                key={i}
-                className={`relative overflow-hidden rounded-[2rem] group ${
-                  layouts[i] || 'md:col-span-4'
-                }`}
-              >
-                {/* Image */}
-                <img
-                  src={img.url}
-                  alt={img.alt}
-                  className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
-                />
-
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-70 group-hover:opacity-100 transition duration-500" />
-              </figure>
-            );
-          })}
+              {/* Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/5 to-transparent opacity-60 group-hover:opacity-90 transition duration-500" />
+            </figure>
+          ))}
         </div>
       </div>
     </section>

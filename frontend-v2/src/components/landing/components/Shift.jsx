@@ -29,10 +29,22 @@ export default function Shift({ data, onConsult }) {
 
           <button
             onClick={onConsult}
-            className="mt-10 inline-flex items-center gap-3 px-6 py-4 border border-[#1A3C34] hover:bg-[#1A3C34] hover:text-white transition"
+            className="group mt-10 inline-flex items-center gap-3 transition-all duration-300"
+            style={{
+              fontFamily: "'Lato', sans-serif",
+              fontSize: '12px',
+              fontWeight: 500,
+              letterSpacing: '3px',
+              textTransform: 'uppercase',
+              color: '#1A3C34',
+            }}
           >
-            Book a Consultation Call
-            <ArrowRight size={16} />
+            <span>Book a Consultation Call</span>
+
+            <ArrowRight
+              size={16}
+              className="transition-transform duration-300 group-hover:translate-x-1"
+            />
           </button>
         </div>
 

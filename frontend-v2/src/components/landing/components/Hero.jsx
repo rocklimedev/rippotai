@@ -41,13 +41,26 @@ export default function Hero({ data, slides = [], onConsult, onStartProject }) {
 
           <p className="mt-6 text-white/80 max-w-xl">{data?.sub}</p>
 
-          <div className="mt-10 flex gap-4">
+          <div className="mt-10">
             <button
               onClick={onConsult}
-              className="px-6 py-4 bg-[#D9AF61] text-[#1A3C34] inline-flex items-center gap-2"
+              className="group inline-flex items-center gap-3"
+              style={{
+                fontFamily: "'Lato', sans-serif",
+                fontSize: '12px',
+                fontWeight: 500,
+                letterSpacing: '3px',
+                textTransform: 'uppercase',
+                color: '#ffffff',
+                transition: 'all 0.3s ease',
+              }}
             >
               <span>{data?.primaryCta}</span>
-              <ArrowRight size={18} />
+
+              <ArrowRight
+                size={16}
+                className="transition-transform duration-300 group-hover:translate-x-1"
+              />
             </button>
           </div>
         </div>

@@ -20,10 +20,22 @@ export default function FinalCTA({ data, onConsult }) {
 
         <button
           onClick={onConsult}
-          className="mt-12 inline-flex items-center gap-3 px-8 py-5 bg-[#1A3C34] text-white hover:bg-[#D9AF61] hover:text-[#1A3C34] transition"
+          className="group mt-12 inline-flex items-center gap-3 transition-all duration-300"
+          style={{
+            fontFamily: "'Lato', sans-serif",
+            fontSize: '12px',
+            fontWeight: 500,
+            letterSpacing: '3px',
+            textTransform: 'uppercase',
+            color: '#1A3C34',
+          }}
         >
-          {data?.cta}
-          <ArrowRight size={18} />
+          <span>{data?.cta}</span>
+
+          <ArrowRight
+            size={16}
+            className="transition-transform duration-300 group-hover:translate-x-1"
+          />
         </button>
       </div>
     </section>

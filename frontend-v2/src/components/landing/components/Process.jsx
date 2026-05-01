@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useReveal } from "@/lib/useReveal";
+import { useReveal } from '@/lib/useReveal';
 
 export default function Process({ data }) {
   const { ref, inView } = useReveal();
@@ -11,7 +11,7 @@ export default function Process({ data }) {
     <section
       ref={ref}
       className={`bg-[#FAFAFA] py-24 md:py-32 reveal ${
-        inView ? "in-view" : ""
+        inView ? 'in-view' : ''
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12">
