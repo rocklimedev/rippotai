@@ -85,10 +85,10 @@ export const Header = () => {
             <img
               src={
                 menuOpen
-                  ? '/assets/logo_mono.png'
+                  ? '/assets/logos/logo_mono.png'
                   : scrolled
                     ? '/logo.png'
-                    : '/assets/logo_mono.png'
+                    : '/assets/logos/logo_mono.png'
               }
               alt="Rippotai"
               style={{

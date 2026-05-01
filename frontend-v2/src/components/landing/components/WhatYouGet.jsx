@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useReveal } from "@/lib/useReveal";
+import { useReveal } from '@/lib/useReveal';
 
 export default function WhatYouGet({ data }) {
   const { ref, inView } = useReveal();
@@ -9,19 +9,12 @@ export default function WhatYouGet({ data }) {
     <section
       ref={ref}
       className={`bg-[#FAFAFA] py-24 md:py-32 reveal ${
-        inView ? "in-view" : ""
+        inView ? 'in-view' : ''
       }`}
     >
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <div className="max-w-3xl mb-16">
-          <div className="flex gap-4 mb-6">
-            <span className="w-10 h-px bg-[#D9AF61]" />
-            <span className="text-xs tracking-[0.3em] uppercase text-[#D9AF61]">
-              {data?.eyebrow}
-            </span>
-          </div>
-
           <h2 className="text-4xl md:text-5xl font-light text-[#1A3C34]">
             {data?.headline}
           </h2>
@@ -34,10 +27,6 @@ export default function WhatYouGet({ data }) {
               key={it.n}
               className="group bg-white p-10 hover:bg-[#1A3C34] transition"
             >
-              <span className="text-[#D9AF61] text-xs tracking-[0.3em]">
-                {it.n}
-              </span>
-
               <h3 className="mt-6 text-2xl text-[#1A3C34] group-hover:text-white transition">
                 {it.title}
               </h3>

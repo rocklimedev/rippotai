@@ -29,14 +29,14 @@ export const values = [
     text: 'Great spaces emerge from great partnerships. We listen, understand, and co-create with our clients every step of the way.',
   },
 ];
-export const processImage = '/assets/process.png';
-export const contactImage = '/assets/contact_banner.png';
-export const aboutImage = '/assets/team.jpg';
-export const careerImage = '/assets/careers_banner.png';
-export const projectsImage = '/assets/projects_banner_main.jpg';
-export const servicesImage = '/assets/services.png';
-export const teamImage = '/assets/team.jpg';
-export const achievementsImage = '/assets/achievements.jpeg';
+export const processImage = '/assets/banners/process.png';
+export const contactImage = '/assets/banners/contact_banner.png';
+export const aboutImage = '/assets/banners/team.jpg';
+export const careerImage = '/assets/banners/careers_banner.png';
+export const projectsImage = '/assets/banners/projects_banner_main.jpg';
+export const servicesImage = '/assets/banners/services.png';
+export const teamImage = '/assets/banners/team.jpg';
+export const achievementsImage = '/assets/banners/achievements.jpeg';
 
 export const navigationLinks = [
   { label: 'Home', href: '/' },
@@ -81,28 +81,28 @@ export const processSteps = [
     title: 'CONSULTATION',
     description:
       'Understanding context, constraints, and client vision to define architectural direction.',
-    icon: '/assets/process_briefing.png',
+    icon: '/assets/icons/process_briefing.png',
   },
   {
     id: 2,
     title: 'DESIGN',
     description:
       'Translating vision into spatial concepts through rigorous design exploration and iteration.',
-    icon: '/assets/process_design.png',
+    icon: '/assets/icons/process_design.png',
   },
   {
     id: 3,
     title: 'EXECUTION',
     description:
       'Precise realization of design intent through meticulous material selection and construction oversight.',
-    icon: '/assets/process_execution.png',
+    icon: '/assets/icons/process_execution.png',
   },
   {
     id: 4,
     title: 'HANDOVER',
     description:
       'Final delivery ensuring every detail meets the uncompromising standard of our practice.',
-    icon: '/assets/process_handover.png',
+    icon: '/assets/icons/process_handover.png',
   },
 ];
 
@@ -114,7 +114,7 @@ export const services = [
     description:
       'We create visually striking, functional spaces inspired by the simplicity and versatility of the cube.',
 
-    banner: '/assets/services_architecture.jpeg',
+    banner: '/assets/banners/services_architecture.jpeg',
 
     intro: `
       Our architectural approach blends creativity with precision. We design
@@ -206,7 +206,7 @@ export const services = [
     title: 'Turnkey Projects',
     description: 'End-to-end project delivery.',
 
-    banner: '/assets/services_turnkey.jpeg',
+    banner: '/assets/banners/services_turnkey.jpeg',
 
     intro: `
       We provide complete turnkey solutions, managing everything from concept
@@ -298,7 +298,7 @@ export const services = [
     title: 'Interiors',
     description: 'Our interior designs blend style and practicality.',
 
-    banner: '/assets/services_interior.png',
+    banner: '/assets/banners/services_interior.png',
 
     intro: `
       We design interiors that reflect your personality while maximizing
@@ -392,7 +392,7 @@ export const services = [
     title: 'Furniture',
     description: 'Our niche furniture pieces are uniquely designed.',
 
-    banner: '/assets/process.png',
+    banner: '/assets/banners/process.png',
 
     intro: `
       Our furniture pieces are crafted with precision and creativity,
@@ -483,19 +483,19 @@ export const teamMembers = [
     id: 1,
     name: 'Sagar Chhabra',
     designation: 'Founder & Principal Architect',
-    image: '/assets/sagar_chhabra.png',
+    image: '/assets/team/sagar_chhabra.png',
   },
   {
     id: 2,
     name: 'Jayant',
     designation: 'Architect',
-    image: '/assets/Jayant.jpg',
+    image: '/assets/team/Jayant.jpg',
   },
   {
     id: 3,
     name: 'Sarthi',
     designation: 'Architect',
-    image: '/assets/saarthi.jpeg',
+    image: '/assets/team/saarthi.jpeg',
   },
   {
     id: 4,
@@ -508,13 +508,13 @@ export const teamMembers = [
     id: 5,
     name: 'Megha Chhabra',
     designation: 'Interior Decor and Styling Head',
-    image: '/assets/megha.PNG',
+    image: '/assets/team/megha.PNG',
   },
   {
     id: 6,
     name: 'Bhav Lamba',
     designation: 'Content Strategy & Creative Lead',
-    image: '/assets/Bhav.jpg',
+    image: '/assets/team/Bhav.jpg',
   },
   {
     id: 7,
@@ -527,7 +527,7 @@ export const teamMembers = [
     id: 8,
     name: 'Chhavi',
     designation: 'Collaborator',
-    image: '/assets/CM.png',
+    image: '/assets/team/CM.png',
     tag: 'Collaborator',
   },
 
@@ -535,21 +535,21 @@ export const teamMembers = [
     id: 9,
     name: 'Aniket',
     designation: 'Architect',
-    image: '/assets/aniket.png',
+    image: '/assets/team/aniket.png',
     tag: 'Alumni',
   },
   {
     id: 10,
     name: 'Shivam',
     designation: 'Architect',
-    image: '/assets/shivam.png',
+    image: '/assets/team/shivam.png',
     tag: 'Alumni',
   },
   {
     id: 11,
     name: 'Shivani',
     designation: 'Project Manager',
-    image: '/assets/shivani.png',
+    image: '/assets/team/shivani.png',
     tag: 'Alumni',
   },
 ];
@@ -571,7 +571,7 @@ export const achievements = [
     org: 'Architectural Digest',
     year: '2025',
     link: 'https://www.architecturaldigest.in/sponsored/story/a-confluence-of-quiet-luxury-and-intelligent-design-meet-the-winners-of-the-grohe-bath-and-design-awards-2025/',
-    image1: '/assets/awards_1.png',
-    image2: '/assets/awards_2.png',
+    image1: '/assets/achievements/awards_1.png',
+    image2: '/assets/achievements/awards_2.png',
   },
 ];

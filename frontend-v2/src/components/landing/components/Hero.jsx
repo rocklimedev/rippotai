@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { ArrowRight, MoveDown } from "lucide-react";
+import { useEffect, useState } from 'react';
+import { ArrowRight, MoveDown } from 'lucide-react';
 
 export default function Hero({ data, slides = [], onConsult, onStartProject }) {
   const [active, setActive] = useState(0);
@@ -23,7 +23,7 @@ export default function Hero({ data, slides = [], onConsult, onStartProject }) {
         {slides.map((s, i) => (
           <div
             key={s.url}
-            className={`hero-slide ${i === active ? "active" : ""}`}
+            className={`hero-slide ${i === active ? 'active' : ''}`}
             style={{ backgroundImage: `url(${s.url})` }}
           />
         ))}
@@ -35,12 +35,6 @@ export default function Hero({ data, slides = [], onConsult, onStartProject }) {
       {/* Content */}
       <div className="relative z-10 h-full max-w-7xl mx-auto px-6 flex flex-col justify-end pb-24 pt-24">
         <div className="max-w-4xl">
-          <div className="mb-6">
-            <span className="text-xs tracking-[0.3em] uppercase text-[#D9AF61]">
-              {data?.eyebrow}
-            </span>
-          </div>
-
           <h1 className="text-white text-6xl font-light whitespace-pre-line">
             {data?.headline}
           </h1>
@@ -55,27 +49,7 @@ export default function Hero({ data, slides = [], onConsult, onStartProject }) {
               {data?.primaryCta}
               <ArrowRight size={18} />
             </button>
-
-            <button
-              onClick={onStartProject}
-              className="px-6 py-4 border border-white text-white"
-            >
-              {data?.secondaryCta}
-            </button>
           </div>
-        </div>
-
-        {/* Indicators */}
-        <div className="mt-10 flex gap-2 ml-auto">
-          {slides.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setActive(i)}
-              className={`h-px ${
-                i === active ? "w-10 bg-[#D9AF61]" : "w-5 bg-white/40"
-              }`}
-            />
-          ))}
         </div>
       </div>
     </section>
