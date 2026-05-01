@@ -44,8 +44,7 @@ export const SITE = {
           'We guide every decision with intent.',
         ],
 
-        image:
-          'https://images.unsplash.com/photo-1622015663381-d2e05ae91b72?crop=entropy&cs=srgb&fm=jpg&q=85&w=1400',
+        image: '/assets/landings/discover-rippotai/banner.png',
       },
       whatYouGet: {
         headline: 'Complete architectural thinking.',
