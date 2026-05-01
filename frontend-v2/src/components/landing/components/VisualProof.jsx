@@ -51,24 +51,6 @@ export default function VisualProof({ data }) {
 
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-70 group-hover:opacity-100 transition duration-500" />
-
-                {/* Floating number */}
-                <div className="absolute top-5 left-5 w-11 h-11 rounded-full border border-white/30 bg-white/10 backdrop-blur-md flex items-center justify-center text-white text-xs tracking-[0.2em]">
-                  {String(i + 1).padStart(2, '0')}
-                </div>
-
-                {/* Caption */}
-                <figcaption className="absolute bottom-0 left-0 w-full p-6 md:p-8 translate-y-6 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                  <div className="max-w-sm">
-                    <span className="text-[10px] md:text-xs tracking-[0.35em] uppercase text-white/70 block mb-2">
-                      Residential Project
-                    </span>
-
-                    <h3 className="text-white text-lg md:text-2xl font-light leading-snug">
-                      {img.alt}
-                    </h3>
-                  </div>
-                </figcaption>
               </figure>
             );
           })}

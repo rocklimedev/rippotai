@@ -28,8 +28,8 @@ export default function Hero({ data, slides = [], onConsult, onStartProject }) {
           />
         ))}
 
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0d1f1c]/70 via-[#0d1f1c]/40 to-[#0d1f1c]/85" />
-        <div className="absolute inset-0 bg-[#1A3C34]/25" />
+        {/* Dark overlay only */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
       </div>
 
       {/* Content */}
@@ -44,9 +44,9 @@ export default function Hero({ data, slides = [], onConsult, onStartProject }) {
           <div className="mt-10 flex gap-4">
             <button
               onClick={onConsult}
-              className="px-6 py-4 bg-[#D9AF61] text-[#1A3C34]"
+              className="px-6 py-4 bg-[#D9AF61] text-[#1A3C34] inline-flex items-center gap-2"
             >
-              {data?.primaryCta}
+              <span>{data?.primaryCta}</span>
               <ArrowRight size={18} />
             </button>
           </div>
