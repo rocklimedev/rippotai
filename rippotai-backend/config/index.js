@@ -10,8 +10,14 @@ const sequelize = new Sequelize(
   dbConfig.DB_PASSWORD,
   {
     host: dbConfig.DB_HOST,
+    port: dbConfig.DB_PORT || 3306,
     dialect: "mysql",
     logging: false,
+    dialectOptions: {
+      connectTimeout: 20000,
+      ssl: false,
+      family: 4,
+    },
   },
 );
 
