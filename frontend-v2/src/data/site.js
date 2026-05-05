@@ -6,7 +6,7 @@ export const SITE = {
       tagline: 'Residential Architecture | Consultation | Execution Thinking',
       hero: {
         headline: 'From First Thought To Final Key.\nWe Handle It All.',
-        primaryCta: 'Book a Consultation Call',
+        primaryCta: 'Consult Us',
       },
       heroSlides: [
         {
@@ -27,8 +27,7 @@ export const SITE = {
         },
       ],
       problem: {
-        headline:
-          'A fully managed home-building \nprocess, without your day-to-day\n involvement.',
+        headline: 'Are you also confused?',
         points: [
           'Too many materials.',
           'Too many opinions.',
@@ -50,25 +49,29 @@ export const SITE = {
         headline: 'Complete architectural thinking.',
         items: [
           {
+            id: 'consultation',
             title: 'Architecture Consultation',
             body: 'Understanding your vision, lifestyle, and how your space should live.',
           },
           {
+            id: 'concept-drawings',
             title: 'Concept to Drawings',
             body: 'Thoughtful layouts, considered details, and resolved planning.',
           },
           {
+            id: 'material-guidance',
             title: 'Material & Decision Guidance',
             body: 'No overwhelm. Only the right choices, at the right time.',
           },
           {
+            id: 'execution-thinking',
             title: 'Execution Thinking',
             body: 'Designs that actually work on-site, made for the people who build.',
           },
         ],
       },
       visualProof: {
-        headline: 'Different homes. Same approach.',
+        headline: 'Different homes.\nSame approach.',
         images: [
           {
             url: '/assets/landings/discover-rippotai/gal_1.jpeg',
@@ -134,7 +137,7 @@ export const SITE = {
       },
       finalCta: {
         headline: "If you're planning your home,\nstart with clarity.",
-        cta: 'Book Your Consultation Call',
+        cta: 'Consult Us',
       },
       footer: {
         location: 'Delhi / NCR, India',

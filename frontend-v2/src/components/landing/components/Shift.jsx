@@ -39,7 +39,7 @@ export default function Shift({ data, onConsult }) {
               color: '#1A3C34',
             }}
           >
-            <span>Book a Consultation Call</span>
+            <span>Consult Us</span>
 
             <ArrowRight
               size={16}

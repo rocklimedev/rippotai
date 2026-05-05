@@ -16,7 +16,7 @@ export default function VisualProof({ data }) {
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-16">
           <div className="max-w-3xl">
-            <h2 className="text-4xl md:text-6xl leading-tight font-light text-[#1A3C34]">
+            <h2 className="text-4xl md:text-6xl leading-tight font-light text-[#1A3C34] whitespace-pre-line">
               {data?.headline}
             </h2>
           </div>

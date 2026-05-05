@@ -20,9 +20,6 @@ export default function Problem({ data }) {
         <ul className="mt-12 grid sm:grid-cols-2 gap-px bg-gray-200 border max-w-3xl mx-auto">
           {data?.points?.map((p, i) => (
             <li key={i} className="bg-white p-6 text-left text-[#4A6B63]">
-              <span className="text-[#D9AF61] text-xs tracking-[0.25em] block mb-2">
-                {String(i + 1).padStart(2, '0')}
-              </span>
               {p}
             </li>
           ))}

@@ -36,8 +36,6 @@ export default function LandingClient({ slug, config }) {
         <Shift data={config.shift} onConsult={onConsult} />
         <VisualProof data={config.visualProof} />
 
-        <WhatYouGet data={config.whatYouGet} />
-
         <FinalCTA data={config.finalCta} onConsult={onConsult} />
       </main>
 
