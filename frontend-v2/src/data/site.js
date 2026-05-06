@@ -101,6 +101,18 @@ export const SITE = {
             url: '/assets/landings/discover-rippotai/gal_7.jpeg',
             alt: 'Concrete staircase geometry',
           },
+          {
+            url: '/assets/landings/discover-rippotai/gal_8.png',
+            alt: 'Concrete staircase geometry',
+          },
+          {
+            url: '/assets/landings/discover-rippotai/gal_9.png',
+            alt: 'Concrete staircase geometry',
+          },
+          {
+            url: '/assets/landings/discover-rippotai/gal_10.png',
+            alt: 'Concrete staircase geometry',
+          },
         ],
       },
       process: {

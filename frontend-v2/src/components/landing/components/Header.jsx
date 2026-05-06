@@ -56,7 +56,7 @@ export default function Header({ onConsult }) {
           <img
             src="/assets/logos/logo@typo.png"
             alt="Logo"
-            className="h-10 md:h-14 object-contain mt-2"
+            className="h-14 md:h-20 object-contain mt-2"
           />
         </a>
 

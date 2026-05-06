@@ -10,7 +10,7 @@ import VisualProof from '@/components/landing/components/VisualProof';
 import Process from '@/components/landing/components/Process';
 import About from '@/components/landing/components/About';
 import FinalCTA from '@/components/landing/components/FinalCTA';
-
+import { FloatingCTA } from '@/components/layouts/FloatingCTA';
 // ← Your landing footer
 import StickyConsultBar from '@/components/landing/components/StickyConsultBar';
 import ConsultationDialog from '@/components/landing/components/ConsultationDialog';
@@ -41,6 +41,7 @@ export default function LandingClient({ slug, config }) {
 
       <Footer />
       <StickyConsultBar onConsult={onConsult} />
+ 
       <ConsultationDialog
         open={open}
         onOpenChange={setOpen}

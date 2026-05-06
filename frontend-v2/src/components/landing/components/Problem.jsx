@@ -1,9 +1,13 @@
 'use client';
 
 import { useReveal } from '@/lib/useReveal';
+import { CheckCircle, AlertCircle, Clock, XCircle } from 'lucide-react';
 
 export default function Problem({ data }) {
   const { ref, inView } = useReveal();
+
+  // Rotate icons if more points
+  const icons = [AlertCircle, Clock, XCircle, CheckCircle];
 
   return (
     <section
@@ -18,11 +22,24 @@ export default function Problem({ data }) {
         </h2>
 
         <ul className="mt-12 grid sm:grid-cols-2 gap-px bg-gray-200 border max-w-3xl mx-auto">
-          {data?.points?.map((p, i) => (
-            <li key={i} className="bg-white p-6 text-left text-[#4A6B63]">
-              {p}
-            </li>
-          ))}
+          {data?.points?.map((p, i) => {
+            const Icon = icons[i % icons.length];
+
+            return (
+              <li
+                key={i}
+                className="bg-white p-6 flex items-start gap-4 text-[#4A6B63]"
+              >
+                {/* Icon */}
+                <div className="mt-1 text-[#1A3C34]">
+                  <Icon size={20} strokeWidth={1.5} />
+                </div>
+
+                {/* Text */}
+                <span>{p}</span>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </section>
