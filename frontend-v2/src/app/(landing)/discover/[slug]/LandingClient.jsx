@@ -14,7 +14,7 @@ import FinalCTA from '@/components/landing/components/FinalCTA';
 // ← Your landing footer
 import StickyConsultBar from '@/components/landing/components/StickyConsultBar';
 import ConsultationDialog from '@/components/landing/components/ConsultationDialog';
-import { Header } from '@/components/layouts/Header';
+import Header from '@/components/landing/components/Header';
 import { Footer } from '@/components/layouts/Footer';
 export default function LandingClient({ slug, config }) {
   const [open, setOpen] = useState(false);
