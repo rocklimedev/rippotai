@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { ArrowRight, MoveDown } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export default function Hero({ data, slides = [], onConsult, onStartProject }) {
   const [active, setActive] = useState(0);
@@ -17,29 +17,34 @@ export default function Hero({ data, slides = [], onConsult, onStartProject }) {
   }, [slides]);
 
   return (
-    <section className="relative h-[100svh] min-h-[600px] w-full overflow-hidden bg-[#0d1f1c]">
+    <section className="relative w-full h-screen overflow-hidden bg-[#0d1f1c]">
       {/* Slides */}
       <div className="absolute inset-0">
         {slides.map((s, i) => (
           <div
             key={s.url}
-            className={`hero-slide ${i === active ? 'active' : ''}`}
-            style={{ backgroundImage: `url(${s.url})` }}
+            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
+              i === active ? 'opacity-100' : 'opacity-0'
+            }`}
+            style={{
+              backgroundImage: `url('${s.url}')`,
+              backgroundColor: '#111827',
+            }}
           />
         ))}
 
-        {/* Dark overlay only */}
+        {/* Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
       </div>
 
       {/* Content */}
       <div className="relative z-10 h-full max-w-7xl mx-auto px-6 flex flex-col justify-end pb-24 pt-24">
         <div className="max-w-4xl">
-          <h1 className="text-white text-6xl font-light whitespace-pre-line">
+          <h1 className="text-white text-6xl md:text-7xl font-light whitespace-pre-line leading-tight">
             {data?.headline}
           </h1>
 
-          <p className="mt-6 text-white/80 max-w-xl">{data?.sub}</p>
+          <p className="mt-6 text-white/80 max-w-xl text-lg">{data?.sub}</p>
 
           <div className="mt-10">
             <button
