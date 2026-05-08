@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Menu, X } from 'lucide-react';
 import { SITE } from '@/data/site';
 
 const NAV = [
@@ -11,12 +10,14 @@ const NAV = [
 
 export default function Header({ onConsult }) {
   const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
+
     onScroll();
+
     window.addEventListener('scroll', onScroll, { passive: true });
+
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
@@ -28,24 +29,12 @@ export default function Header({ onConsult }) {
           : 'bg-transparent'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-12 py-4 flex flex-col items-center justify-center relative">
-        {/* Mobile Menu Button */}
-        <button
-          type="button"
-          aria-label="Toggle menu"
-          onClick={() => setOpen((s) => !s)}
-          className={`lg:hidden absolute right-6 top-6 p-2 ${
-            scrolled ? 'text-[#1A3C34]' : 'text-white'
-          }`}
-        >
-          {open ? <X size={22} /> : <Menu size={22} />}
-        </button>
-
+      <div className="max-w-7xl mx-auto px-4 md:px-12 py-4 flex flex-col items-center justify-center">
         {/* Logo / Brand */}
         <a href="#top" className="flex flex-col items-center gap-2 group">
           {/* Brand Name */}
           <span
-            className={`font-heading text-xl md:text-2xl font-light tracking-[0.2em] uppercase ${
+            className={`font-heading text-lg sm:text-xl md:text-2xl font-light tracking-[0.2em] uppercase text-center ${
               scrolled ? 'text-[#1A3C34]' : 'text-white'
             }`}
           >
@@ -56,17 +45,17 @@ export default function Header({ onConsult }) {
           <img
             src="/assets/logos/logo@typo.png"
             alt="Logo"
-            className="h-14 md:h-20 object-contain mt-2"
+            className="h-12 sm:h-16 md:h-20 object-contain mt-2"
           />
         </a>
 
         {/* Navigation */}
-        <nav className="hidden lg:flex items-center gap-6 mt-4">
+        <nav className="flex flex-wrap items-center justify-center gap-4 md:gap-6 mt-5">
           {NAV.map((n) => (
             <a
               key={n.href}
               href={n.href}
-              className={`link-underline text-xs tracking-[0.12em] uppercase ${
+              className={`link-underline text-[10px] sm:text-xs tracking-[0.12em] uppercase transition-colors duration-300 ${
                 scrolled ? 'text-[#1A3C34]' : 'text-white'
               }`}
             >
@@ -75,24 +64,6 @@ export default function Header({ onConsult }) {
           ))}
         </nav>
       </div>
-
-      {/* Mobile drawer */}
-      {open && (
-        <div className="lg:hidden bg-white border-t border-gray-200">
-          <div className="px-6 py-6 flex flex-col items-center gap-5">
-            {NAV.map((n) => (
-              <a
-                key={n.href}
-                href={n.href}
-                onClick={() => setOpen(false)}
-                className="text-sm tracking-[0.15em] uppercase text-[#1A3C34]"
-              >
-                {n.label}
-              </a>
-            ))}
-          </div>
-        </div>
-      )}
     </header>
   );
 }

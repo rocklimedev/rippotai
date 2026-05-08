@@ -5,13 +5,8 @@ import { useState } from 'react';
 import Hero from '@/components/landing/components/Hero';
 import Problem from '@/components/landing/components/Problem';
 import Shift from '@/components/landing/components/Shift';
-import WhatYouGet from '@/components/landing/components/WhatYouGet';
 import VisualProof from '@/components/landing/components/VisualProof';
-import Process from '@/components/landing/components/Process';
-import About from '@/components/landing/components/About';
 import FinalCTA from '@/components/landing/components/FinalCTA';
-import { FloatingCTA } from '@/components/layouts/FloatingCTA';
-// ← Your landing footer
 import StickyConsultBar from '@/components/landing/components/StickyConsultBar';
 import ConsultationDialog from '@/components/landing/components/ConsultationDialog';
 import Header from '@/components/landing/components/Header';
@@ -41,7 +36,7 @@ export default function LandingClient({ slug, config }) {
 
       <Footer />
       <StickyConsultBar onConsult={onConsult} />
- 
+
       <ConsultationDialog
         open={open}
         onOpenChange={setOpen}

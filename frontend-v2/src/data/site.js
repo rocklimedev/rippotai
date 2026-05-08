@@ -5,7 +5,7 @@ export const SITE = {
       brandFull: 'Rippotai Architecture',
       tagline: 'Residential Architecture | Consultation | Execution Thinking',
       hero: {
-        headline: 'From First Thought To Final Key.\nWe Handle It All.',
+        headline: 'Transform your home without the hassle.',
         primaryCta: 'Consult Us',
       },
       heroSlides: [
