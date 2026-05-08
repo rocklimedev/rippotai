@@ -13,18 +13,6 @@ export const SITE = {
           url: '/assets/landings/discover-rippotai/1.jpeg',
           alt: 'Contemporary white and wooden villa exterior',
         },
-        {
-          url: '/assets/landings/discover-rippotai/2.jpeg',
-          alt: 'Contemporary villa with reflecting pool',
-        },
-        {
-          url: '/assets/landings/discover-rippotai/3.png',
-          alt: 'White concrete building exterior',
-        },
-        {
-          url: '/assets/landings/discover-rippotai/4.jpeg',
-          alt: 'Elegant minimalist living room',
-        },
       ],
       problem: {
         headline: 'Are you also confused?',
@@ -112,6 +100,14 @@ export const SITE = {
           {
             url: '/assets/landings/discover-rippotai/gal_10.png',
             alt: 'Concrete staircase geometry',
+          },
+          {
+            url: '/assets/landings/discover-rippotai/3.png',
+            alt: 'White concrete building exterior',
+          },
+          {
+            url: '/assets/landings/discover-rippotai/4.jpeg',
+            alt: 'Elegant minimalist living room',
           },
         ],
       },
