@@ -74,7 +74,7 @@ export default function CareerPage() {
         style={{
           position: 'relative',
           width: '100%',
-          minHeight: '70vh',
+          minHeight: '80vh',
           height: '70dvh',
           backgroundImage: `url(${careerImage})`,
           backgroundSize: 'cover',

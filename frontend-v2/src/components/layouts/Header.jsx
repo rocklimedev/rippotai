@@ -81,9 +81,9 @@ export const Header = () => {
               backgroundColor: '#ffffff',
               padding: '8px 14px',
               zIndex: 2,
-              borderRadius: '18px', // curved edges
+              borderRadius: '18px',
               overflow: 'hidden',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.08)', // optional soft shadow
+              transform: 'translateY(6px)', // 👈 moves logo slightly downward
             }}
           >
             <img
@@ -97,7 +97,6 @@ export const Header = () => {
               }}
             />
           </a>
-
           {/* DESKTOP NAV */}
           <nav
             style={{

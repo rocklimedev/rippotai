@@ -18,7 +18,15 @@ export default function ServiceDetailPage() {
   return (
     <>
       {/* ===== Banner ===== */}
-      <section className="relative h-screen w-full">
+      <section
+        style={{
+          position: 'relative',
+          width: '100%',
+          height: '80vh', // reduced from 100vh to 70vh
+          overflow: 'hidden',
+          backgroundColor: '#0a0a0a',
+        }}
+      >
         <Image
           src={service.banner}
           alt={service.title}

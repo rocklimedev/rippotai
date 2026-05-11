@@ -12,7 +12,7 @@ export default function TeamPage() {
         style={{
           position: 'relative',
           width: '100%',
-          height: '70vh',
+          height: '80vh', // reduced from 100vh to 70vh
           overflow: 'hidden',
           backgroundColor: '#0a0a0a',
         }}

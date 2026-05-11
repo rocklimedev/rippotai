@@ -231,7 +231,7 @@ export default function ProcessPage() {
         style={{
           position: 'relative',
           width: '100%',
-          height: '70vh',
+          height: '80vh', // reduced from 100vh to 70vh
           overflow: 'hidden',
         }}
       >
