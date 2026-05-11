@@ -13,7 +13,7 @@ export default function ServicesPage() {
         style={{
           position: 'relative',
           width: '100%',
-          height: '100vh',
+          height: '70vh',
           overflow: 'hidden',
           backgroundColor: '#0a0a0a',
         }}

@@ -10,7 +10,7 @@ export const ServicesSection = () => {
       id="services"
       style={{
         backgroundColor: '#fafafa',
-        padding: '120px 48px',
+        padding: '80px 48px',
       }}
     >
       <div style={{ maxWidth: '1000px', margin: '0 auto' }}>

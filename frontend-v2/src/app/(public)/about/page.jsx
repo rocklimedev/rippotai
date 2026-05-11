@@ -335,7 +335,7 @@ export default function AboutPage() {
         style={{
           position: 'relative',
           width: '100%',
-          height: '100vh',
+          height: '70vh',
           minHeight: '600px',
           overflow: 'hidden',
         }}
@@ -350,7 +350,6 @@ export default function AboutPage() {
             objectPosition: 'center top',
           }}
         />
-
         <div
           style={{
             position: 'absolute',

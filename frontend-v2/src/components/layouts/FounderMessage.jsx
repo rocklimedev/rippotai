@@ -5,7 +5,7 @@ export const FounderMessage = () => {
     <section
       style={{
         position: 'relative',
-        padding: '140px 48px',
+        padding: '80px 48px', // reduced top & bottom padding
         overflow: 'hidden',
         backgroundColor: '#ffffff',
       }}
@@ -29,7 +29,7 @@ export const FounderMessage = () => {
               lineHeight: 1.7,
               letterSpacing: '0.5px',
               margin: 0,
-              padding: '40px 0',
+              padding: '20px 0', // reduced inner spacing
               fontStyle: 'italic',
             }}
           >
@@ -39,7 +39,7 @@ export const FounderMessage = () => {
         </AnimateIn>
 
         <AnimateIn delay={0.4} distance={30} duration={1}>
-          <div style={{ marginTop: '32px' }}>
+          <div style={{ marginTop: '20px' }}>
             <p
               style={{
                 fontFamily: "'Lato', sans-serif",

@@ -16,7 +16,7 @@ export default function HomePage() {
       <HeroSection />
 
       <FadeInSection>
-        <QuoteSection />
+        <WhereItBegan />
       </FadeInSection>
 
       <FadeInSection aboveGrid>
@@ -25,10 +25,6 @@ export default function HomePage() {
 
       <FadeInSection>
         <ProcessSection />
-      </FadeInSection>
-
-      <FadeInSection>
-        <WhereItBegan />
       </FadeInSection>
 
       <FadeInSection>

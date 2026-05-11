@@ -1,12 +1,10 @@
 import { Building2, Palette, Armchair, KeyRound } from 'lucide-react';
 
 export const heroImages = [
-  'https://media.cmtradingco.com/rippotai_projects/rippotai_images/1.png',
-  'https://media.cmtradingco.com/rippotai_projects/rippotai_images/4.png',
-  'https://media.cmtradingco.com/rippotai_projects/rippotai_images/5.png',
-  'https://media.cmtradingco.com/rippotai_projects/rippotai_images/3.jpeg',
-  'https://media.cmtradingco.com/rippotai_projects/rippotai_images/7.png',
-  'https://media.cmtradingco.com/rippotai_projects/rippotai_images/8.png',
+  './assets/1.jpeg',
+  './assets/2.png',
+  './assets/3.jpeg',
+  './assets/4.png',
 ];
 /************************************
  * VALUES SLIDER

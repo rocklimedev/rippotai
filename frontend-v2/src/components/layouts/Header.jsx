@@ -4,20 +4,10 @@ import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 
 export const Header = () => {
-  const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const router = useRouter();
   const pathname = usePathname();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 80);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   // Lock body scroll when menu open
   useEffect(() => {
@@ -53,7 +43,7 @@ export const Header = () => {
 
   return (
     <>
-      {/* MAIN HEADER - No background when scrolled */}
+      {/* DESKTOP HEADER */}
       <header
         style={{
           position: 'fixed',
@@ -61,56 +51,115 @@ export const Header = () => {
           left: 0,
           right: 0,
           zIndex: 1000,
-          backgroundColor: 'transparent', // Always transparent
-          transition: 'all 0.4s ease',
+          backgroundColor: '#ffffff',
+          height: '50px',
+          boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
         }}
       >
         <div
           style={{
-            maxWidth: '1400px',
+            maxWidth: '1450px',
             margin: '0 auto',
-            padding: '20px 48px',
+            height: '100%',
             display: 'flex',
-            justifyContent: 'space-between',
             alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '0 48px',
+            position: 'relative',
           }}
         >
+          {/* LOGO */}
           <a
             href="#"
             onClick={(e) => {
               e.preventDefault();
               scrollToSection('#');
             }}
+            style={{
+              position: 'relative',
+              top: '14px',
+              backgroundColor: '#ffffff',
+              padding: '8px 14px',
+              zIndex: 2,
+              borderRadius: '18px', // curved edges
+              overflow: 'hidden',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.08)', // optional soft shadow
+            }}
           >
             <img
-              src={
-                menuOpen
-                  ? '/assets/logos/logo_mono.png'
-                  : scrolled
-                    ? '/logo.png'
-                    : '/assets/logos/logo_mono.png'
-              }
+              src="./assets/logos/logo@v1.png"
               alt="Rippotai"
               style={{
-                height: '62px',
+                height: '78px',
                 width: 'auto',
                 objectFit: 'contain',
-                transition: 'all 0.3s ease',
+                display: 'block',
               }}
             />
           </a>
 
+          {/* DESKTOP NAV */}
+          <nav
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '38px',
+            }}
+            className="desktop-nav"
+          >
+            {[
+              { label: 'About', href: '/about' },
+              { label: 'Works', href: '/projects' },
+              { label: 'Team', href: '/team' },
+              { label: 'Services', href: '/services' },
+              { label: 'Process', href: '/process' },
+              { label: 'Career', href: '/careers' },
+              { label: 'Contact', href: '/contact' },
+              { label: 'Achievements', href: '/achievements' },
+            ].map((item, i) => (
+              <a
+                key={i}
+                href={item.href}
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToSection(item.href);
+                }}
+                style={{
+                  fontFamily: "'Lato', sans-serif",
+                  fontSize: '13px',
+                  fontWeight: 400,
+                  letterSpacing: '2px',
+                  textTransform: 'uppercase',
+                  color: '#1a3c34',
+                  textDecoration: 'none',
+                  transition: 'all 0.3s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = '#d9af61';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = '#1a3c34';
+                }}
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+
+          {/* MOBILE MENU BUTTON */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
+            className="mobile-menu-btn"
             style={{
               fontFamily: "'Lato', sans-serif",
               fontSize: '15px',
               letterSpacing: '3px',
               textTransform: 'uppercase',
-              color: menuOpen ? '#ffffff' : scrolled ? '#1a3c34' : '#ffffff',
+              color: '#1a3c34',
               background: 'none',
               border: 'none',
               cursor: 'pointer',
+              display: 'none',
             }}
           >
             {menuOpen ? 'CLOSE' : 'MENU'}
@@ -118,7 +167,7 @@ export const Header = () => {
         </div>
       </header>
 
-      {/* FULL SCREEN MENU - Smaller Items */}
+      {/* MOBILE FULLSCREEN MENU */}
       <div
         style={{
           position: 'fixed',
@@ -173,18 +222,25 @@ export const Header = () => {
                 textAlign: 'center',
                 lineHeight: 1.2,
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = '#d9af61';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = '#ffffff';
-              }}
             >
               {item.label}
             </a>
           ))}
         </nav>
       </div>
+
+      {/* RESPONSIVE */}
+      <style jsx>{`
+        @media (max-width: 1024px) {
+          .desktop-nav {
+            display: none !important;
+          }
+
+          .mobile-menu-btn {
+            display: block !important;
+          }
+        }
+      `}</style>
     </>
   );
 };

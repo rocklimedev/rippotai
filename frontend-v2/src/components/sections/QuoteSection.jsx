@@ -6,7 +6,7 @@ export const QuoteSection = () => {
       id="about"
       style={{
         backgroundColor: '#ffffff',
-        padding: '120px 48px',
+        padding: '70px 48px',
       }}
     >
       <div

@@ -6,7 +6,7 @@ export const WhereItBegan = () => {
     <section
       style={{
         backgroundColor: '#ffffff',
-        padding: '120px 48px',
+        padding: '80px 48px',
       }}
     >
       <div
@@ -23,20 +23,37 @@ export const WhereItBegan = () => {
         {/* Left - Text */}
         <div>
           <AnimateIn delay={0} distance={50} duration={1.2}>
-            <h2
-              style={{
-                fontFamily: "'Lato', sans-serif",
-                fontSize: 'clamp(28px, 3.5vw, 42px)',
-                fontWeight: 300,
-                color: '#1a3c34',
-                letterSpacing: '1px',
-                lineHeight: 1.2,
-                margin: 0,
-                marginBottom: '40px',
-              }}
-            >
-              About Us
-            </h2>
+            <div>
+              <h2
+                style={{
+                  fontFamily: "'Lato', sans-serif",
+                  fontSize: 'clamp(34px, 4.2vw, 52px)',
+                  fontWeight: 300,
+                  color: '#1a3c34',
+                  letterSpacing: '1px',
+                  lineHeight: 1.2,
+                  margin: 0,
+                  marginBottom: '12px',
+                }}
+              >
+                About Us
+              </h2>
+
+              <p
+                style={{
+                  fontFamily: "'Lato', sans-serif",
+                  fontSize: 'clamp(20px, 1.8vw, 28px)',
+                  fontWeight: 400,
+                  color: '#6b7c76',
+                  letterSpacing: '0.5px',
+                  margin: 0,
+                  marginBottom: '40px',
+                  fontStyle: 'italic',
+                }}
+              >
+                Its all about the perspective
+              </p>
+            </div>
           </AnimateIn>
 
           <AnimateIn delay={0.15} distance={50} duration={1.2}>

@@ -7,7 +7,7 @@ export const ProcessSection = () => {
       id="process"
       style={{
         backgroundColor: '#fafafa',
-        padding: '120px 48px',
+        padding: '80px 48px',
       }}
     >
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>

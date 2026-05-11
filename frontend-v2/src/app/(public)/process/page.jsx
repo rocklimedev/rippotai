@@ -231,7 +231,7 @@ export default function ProcessPage() {
         style={{
           position: 'relative',
           width: '100%',
-          height: '100vh',
+          height: '70vh',
           overflow: 'hidden',
         }}
       >
@@ -243,10 +243,9 @@ export default function ProcessPage() {
           sizes="100vw"
           style={{
             objectFit: 'cover',
-            objectPosition: 'center 40%', // 👈 better framing
+            objectPosition: 'center 40%',
           }}
         />
-
         {/* Overlay */}
         <div
           style={{

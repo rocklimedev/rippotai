@@ -30,7 +30,7 @@ export const HeroSection = () => {
       style={{
         position: 'relative',
         width: '100%',
-        height: '100vh',
+        height: '70vh', // reduced from 100vh to 70vh
         overflow: 'hidden',
         backgroundColor: '#0a0a0a',
       }}
@@ -75,37 +75,6 @@ export const HeroSection = () => {
           height: '100%',
         }}
       />
-
-      {/* Slide indicators */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '40px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 2,
-          display: 'flex',
-          gap: '12px',
-        }}
-      >
-        {heroImages.map((_, idx) => (
-          <button
-            key={idx}
-            onClick={() => setCurrentIndex(idx)}
-            style={{
-              width: idx === currentIndex ? '32px' : '8px',
-              height: '2px',
-              backgroundColor:
-                idx === currentIndex ? '#d9af61' : 'rgba(255, 255, 255, 0.4)',
-              border: 'none',
-              cursor: 'pointer',
-              padding: 0,
-              transition: 'all 0.4s ease',
-            }}
-            aria-label={`Go to slide ${idx + 1}`}
-          />
-        ))}
-      </div>
     </section>
   );
 };

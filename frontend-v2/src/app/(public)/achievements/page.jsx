@@ -10,24 +10,22 @@ const AchievementRow = ({ item }) => {
   return (
     <div className="flex flex-col items-center gap-16">
       {/* TOP: TWO IMAGES */}
-      <div className="grid grid-cols-2 gap-6 w-full max-w-5xl">
-        <div className="flex justify-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-5xl">
+        <div className="relative w-full aspect-square sm:aspect-[4/5] rounded-xl overflow-hidden bg-gray-100">
           <Image
             src={item.image1}
             alt={item.title}
-            width={800}
-            height={800}
-            className="w-full max-h-[500px] h-auto object-contain rounded-xl"
+            fill
+            className="object-cover"
           />
         </div>
 
-        <div className="flex justify-center">
+        <div className="relative w-full aspect-square sm:aspect-[4/5] rounded-xl overflow-hidden bg-gray-100">
           <Image
             src={item.image2}
             alt={item.title}
-            width={800}
-            height={800}
-            className="w-full max-h-[500px] h-auto object-contain rounded-xl"
+            fill
+            className="object-cover"
           />
         </div>
       </div>
@@ -56,25 +54,27 @@ export default function AchievementsPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative h-screen min-h-[600px] overflow-hidden">
+      <section className="relative h-[70vh] min-h-[600px] overflow-hidden">
         <img
           src={achievementsImage}
           alt="Achievements"
           className="absolute inset-0 w-full h-full object-cover"
         />
+
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-black/70" />
 
         <div className="absolute bottom-16 left-6 md:left-12 z-10">
           <div className="uppercase tracking-[4px] text-[#d9af61] text-sm mb-4">
             RECOGNITION
           </div>
+
           <h1 className="text-white text-5xl md:text-6xl font-light">
             Achievements
           </h1>
+
           <div className="w-12 h-px bg-[#d9af61] mt-8" />
         </div>
       </section>
-
       {/* Intro */}
       <section className="py-20 md:py-28 bg-white text-center">
         <div className="max-w-4xl mx-auto px-6">

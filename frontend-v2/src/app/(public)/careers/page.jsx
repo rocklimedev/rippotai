@@ -74,9 +74,9 @@ export default function CareerPage() {
         style={{
           position: 'relative',
           width: '100%',
-          minHeight: '100vh',
-          height: '100dvh', // fixes mobile viewport issues
-          backgroundImage: `url(${careerImage})`, // ✅ fixed
+          minHeight: '70vh',
+          height: '70dvh',
+          backgroundImage: `url(${careerImage})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center top',
           backgroundRepeat: 'no-repeat',

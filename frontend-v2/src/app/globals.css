@@ -19,11 +19,19 @@
   color: #c6a15b; /* gold hover */
 }
 /* Global resets for architecture theme */
+/* Global resets for architecture theme */
 * {
-  border-radius: 0 !important;
-  box-shadow: none !important;
+  box-sizing: border-box;
 }
 
+/* Optional architectural sharp corners */
+section,
+article,
+.card,
+.project-card,
+.service-card {
+  border-radius: 0 !important;
+}
 html {
   scroll-behavior: smooth;
 }

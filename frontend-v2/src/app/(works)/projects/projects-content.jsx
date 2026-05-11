@@ -113,7 +113,7 @@ export default function ProjectsContent() {
         style={{
           position: 'relative',
           width: '100%',
-          height: '100vh',
+          height: '70vh',
           overflow: 'hidden',
           backgroundColor: '#0a0a0a',
         }}
@@ -121,7 +121,11 @@ export default function ProjectsContent() {
         <img
           src={projectsImage}
           alt="Our Projects"
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+          }}
         />
         <div
           style={{

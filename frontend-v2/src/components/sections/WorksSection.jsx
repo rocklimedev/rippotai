@@ -76,7 +76,7 @@ export const WorksSection = () => {
       id="works"
       style={{
         backgroundColor: '#ffffff',
-        padding: isMobile ? '80px 20px 100px' : '100px 48px 120px',
+        padding: isMobile ? '50px 20px 60px' : '70px 48px 80px',
       }}
     >
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
