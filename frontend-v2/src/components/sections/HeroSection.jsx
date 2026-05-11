@@ -32,6 +32,8 @@ export const HeroSection = () => {
         position: 'relative',
         width: '100%',
         height: '75vh',
+        minHeight: '420px',
+        maxHeight: '900px',
         overflow: 'hidden',
         backgroundColor: '#0a0a0a',
       }}
@@ -47,10 +49,10 @@ export const HeroSection = () => {
             top: 0,
             left: 0,
             width: '100%',
-            height: 'auto',
+            height: '100%',
+            objectFit: 'cover', // 🔥 important fix
             opacity: idx === currentIndex ? 1 : 0,
             transition: 'opacity 2s ease-in-out',
-            display: 'block',
           }}
         />
       ))}
@@ -59,10 +61,7 @@ export const HeroSection = () => {
       <div
         style={{
           position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
+          inset: 0,
           backgroundColor: 'rgba(0, 0, 0, 0.4)',
           zIndex: 1,
         }}
@@ -78,23 +77,40 @@ export const HeroSection = () => {
           zIndex: 2,
           textAlign: 'center',
           width: '100%',
-          padding: '0 20px',
+          padding: '0 16px',
         }}
       >
         <p
           style={{
             fontFamily: "'Lato', sans-serif",
-            fontSize: 'clamp(28px, 2.5vw, 40px)', // increased size
-            fontWeight: 300, // Lato Light
+            fontSize: 'clamp(20px, 5vw, 40px)', // better mobile scaling
+            fontWeight: 300,
             color: '#fff',
             letterSpacing: '0.5px',
             margin: 0,
             fontStyle: 'italic',
+            lineHeight: 1.3,
           }}
         >
           Its all about the perspective
         </p>
       </div>
+
+      {/* Mobile height adjustment */}
+      <style jsx>{`
+        @media (max-width: 768px) {
+          section {
+            height: 60vh;
+            min-height: 380px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          section {
+            height: 55vh;
+          }
+        }
+      `}</style>
     </section>
   );
 };

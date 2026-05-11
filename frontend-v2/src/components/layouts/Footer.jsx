@@ -14,25 +14,15 @@ export const Footer = () => {
           borderTop: '1px solid rgba(26, 60, 52, 0.1)',
         }}
       >
-        <div
-          style={{
-            maxWidth: '1200px',
-            margin: '0 auto',
-          }}
-        >
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           {/* Main footer */}
           <div className="footer-grid">
-            {/* Logo + Contact */}
             <div>
-              {/* LOGO HIDDEN ON MOBILE */}
               <div className="footer-logo" style={{ marginBottom: '32px' }}>
                 <img
                   src="./assets/logos/logo@v1.png"
                   alt="Rippotai"
-                  style={{
-                    height: '56px',
-                    width: 'auto',
-                  }}
+                  style={{ height: '56px', width: 'auto' }}
                 />
               </div>
 
@@ -50,9 +40,7 @@ export const Footer = () => {
               </div>
             </div>
 
-            {/* Nav + Social */}
             <div className="footer-links-row">
-              {/* Navigation */}
               <nav className="footer-links">
                 {navigationLinks.map((link, i) =>
                   link.href.startsWith('/') ? (
@@ -79,7 +67,6 @@ export const Footer = () => {
                 )}
               </nav>
 
-              {/* Social */}
               <div>
                 <h4 className="footer-heading">Follow</h4>
 
@@ -100,7 +87,6 @@ export const Footer = () => {
             </div>
           </div>
 
-          {/* Bottom */}
           <div className="footer-bottom">
             <p className="footer-copy">
               © {new Date().getFullYear()} Rippotai Architecture. All rights
@@ -122,8 +108,23 @@ export const Footer = () => {
         </div>
       </footer>
 
-      {/* RESPONSIVE CSS */}
+      {/* Scoped ONLY to this component */}
       <style jsx>{`
+        @import url('https://fonts.cdnfonts.com/css/neuropol-2');
+
+        .rocklime-link {
+          font-family: 'Neuropol', sans-serif;
+          letter-spacing: 2px;
+          font-size: 13px;
+          text-decoration: none;
+          color: #ed7c2f;
+          transition: all 0.3s ease;
+        }
+
+        .rocklime-link:hover {
+          color: #c6a15b;
+        }
+
         @media (max-width: 768px) {
           .footer-logo {
             display: none;
