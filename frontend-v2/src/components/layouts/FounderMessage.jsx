@@ -34,7 +34,7 @@ export const FounderMessage = () => {
             }}
           >
             Less is more,
-            <br /> but clients want “one more.”
+            <br /> but clients want “one more”.
           </blockquote>
         </AnimateIn>
 

@@ -26,14 +26,6 @@ export const ProcessSection = () => {
           >
             OUR PROCESS
           </h2>
-          <div
-            style={{
-              width: '30px',
-              height: '1px',
-              backgroundColor: '#d9af61',
-              margin: '16px auto 0',
-            }}
-          />
         </div>
 
         {/* Process steps */}

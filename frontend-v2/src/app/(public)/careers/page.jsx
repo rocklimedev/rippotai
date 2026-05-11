@@ -111,15 +111,6 @@ export default function CareerPage() {
           >
             Careers
           </h1>
-
-          <div
-            style={{
-              width: '40px',
-              height: '1px',
-              backgroundColor: '#d9af61',
-              marginTop: '20px',
-            }}
-          />
         </div>
       </section>
       <section style={{ padding: '100px 48px', backgroundColor: '#fff' }}>

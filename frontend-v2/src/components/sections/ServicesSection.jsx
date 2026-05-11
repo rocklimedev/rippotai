@@ -29,14 +29,6 @@ export const ServicesSection = () => {
           >
             WHAT WE OFFER
           </h2>
-          <div
-            style={{
-              width: '30px',
-              height: '1px',
-              backgroundColor: '#d9af61',
-              margin: '16px auto 0',
-            }}
-          />
         </div>
 
         {/* Services path */}
@@ -114,15 +106,6 @@ export const ServicesSection = () => {
                       >
                         {service.title}
                       </h3>
-
-                      <div
-                        style={{
-                          width: '30px',
-                          height: '1px',
-                          backgroundColor: '#d9af61',
-                          marginBottom: '16px',
-                        }}
-                      />
 
                       <p
                         style={{

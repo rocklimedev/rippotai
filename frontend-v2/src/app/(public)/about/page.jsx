@@ -391,15 +391,6 @@ export default function AboutPage() {
           >
             About Us
           </h1>
-
-          <div
-            style={{
-              width: '40px',
-              height: '2px',
-              backgroundColor: '#d9af61',
-              marginTop: '24px',
-            }}
-          />
         </div>
       </section>
 

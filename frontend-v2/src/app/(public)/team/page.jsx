@@ -46,15 +46,6 @@ export default function TeamPage() {
           >
             Our Team
           </h1>
-
-          <div
-            style={{
-              width: '40px',
-              height: '1px',
-              backgroundColor: '#d9af61',
-              marginTop: '20px',
-            }}
-          />
         </div>
       </section>
       {/* Team Introduction + Grid */}

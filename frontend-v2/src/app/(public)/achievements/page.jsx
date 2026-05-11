@@ -71,8 +71,6 @@ export default function AchievementsPage() {
           <h1 className="text-white text-5xl md:text-6xl font-light">
             Achievements
           </h1>
-
-          <div className="w-12 h-px bg-[#d9af61] mt-8" />
         </div>
       </section>
       {/* Intro */}

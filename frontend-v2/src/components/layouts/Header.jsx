@@ -81,7 +81,6 @@ export const Header = () => {
               backgroundColor: '#ffffff',
               padding: '8px 14px',
               zIndex: 2,
-              borderRadius: '18px',
               overflow: 'hidden',
               transform: 'translateY(6px)', // 👈 moves logo slightly downward
             }}

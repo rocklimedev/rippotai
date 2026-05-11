@@ -287,15 +287,6 @@ export default function ProcessPage() {
           >
             Our Process
           </h1>
-
-          <div
-            style={{
-              width: '40px',
-              height: '1px',
-              background: '#d9af61',
-              marginTop: '18px',
-            }}
-          />
         </div>
       </section>
       {/* Always use same timeline now */}

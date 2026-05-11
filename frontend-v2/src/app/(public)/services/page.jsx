@@ -73,15 +73,6 @@ export default function ServicesPage() {
           >
             Our Services
           </h1>
-
-          <div
-            style={{
-              width: '40px',
-              height: '1px',
-              background: '#d9af61',
-              marginTop: '18px',
-            }}
-          />
         </div>
       </section>
 
@@ -151,15 +142,6 @@ export default function ServicesPage() {
                       >
                         {service.title}
                       </h2>
-
-                      <div
-                        style={{
-                          width: '30px',
-                          height: '1px',
-                          background: '#d9af61',
-                          marginBottom: '16px',
-                        }}
-                      />
 
                       <p
                         style={{

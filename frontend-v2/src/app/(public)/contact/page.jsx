@@ -141,15 +141,6 @@ export default function ContactPage() {
           >
             Contact Us
           </h1>
-
-          <div
-            style={{
-              width: '40px',
-              height: '1px',
-              backgroundColor: '#d9af61',
-              marginTop: '20px',
-            }}
-          />
         </div>
       </section>
 
