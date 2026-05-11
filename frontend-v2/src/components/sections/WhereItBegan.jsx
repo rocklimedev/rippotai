@@ -6,7 +6,7 @@ export const WhereItBegan = () => {
     <section
       style={{
         backgroundColor: '#ffffff',
-        padding: '80px 48px',
+        padding: '60px 48px',
       }}
     >
       <div
@@ -38,21 +38,6 @@ export const WhereItBegan = () => {
               >
                 About Us
               </h2>
-
-              <p
-                style={{
-                  fontFamily: "'Lato', sans-serif",
-                  fontSize: 'clamp(20px, 1.8vw, 28px)',
-                  fontWeight: 400,
-                  color: '#6b7c76',
-                  letterSpacing: '0.5px',
-                  margin: 0,
-                  marginBottom: '40px',
-                  fontStyle: 'italic',
-                }}
-              >
-                Its all about the perspective
-              </p>
             </div>
           </AnimateIn>
 

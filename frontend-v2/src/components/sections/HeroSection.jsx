@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
 import { heroImages } from '@/lib/config';
+
 export const HeroSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loadedImages, setLoadedImages] = useState(new Set());
@@ -30,26 +31,26 @@ export const HeroSection = () => {
       style={{
         position: 'relative',
         width: '100%',
-        height: '80vh', // reduced from 100vh to 70vh
+        height: '75vh',
         overflow: 'hidden',
         backgroundColor: '#0a0a0a',
       }}
     >
       {/* Slideshow images */}
       {heroImages.map((src, idx) => (
-        <div
+        <img
           key={idx}
+          src={src}
+          alt=""
           style={{
             position: 'absolute',
             top: 0,
             left: 0,
             width: '100%',
-            height: '100%',
-            backgroundImage: `url(${src})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            height: 'auto',
             opacity: idx === currentIndex ? 1 : 0,
             transition: 'opacity 2s ease-in-out',
+            display: 'block',
           }}
         />
       ))}
@@ -67,14 +68,33 @@ export const HeroSection = () => {
         }}
       />
 
-      {/* Content removed - clean banner */}
+      {/* Centered Tagline */}
       <div
         style={{
-          position: 'relative',
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
           zIndex: 2,
-          height: '100%',
+          textAlign: 'center',
+          width: '100%',
+          padding: '0 20px',
         }}
-      />
+      >
+        <p
+          style={{
+            fontFamily: "'Lato', sans-serif",
+            fontSize: 'clamp(28px, 2.5vw, 40px)', // increased size
+            fontWeight: 300, // Lato Light
+            color: '#fff',
+            letterSpacing: '0.5px',
+            margin: 0,
+            fontStyle: 'italic',
+          }}
+        >
+          Its all about the perspective
+        </p>
+      </div>
     </section>
   );
 };
