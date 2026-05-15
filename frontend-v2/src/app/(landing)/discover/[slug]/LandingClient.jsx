@@ -28,15 +28,7 @@ export default function LandingClient({ slug, config }) {
         />
 
         <Problem data={config.problem} />
-        <section className="relative w-full h-screen bg-white overflow-hidden">
-          <Image
-            src="/assets/landings/discover-rippotai/2.jpeg"
-            alt="Discover Rippotai"
-            fill
-            priority
-            className="object-cover"
-          />
-        </section>
+
         <Shift data={config.shift} onConsult={onConsult} />
         <VisualProof data={config.visualProof} />
 
