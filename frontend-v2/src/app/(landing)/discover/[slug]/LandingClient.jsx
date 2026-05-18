@@ -10,7 +10,7 @@ import FinalCTA from '@/components/landing/components/FinalCTA';
 import StickyConsultBar from '@/components/landing/components/StickyConsultBar';
 import ConsultationDialog from '@/components/landing/components/ConsultationDialog';
 import Header from '@/components/landing/components/Header';
-import { Footer } from '@/components/layouts/Footer';
+import { Footer } from '@/components/landing/components/Footer';
 import ContactConsultation from '@/components/landing/components/ContactConsultation';
 
 export default function LandingClient({ slug, config }) {

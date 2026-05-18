@@ -17,15 +17,18 @@ export default function Hero({ data, slides = [], onConsult, onStartProject }) {
   }, [slides]);
 
   return (
-    <section className="relative w-full min-h-screen overflow-hidden bg-[#0d1f1c]">
+    <section
+      className="relative w-full h-[78vh] min-h-[620px] md:min-h-[720px] overflow-hidden bg-[#0d1f1c]"
+      style={{
+        paddingTop: 'env(safe-area-inset-top)',
+      }}
+    >
       {/* Slides */}
       <div className="absolute inset-0">
         {slides.map((s, i) => (
           <div
             key={s.url}
-            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
-              i === active ? 'opacity-100' : 'opacity-0'
-            }`}
+            className={`hero-slide ${i === active ? 'active' : ''}`}
             style={{
               backgroundImage: `url('${s.url}')`,
               backgroundColor: '#111827',
@@ -33,81 +36,133 @@ export default function Hero({ data, slides = [], onConsult, onStartProject }) {
           />
         ))}
 
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80" />
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/45 to-black/70" />
+
+        {/* Cinematic overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/20" />
       </div>
 
       {/* Content */}
-      <div className="relative z-10 flex min-h-screen items-end">
-        <div className="w-full max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-16 sm:pb-20 md:pb-24 pt-28 sm:pt-32">
+      <div className="relative z-10 flex h-full items-center pt-[130px] sm:pt-[150px] md:pt-[190px]">
+        <div className="w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
           <div className="max-w-4xl">
-            <h1 className="text-white font-light whitespace-pre-line leading-[1.05] text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
+            {/* Heading */}
+            <h1
+              className="
+                text-white
+                font-light
+                leading-[1.05]
+                tracking-[-1px]
+                text-[24px]
+                sm:text-[34px]
+                md:text-[46px]
+                lg:text-[58px]
+                xl:text-[68px]
+              "
+              style={{
+                fontFamily: "'Lato', sans-serif",
+              }}
+            >
               {data?.headline}
             </h1>
 
-            <p className="mt-5 sm:mt-6 text-white/80 max-w-2xl text-base sm:text-lg md:text-xl leading-relaxed">
-              {data?.sub}
+            {/* Description */}
+            <p
+              className="
+                mt-5
+                max-w-2xl
+                text-white/75
+                leading-relaxed
+                text-[13px]
+                sm:text-[14px]
+                md:text-[15px]
+              "
+              style={{
+                fontFamily: "'Lato', sans-serif",
+                fontWeight: 300,
+                letterSpacing: '0.2px',
+              }}
+            >
+              We design refined living environments that combine timeless
+              architecture, sophisticated interiors, and seamless turnkey
+              execution. Every project is crafted with clarity, precision, and
+              understated luxury to elevate everyday living.
             </p>
 
+            {/* Stats */}
+            <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-x-5 gap-y-5 max-w-3xl border-t border-white/10 pt-5">
+              {[
+                ['150+', 'Projects Completed'],
+                ['10+', 'Years Experience'],
+                ['End-to-End', 'Turnkey Execution'],
+                ['Premium', 'Design Experience'],
+              ].map(([title, label]) => (
+                <div key={title}>
+                  <div
+                    className="text-white text-[18px] sm:text-[22px] md:text-[26px] font-light"
+                    style={{
+                      fontFamily: "'Lato', sans-serif",
+                    }}
+                  >
+                    {title}
+                  </div>
+
+                  <div
+                    className="mt-1.5 text-white/50 uppercase leading-snug"
+                    style={{
+                      fontSize: '10px',
+                      letterSpacing: '1.5px',
+                      fontFamily: "'Lato', sans-serif",
+                    }}
+                  >
+                    {label}
+                  </div>
+                </div>
+              ))}
+            </div>
+
             {/* Buttons */}
-            <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-4 sm:gap-6">
+            <div className="mt-9 flex flex-col sm:flex-row gap-4">
               <button
                 onClick={onConsult}
-                className="group inline-flex items-center gap-3 w-fit border border-white/30 px-7 py-4 hover:bg-white hover:text-black transition-all duration-500"
+                className="
+                  group
+                  inline-flex
+                  items-center
+                  justify-center
+                  gap-2
+                  w-full
+                  sm:w-fit
+                  border
+                  border-white/20
+                  bg-white
+                  text-black
+                  px-6
+                  sm:px-8
+                  py-3.5
+                  transition-all
+                  duration-500
+                  hover:bg-transparent
+                  hover:text-white
+                  hover:border-white/40
+                "
                 style={{
                   fontFamily: "'Lato', sans-serif",
-                  fontSize: '12px',
-                  fontWeight: 500,
-                  letterSpacing: '3px',
+                  fontSize: '10px',
+                  fontWeight: 700,
+                  letterSpacing: '2.5px',
                   textTransform: 'uppercase',
-                  color: '#ffffff',
                 }}
               >
                 <span>{data?.primaryCta}</span>
 
                 <ArrowRight
-                  size={16}
+                  size={15}
                   className="transition-transform duration-300 group-hover:translate-x-1"
                 />
               </button>
-              {data?.secondaryCta && (
-                <button
-                  onClick={onStartProject}
-                  className="group inline-flex items-center gap-3 w-fit text-white/70 hover:text-white transition"
-                  style={{
-                    fontFamily: "'Lato', sans-serif",
-                    fontSize: '12px',
-                    fontWeight: 500,
-                    letterSpacing: '3px',
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  <span>{data?.secondaryCta}</span>
-
-                  <ArrowRight
-                    size={16}
-                    className="transition-transform duration-300 group-hover:translate-x-1"
-                  />
-                </button>
-              )}
             </div>
-
-            {/* Slide indicators */}
-            {slides.length > 1 && (
-              <div className="mt-10 sm:mt-14 flex items-center gap-2">
-                {slides.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setActive(i)}
-                    className={`h-[2px] rounded-full transition-all duration-300 ${
-                      i === active
-                        ? 'w-10 bg-white'
-                        : 'w-5 bg-white/40 hover:bg-white/70'
-                    }`}
-                  />
-                ))}
-              </div>
-            )}
           </div>
         </div>
       </div>

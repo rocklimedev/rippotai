@@ -5,8 +5,10 @@ export const SITE = {
       brandFull: 'Rippotai Architecture',
       tagline: 'Residential Architecture | Consultation | Execution Thinking',
       hero: {
-        headline: 'Transform your home without the hassle.',
+        headline: 'Transform your home into a timeless living experience.',
+        sub: 'Luxury architecture, interiors, and turnkey execution crafted with precision, elegance, and functionality.',
         primaryCta: 'Consult Us',
+        secondaryCta: 'Start Your Project',
       },
       heroSlides: [
         {

@@ -1,70 +1,153 @@
-"use client";
+'use client';
 
-export default function Footer({ data, brand, brandFull }) {
-  if (!data) return null;
+import Link from 'next/link';
+import { navigationLinks, socialLinks, contactInfo } from '@/lib/config';
 
+export const Footer = () => {
   return (
-    <footer className="bg-[#0F2A24] text-white/80 py-16 pb-24 md:pb-16 border-t border-white/10">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 grid md:grid-cols-3 gap-10">
-        {/* Brand */}
-        <div>
-          <span className="text-2xl uppercase text-white tracking-[0.2em]">
-            {brand}
-          </span>
+    <>
+      <footer
+        id="footer"
+        className="pb-[130px] md:pb-[60px]"
+        style={{
+          backgroundColor: '#ffffff',
+          paddingTop: '80px',
+          paddingLeft: '24px',
+          paddingRight: '24px',
+          borderTop: '1px solid rgba(26, 60, 52, 0.1)',
+        }}
+      >
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          {/* Main footer */}
+          <div className="footer-grid">
+            <div>
+              <div className="footer-logo" style={{ marginBottom: '32px' }}>
+                <img
+                  src="/assets/logos/logo@v1.png"
+                  alt="Rippotai"
+                  style={{
+                    height: '56px',
+                    width: 'auto',
+                  }}
+                />
+              </div>
 
-          <p className="mt-4 text-sm text-white/70 max-w-xs">
-            Architecture is responsibility. Every project is treated as a long
-            commitment, not a deliverable.
-          </p>
+              <div className="footer-contact">
+                <p className="footer-text">{contactInfo.address}</p>
+
+                <a
+                  href={`mailto:${contactInfo.email}`}
+                  className="footer-text hover-gold"
+                >
+                  {contactInfo.email}
+                </a>
+
+                <p className="footer-text">{contactInfo.phone}</p>
+              </div>
+            </div>
+
+            <div className="footer-links-row">
+              <nav className="footer-links">
+                {navigationLinks.map((link, i) =>
+                  link.href.startsWith('/') ? (
+                    <Link key={i} href={link.href} className="footer-link">
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <a
+                      key={i}
+                      href={link.href}
+                      className="footer-link hover-gold"
+                      target={
+                        link.href.startsWith('http') ? '_blank' : undefined
+                      }
+                      rel={
+                        link.href.startsWith('http')
+                          ? 'noopener noreferrer'
+                          : undefined
+                      }
+                    >
+                      {link.label}
+                    </a>
+                  ),
+                )}
+              </nav>
+
+              <div>
+                <h4 className="footer-heading">Follow</h4>
+
+                <nav className="footer-links">
+                  {socialLinks.map((link, i) => (
+                    <a
+                      key={i}
+                      href={link.href}
+                      className="footer-link hover-gold"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                </nav>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom */}
+          <div className="footer-bottom">
+            <p className="footer-copy">
+              © {new Date().getFullYear()} Rippotai Architecture. All rights
+              reserved.
+            </p>
+
+            <p className="footer-powered">
+              Powered by{' '}
+              <a
+                href="https://www.rocklime.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rocklime-link"
+              >
+                Rocklime
+              </a>
+            </p>
+          </div>
         </div>
+      </footer>
 
-        {/* Studio */}
-        <div>
-          <span className="text-xs tracking-[0.3em] uppercase text-[#D9AF61]">
-            Studio
-          </span>
+      {/* Scoped ONLY to this component */}
+      <style jsx>{`
+        @import url('https://fonts.cdnfonts.com/css/neuropol-2');
 
-          <p className="mt-4 text-sm text-white/80">{data?.location}</p>
+        .rocklime-link {
+          font-family: 'Neuropol', sans-serif;
+          letter-spacing: 2px;
+          font-size: 13px;
+          text-decoration: none;
+          color: #ed7c2f;
+          transition: all 0.3s ease;
+        }
 
-          <p className="text-sm text-white/70">By appointment only</p>
-        </div>
+        .rocklime-link:hover {
+          color: #c6a15b;
+        }
 
-        {/* Navigation */}
-        <div>
-          <span className="text-xs tracking-[0.3em] uppercase text-[#D9AF61]">
-            Navigate
-          </span>
+        @media (max-width: 768px) {
+          .footer-logo {
+            display: none;
+          }
 
-          <ul className="mt-4 space-y-2 text-sm">
-            <li>
-              <a href="#process">Process</a>
-            </li>
-            <li>
-              <a href="#work">Work</a>
-            </li>
-            <li>
-              <a href="#about">About</a>
-            </li>
-            <li>
-              <a href="#begin">Begin</a>
-            </li>
-          </ul>
-        </div>
-      </div>
+          #footer {
+            padding-left: 20px !important;
+            padding-right: 20px !important;
+            padding-top: 70px !important;
+          }
 
-      {/* Bottom */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 mt-14 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between gap-4">
-        <span className="text-xs text-white/60 tracking-[0.3em] uppercase">
-          © {new Date().getFullYear()} {brandFull}. {data?.rights}
-        </span>
-
-        <a
-          href="/admin"
-          className="text-xs text-white/40 hover:text-[#D9AF61] tracking-[0.3em] uppercase"
-        >
-          Studio Access
-        </a>
-      </div>
-    </footer>
+          .footer-bottom {
+            margin-top: 50px;
+          }
+        }
+      `}</style>
+    </>
   );
-}
+};
