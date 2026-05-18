@@ -25,13 +25,10 @@ export default function ConsultationDialog({ open, onOpenChange, slug = '' }) {
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const generatedSubject = `DISCOVER ${slug
-    ?.replace(/-/g, ' ')
-    ?.toUpperCase()} CTA`;
+  const generatedSubject = `DISCOVER ${slug?.replace(/-/g, ' ')?.toUpperCase()} CTA`;
 
   const handleChange = (key) => (e) => {
     setForm((prev) => ({ ...prev, [key]: e.target.value }));
-
     if (errors[key]) {
       setErrors((prev) => ({ ...prev, [key]: undefined }));
     }
@@ -39,15 +36,12 @@ export default function ConsultationDialog({ open, onOpenChange, slug = '' }) {
 
   const validate = () => {
     const e = {};
-
     if (!form.name.trim() || form.name.trim().length < 2) {
       e.name = 'Please enter your name.';
     }
-
     if (form.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email.trim())) {
       e.email = 'Please enter a valid email.';
     }
-
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -95,37 +89,24 @@ export default function ConsultationDialog({ open, onOpenChange, slug = '' }) {
 
   return (
     <Dialog open={open} onOpenChange={handleDialogChange}>
-      <DialogContent className="w-[calc(100vw-1.5rem)] sm:max-w-[560px] max-h-[92vh] overflow-y-auto border-0 bg-white/70 backdrop-blur-2xl shadow-[0_20px_80px_rgba(0,0,0,0.25)] rounded-[28px] p-0">
+      <DialogContent className="w-[calc(100vw-1.5rem)] sm:max-w-[560px] max-h-[92vh] overflow-y-auto border border-gray-100 bg-white shadow-[0_20px_80px_rgba(0,0,0,0.15)] p-0 rounded-none">
         <div className="grid grid-cols-1">
-          {/* More Translucent Glassmorphism Header */}
-          <div className="relative overflow-hidden border-b border-white/20 bg-white/5 backdrop-blur-[42px] supports-[backdrop-filter]:bg-white/[0.03] px-6 sm:px-8 pt-8 pb-6 text-[#1A3C34]">
-            {/* Translucent Glass Layers */}
-            <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-white/10 to-transparent pointer-events-none" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/[0.02] via-transparent to-white/20 pointer-events-none" />
-
-            {/* Subtle Top Shine */}
-            <div className="absolute top-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-white/70 to-transparent" />
-
-            {/* Soft Glow Orbs - Reduced intensity for more translucency */}
-            <div className="absolute -top-14 -right-14 h-44 w-44 rounded-full bg-[#D9AF61]/15 blur-[50px]" />
-            <div className="absolute -bottom-10 -left-12 h-36 w-36 rounded-full bg-white/20 blur-3xl" />
-
-            {/* Content */}
+          {/* Header */}
+          <div className="relative border-b border-gray-100 bg-white px-6 sm:px-8 pt-8 pb-6 text-[#1A3C34]">
             <DialogHeader className="relative z-10 space-y-3 text-left">
-              <DialogTitle className="text-3xl sm:text-4xl font-[300] tracking-[-0.04em] text-[#1A3C34]">
+              <DialogTitle className="text-3xl sm:text-4xl font-light tracking-[-0.04em] text-[#1A3C34]">
                 Start your project.
               </DialogTitle>
-
-              <p className="max-w-md text-sm font-light leading-relaxed text-[#35544D]">
+              <p className="max-w-md text-sm font-light leading-relaxed text-[#1A3C34]/80">
                 Share your vision and requirements. We’ll connect with you to
                 discuss the next steps.
               </p>
             </DialogHeader>
           </div>
 
-          {/* Success State & Form remain the same */}
+          {/* Success State */}
           {success ? (
-            <div className="px-6 sm:px-8 py-12 text-center">
+            <div className="px-6 sm:px-8 py-12 text-center bg-white">
               <CheckCircle2
                 size={52}
                 strokeWidth={1.2}
@@ -134,14 +115,14 @@ export default function ConsultationDialog({ open, onOpenChange, slug = '' }) {
               <h3 className="mt-6 text-2xl font-light text-[#1A3C34]">
                 Thank you.
               </h3>
-              <p className="mt-3 text-[#4A6B63] font-light leading-relaxed">
+              <p className="mt-3 text-[#1A3C34]/80 font-light leading-relaxed">
                 Your consultation request has been received successfully.
               </p>
 
               <button
                 type="button"
                 onClick={() => handleDialogChange(false)}
-                className="mt-8 inline-flex items-center gap-2 rounded-full border border-[#1A3C34]/20 bg-white/40 backdrop-blur-md px-8 py-4 text-sm uppercase tracking-[0.18em] text-[#1A3C34] hover:bg-[#1A3C34] hover:text-white transition-all duration-500"
+                className="mt-8 inline-flex items-center gap-2 rounded-none border border-[#1A3C34]/20 bg-white px-8 py-4 text-sm uppercase tracking-[0.18em] text-[#1A3C34] hover:bg-[#1A3C34] hover:text-white transition-all duration-500"
               >
                 Close
               </button>
@@ -149,7 +130,7 @@ export default function ConsultationDialog({ open, onOpenChange, slug = '' }) {
           ) : (
             <form
               onSubmit={handleSubmit}
-              className="px-6 sm:px-8 py-7 sm:py-8 space-y-5"
+              className="px-6 sm:px-8 py-7 sm:py-8 space-y-6 bg-white"
             >
               <Field
                 label="Name"
@@ -170,7 +151,7 @@ export default function ConsultationDialog({ open, onOpenChange, slug = '' }) {
               />
 
               <div>
-                <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.3em] text-[#4A6B63]">
+                <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.3em] text-[#1A3C34]">
                   About your project
                 </label>
                 <textarea
@@ -178,14 +159,14 @@ export default function ConsultationDialog({ open, onOpenChange, slug = '' }) {
                   value={form.message}
                   onChange={handleChange('message')}
                   placeholder="Plot size, location, requirements..."
-                  className="w-full resize-none rounded-2xl border border-white/20 bg-white/40 backdrop-blur-md px-4 py-3 text-[#1A3C34] placeholder:text-[#4A6B63]/70 transition-all duration-300 focus:border-[#1A3C34]/40 focus:bg-white/60 focus:outline-none"
+                  className="w-full resize-none rounded-none border border-gray-200 bg-white px-4 py-3 text-[#1A3C34] placeholder:text-[#1A3C34]/60 focus:border-[#1A3C34]/40 focus:outline-none transition-all duration-300"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={submitting}
-                className="group inline-flex w-full items-center justify-center gap-3 rounded-full bg-[#1A3C34] px-8 py-4 text-sm font-bold uppercase tracking-[0.18em] text-white transition-all duration-500 hover:bg-[#D9AF61] hover:text-[#1A3C34] disabled:cursor-not-allowed disabled:opacity-60"
+                className="group w-full inline-flex items-center justify-center gap-3 rounded-none bg-[#1A3C34] px-8 py-4 text-sm font-bold uppercase tracking-[0.18em] text-white hover:bg-[#D9AF61] hover:text-[#1A3C34] disabled:cursor-not-allowed disabled:opacity-60 transition-all duration-500"
               >
                 {submitting ? (
                   <>
@@ -221,7 +202,7 @@ function Field({
 }) {
   return (
     <div>
-      <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.3em] text-[#4A6B63]">
+      <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.3em] text-[#1A3C34]">
         {label}
         {required && <span className="text-[#D9AF61]"> *</span>}
       </label>
@@ -231,10 +212,10 @@ function Field({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className={`w-full rounded-2xl border bg-white/40 backdrop-blur-md px-4 py-3 text-[#1A3C34] placeholder:text-[#4A6B63]/70 transition-all duration-300 focus:outline-none ${
+        className={`w-full rounded-none border bg-white px-4 py-3 text-[#1A3C34] placeholder:text-[#1A3C34]/60 transition-all duration-300 focus:outline-none ${
           error
             ? 'border-red-400 focus:border-red-500'
-            : 'border-white/20 focus:border-[#1A3C34]/40 focus:bg-white/60'
+            : 'border-gray-200 focus:border-[#1A3C34]/40'
         }`}
       />
 

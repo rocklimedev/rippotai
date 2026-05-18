@@ -14,7 +14,11 @@
   color: #ed7c2f;
   transition: all 0.3s ease;
 }
-
+*,
+*::before,
+*::after {
+  border-radius: 0 !important;
+}
 .rocklime-link:hover {
   color: #c6a15b; /* gold hover */
 }

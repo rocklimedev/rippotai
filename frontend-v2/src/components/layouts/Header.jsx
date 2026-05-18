@@ -86,7 +86,7 @@ export const Header = () => {
             }}
           >
             <img
-              src="./assets/logos/logo@v1.png"
+              src="/assets/logos/logo@v1.png"
               alt="Rippotai"
               style={{
                 height: '78px',

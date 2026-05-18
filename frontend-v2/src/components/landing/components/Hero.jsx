@@ -53,7 +53,7 @@ export default function Hero({ data, slides = [], onConsult, onStartProject }) {
             <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-4 sm:gap-6">
               <button
                 onClick={onConsult}
-                className="group inline-flex items-center gap-3 w-fit"
+                className="group inline-flex items-center gap-3 w-fit border border-white/30 px-7 py-4 hover:bg-white hover:text-black transition-all duration-500"
                 style={{
                   fontFamily: "'Lato', sans-serif",
                   fontSize: '12px',
@@ -61,7 +61,6 @@ export default function Hero({ data, slides = [], onConsult, onStartProject }) {
                   letterSpacing: '3px',
                   textTransform: 'uppercase',
                   color: '#ffffff',
-                  transition: 'all 0.3s ease',
                 }}
               >
                 <span>{data?.primaryCta}</span>
@@ -71,7 +70,6 @@ export default function Hero({ data, slides = [], onConsult, onStartProject }) {
                   className="transition-transform duration-300 group-hover:translate-x-1"
                 />
               </button>
-
               {data?.secondaryCta && (
                 <button
                   onClick={onStartProject}

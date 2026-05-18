@@ -11,6 +11,7 @@ import StickyConsultBar from '@/components/landing/components/StickyConsultBar';
 import ConsultationDialog from '@/components/landing/components/ConsultationDialog';
 import Header from '@/components/landing/components/Header';
 import { Footer } from '@/components/layouts/Footer';
+import ContactConsultation from '@/components/landing/components/ContactConsultation';
 
 export default function LandingClient({ slug, config }) {
   const [open, setOpen] = useState(false);
@@ -31,7 +32,7 @@ export default function LandingClient({ slug, config }) {
 
         <Shift data={config.shift} onConsult={onConsult} />
         <VisualProof data={config.visualProof} />
-
+        <ContactConsultation />
         <FinalCTA data={config.finalCta} onConsult={onConsult} />
       </main>
 

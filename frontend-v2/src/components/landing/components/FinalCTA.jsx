@@ -20,7 +20,7 @@ export default function FinalCTA({ data, onConsult }) {
 
         <button
           onClick={onConsult}
-          className="group mt-12 inline-flex items-center gap-3 transition-all duration-300"
+          className="group mt-12 inline-flex items-center gap-3 border border-[#1A3C34]/30 px-7 py-4 hover:bg-[#1A3C34] hover:text-white transition-all duration-500"
           style={{
             fontFamily: "'Lato', sans-serif",
             fontSize: '12px',

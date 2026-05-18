@@ -27,7 +27,7 @@ export default function VisualProof({ data }) {
           {data?.images?.map((img, i) => (
             <figure
               key={i}
-              className="relative overflow-hidden rounded-[2rem] group break-inside-avoid"
+              className="relative overflow-hidden group break-inside-avoid"
             >
               {/* Image */}
               <img

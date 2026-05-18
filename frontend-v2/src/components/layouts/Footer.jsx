@@ -20,7 +20,7 @@ export const Footer = () => {
             <div>
               <div className="footer-logo" style={{ marginBottom: '32px' }}>
                 <img
-                  src="./assets/logos/logo@v1.png"
+                  src="/assets/logos/logo@v1.png"
                   alt="Rippotai"
                   style={{ height: '56px', width: 'auto' }}
                 />
