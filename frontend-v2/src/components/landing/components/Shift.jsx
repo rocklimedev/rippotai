@@ -69,7 +69,7 @@ export default function Hero({ data, onConsult }) {
               textTransform: 'uppercase',
             }}
           >
-            <span>Consult Us</span>
+            <span>Contact Us</span>
 
             <ArrowRight
               size={16}

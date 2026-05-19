@@ -12,7 +12,7 @@ export default function Problem({ data }) {
   return (
     <section
       ref={ref}
-      className={`bg-[#FAFAFA] py-20 md:py-40 reveal ${
+      className={`bg-[#FAFAFA] py-24 md:py-32 lg:py-36 reveal ${
         inView ? 'in-view' : ''
       }`}
     >

@@ -18,9 +18,9 @@ export default function Hero({ data, slides = [], onConsult, onStartProject }) {
 
   return (
     <section
-      className="relative w-full h-[78vh] min-h-[620px] md:min-h-[720px] overflow-hidden bg-[#0d1f1c]"
+      className="relative w-full h-[78vh] min-h-[620px] md:min-h-[720px] overflow-hidden bg-[#0d1f1c] pt-16 md:pt-0"
       style={{
-        paddingTop: 'env(safe-area-inset-top)',
+        paddingTop: 'calc(env(safe-area-inset-top) + 64px)',
       }}
     >
       {/* Slides */}
@@ -36,17 +36,14 @@ export default function Hero({ data, slides = [], onConsult, onStartProject }) {
           />
         ))}
 
-        {/* Dark overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/45 to-black/70" />
-
-        {/* Cinematic overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/20" />
       </div>
 
       {/* Content */}
-      <div className="relative z-10 flex h-full items-center pt-[130px] sm:pt-[150px] md:pt-[190px]">
-        <div className="w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
-          <div className="max-w-4xl">
+      <div className="relative z-10 flex h-full items-center justify-center text-center pt-10 md:pt-0">
+        <div className="w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 flex justify-center">
+          <div className="max-w-4xl flex flex-col items-center">
             {/* Heading */}
             <h1
               className="
@@ -101,9 +98,7 @@ export default function Hero({ data, slides = [], onConsult, onStartProject }) {
                 <div key={title}>
                   <div
                     className="text-white text-[18px] sm:text-[22px] md:text-[26px] font-light"
-                    style={{
-                      fontFamily: "'Lato', sans-serif",
-                    }}
+                    style={{ fontFamily: "'Lato', sans-serif" }}
                   >
                     {title}
                   </div>
@@ -122,8 +117,8 @@ export default function Hero({ data, slides = [], onConsult, onStartProject }) {
               ))}
             </div>
 
-            {/* Buttons */}
-            <div className="mt-9 flex flex-col sm:flex-row gap-4">
+            {/* CTA */}
+            <div className="mt-8">
               <button
                 onClick={onConsult}
                 className="
@@ -131,16 +126,13 @@ export default function Hero({ data, slides = [], onConsult, onStartProject }) {
                   inline-flex
                   items-center
                   justify-center
-                  gap-2
-                  w-full
-                  sm:w-fit
+                  gap-1.5
                   border
                   border-white/20
                   bg-white
                   text-black
-                  px-6
-                  sm:px-8
-                  py-3.5
+                  px-4
+                  py-2.5
                   transition-all
                   duration-500
                   hover:bg-transparent
@@ -149,16 +141,16 @@ export default function Hero({ data, slides = [], onConsult, onStartProject }) {
                 "
                 style={{
                   fontFamily: "'Lato', sans-serif",
-                  fontSize: '10px',
+                  fontSize: '9px',
                   fontWeight: 700,
-                  letterSpacing: '2.5px',
+                  letterSpacing: '2px',
                   textTransform: 'uppercase',
                 }}
               >
                 <span>{data?.primaryCta}</span>
 
                 <ArrowRight
-                  size={15}
+                  size={14}
                   className="transition-transform duration-300 group-hover:translate-x-1"
                 />
               </button>
