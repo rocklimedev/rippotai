@@ -1,7 +1,18 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+
+const NAV_ITEMS = [
+  { label: 'About', href: '/about' },
+  { label: 'Works', href: '/projects' },
+  { label: 'Team', href: '/team' },
+  { label: 'Services', href: '/services' },
+  { label: 'Process', href: '/process' },
+  { label: 'Career', href: '/careers' },
+  { label: 'Contact', href: '/contact' },
+  { label: 'Achievements', href: '/achievements' },
+];
 
 export const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -12,34 +23,55 @@ export const Header = () => {
   // Lock body scroll when menu open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : 'auto';
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
   }, [menuOpen]);
 
-  const scrollToSection = (href) => {
-    setMenuOpen(false);
+  const scrollToSection = useCallback(
+    (href) => {
+      setMenuOpen(false);
 
-    if (href.startsWith('/')) {
-      router.push(href);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
+      if (href.startsWith('/')) {
+        router.push(href);
 
-    if (href === '#') {
-      if (pathname !== '/') {
-        router.push('/');
-      } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+
+        return;
       }
-      return;
-    }
 
-    if (pathname !== '/') {
-      router.push('/' + href);
-      return;
-    }
+      if (href === '#') {
+        if (pathname !== '/') {
+          router.push('/');
+        } else {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+          });
+        }
 
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
+        return;
+      }
+
+      if (pathname !== '/') {
+        router.push('/' + href);
+        return;
+      }
+
+      const el = document.querySelector(href);
+
+      if (el) {
+        el.scrollIntoView({
+          behavior: 'smooth',
+        });
+      }
+    },
+    [pathname, router],
+  );
 
   return (
     <>
@@ -52,7 +84,7 @@ export const Header = () => {
           right: 0,
           zIndex: 1000,
           backgroundColor: '#ffffff',
-          height: '50px',
+          height: '95px',
           boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
         }}
       >
@@ -76,26 +108,33 @@ export const Header = () => {
               scrollToSection('#');
             }}
             style={{
-              position: 'relative',
-              top: '14px',
               backgroundColor: '#ffffff',
               padding: '8px 14px',
               zIndex: 2,
               overflow: 'hidden',
-              transform: 'translateY(6px)', // 👈 moves logo slightly downward
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
             }}
+            aria-label="Home"
           >
             <img
-              src="/assets/logos/logo@v1.png"
+              src="/logo.png"
               alt="Rippotai"
+              width={100}
+              height={100}
+              loading="eager"
+              decoding="async"
               style={{
                 height: '78px',
-                width: 'auto',
+                width: '64px',
                 objectFit: 'contain',
                 display: 'block',
               }}
             />
           </a>
+
           {/* DESKTOP NAV */}
           <nav
             style={{
@@ -105,18 +144,9 @@ export const Header = () => {
             }}
             className="desktop-nav"
           >
-            {[
-              { label: 'About', href: '/about' },
-              { label: 'Works', href: '/projects' },
-              { label: 'Team', href: '/team' },
-              { label: 'Services', href: '/services' },
-              { label: 'Process', href: '/process' },
-              { label: 'Career', href: '/careers' },
-              { label: 'Contact', href: '/contact' },
-              { label: 'Achievements', href: '/achievements' },
-            ].map((item, i) => (
+            {NAV_ITEMS.map((item) => (
               <a
-                key={i}
+                key={item.href}
                 href={item.href}
                 onClick={(e) => {
                   e.preventDefault();
@@ -146,8 +176,11 @@ export const Header = () => {
 
           {/* MOBILE MENU BUTTON */}
           <button
-            onClick={() => setMenuOpen(!menuOpen)}
+            type="button"
+            onClick={() => setMenuOpen((prev) => !prev)}
             className="mobile-menu-btn"
+            aria-label={menuOpen ? 'Close Menu' : 'Open Menu'}
+            aria-expanded={menuOpen}
             style={{
               fontFamily: "'Lato', sans-serif",
               fontSize: '15px',
@@ -190,18 +223,9 @@ export const Header = () => {
             padding: '0 20px',
           }}
         >
-          {[
-            { label: 'About', href: '/about' },
-            { label: 'Works', href: '/projects' },
-            { label: 'Team', href: '/team' },
-            { label: 'Services', href: '/services' },
-            { label: 'Process', href: '/process' },
-            { label: 'Career', href: '/careers' },
-            { label: 'Contact', href: '/contact' },
-            { label: 'Achievements', href: '/achievements' },
-          ].map((item, i) => (
+          {NAV_ITEMS.map((item) => (
             <a
-              key={i}
+              key={item.href}
               href={item.href}
               onClick={(e) => {
                 e.preventDefault();
