@@ -21,49 +21,59 @@ export default function ProjectGalleryPage() {
 
   return (
     <main className="min-h-screen bg-white">
-      {/* HERO BANNER (same as detail page) */}
+      {/* HERO BANNER */}
       {project?.banner && (
-        <section className="bg-white pt-0 pb-16">
-          <div className="relative w-full aspect-[18/9] md:aspect-[26/9] overflow-hidden group">
-            <Image
-              src={project.banner}
-              alt={project.title}
-              fill
-              priority
-              sizes="100vw"
-              quality={90}
-              unoptimized
-              className="object-cover transition duration-700"
-            />
+        <section className="relative w-full h-[70vh] overflow-hidden">
+          <Image
+            src={project.banner}
+            alt={project.title}
+            fill
+            priority
+            sizes="100vw"
+            quality={90}
+            unoptimized
+            className="object-cover"
+          />
+
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-black/25" />
+
+          {/* Title over image */}
+          <div className="absolute bottom-12 left-6 md:left-16 z-10 text-white">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-light leading-tight">
+              {isLoading
+                ? 'Loading...'
+                : project?.title
+                  ? `${project.title}`
+                  : 'Gallery'}
+            </h1>
           </div>
         </section>
       )}
 
       {/* CONTENT */}
-      <section className="px-6 md:px-12 py-24 md:py-28">
+      <section className="px-6 md:px-12 py-20">
         <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="mb-16 flex flex-col gap-10 sm:flex-row sm:justify-between sm:items-start">
-            <h1 className="text-4xl md:text-5xl font-light text-[#1a3c34] leading-tight sm:max-w-[65%]">
-              {isLoading
-                ? 'Loading...'
-                : project?.title
-                  ? `${project.title} — Gallery`
-                  : 'Gallery'}
-            </h1>
+          {/* Header Row */}
+          {slug && (
+            <div className="mb-14 flex items-center justify-between">
+              {/* Gallery Title */}
+              <h2 className="text-2xl md:text-3xl font-light text-[#1a3c34] tracking-wide">
+                Gallery
+              </h2>
 
-            {slug && (
+              {/* Back Link */}
               <Link
                 href={`/project/${slug}`}
-                className="shrink-0 mt-2 sm:mt-4 group inline-flex items-center gap-3 text-gray-700 hover:text-[#1a3c34] transition-colors"
+                className="group inline-flex items-center gap-2 text-gray-700 hover:text-[#1a3c34] transition-colors"
               >
-                <span className="text-xl">←</span>
-                <span className="text-lg font-light tracking-wide group-hover:underline">
+                <span className="text-lg">←</span>
+                <span className="text-base font-light tracking-wide group-hover:underline">
                   Back to Project
                 </span>
               </Link>
-            )}
-          </div>
+            </div>
+          )}
 
           {/* Gallery */}
           {isLoading ? (

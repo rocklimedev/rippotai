@@ -58,7 +58,7 @@ export default function ProjectDetailPage() {
     <main className="bg-white">
       {/* HERO */}
       {/* HERO */}
-      <section className="relative w-full h-screen">
+      <section className="relative w-full h-[75vh]">
         <Image
           src={project.banner || '/placeholder.jpg'}
           alt={project.title}

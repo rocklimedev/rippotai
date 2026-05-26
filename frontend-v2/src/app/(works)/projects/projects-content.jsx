@@ -113,7 +113,7 @@ export default function ProjectsContent() {
         style={{
           position: 'relative',
           width: '100%',
-          height: '80vh', // reduced from 100vh to 70vh
+          height: '80vh',
           overflow: 'hidden',
           backgroundColor: '#0a0a0a',
         }}
@@ -127,6 +127,8 @@ export default function ProjectsContent() {
             objectFit: 'cover',
           }}
         />
+
+        {/* Overlay */}
         <div
           style={{
             position: 'absolute',
@@ -135,12 +137,15 @@ export default function ProjectsContent() {
               'linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.3))',
           }}
         />
+
+        {/* Content */}
         <div
           style={{
             position: 'absolute',
             bottom: '60px',
             left: '48px',
             zIndex: 2,
+            maxWidth: '700px',
           }}
         >
           <h1
@@ -149,34 +154,28 @@ export default function ProjectsContent() {
               fontSize: 'clamp(36px, 5vw, 56px)',
               fontWeight: 300,
               color: '#fff',
+              marginBottom: '16px',
             }}
           >
             Our Projects
           </h1>
+
+          <p
+            style={{
+              fontFamily: "'Lato', sans-serif",
+              fontSize: '16px',
+              color: 'rgba(255,255,255,0.85)',
+              lineHeight: 1.8,
+              maxWidth: '520px',
+            }}
+          >
+            A curated selection of our work across architecture, interiors, and
+            furniture design.
+          </p>
         </div>
       </section>
-
-      {/* Intro */}
-      <section style={{ padding: '80px 48px', backgroundColor: '#fff' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <AnimateIn>
-            <p
-              style={{
-                fontFamily: "'Lato', sans-serif",
-                fontSize: '16px',
-                color: '#666',
-                lineHeight: 1.8,
-              }}
-            >
-              A curated selection of our work across architecture, interiors,
-              and furniture design.
-            </p>
-          </AnimateIn>
-        </div>
-      </section>
-
       {/* Category Filters */}
-      <section style={{ padding: '0 48px 40px' }}>
+      <section style={{ padding: '40px 48px' }}>
         <div
           style={{
             display: 'flex',
@@ -212,7 +211,6 @@ export default function ProjectsContent() {
           )}
         </div>
       </section>
-
       {/* Projects List */}
       <section style={{ padding: '0 48px 120px', backgroundColor: '#fff' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
