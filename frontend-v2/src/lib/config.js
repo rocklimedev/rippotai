@@ -486,19 +486,19 @@ export const teamMembers = [
   {
     id: 2,
     name: 'Jayant',
-    designation: 'Architect',
+    designation: 'Senior Architect',
     image: '/assets/team/Jayant.jpg',
   },
   {
     id: 3,
     name: 'Sarthi',
-    designation: 'Architect',
+    designation: 'Senior Architect',
     image: '/assets/team/saarthi.jpeg',
   },
   {
     id: 4,
     name: 'Priyanka',
-    designation: 'Admin',
+    designation: 'Administration',
     image:
       'https://media.cmtradingco.com/rippotai_projects/rippotai_images/priyanka.jpeg',
   },
@@ -511,16 +511,16 @@ export const teamMembers = [
   {
     id: 6,
     name: 'Bhav Lamba',
-    designation: 'Content Strategy & Creative Lead',
+    designation: 'Content Strategist & Creative Lead',
     image: '/assets/team/Bhav.jpg',
   },
-  {
-    id: 7,
-    name: 'Sajjan',
-    designation: 'Site Supervisor',
-    image:
-      'https://media.cmtradingco.com/rippotai_projects/rippotai_images/sajjan.jpeg',
-  },
+  // {
+  //   id: 7,
+  //   name: 'Sajjan',
+  //   designation: 'Site Supervisor',
+  //   image:
+  //     'https://media.cmtradingco.com/rippotai_projects/rippotai_images/sajjan.jpeg',
+  // },
   {
     id: 8,
     name: 'Chhavi',
