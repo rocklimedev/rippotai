@@ -10,8 +10,7 @@ export const WhereItBegan = () => {
     >
       <div
         style={{
-          maxWidth: '1200px',
-          margin: '0 auto',
+          width: '100%',
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
           gap: '80px',

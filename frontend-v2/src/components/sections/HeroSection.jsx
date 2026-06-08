@@ -32,7 +32,7 @@ export const HeroSection = () => {
         position: 'relative',
         width: '100%',
         height: '75vh',
-        marginTop: '95px', // header height
+        marginTop: '64px',
         minHeight: '420px',
         maxHeight: '900px',
         overflow: 'hidden',

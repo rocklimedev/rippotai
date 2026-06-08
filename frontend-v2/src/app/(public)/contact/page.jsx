@@ -414,6 +414,19 @@ export default function ContactPage() {
 
       <section style={{ padding: '100px 48px', backgroundColor: '#fff' }}>
         <div style={{ maxWidth: '700px', margin: '0 auto' }}>
+          <AnimateIn delay={0} distance={30} duration={1}>
+            <h2
+              style={{
+                fontSize: 'clamp(42px, 6vw, 72px)',
+                fontWeight: 300,
+                color: '#1a3c34',
+                marginBottom: '24px',
+                lineHeight: 1,
+              }}
+            >
+              Career
+            </h2>
+          </AnimateIn>
           <AnimateIn delay={0} distance={40} duration={1}>
             <p
               style={{

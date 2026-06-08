@@ -6,7 +6,7 @@ import { useRouter, usePathname } from 'next/navigation';
 const NAV_ITEMS = [
   { label: 'About', href: '/about' },
   { label: 'Works', href: '/projects' },
-  { label: 'Career', href: '/careers' },
+  { label: 'Contact Us', href: '/contact' },
 ];
 
 export const Header = () => {
@@ -79,7 +79,7 @@ export const Header = () => {
           right: 0,
           zIndex: 1000,
           backgroundColor: '#ffffff',
-          height: '95px',
+          height: '64px', // changed from 95px
           boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
         }}
       >
@@ -104,7 +104,7 @@ export const Header = () => {
             }}
             style={{
               backgroundColor: '#ffffff',
-              padding: '8px 14px',
+              padding: '4px 10px', // reduced from 8px 14px
               zIndex: 2,
               overflow: 'hidden',
               display: 'flex',
@@ -122,8 +122,8 @@ export const Header = () => {
               loading="eager"
               decoding="async"
               style={{
-                height: '78px',
-                width: '64px',
+                height: '52px', // changed from 78px
+                width: '42px', // changed from 64px
                 objectFit: 'contain',
                 display: 'block',
               }}

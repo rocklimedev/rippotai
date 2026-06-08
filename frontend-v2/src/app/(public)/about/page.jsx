@@ -332,7 +332,7 @@ const AchievementRow = ({ item }) => {
   return (
     <div className="flex flex-col items-center gap-16">
       {/* TOP: TWO IMAGES */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-5xl">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-3xl">
         <div className="relative w-full aspect-square sm:aspect-[4/5] rounded-xl overflow-hidden bg-gray-100">
           <Image
             src={item.image1}
@@ -363,7 +363,14 @@ const AchievementRow = ({ item }) => {
             href={item.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:underline"
+            className="
+    underline
+    decoration-[#c6a15b]
+    decoration-[1px]
+    underline-offset-4
+    hover:decoration-[#b08a46]
+    transition-colors
+  "
           >
             {item.title}
           </a>
@@ -384,7 +391,7 @@ export default function AboutPage() {
           position: 'relative',
           width: '100%',
           height: '75vh',
-          marginTop: '95px', // header height
+          marginTop: '64px', // header height
           minHeight: '600px',
           overflow: 'hidden',
         }}
@@ -681,50 +688,6 @@ export default function AboutPage() {
         }}
       >
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          {/* Section Title */}
-          <AnimateIn delay={0} distance={30} duration={1}>
-            <div style={{ marginBottom: '60px' }}>
-              <h2
-                style={{
-                  fontSize: 'clamp(42px, 7vw, 64px)',
-                  fontWeight: 300,
-                  color: '#1a3c34',
-                  margin: 0,
-                  lineHeight: 1,
-                  letterSpacing: '-1px',
-                }}
-              >
-                Our Services
-              </h2>
-
-              <div
-                style={{
-                  width: '80px',
-                  height: '2px',
-                  backgroundColor: '#d9af61',
-                  marginTop: '18px',
-                }}
-              />
-
-              <p
-                style={{
-                  fontFamily: "'Lato', sans-serif",
-                  fontSize: '16px',
-                  fontWeight: 300,
-                  color: '#666666',
-                  lineHeight: 1.8,
-                  maxWidth: '650px',
-                  marginTop: '24px',
-                  marginBottom: 0,
-                }}
-              >
-                Comprehensive architectural and interior design solutions
-                crafted with precision, innovation, and an unwavering commitment
-                to timeless excellence.
-              </p>
-            </div>
-          </AnimateIn>
-
           {services.map((service, idx) => {
             const Icon = service.icon;
 
@@ -758,15 +721,15 @@ export default function AboutPage() {
                     {/* Icon */}
                     <div
                       style={{
-                        width: 'clamp(70px, 12vw, 120px)',
-                        height: 'clamp(70px, 12vw, 120px)',
+                        width: 'clamp(50px, 8vw, 80px)',
+                        height: 'clamp(50px, 8vw, 80px)',
                         border: '1px solid #1a3c34',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
                     >
-                      <Icon size={28} strokeWidth={1} color="#1a3c34" />
+                      <Icon size={20} strokeWidth={1} color="#1a3c34" />
                     </div>
 
                     {/* Text */}
@@ -809,50 +772,6 @@ export default function AboutPage() {
       {/* ================= Achievements ================= */}
       <section className="pb-24 bg-white px-6">
         <div className="max-w-6xl mx-auto">
-          {/* Section Header */}
-          <AnimateIn delay={0} distance={30} duration={1}>
-            <div className="mb-16">
-              <h2
-                style={{
-                  fontSize: 'clamp(42px, 7vw, 64px)',
-                  fontWeight: 300,
-                  color: '#1a3c34',
-                  lineHeight: 1,
-                  letterSpacing: '-1px',
-                  margin: 0,
-                }}
-              >
-                Achievements
-              </h2>
-
-              <div
-                style={{
-                  width: '80px',
-                  height: '2px',
-                  backgroundColor: '#d9af61',
-                  marginTop: '18px',
-                }}
-              />
-
-              <p
-                style={{
-                  fontFamily: "'Lato', sans-serif",
-                  fontSize: '16px',
-                  fontWeight: 300,
-                  color: '#666666',
-                  lineHeight: 1.8,
-                  maxWidth: '650px',
-                  marginTop: '24px',
-                  marginBottom: 0,
-                }}
-              >
-                Milestones that reflect our dedication to architectural
-                excellence, innovative design, and the trust placed in us by
-                clients across diverse projects and sectors.
-              </p>
-            </div>
-          </AnimateIn>
-
           {/* Achievement List */}
           <div className="flex flex-col gap-20">
             {achievements.map((item, idx) => (
