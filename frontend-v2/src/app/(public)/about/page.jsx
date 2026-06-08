@@ -3,7 +3,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimateIn } from '@/components/layouts/AnimateIn';
 import { values, aboutImage } from '@/lib/config';
-
+import { teamImage, teamMembers } from '@/lib/config';
+import Image from 'next/image';
+import { achievements } from '@/lib/config';
+import { services, servicesImage } from '@/lib/config';
+import Link from 'next/link';
 /************************************
  * SMOOTH SCROLL PROGRESS HOOK
  ************************************/
@@ -56,17 +60,18 @@ const HorizontalSlider = () => {
   ];
 
   return (
-    <div ref={containerRef} style={{ height: '250vh', position: 'relative' }}>
+    <div ref={containerRef} style={{ height: '80vh', position: 'relative' }}>
       <div
         style={{
           position: 'sticky',
           top: 0,
-          minHeight: '100vh',
-          height: '100vh',
+          minHeight: '60vh',
+          height: '60vh',
           overflow: 'hidden',
           backgroundColor: '#ffffff',
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'flex-start',
+          paddingTop: '80px',
         }}
       >
         <div
@@ -88,7 +93,7 @@ const HorizontalSlider = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: '0 5vw', // Better mobile padding
+                padding: '0 3vw',
               }}
             >
               <div style={{ maxWidth: '720px', width: '100%' }}>
@@ -323,7 +328,50 @@ const ValuesSlider = () => {
     </div>
   );
 };
+const AchievementRow = ({ item }) => {
+  return (
+    <div className="flex flex-col items-center gap-16">
+      {/* TOP: TWO IMAGES */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-5xl">
+        <div className="relative w-full aspect-square sm:aspect-[4/5] rounded-xl overflow-hidden bg-gray-100">
+          <Image
+            src={item.image1}
+            alt={item.title}
+            fill
+            className="object-cover"
+          />
+        </div>
 
+        <div className="relative w-full aspect-square sm:aspect-[4/5] rounded-xl overflow-hidden bg-gray-100">
+          <Image
+            src={item.image2}
+            alt={item.title}
+            fill
+            className="object-cover"
+          />
+        </div>
+      </div>
+
+      {/* BOTTOM: TEXT */}
+      <div className="text-center max-w-3xl">
+        <p className="text-sm text-gray-500 tracking-wide mb-4">
+          {item.org} • {item.year}
+        </p>
+
+        <h3 className="text-3xl md:text-4xl font-light text-[#1a3c34] mb-6">
+          <a
+            href={item.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:underline"
+          >
+            {item.title}
+          </a>
+        </h3>
+      </div>
+    </div>
+  );
+};
 /************************************
  * MAIN ABOUT PAGE
  ************************************/
@@ -335,7 +383,8 @@ export default function AboutPage() {
         style={{
           position: 'relative',
           width: '100%',
-          height: '80vh', // reduced from 100vh to 70vh
+          height: '75vh',
+          marginTop: '95px', // header height
           minHeight: '600px',
           overflow: 'hidden',
         }}
@@ -466,95 +515,349 @@ export default function AboutPage() {
 
       <ValuesSlider />
 
-      {/* Our Story Section */}
-      <section style={{ padding: '100px 5vw' }}>
-        <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-          <AnimateIn>
-            <div
-              style={{
-                fontFamily: "'Lato', sans-serif",
-                fontSize: '11px',
-                letterSpacing: '3px',
-                textTransform: 'uppercase',
-                color: '#d9af61',
-                marginBottom: '32px',
-              }}
-            >
-              OUR STORY
+      {/* Team Introduction + Grid */}
+      <section style={{ padding: '100px 48px', backgroundColor: '#ffffff' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          {/* Section Title */}
+          <AnimateIn delay={0} distance={30} duration={1}>
+            <div style={{ marginBottom: '40px' }}>
+              <h2
+                style={{
+                  fontSize: '56px',
+                  fontWeight: 300,
+                  color: '#1a3c34',
+                  margin: 0,
+                  lineHeight: 1,
+                  letterSpacing: '-1px',
+                }}
+              >
+                Our Team
+              </h2>
+
+              <div
+                style={{
+                  width: '80px',
+                  height: '2px',
+                  backgroundColor: '#d9af61',
+                  marginTop: '18px',
+                }}
+              />
             </div>
           </AnimateIn>
 
-          <AnimateIn delay={0.15}>
-            <h2
+          {/* Intro Text */}
+          <AnimateIn delay={0} distance={40} duration={1}>
+            <p
               style={{
                 fontFamily: "'Lato', sans-serif",
-                fontSize: 'clamp(24px, 5.5vw, 36px)',
+                fontSize: '16px',
                 fontWeight: 300,
-                color: '#1a3c34',
-                lineHeight: 1.5,
-                marginBottom: '48px',
+                color: '#666666',
+                lineHeight: 1.8,
+                maxWidth: '600px',
+                marginBottom: '60px',
               }}
             >
-              Rippotai Architecture was founded on the belief that architecture
-              is more than construction — it is responsibility.
-            </h2>
+              The people behind every space we create. A team of architects,
+              designers, and visionaries committed to crafting spaces that
+              endure.
+            </p>
           </AnimateIn>
 
+          {/* Team Grid */}
           <div
-            style={{ display: 'flex', flexDirection: 'column', gap: '60px' }}
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+              gap: '32px',
+            }}
+            className="team-grid"
           >
-            {[
-              {
-                year: 'The Beginning',
-                text: 'What began as a pursuit of disciplined design evolved into a studio defined by material honesty and structural clarity.',
-              },
-              {
-                year: 'The Idea',
-                text: 'We believe architecture should speak quietly, yet stand confidently—refined through precision and restraint.',
-              },
-              {
-                year: 'Today & Beyond',
-                text: 'We continue creating purposeful, enduring spaces. Every new project is a new chapter in our story.',
-              },
-            ].map((item, idx) => (
-              <AnimateIn key={idx} delay={0.1 * idx}>
-                <div
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr',
-                    gap: '20px',
-                    '@media (min-width: 768px)': {
-                      gridTemplateColumns: '180px 1fr',
-                      gap: '48px',
-                    },
-                  }}
-                >
+            {teamMembers.map((member, idx) => (
+              <AnimateIn
+                key={member.id}
+                delay={0.08 * idx}
+                distance={50}
+                duration={1.2}
+              >
+                <div>
+                  {/* Photo Container */}
                   <div
+                    style={{
+                      width: '100%',
+                      aspectRatio: '3 / 4',
+                      backgroundColor: '#f0eeea',
+                      overflow: 'hidden',
+                      position: 'relative',
+                      marginBottom: '16px',
+                    }}
+                  >
+                    {member.image ? (
+                      <Image
+                        src={member.image}
+                        alt={member.name}
+                        fill
+                        sizes="(max-width: 768px) 45vw, 220px"
+                        quality={85}
+                        style={{ objectFit: 'cover' }}
+                      />
+                    ) : (
+                      <div
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontFamily: "'Lato', sans-serif",
+                          fontSize: '40px',
+                          fontWeight: 300,
+                          color: 'rgba(26, 60, 52, 0.15)',
+                        }}
+                      >
+                        {String(member.id).padStart(2, '0')}
+                      </div>
+                    )}
+
+                    {member.tag && (
+                      <span
+                        style={{
+                          position: 'absolute',
+                          top: '12px',
+                          right: '12px',
+                          fontFamily: "'Lato', sans-serif",
+                          fontSize: '10px',
+                          fontWeight: 500,
+                          letterSpacing: '1.5px',
+                          textTransform: 'uppercase',
+                          color: 'rgba(217, 175, 97, 0.85)',
+                          backgroundColor: 'rgba(26, 60, 52, 0.55)',
+                          padding: '5px 10px',
+                          lineHeight: 1,
+                        }}
+                      >
+                        {member.tag}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Name */}
+                  <h3
                     style={{
                       fontFamily: "'Lato', sans-serif",
                       fontSize: '15px',
-                      letterSpacing: '2px',
-                      color: '#d9af61',
                       fontWeight: 500,
+                      color: '#1a3c34',
+                      letterSpacing: '0.5px',
+                      margin: 0,
+                      marginBottom: '4px',
                     }}
                   >
-                    {item.year}
-                  </div>
+                    {member.name}
+                  </h3>
 
+                  {/* Designation */}
                   <p
                     style={{
                       fontFamily: "'Lato', sans-serif",
-                      fontSize: 'clamp(15px, 4vw, 17px)',
-                      color: '#444',
-                      lineHeight: 2,
-                      paddingBottom: idx < 2 ? '40px' : '0',
-                      borderBottom:
-                        idx < 2 ? '1px solid rgba(26,60,52,0.1)' : 'none',
+                      fontSize: '13px',
+                      fontWeight: 300,
+                      color: '#888888',
+                      margin: 0,
                     }}
                   >
-                    {item.text}
+                    {member.designation}
                   </p>
                 </div>
+              </AnimateIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section
+        style={{
+          padding: 'clamp(60px, 8vw, 100px) clamp(20px, 5vw, 48px)',
+        }}
+      >
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          {/* Section Title */}
+          <AnimateIn delay={0} distance={30} duration={1}>
+            <div style={{ marginBottom: '60px' }}>
+              <h2
+                style={{
+                  fontSize: 'clamp(42px, 7vw, 64px)',
+                  fontWeight: 300,
+                  color: '#1a3c34',
+                  margin: 0,
+                  lineHeight: 1,
+                  letterSpacing: '-1px',
+                }}
+              >
+                Our Services
+              </h2>
+
+              <div
+                style={{
+                  width: '80px',
+                  height: '2px',
+                  backgroundColor: '#d9af61',
+                  marginTop: '18px',
+                }}
+              />
+
+              <p
+                style={{
+                  fontFamily: "'Lato', sans-serif",
+                  fontSize: '16px',
+                  fontWeight: 300,
+                  color: '#666666',
+                  lineHeight: 1.8,
+                  maxWidth: '650px',
+                  marginTop: '24px',
+                  marginBottom: 0,
+                }}
+              >
+                Comprehensive architectural and interior design solutions
+                crafted with precision, innovation, and an unwavering commitment
+                to timeless excellence.
+              </p>
+            </div>
+          </AnimateIn>
+
+          {services.map((service, idx) => {
+            const Icon = service.icon;
+
+            return (
+              <AnimateIn
+                key={idx}
+                delay={0.15 * idx}
+                distance={60}
+                duration={1.2}
+              >
+                <Link
+                  href={`/services/${service.slug}`}
+                  style={{ textDecoration: 'none' }}
+                >
+                  <div
+                    className="service-grid"
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'minmax(70px, 120px) 1fr',
+                      gap: 'clamp(20px, 4vw, 48px)',
+                      padding: 'clamp(36px, 6vw, 60px) 0',
+                      borderBottom:
+                        idx < services.length - 1
+                          ? '1px solid rgba(26, 60, 52, 0.1)'
+                          : 'none',
+                      alignItems: 'start',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease',
+                    }}
+                  >
+                    {/* Icon */}
+                    <div
+                      style={{
+                        width: 'clamp(70px, 12vw, 120px)',
+                        height: 'clamp(70px, 12vw, 120px)',
+                        border: '1px solid #1a3c34',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <Icon size={28} strokeWidth={1} color="#1a3c34" />
+                    </div>
+
+                    {/* Text */}
+                    <div>
+                      <h2
+                        style={{
+                          fontFamily: 'Lato, sans-serif',
+                          fontSize: 'clamp(18px, 3vw, 24px)',
+                          fontWeight: 400,
+                          color: '#1a3c34',
+                          letterSpacing: '2px',
+                          textTransform: 'uppercase',
+                          marginBottom: '14px',
+                        }}
+                      >
+                        {service.title}
+                      </h2>
+
+                      <p
+                        style={{
+                          fontFamily: 'Lato, sans-serif',
+                          fontSize: 'clamp(14px, 2.4vw, 16px)',
+                          color: '#555',
+                          lineHeight: 1.8,
+                          maxWidth: '650px',
+                          margin: 0,
+                        }}
+                      >
+                        {service.description}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              </AnimateIn>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ================= Achievements ================= */}
+      <section className="pb-24 bg-white px-6">
+        <div className="max-w-6xl mx-auto">
+          {/* Section Header */}
+          <AnimateIn delay={0} distance={30} duration={1}>
+            <div className="mb-16">
+              <h2
+                style={{
+                  fontSize: 'clamp(42px, 7vw, 64px)',
+                  fontWeight: 300,
+                  color: '#1a3c34',
+                  lineHeight: 1,
+                  letterSpacing: '-1px',
+                  margin: 0,
+                }}
+              >
+                Achievements
+              </h2>
+
+              <div
+                style={{
+                  width: '80px',
+                  height: '2px',
+                  backgroundColor: '#d9af61',
+                  marginTop: '18px',
+                }}
+              />
+
+              <p
+                style={{
+                  fontFamily: "'Lato', sans-serif",
+                  fontSize: '16px',
+                  fontWeight: 300,
+                  color: '#666666',
+                  lineHeight: 1.8,
+                  maxWidth: '650px',
+                  marginTop: '24px',
+                  marginBottom: 0,
+                }}
+              >
+                Milestones that reflect our dedication to architectural
+                excellence, innovative design, and the trust placed in us by
+                clients across diverse projects and sectors.
+              </p>
+            </div>
+          </AnimateIn>
+
+          {/* Achievement List */}
+          <div className="flex flex-col gap-20">
+            {achievements.map((item, idx) => (
+              <AnimateIn key={idx} delay={0.1 * idx}>
+                <AchievementRow item={item} />
               </AnimateIn>
             ))}
           </div>

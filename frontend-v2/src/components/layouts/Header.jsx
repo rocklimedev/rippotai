@@ -6,12 +6,7 @@ import { useRouter, usePathname } from 'next/navigation';
 const NAV_ITEMS = [
   { label: 'About', href: '/about' },
   { label: 'Works', href: '/projects' },
-  { label: 'Team', href: '/team' },
-  { label: 'Services', href: '/services' },
-  { label: 'Process', href: '/process' },
   { label: 'Career', href: '/careers' },
-  { label: 'Contact', href: '/contact' },
-  { label: 'Achievements', href: '/achievements' },
 ];
 
 export const Header = () => {

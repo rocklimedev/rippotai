@@ -7,12 +7,12 @@ export const ProcessSection = () => {
       id="process"
       style={{
         backgroundColor: '#fafafa',
-        padding: '80px 48px',
+        padding: '60px 48px 30px',
       }}
     >
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
         {/* Section title */}
-        <div style={{ textAlign: 'center', marginBottom: '80px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
           <h2
             style={{
               fontFamily: "'Lato', sans-serif",

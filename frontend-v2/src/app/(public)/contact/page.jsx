@@ -5,9 +5,13 @@ import { toast } from 'sonner';
 import { MapPin, Mail, Phone } from 'lucide-react';
 import { useCreateQueryMutation } from '@/api/queriesApi';
 import { contactImage, contactInfo, googleMapsLink } from '@/lib/config';
-
+import { useCreateApplicationMutation } from '@/api/applicationsApi';
 export default function ContactPage() {
-  const [createQuery, { isLoading: pending }] = useCreateQueryMutation();
+  const [createQuery, { isLoading: contactPending }] = useCreateQueryMutation();
+  const [createApplication, { isLoading: applicationPending }] =
+    useCreateApplicationMutation();
+
+  const [fileName, setFileName] = useState('');
 
   const [formData, setFormData] = useState({
     name: '',
@@ -87,7 +91,37 @@ export default function ContactPage() {
       toast.error(errorMsg);
     }
   };
+  const handleCareerSubmit = async (e) => {
+    e.preventDefault();
 
+    const formData = new FormData(e.currentTarget);
+
+    // Get the file from input
+    const fileInput = e.currentTarget.querySelector('input[name="portfolio"]');
+    const resumeFile = fileInput?.files?.[0];
+
+    try {
+      // Call RTK Query mutation with a plain object; the mutation will construct FormData
+      await createApplication({
+        name: formData.get('name'),
+        email: formData.get('email'),
+        phone: formData.get('phone'),
+        designation: formData.get('designation'),
+        interestedIn: formData.get('interestedIn'),
+        coverLetter: formData.get('coverLetter') || '', // optional
+        resume: resumeFile,
+      }).unwrap();
+
+      toast.success("Application submitted successfully! We'll be in touch.");
+      e.target.reset();
+      setFileName('');
+    } catch (err) {
+      const errorMsg =
+        err?.data?.message || err?.message || 'Failed to submit application.';
+      console.log(err);
+      toast.error(errorMsg);
+    }
+  };
   return (
     <>
       {/* Banner */}
@@ -237,7 +271,7 @@ export default function ContactPage() {
 
                 <button
                   type="submit"
-                  disabled={pending}
+                  disabled={contactPending}
                   style={{
                     fontFamily: "'Lato', sans-serif",
                     fontSize: '13px',
@@ -249,10 +283,10 @@ export default function ContactPage() {
                     border: 'none',
                     padding: '16px 48px',
                     cursor: 'pointer',
-                    opacity: pending ? 0.8 : 1,
+                    opacity: contactPending ? 0.8 : 1,
                   }}
                 >
-                  {pending ? 'Sending...' : 'Send Message'}
+                  {contactPending ? 'Sending...' : 'Send Message'}
                 </button>
               </form>
             </AnimateIn>
@@ -375,6 +409,119 @@ export default function ContactPage() {
               </a>
             </AnimateIn>
           </div>
+        </div>
+      </section>
+
+      <section style={{ padding: '100px 48px', backgroundColor: '#fff' }}>
+        <div style={{ maxWidth: '700px', margin: '0 auto' }}>
+          <AnimateIn delay={0} distance={40} duration={1}>
+            <p
+              style={{
+                fontFamily: "'Lato', sans-serif",
+                fontSize: '16px',
+                fontWeight: 300,
+                color: '#666666',
+                lineHeight: 1.8,
+                marginBottom: '60px',
+              }}
+            >
+              We are always looking for talented individuals who share our
+              passion for design and architecture. Fill out the form below and
+              we will get back to you.
+            </p>
+          </AnimateIn>
+
+          <AnimateIn delay={0.2} distance={50} duration={1.2}>
+            <form onSubmit={handleCareerSubmit}>
+              {/* Full Name */}
+              <div style={{ marginBottom: '32px' }}>
+                <label style={labelStyle}>Full Name</label>
+                <input type="text" name="name" required style={inputStyle} />
+              </div>
+
+              {/* Phone */}
+              <div style={{ marginBottom: '32px' }}>
+                <label style={labelStyle}>Phone Number</label>
+                <input type="tel" name="phone" style={inputStyle} />
+              </div>
+
+              {/* Email */}
+              <div style={{ marginBottom: '32px' }}>
+                <label style={labelStyle}>Email</label>
+                <input type="email" name="email" required style={inputStyle} />
+              </div>
+
+              {/* Designation */}
+              <div style={{ marginBottom: '32px' }}>
+                <label style={labelStyle}>Current Designation</label>
+                <input type="text" name="designation" style={inputStyle} />
+              </div>
+
+              {/* Interested In */}
+              <div style={{ marginBottom: '32px' }}>
+                <label style={labelStyle}>Interested In</label>
+                <select
+                  name="interestedIn"
+                  required
+                  style={{ ...inputStyle, appearance: 'none' }}
+                >
+                  <option value="">Select a department</option>
+                  <option value="Architecture">Architecture</option>
+                  <option value="Interior Design">Interior Design</option>
+                  <option value="Furniture Design">Furniture Design</option>
+                  <option value="Project Management">Project Management</option>
+                  <option value="3D Visualization">3D Visualization</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              {/* Portfolio / Resume */}
+              <div style={{ marginBottom: '48px' }}>
+                <label style={labelStyle}>Upload Portfolio / Resume</label>
+                <label
+                  style={{
+                    ...inputStyle,
+                    display: 'flex',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                    color: fileName ? '#1a3c34' : '#999999',
+                  }}
+                >
+                  {fileName || 'Choose a file (PDF, ZIP, max 5MB recommended)'}
+                  <input
+                    type="file"
+                    name="portfolio"
+                    accept=".pdf,.zip,.doc,.docx"
+                    style={{ display: 'none' }}
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) setFileName(file.name);
+                    }}
+                  />
+                </label>
+              </div>
+
+              <button
+                type="submit"
+                disabled={applicationPending}
+                style={{
+                  fontFamily: "'Lato', sans-serif",
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  letterSpacing: '3px',
+                  textTransform: 'uppercase',
+                  color: '#ffffff',
+                  backgroundColor: '#1a3c34',
+                  border: 'none',
+                  padding: '16px 48px',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.3s ease',
+                }}
+              >
+                {applicationPending ? 'Submitting...' : 'Submit Application'}
+              </button>
+            </form>
+          </AnimateIn>
         </div>
       </section>
     </>
