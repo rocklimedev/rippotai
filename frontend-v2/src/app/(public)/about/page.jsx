@@ -545,7 +545,7 @@ export default function AboutPage() {
         <div
           style={{
             width: '100%',
-            padding: '0 24px',
+            padding: '60px 48px',
             boxSizing: 'border-box',
           }}
         >

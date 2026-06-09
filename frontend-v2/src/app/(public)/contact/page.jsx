@@ -181,7 +181,7 @@ export default function ContactPage() {
       {/* Contact Content */}
       <section
         style={{
-          padding: '100px 24px',
+          padding: '60px 48px',
         }}
       >
         <div
