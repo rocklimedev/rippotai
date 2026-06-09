@@ -61,7 +61,7 @@ export default function GalleryWithText({ project }) {
 
         const imageSrc = `${item.src}?v=${project.updatedAt || ''}`;
 
-        // ✅ FEATURE IMAGE (NO CROP, CONTROLLED HEIGHT)
+        // FEATURE IMAGE
         if (item.isFeature) {
           return (
             <AnimateIn key={`img-${item.idx}`}>
@@ -81,7 +81,7 @@ export default function GalleryWithText({ project }) {
           );
         }
 
-        // CHECK FOR PAIR
+        // PAIR LOGIC FIXED
         const nextItem = items[i + 1];
         const hasNext =
           nextItem && nextItem.type === 'image' && !nextItem.isFeature;
@@ -111,7 +111,7 @@ export default function GalleryWithText({ project }) {
                     alt=""
                     width={800}
                     height={600}
-                    sizes="(max-width: 768px) 100vw, 50vw"
+                    sizes="(max-width: 768px) 50vw"
                     quality={82}
                     unoptimized
                     className="w-full h-auto max-h-[420px] object-contain transition duration-700 hover:scale-105"
@@ -119,6 +119,13 @@ export default function GalleryWithText({ project }) {
                 </div>
               )}
             </div>
+
+            {/* ✅ IMPORTANT FIX: SKIP NEXT ITEM */}
+            {hasNext &&
+              (() => {
+                i++;
+                return null;
+              })()}
           </AnimateIn>
         );
       })}
