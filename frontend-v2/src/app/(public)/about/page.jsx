@@ -464,7 +464,7 @@ export default function AboutPage() {
           style={{
             width: '100%',
             margin: '0 auto',
-            padding: '0 24px',
+            padding: '0 clamp(24px, 6vw, 120px)',
             boxSizing: 'border-box',
           }}
         >

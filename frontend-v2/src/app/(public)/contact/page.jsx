@@ -181,7 +181,7 @@ export default function ContactPage() {
       {/* Contact Content */}
       <section
         style={{
-          padding: '60px 48px',
+          padding: '60px clamp(24px, 6vw, 140px)',
         }}
       >
         <div
@@ -416,7 +416,7 @@ export default function ContactPage() {
 
       <section
         style={{
-          padding: '100px 24px',
+          padding: '100px clamp(24px, 6vw, 140px)',
           backgroundColor: '#fff',
         }}
       >
@@ -429,35 +429,35 @@ export default function ContactPage() {
           }}
         >
           <AnimateIn delay={0} distance={30} duration={1}>
-            <h2
-              style={{
-                fontSize: 'clamp(42px, 6vw, 72px)',
-                fontWeight: 300,
-                color: '#1a3c34',
-                marginBottom: '24px',
-                lineHeight: 1,
-              }}
-            >
-              Career
-            </h2>
-          </AnimateIn>
-          <AnimateIn delay={0} distance={40} duration={1}>
-            <p
-              style={{
-                fontFamily: "'Lato', sans-serif",
-                fontSize: '16px',
-                fontWeight: 300,
-                color: '#666666',
-                lineHeight: 1.8,
-                marginBottom: '60px',
-              }}
-            >
-              We are always looking for talented individuals who share our
-              passion for design and architecture. Fill out the form below and
-              we will get back to you.
-            </p>
-          </AnimateIn>
+            <div style={{ maxWidth: '520px' }}>
+              <h2
+                style={{
+                  fontSize: 'clamp(42px, 6vw, 72px)',
+                  fontWeight: 300,
+                  color: '#1a3c34',
+                  marginBottom: '24px',
+                  lineHeight: 1,
+                }}
+              >
+                Career
+              </h2>
 
+              <p
+                style={{
+                  fontFamily: "'Lato', sans-serif",
+                  fontSize: '16px',
+                  fontWeight: 300,
+                  color: '#666666',
+                  lineHeight: 1.8,
+                  marginBottom: 0,
+                }}
+              >
+                We are always looking for talented individuals who share our
+                passion for design and architecture. Fill out the form below and
+                we will get back to you.
+              </p>
+            </div>
+          </AnimateIn>
           <AnimateIn delay={0.2} distance={50} duration={1.2}>
             <form onSubmit={handleCareerSubmit}>
               {/* Full Name */}
