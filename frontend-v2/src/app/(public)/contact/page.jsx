@@ -179,16 +179,18 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Content */}
-      <section style={{ padding: '100px 48px' }}>
+      <section
+        style={{
+          padding: '100px 24px',
+        }}
+      >
         <div
           style={{
-            maxWidth: '1200px',
-            margin: '0 auto',
+            width: '100%',
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
             gap: '80px',
           }}
-          className="contact-grid"
         >
           {/* Left - Form */}
           <div>
@@ -412,8 +414,20 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section style={{ padding: '100px 48px', backgroundColor: '#fff' }}>
-        <div style={{ maxWidth: '700px', margin: '0 auto' }}>
+      <section
+        style={{
+          padding: '100px 24px',
+          backgroundColor: '#fff',
+        }}
+      >
+        <div
+          style={{
+            width: '100%',
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '80px',
+          }}
+        >
           <AnimateIn delay={0} distance={30} duration={1}>
             <h2
               style={{

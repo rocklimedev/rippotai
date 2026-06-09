@@ -364,13 +364,14 @@ const AchievementRow = ({ item }) => {
             target="_blank"
             rel="noopener noreferrer"
             className="
-    underline
-    decoration-[#c6a15b]
-    decoration-[1px]
-    underline-offset-4
-    hover:decoration-[#b08a46]
-    transition-colors
-  "
+  no-underline
+  hover:underline
+  decoration-[#c6a15b]
+  decoration-[1px]
+  underline-offset-4
+  hover:decoration-[#b08a46]
+  transition-colors
+"
           >
             {item.title}
           </a>
@@ -453,8 +454,20 @@ export default function AboutPage() {
       <HorizontalSlider />
 
       {/* About Text Section */}
-      <section style={{ padding: '100px 5vw 120px', backgroundColor: '#fff' }}>
-        <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+      <section
+        style={{
+          padding: '100px 0 120px',
+          backgroundColor: '#fff',
+        }}
+      >
+        <div
+          style={{
+            width: '100%',
+            margin: '0 auto',
+            padding: '0 24px',
+            boxSizing: 'border-box',
+          }}
+        >
           <AnimateIn>
             <div
               style={{
@@ -523,8 +536,19 @@ export default function AboutPage() {
       <ValuesSlider />
 
       {/* Team Introduction + Grid */}
-      <section style={{ padding: '100px 48px', backgroundColor: '#ffffff' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+      <section
+        style={{
+          padding: '100px 0',
+          backgroundColor: '#ffffff',
+        }}
+      >
+        <div
+          style={{
+            width: '100%',
+            padding: '0 24px',
+            boxSizing: 'border-box',
+          }}
+        >
           {/* Section Title */}
           <AnimateIn delay={0} distance={30} duration={1}>
             <div style={{ marginBottom: '40px' }}>
