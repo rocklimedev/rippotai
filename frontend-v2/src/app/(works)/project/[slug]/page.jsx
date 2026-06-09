@@ -24,7 +24,9 @@ export default function ProjectDetailPage() {
   });
 
   const project = projectResponse?.data ?? null;
-
+  console.log('🟢 RAW PROJECT IMAGES FROM API:', project?.images);
+  console.log('🟢 IMAGE COUNT:', project?.images?.length);
+  console.log('🟢 UNIQUE CHECK:', new Set(project?.images || []).size);
   const { data: projectsList = [], isLoading: isListLoading } =
     useGetPublicProjectsQuery(
       { page: 1, limit: 100 },
@@ -46,7 +48,7 @@ export default function ProjectDetailPage() {
   if (isProjectError || !project || !slug) {
     notFound();
   }
-
+  console.log('🟡 PASSING TO GALLERY:', project?.images);
   const currentIndex = projectsList.findIndex((p) => p.slug === slug);
   const prevProject = currentIndex > 0 ? projectsList[currentIndex - 1] : null;
   const nextProject =
