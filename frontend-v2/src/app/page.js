@@ -8,7 +8,7 @@ import { WhereItBegan } from '@/components/sections/WhereItBegan';
 import { ServicesSection } from '@/components/sections/ServicesSection';
 import { FounderMessage } from '@/components/layouts/FounderMessage';
 import FadeInSection from '@/components/sections/FadeInSection'; // ← new client component
-
+import WorksSectionSkeleton from '@/components/sections/WorksSectionSkeleton'; // ← new skeleton component
 // ──────────────────────────────────────────────
 export default function HomePage() {
   return (
@@ -18,7 +18,9 @@ export default function HomePage() {
       <FadeInSection>
         <WhereItBegan />
       </FadeInSection>
-
+      <FadeInSection aboveGrid>
+        <WorksSectionSkeleton />
+      </FadeInSection>
       <FadeInSection aboveGrid>
         <WorksSection />
       </FadeInSection>
