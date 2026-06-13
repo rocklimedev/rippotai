@@ -138,7 +138,7 @@ const ProjectBlock = ({ project }) => {
   );
 };
 
-export const WorksSection = () => {
+export default function WorksSection() {
   const { data: projectsData, isLoading } = useGetPublicProjectsQuery({
     page: 1,
     limit: 20,
@@ -174,7 +174,7 @@ export const WorksSection = () => {
     tropical: projectMap.get('guptas-residence-ii'),
     pitampura: projectMap.get('nagpals-residence-pitampura'),
     sehaj: projectMap.get('sehaj'),
-    geetanjali: projectMap.get('khannas-residence-geetanjali-marg'),
+    geetanjali: projectMap.get('vinay-khanna-law-chambers-panchsheel-park'),
   };
 
   if (isLoading) {
@@ -206,6 +206,34 @@ export const WorksSection = () => {
         }}
       >
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          {/* Header */}
+          <div
+            style={{ textAlign: 'center', marginBottom: isMobile ? 40 : 64 }}
+          >
+            <p
+              style={{
+                fontSize: '9px',
+                letterSpacing: '4px',
+                textTransform: 'uppercase',
+                color: '#c6a15b',
+                marginBottom: 14,
+              }}
+            >
+              Selected Works
+            </p>
+            <h2
+              style={{
+                fontSize: isMobile ? '28px' : '42px',
+                fontWeight: 300,
+                color: '#1a1a1a',
+                letterSpacing: '-.02em',
+                lineHeight: 1.1,
+              }}
+            >
+              Built With Precision
+            </h2>
+          </div>
+
           {isMobile ? (
             <div
               style={{
@@ -322,4 +350,4 @@ export const WorksSection = () => {
       </section>
     </>
   );
-};
+}

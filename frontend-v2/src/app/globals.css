@@ -492,3 +492,17 @@ footer {
     text-align: center;
   }
 }
+.portfolio-masonry {
+  display: flex;
+  margin-left: -16px;
+  width: auto;
+}
+
+.portfolio-column {
+  padding-left: 16px;
+  background-clip: padding-box;
+}
+
+.portfolio-column > * {
+  margin-bottom: 16px;
+}

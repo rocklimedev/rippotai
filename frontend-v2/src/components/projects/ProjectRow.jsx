@@ -2,8 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export default function ProjectRow({ project, reverse }) {
-  const displayImage =
-    project.image || project.images?.[0] || '/placeholder-project.jpg';
+  const displayImage = project.banner || '/placeholder-project.jpg';
   const displayDesc =
     project.description?.substring(0, 160) ||
     "A thoughtful integration of form and function, designed to resonate with those who inhabit the space — reflecting the cube's clarity and versatility.";
