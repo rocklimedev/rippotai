@@ -451,8 +451,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <HorizontalSlider />
-
       {/* About Text Section */}
       <section
         style={{

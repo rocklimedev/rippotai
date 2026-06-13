@@ -2,14 +2,67 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { notFound, useParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import GalleryWithText from '@/components/layouts/GalleryText';
 import { AnimateIn } from '@/components/layouts/AnimateIn';
+import ProjectDetailSkeleton from '@/components/skeletons/ProjectDetailSkeleton';
+
 import {
   useGetProjectBySlugQuery,
   useGetPublicProjectsQuery,
 } from '@/api/projectsApi';
+
+const getImageSrc = (image) => {
+  if (!image) return '/placeholder.jpg';
+
+  if (typeof image === 'string') return image;
+
+  return (
+    image.url ||
+    image.image ||
+    image.src ||
+    image.path ||
+    image.secure_url ||
+    '/placeholder.jpg'
+  );
+};
+
+const FullBleedImage = ({ src, alt = 'Project image', className = '' }) => {
+  return (
+    <div className={`relative overflow-hidden bg-[#f3f0eb] ${className}`}>
+      <Image
+        src={getImageSrc(src)}
+        alt={alt}
+        fill
+        sizes="100vw"
+        quality={90}
+        className="object-cover"
+      />
+    </div>
+  );
+};
+
+const TextBlock = ({ title, children }) => {
+  if (!children && !title) return null;
+
+  return (
+    <section className="py-[35px] px-[35px] md:px-[35px]">
+      <div className="max-w-5xl">
+        {title && (
+          <h2 className="text-4xl md:text-6xl font-light leading-tight mb-8 text-black">
+            {title}
+          </h2>
+        )}
+
+        {children && (
+          <div className="text-lg md:text-xl leading-relaxed text-gray-700 whitespace-pre-line">
+            {children}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+};
 
 export default function ProjectDetailPage() {
   const params = useParams();
@@ -23,152 +76,286 @@ export default function ProjectDetailPage() {
     skip: !slug,
   });
 
-  const project = projectResponse?.data ?? null;
-  console.log('🟢 RAW PROJECT IMAGES FROM API:', project?.images);
-  console.log('🟢 IMAGE COUNT:', project?.images?.length);
-  console.log('🟢 UNIQUE CHECK:', new Set(project?.images || []).size);
   const { data: projectsList = [], isLoading: isListLoading } =
     useGetPublicProjectsQuery(
       { page: 1, limit: 100 },
       {
         selectFromResult: ({ data }) => ({
           data: data?.data || [],
+          isLoading: false,
         }),
       },
     );
 
   if (isProjectLoading || isListLoading) {
+    return <ProjectDetailSkeleton />;
+  }
+
+  const project = projectResponse?.data ?? null;
+
+  if (isProjectError || !project || !slug) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin h-10 w-10 border-b-2 border-[#d9af61] rounded-full"></div>
-      </div>
+      <main className="min-h-screen flex items-center justify-center bg-white px-6">
+        <div className="text-center">
+          <h1 className="text-3xl md:text-5xl font-light mb-4">
+            Project not found
+          </h1>
+          <Link
+            href="/projects"
+            className="text-sm uppercase tracking-[3px] text-[#d9af61]"
+          >
+            Back to Projects
+          </Link>
+        </div>
+      </main>
     );
   }
 
-  if (isProjectError || !project || !slug) {
-    notFound();
-  }
-  console.log('🟡 PASSING TO GALLERY:', project?.images);
+  const images = Array.from(
+    new Set((project.images || []).map((img) => getImageSrc(img))),
+  );
+
   const currentIndex = projectsList.findIndex((p) => p.slug === slug);
+
   const prevProject = currentIndex > 0 ? projectsList[currentIndex - 1] : null;
+
   const nextProject =
     currentIndex < projectsList.length - 1 && currentIndex !== -1
       ? projectsList[currentIndex + 1]
       : null;
 
+  const recommendedProjects = projectsList
+    .filter((item) => item.slug !== slug)
+    .slice(0, 3);
+
   return (
-    <main className="bg-white">
-      {/* HERO */}
+    <main className="bg-white overflow-x-hidden">
       {/* HERO */}
       <section className="relative w-full h-[75vh]">
         <Image
-          src={project.banner || '/placeholder.jpg'}
+          src={project.banner || getImageSrc(images[0]) || '/placeholder.jpg'}
           alt={project.title}
           fill
           priority
           sizes="100vw"
-          quality={90}
+          quality={95}
           className="object-cover"
         />
+      </section>
 
-        {/* optional overlay for readability */}
-        <div className="absolute inset-0 bg-black/20" />
+      {/* TITLE + DESCRIPTION */}
+      <TextBlock title={project.title}>{project.description}</TextBlock>
 
-        {/* optional title on image */}
-        <div className="absolute bottom-10 left-6 md:left-16 text-white">
-          <div className="text-sm md:text-base uppercase tracking-[4px] text-[#d9af61] mb-3">
-            {project.category}
+      {/* PROJECT META */}
+      <section className="px-[35px] pb-[35px]">
+        <div className="flex flex-wrap gap-x-10 gap-y-5 text-sm md:text-base">
+          {project.location && (
+            <div>
+              <span className="block text-[#d9af61] uppercase tracking-[3px] text-[10px] mb-1">
+                Location
+              </span>
+              {project.location}
+            </div>
+          )}
+
+          <div>
+            <span className="block text-[#d9af61] uppercase tracking-[3px] text-[10px] mb-1">
+              Year
+            </span>
+            {project.year || new Date(project.createdAt).getFullYear()}
           </div>
 
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-light max-w-4xl leading-tight">
-            {project.title}
-          </h1>
-        </div>
-      </section>
-      {/* HERO */}{' '}
-      <section className="bg-white pt-0 pb-12 md:pb-16 px-0">
-        {' '}
-        <div className="w-full">
-          <div className="max-w-6xl mx-auto mt-10 md:mt-12 px-4 sm:px-6 md:px-12 lg:px-16">
-            <div className="mt-10 md:mt-12 flex justify-center">
-              {' '}
-              <div className="inline-grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-8 md:gap-x-12 gap-y-6 text-xs sm:text-sm md:text-base text-center">
-                {' '}
-                {project.location && (
-                  <div>
-                    {' '}
-                    <span className="text-[#d9af61] uppercase tracking-wider text-[10px] block mb-1">
-                      {' '}
-                      Location{' '}
-                    </span>{' '}
-                    {project.location}{' '}
-                  </div>
-                )}{' '}
-                <div>
-                  {' '}
-                  <span className="text-[#d9af61] uppercase tracking-wider text-[10px] block mb-1">
-                    {' '}
-                    Year{' '}
-                  </span>{' '}
-                  {project.year ||
-                    new Date(project.createdAt).getFullYear()}{' '}
-                </div>{' '}
-                {project.area && (
-                  <div>
-                    {' '}
-                    <span className="text-[#d9af61] uppercase tracking-wider text-[10px] block mb-1">
-                      {' '}
-                      Area{' '}
-                    </span>{' '}
-                    {project.area}{' '}
-                  </div>
-                )}{' '}
-                {project.scope && (
-                  <div>
-                    {' '}
-                    <span className="text-[#d9af61] uppercase tracking-wider text-[10px] block mb-1">
-                      {' '}
-                      Scope{' '}
-                    </span>{' '}
-                    {project.scope}{' '}
-                  </div>
-                )}{' '}
-              </div>{' '}
-            </div>{' '}
-          </div>{' '}
-        </div>{' '}
-      </section>
-      {/* CONTENT */}
-      <section className="py-24 md:py-32 px-6 md:px-12 lg:px-16 bg-white">
-        <div className="max-w-5xl mx-auto">
-          <AnimateIn>
-            <div className="prose prose-lg md:prose-xl max-w-none text-gray-700">
-              <p className="text-2xl md:text-3xl font-light leading-snug mb-12 text-black">
-                {project.description}
-              </p>
-
-              <div className="w-12 h-px bg-[#d9af61] mb-12" />
-
-              {project.details && (
-                <div className="whitespace-pre-line text-lg md:text-xl leading-relaxed text-gray-600 space-y-6">
-                  {project.details}
-                </div>
-              )}
+          {project.area && (
+            <div>
+              <span className="block text-[#d9af61] uppercase tracking-[3px] text-[10px] mb-1">
+                Area
+              </span>
+              {project.area}
             </div>
-          </AnimateIn>
+          )}
+
+          {project.scope && (
+            <div>
+              <span className="block text-[#d9af61] uppercase tracking-[3px] text-[10px] mb-1">
+                Scope
+              </span>
+              {project.scope}
+            </div>
+          )}
+
+          {project.category && (
+            <div>
+              <span className="block text-[#d9af61] uppercase tracking-[3px] text-[10px] mb-1">
+                Category
+              </span>
+              {project.category}
+            </div>
+          )}
         </div>
       </section>
-      {/* GALLERY */}
-      {project.images?.length > 0 && (
-        <section className="px-6 md:px-12 pb-32 pt-16">
+
+      {/* TWO BIG SQUARES - FULL BLEED */}
+      <section className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 pb-[10px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-[10px]">
+          <FullBleedImage
+            src={images[0]}
+            alt={`${project.title} image 1`}
+            className="aspect-square w-full"
+          />
+          <FullBleedImage
+            src={images[1]}
+            alt={`${project.title} image 2`}
+            className="aspect-square w-full"
+          />
+        </div>
+      </section>
+
+      {/* RECTANGLE 1 */}
+      <section className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 pb-0">
+        <FullBleedImage
+          src={images[2]}
+          alt={`${project.title} wide image 1`}
+          className="w-full h-[420px] md:h-[600px]"
+        />
+      </section>
+
+      {/* DETAILS 1 */}
+      {project.details && (
+        <TextBlock title="Project Details">{project.details}</TextBlock>
+      )}
+
+      {/* RECTANGLE 2 */}
+      <section className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 pb-0">
+        <FullBleedImage
+          src={images[3]}
+          alt={`${project.title} wide image 2`}
+          className="w-full h-[420px] md:h-[600px]"
+        />
+      </section>
+
+      {/* DETAILS 2 */}
+      {(project.concept || project.designConcept) && (
+        <TextBlock title="Design Concept">
+          {project.concept || project.designConcept}
+        </TextBlock>
+      )}
+
+      {/* TWO BIG SQUARES AGAIN - FULL BLEED */}
+      <section className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 pb-[10px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-[10px]">
+          <FullBleedImage
+            src={images[4]}
+            alt={`${project.title} image 3`}
+            className="aspect-square w-full"
+          />
+          <FullBleedImage
+            src={images[5]}
+            alt={`${project.title} image 4`}
+            className="aspect-square w-full"
+          />
+        </div>
+      </section>
+
+      {/* IMAGE + TEXT */}
+      <section className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 pb-[10px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-[10px] items-center">
+          <FullBleedImage
+            src={images[6]}
+            alt={`${project.title} feature image`}
+            className="aspect-square w-full"
+          />
+
+          <div className="px-6 md:px-12 py-16 md:py-0 flex flex-col gap-[18px]">
+            <AnimateIn>
+              <h3 className="text-3xl md:text-5xl font-light leading-tight text-black">
+                {project.highlightTitle || 'A Detailed Design Narrative'}
+              </h3>
+
+              <p className="text-lg md:text-xl leading-relaxed text-gray-700 whitespace-pre-line">
+                {project.highlightDescription ||
+                  project.description ||
+                  project.details}
+              </p>
+            </AnimateIn>
+          </div>
+        </div>
+      </section>
+
+      {/* RECTANGLE 3 */}
+      <section className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 pb-0">
+        <FullBleedImage
+          src={images[7]}
+          alt={`${project.title} wide image 3`}
+          className="w-full h-[420px] md:h-[600px]"
+        />
+      </section>
+
+      {/* DETAILS 4 */}
+      {(project.materials || project.closingNote) && (
+        <TextBlock
+          title={project.materials ? 'Materials & Atmosphere' : 'Summary'}
+        >
+          {project.materials || project.closingNote}
+        </TextBlock>
+      )}
+
+      {/* RECOMMENDED PROJECTS */}
+      {recommendedProjects.length > 0 && (
+        <section className="pt-20 pb-32 px-6 md:px-12">
           <div className="max-w-7xl mx-auto">
-            <GalleryWithText project={project} />
+            <div className="mb-10 flex items-end justify-between gap-6">
+              <h2 className="text-3xl md:text-5xl font-light">
+                Recommended Projects
+              </h2>
+
+              <Link
+                href="/projects"
+                className="hidden md:block text-sm uppercase tracking-[3px] text-[#d9af61]"
+              >
+                View All
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {recommendedProjects.map((item) => (
+                <Link
+                  key={item._id || item.slug}
+                  href={`/project/${item.slug}`}
+                  className="group block"
+                >
+                  <div className="relative aspect-square w-full mb-5 overflow-hidden bg-[#f3f0eb]">
+                    <Image
+                      src={
+                        item.thumbnail ||
+                        item.banner ||
+                        getImageSrc(item.images?.[0]) ||
+                        '/placeholder.jpg'
+                      }
+                      alt={item.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      quality={85}
+                      className="object-cover transition duration-700 group-hover:scale-105"
+                    />
+                  </div>
+
+                  <h3 className="text-xl md:text-2xl font-light mb-2 group-hover:text-[#d9af61] transition">
+                    {item.title}
+                  </h3>
+
+                  <p className="text-sm text-gray-500">
+                    {item.location || item.category || 'View Project'}
+                  </p>
+                </Link>
+              ))}
+            </div>
           </div>
         </section>
       )}
-      {/* NAVIGATION */}
+
+      {/* PREVIOUS / NEXT NAVIGATION */}
       <section className="border-t py-16 px-6 md:px-12">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
+        <div className="max-w-7xl mx-auto flex justify-between items-center gap-8">
           {prevProject ? (
             <Link
               href={`/project/${prevProject.slug}`}
