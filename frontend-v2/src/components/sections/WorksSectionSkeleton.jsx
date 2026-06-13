@@ -171,10 +171,10 @@ export default function WorksSection() {
     khannaLaw: projectMap.get('vinay-khanna-law-chambers-panchsheel-park'),
     cmShowroom: projectMap.get('chhabra-marble-and-sanitary-showroom'),
     skyView: projectMap.get('sky-view-restaurant-lucknow'),
-    tropical: projectMap.get('gupta_residence_two'),
+    tropical: projectMap.get('guptas-residence-ii'),
     pitampura: projectMap.get('nagpals-residence-pitampura'),
     sehaj: projectMap.get('sehaj'),
-    geetanjali: projectMap.get('khannas-residence-geetanjali-marg'),
+    geetanjali: projectMap.get('vinay-khanna-law-chambers-panchsheel-park'),
   };
 
   if (isLoading) {

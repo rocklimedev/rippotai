@@ -220,9 +220,7 @@ export default function ProjectDetailPage() {
       </section>
 
       {/* DETAILS 1 */}
-      {project.details && (
-        <TextBlock title="Project Details">{project.details}</TextBlock>
-      )}
+      {project.details && <TextBlock>{project.details}</TextBlock>}
 
       {/* RECTANGLE 2 */}
       <section className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 pb-0">
@@ -303,19 +301,6 @@ export default function ProjectDetailPage() {
       {recommendedProjects.length > 0 && (
         <section className="pt-20 pb-32 px-6 md:px-12">
           <div className="max-w-7xl mx-auto">
-            <div className="mb-10 flex items-end justify-between gap-6">
-              <h2 className="text-3xl md:text-5xl font-light">
-                Recommended Projects
-              </h2>
-
-              <Link
-                href="/projects"
-                className="hidden md:block text-sm uppercase tracking-[3px] text-[#d9af61]"
-              >
-                View All
-              </Link>
-            </div>
-
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {recommendedProjects.map((item) => (
                 <Link

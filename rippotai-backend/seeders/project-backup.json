@@ -1,30 +1,29 @@
 [
   {
-    "id": "e9c99125-c247-4d80-9ed4-259a89bfb73b",
-    "projectId": "232142c9-9478-4f62-acd8-7ff94cb946b7",
-    "title": "Goel's Residence Gurugram",
-    "category": "Residential",
+    "id": "7d7c14d0-40a3-4608-92bc-b0e0674cf831",
+    "projectId": "58d64965-3c36-4cc1-94b0-510d6f234190",
+    "title": "Vinay Khanna Law Chambers, Panchsheel Park",
+    "category": "Commercial",
     "status": "completed",
-    "featured": 0,
-    "priority": 6,
-    "location": "Sector 5, Gurgaon, Haryana",
-    "scope": "Interior Designing",
-    "description": "Goyal Residence in Gurugram is envisioned as a contemporary living space where bold materials and refined detailing come together in quiet harmony.",
-    "details": " The walls feature an imagined dado, finished in glossy black laminate, lending depth, contrast, and a subtle play of reflections to the interiors. Structural columns are enveloped in sculptural POP-masking forms, adding rhythm and architectural character to the space. Select walls are layered with wallpaper and complemented by warm wooden accents, creating a balance between texture, warmth, and modern sophistication.  \n\n\n The residence reflects a thoughtful composition of materials and forms, resulting in interiors that feel dynamic yet composed—contemporary in expression and comfortable in experience.",
-    "image": "https://media.cmtradingco.com/rippotai_projects/goyal_residence/cover_image.png",
-    "banner": "https://media.cmtradingco.com/rippotai_projects/goyal_residence/banner.png",
+    "featured": 1,
+    "priority": 1,
+    "location": "Panchsheel Park, New Delhi",
+    "scope": "Planning & Interior Designing",
+    "description": "Khanna’s Law Firm is a commercial office space located in New Delhi, designed to reflect professionalism, clarity, and contemporary elegance.",
+    "details": "The planning focuses on creating an efficient and well-organized workspace that supports both individual concentration and collaborative discussions. The office follows a modern contemporary design theme, with a refined palette of woods and blue tones that lend warmth and calm to the interiors. These elements are complemented by black MS detailing and fluted glass, adding depth, structure, and a sense of visual sophistication while maintaining privacy where required. \r\n\r\n\r\n The layout includes private cabins, junior counsel offices, a dedicated conference area, a pantry, and other essential support spaces, all planned to ensure smooth workflow and functional efficiency. Careful zoning and material selection contribute to an environment that is both formal and inviting. \r\n\r\n\r\n Overall, the design balances aesthetic restraint with functional planning, resulting in a professional workspace that aligns with the identity and working style of a contemporary legal practice.",
+    "image": "https://media.cmtradingco.com/rippotai_projects/khanna_law_firm/cover_image_1.png",
+    "banner": "https://media.cmtradingco.com/rippotai_projects/khanna_law_firm/banner.png",
     "images": [
-      "https://media.cmtradingco.com/rippotai_projects/goyal_residence/1.jpg",
-      "https://media.cmtradingco.com/rippotai_projects/goyal_residence/2.jpg",
-      "https://media.cmtradingco.com/rippotai_projects/goyal_residence/3.jpg",
-      "https://media.cmtradingco.com/rippotai_projects/goyal_residence/4.jpg",
-      "https://media.cmtradingco.com/rippotai_projects/goyal_residence/5.jpg",
-      "https://media.cmtradingco.com/rippotai_projects/goyal_residence/6.jpg",
-      "https://media.cmtradingco.com/rippotai_projects/goyal_residence/7.jpg",
-      "https://media.cmtradingco.com/rippotai_projects/goyal_residence/8.jpg"
+      "https://media.cmtradingco.com/rippotai_projects/khanna_law_firm/1.png",
+      "https://media.cmtradingco.com/rippotai_projects/khanna_law_firm/2.png",
+      "https://media.cmtradingco.com/rippotai_projects/khanna_law_firm/3.png",
+      "https://media.cmtradingco.com/rippotai_projects/khanna_law_firm/4.png",
+      "https://media.cmtradingco.com/rippotai_projects/khanna_law_firm/5.png",
+      "https://media.cmtradingco.com/rippotai_projects/khanna_law_firm/6.png",
+      "https://media.cmtradingco.com/rippotai_projects/khanna_law_firm/7.png"
     ],
-    "slug": "goels-residence-gurugram",
-    "createdAt": "2025-09-17T11:38:09.000Z",
-    "updatedAt": "2026-05-11T12:37:25.000Z"
+    "slug": "vinay-khanna-law-chambers-panchsheel-park",
+    "createdAt": "2025-09-17T11:40:02.000Z",
+    "updatedAt": "2026-06-13T11:38:18.000Z"
   }
 ]
