@@ -6,12 +6,12 @@ import Link from 'next/link';
 import { useGetPublicProjectsQuery } from '@/api/projectsApi';
 
 const SKELETON_STYLES = `
-  .sl-card { 
-    display: block; 
-    text-decoration: none; 
-    color: inherit; 
-    height: 100%;
-  }
+.sl-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
+}
 
   .sl-card-img-wrap { 
     overflow: hidden; 
@@ -46,13 +46,11 @@ const SKELETON_STYLES = `
   }
 
   .text-block {
-    background: #f5f2ee;
     padding: 32px 24px;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    border: 1px solid #e8e4df;
   }
 
   .text-block p {
@@ -196,7 +194,6 @@ export const WorksSection = () => {
       <section
         id="works"
         style={{
-          background: '#f5f2ee',
           width: '100vw',
           overflowX: 'hidden',
           paddingTop: isMobile ? 48 : 100,
@@ -205,44 +202,74 @@ export const WorksSection = () => {
           paddingRight: GAP,
         }}
       >
-        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+        <div
+          style={{
+            width: '100%',
+            margin: '0 auto',
+          }}
+        >
           {isMobile ? (
             <div
               style={{
                 display: 'grid',
                 gap: GAP,
-                gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-                gridAutoRows: `calc((100vw - ${GAP * 3}px) / 2)`,
+                gridTemplateColumns: '1fr',
               }}
             >
-              <div style={{ gridColumn: 'span 2' }}>
+              {/* GOEL - Featured Wide Block */}
+              <div style={{ aspectRatio: '2 / 1' }}>
                 <ProjectBlock project={layoutProjects.goel} />
               </div>
-              <div style={{ gridRow: 'span 2' }}>
+
+              {/* INNER HOUSE - Tall Block */}
+              <div style={{ aspectRatio: '1 / 1.4' }}>
                 <ProjectBlock project={layoutProjects.innerHouse} />
               </div>
+
               <div className="text-block">
                 <p>{TEXTS[0]}</p>
               </div>
-              <ProjectBlock project={layoutProjects.khannaLaw} />
-              <div style={{ gridColumn: 'span 2' }}>
+
+              {/* KHANNA LAW */}
+              <div style={{ aspectRatio: '1 / 1' }}>
+                <ProjectBlock project={layoutProjects.khannaLaw} />
+              </div>
+
+              {/* CM SHOWROOM - Featured Wide Block */}
+              <div style={{ aspectRatio: '2 / 1' }}>
                 <ProjectBlock project={layoutProjects.cmShowroom} />
               </div>
-              <ProjectBlock project={layoutProjects.skyView} />
-              <ProjectBlock project={layoutProjects.tropical} />
-              <div style={{ gridColumn: 'span 2' }} className="text-block">
+
+              {/* SKY VIEW */}
+              <div style={{ aspectRatio: '1 / 1' }}>
+                <ProjectBlock project={layoutProjects.skyView} />
+              </div>
+
+              {/* TROPICAL - Featured Wide Block */}
+              <div style={{ aspectRatio: '2 / 1' }}>
+                <ProjectBlock project={layoutProjects.tropical} />
+              </div>
+
+              <div className="text-block">
                 <p>{TEXTS[1]}</p>
               </div>
-              <div style={{ gridRow: 'span 2' }}>
+
+              {/* PITAMPURA - Tall */}
+              <div style={{ aspectRatio: '1 / 1.4' }}>
                 <ProjectBlock project={layoutProjects.pitampura} />
               </div>
-              <div style={{ gridRow: 'span 2' }}>
+
+              {/* SEHAJ - Large Featured */}
+              <div style={{ aspectRatio: '1 / 1.4' }}>
                 <ProjectBlock project={layoutProjects.sehaj} />
               </div>
-              <div style={{ gridColumn: 'span 2' }} className="text-block">
+
+              <div className="text-block">
                 <p>{TEXTS[2]}</p>
               </div>
-              <div style={{ gridColumn: 'span 2' }}>
+
+              {/* GEETANJALI */}
+              <div style={{ aspectRatio: '2 / 1' }}>
                 <ProjectBlock project={layoutProjects.geetanjali} />
               </div>
             </div>
@@ -252,13 +279,14 @@ export const WorksSection = () => {
                 display: 'grid',
                 gap: GAP,
                 gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-                gridTemplateRows: 'repeat(9, minmax(0, 1fr))',
-                aspectRatio: '3 / 9',
+                gridTemplateRows: 'repeat(7, minmax(0, 1fr))',
+                aspectRatio: '3 / 7',
               }}
             >
               <div style={{ gridColumn: 'span 2' }}>
                 <ProjectBlock project={layoutProjects.goel} />
               </div>
+
               <div style={{ gridRow: 'span 2' }}>
                 <ProjectBlock project={layoutProjects.innerHouse} />
               </div>
@@ -266,16 +294,19 @@ export const WorksSection = () => {
               <div className="text-block">
                 <p>{TEXTS[0]}</p>
               </div>
+
               <ProjectBlock project={layoutProjects.khannaLaw} />
 
               <div style={{ gridColumn: 'span 2' }}>
                 <ProjectBlock project={layoutProjects.cmShowroom} />
               </div>
+
               <ProjectBlock project={layoutProjects.skyView} />
 
               <div style={{ gridColumn: 'span 2' }}>
                 <ProjectBlock project={layoutProjects.tropical} />
               </div>
+
               <div className="text-block">
                 <p>{TEXTS[1]}</p>
               </div>
@@ -283,6 +314,7 @@ export const WorksSection = () => {
               <div style={{ gridRow: 'span 2' }}>
                 <ProjectBlock project={layoutProjects.pitampura} />
               </div>
+
               <div style={{ gridColumn: 'span 2', gridRow: 'span 2' }}>
                 <ProjectBlock project={layoutProjects.sehaj} />
               </div>
@@ -296,28 +328,6 @@ export const WorksSection = () => {
               </div>
             </div>
           )}
-
-          {/* CTA */}
-          <div style={{ textAlign: 'center', marginTop: '64px' }}>
-            <Link
-              href="/projects"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '10px',
-                fontSize: '10px',
-                letterSpacing: '3px',
-                textTransform: 'uppercase',
-                color: '#1a3c34',
-                textDecoration: 'none',
-                borderBottom: '1px solid #1a3c34',
-                paddingBottom: '4px',
-              }}
-            >
-              View All Projects
-              <span style={{ fontSize: '14px' }}>→</span>
-            </Link>
-          </div>
         </div>
       </section>
     </>

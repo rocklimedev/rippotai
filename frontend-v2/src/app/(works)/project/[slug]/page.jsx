@@ -223,7 +223,7 @@ export default function ProjectDetailPage() {
       {project.details && <TextBlock>{project.details}</TextBlock>}
 
       {/* RECTANGLE 2 */}
-      <section className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 pb-0">
+      <section className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 pb-[10px]">
         <FullBleedImage
           src={images[3]}
           alt={`${project.title} wide image 2`}
@@ -231,15 +231,8 @@ export default function ProjectDetailPage() {
         />
       </section>
 
-      {/* DETAILS 2 */}
-      {(project.concept || project.designConcept) && (
-        <TextBlock title="Design Concept">
-          {project.concept || project.designConcept}
-        </TextBlock>
-      )}
-
       {/* TWO BIG SQUARES AGAIN - FULL BLEED */}
-      <section className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 pb-[10px]">
+      <section className="relative left-1/2 right-1/2 w-screen -translate-x-1/2">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-[10px]">
           <FullBleedImage
             src={images[4]}
@@ -253,7 +246,6 @@ export default function ProjectDetailPage() {
           />
         </div>
       </section>
-
       {/* IMAGE + TEXT */}
       <section className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 pb-[10px]">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-[10px] items-center">
@@ -278,7 +270,6 @@ export default function ProjectDetailPage() {
           </div>
         </div>
       </section>
-
       {/* RECTANGLE 3 */}
       <section className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 pb-0">
         <FullBleedImage
@@ -337,45 +328,6 @@ export default function ProjectDetailPage() {
           </div>
         </section>
       )}
-
-      {/* PREVIOUS / NEXT NAVIGATION */}
-      <section className="border-t py-16 px-6 md:px-12">
-        <div className="max-w-7xl mx-auto flex justify-between items-center gap-8">
-          {prevProject ? (
-            <Link
-              href={`/project/${prevProject.slug}`}
-              className="flex items-center gap-4 group"
-            >
-              <ArrowLeft className="group-hover:-translate-x-1 transition" />
-              <div>
-                <div className="text-xs uppercase text-gray-500">Previous</div>
-                <div className="text-xl font-light group-hover:text-[#d9af61] transition">
-                  {prevProject.title}
-                </div>
-              </div>
-            </Link>
-          ) : (
-            <div />
-          )}
-
-          {nextProject ? (
-            <Link
-              href={`/project/${nextProject.slug}`}
-              className="flex items-center gap-4 group"
-            >
-              <div className="text-right">
-                <div className="text-xs uppercase text-gray-500">Next</div>
-                <div className="text-xl font-light group-hover:text-[#d9af61] transition">
-                  {nextProject.title}
-                </div>
-              </div>
-              <ArrowRight className="group-hover:translate-x-1 transition" />
-            </Link>
-          ) : (
-            <div />
-          )}
-        </div>
-      </section>
     </main>
   );
 }
