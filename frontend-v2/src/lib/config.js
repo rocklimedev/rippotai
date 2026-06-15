@@ -483,17 +483,18 @@ export const teamMembers = [
     designation: 'Founder & Principal Architect',
     image: '/assets/team/sagar_chhabra.png',
   },
-  {
-    id: 2,
-    name: 'Jayant',
-    designation: 'Senior Architect',
-    image: '/assets/team/Jayant.jpg',
-  },
+
   {
     id: 3,
     name: 'Sarthi',
     designation: 'Senior Architect',
     image: '/assets/team/saarthi.jpeg',
+  },
+  {
+    id: 7,
+    name: 'Dhairya Soni',
+    designation: 'Junior Interior Designer',
+    image: '/assets/team/dhairya.jpeg',
   },
   {
     id: 4,
@@ -514,6 +515,7 @@ export const teamMembers = [
     designation: 'Content Strategist & Creative Lead',
     image: '/assets/team/Bhav.jpg',
   },
+
   // {
   //   id: 7,
   //   name: 'Sajjan',
@@ -521,14 +523,21 @@ export const teamMembers = [
   //   image:
   //     'https://media.cmtradingco.com/rippotai_projects/rippotai_images/sajjan.jpeg',
   // },
+
   {
     id: 8,
     name: 'Chhavi',
-    designation: 'Collaborator',
+    designation: 'Interior Designer',
     image: '/assets/team/CM.png',
     tag: 'Collaborator',
   },
-
+  {
+    id: 2,
+    name: 'Jayant Vijay Nath',
+    designation: 'Senior Architect',
+    image: '/assets/team/Jayant.jpg',
+    tag: 'Alumni',
+  },
   {
     id: 9,
     name: 'Aniket',

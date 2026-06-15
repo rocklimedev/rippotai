@@ -194,12 +194,10 @@ export const WorksSection = () => {
       <section
         id="works"
         style={{
-          width: '100vw',
+          width: '100%',
           overflowX: 'hidden',
-          paddingTop: isMobile ? 48 : 100,
-          paddingBottom: isMobile ? 72 : 100,
-          paddingLeft: GAP,
-          paddingRight: GAP,
+          padding: '15px',
+          boxSizing: 'border-box',
         }}
       >
         <div

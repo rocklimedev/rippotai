@@ -5,7 +5,7 @@ export const WhereItBegan = () => {
     <section
       style={{
         backgroundColor: '#ffffff',
-        padding: '60px 48px',
+        padding: '20px 20px',
       }}
     >
       <div
