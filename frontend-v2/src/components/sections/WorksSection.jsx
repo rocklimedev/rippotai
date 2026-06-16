@@ -196,7 +196,7 @@ export const WorksSection = () => {
         style={{
           width: '100%',
           overflowX: 'hidden',
-          padding: '15px',
+          padding: '0 15px 15px 15px',
           boxSizing: 'border-box',
         }}
       >
@@ -214,9 +214,9 @@ export const WorksSection = () => {
                 gridTemplateColumns: '1fr',
               }}
             >
-              {/* GOEL - Featured Wide Block */}
+              {/* TROPICAL - Featured Wide Block */}
               <div style={{ aspectRatio: '2 / 1' }}>
-                <ProjectBlock project={layoutProjects.goel} />
+                <ProjectBlock project={layoutProjects.tropical} />
               </div>
 
               {/* INNER HOUSE - Tall Block */}
@@ -243,11 +243,10 @@ export const WorksSection = () => {
                 <ProjectBlock project={layoutProjects.skyView} />
               </div>
 
-              {/* TROPICAL - Featured Wide Block */}
+              {/* GOEL - Featured Wide Block */}
               <div style={{ aspectRatio: '2 / 1' }}>
-                <ProjectBlock project={layoutProjects.tropical} />
+                <ProjectBlock project={layoutProjects.goel} />
               </div>
-
               <div className="text-block">
                 <p>{TEXTS[1]}</p>
               </div>
@@ -281,46 +280,36 @@ export const WorksSection = () => {
                 aspectRatio: '3 / 7',
               }}
             >
-              <div style={{ gridColumn: 'span 2' }}>
-                <ProjectBlock project={layoutProjects.goel} />
-              </div>
-
-              <div style={{ gridRow: 'span 2' }}>
-                <ProjectBlock project={layoutProjects.innerHouse} />
-              </div>
-
-              <div className="text-block">
-                <p>{TEXTS[0]}</p>
-              </div>
-
-              <ProjectBlock project={layoutProjects.khannaLaw} />
-
-              <div style={{ gridColumn: 'span 2' }}>
-                <ProjectBlock project={layoutProjects.cmShowroom} />
-              </div>
-
-              <ProjectBlock project={layoutProjects.skyView} />
-
+              {' '}
               <div style={{ gridColumn: 'span 2' }}>
                 <ProjectBlock project={layoutProjects.tropical} />
               </div>
-
+              <div style={{ gridRow: 'span 2' }}>
+                <ProjectBlock project={layoutProjects.innerHouse} />
+              </div>
+              <div className="text-block">
+                <p>{TEXTS[0]}</p>
+              </div>
+              <ProjectBlock project={layoutProjects.khannaLaw} />
+              <div style={{ gridColumn: 'span 2' }}>
+                <ProjectBlock project={layoutProjects.cmShowroom} />
+              </div>
+              <ProjectBlock project={layoutProjects.skyView} />
+              <div style={{ gridColumn: 'span 2' }}>
+                <ProjectBlock project={layoutProjects.goel} />
+              </div>
               <div className="text-block">
                 <p>{TEXTS[1]}</p>
               </div>
-
               <div style={{ gridRow: 'span 2' }}>
                 <ProjectBlock project={layoutProjects.pitampura} />
               </div>
-
               <div style={{ gridColumn: 'span 2', gridRow: 'span 2' }}>
                 <ProjectBlock project={layoutProjects.sehaj} />
               </div>
-
               <div className="text-block">
                 <p>{TEXTS[2]}</p>
               </div>
-
               <div style={{ gridColumn: 'span 2' }}>
                 <ProjectBlock project={layoutProjects.geetanjali} />
               </div>

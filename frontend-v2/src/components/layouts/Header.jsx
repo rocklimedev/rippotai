@@ -85,7 +85,6 @@ export const Header = () => {
       >
         <div
           style={{
-            maxWidth: '1450px',
             margin: '0 auto',
             height: '100%',
             display: 'flex',
