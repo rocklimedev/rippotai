@@ -58,7 +58,7 @@ const TextBlock = ({ title, meta, children }) => {
             )}
 
             {meta && (
-              <div className="flex flex-nowrap gap-x-10 gap-y-0 text-sm md:text-base md:text-right md:justify-end md:max-w-[420px] overflow-hidden">
+              <div className="flex flex-nowrap items-start gap-10 text-sm md:text-base md:justify-end w-full overflow-x-auto">
                 {meta}
               </div>
             )}
@@ -141,7 +141,7 @@ export default function ProjectDetailPage() {
   return (
     <main className="bg-white overflow-x-hidden">
       {/* HERO */}
-      <section className="relative w-full h-[80vh]">
+      <section className="relative w-full h-[85vh]">
         <Image
           src={project.banner || getImageSrc(images[0]) || '/placeholder.jpg'}
           alt={project.title}
