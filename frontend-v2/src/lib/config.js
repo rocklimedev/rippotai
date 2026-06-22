@@ -199,98 +199,6 @@ export const services = [
     cta: 'Start Your Architecture Project',
   },
   {
-    slug: 'turnkey-projects',
-    icon: KeyRound,
-    title: 'Turnkey Projects',
-    description: 'End-to-end project delivery.',
-
-    banner: '/assets/banners/services_turnkey.jpeg',
-
-    intro: `
-      We provide complete turnkey solutions, managing everything from concept
-      to completion. You get a fully finished, ready-to-use space without the stress.
-    `,
-
-    offerings: [
-      {
-        title: 'End-to-End Project Execution',
-        description:
-          'A single point of responsibility managing design, coordination, and on-site execution from start to finish.',
-      },
-      {
-        title: 'Civil & Structural Work',
-        description:
-          'Execution of core construction with a focus on strength, accuracy, and long-term durability.',
-      },
-      {
-        title: 'Interior Fit-Outs',
-        description:
-          'Complete interior development including furniture, finishes, and detailing — delivered as a cohesive whole.',
-      },
-      {
-        title: 'MEP Services (Mechanical, Electrical, Plumbing)',
-        description:
-          'Integrated planning and execution of all technical systems to ensure efficiency and reliability.',
-      },
-      {
-        title: 'Material Procurement & Management',
-        description:
-          'Sourcing and managing quality materials with control over timelines, costs, and consistency.',
-      },
-      {
-        title: 'Vendor & Site Coordination',
-        description:
-          'Handling multiple vendors, timelines, and workflows to maintain smooth and organized execution.',
-      },
-      {
-        title: 'Quality Control & Supervision',
-        description:
-          'Continuous on-site monitoring to ensure every detail is built as designed.',
-      },
-    ],
-
-    process: [
-      {
-        step: '01',
-        title: 'Project Understanding & Scope Definition',
-        description:
-          'We define the project scope, timelines, and execution strategy based on design intent and site conditions.',
-      },
-      {
-        step: '02',
-        title: 'Budgeting & Planning',
-        description:
-          'Detailed cost planning and resource allocation to align expectations with execution realities.',
-      },
-      {
-        step: '03',
-        title: 'Design Finalization & Detailing',
-        description:
-          'All drawings, materials, and specifications are locked before execution begins to avoid on-site changes.',
-      },
-      {
-        step: '04',
-        title: 'Execution & Site Management',
-        description:
-          'End-to-end execution with dedicated supervision, ensuring work progresses as per plan.',
-      },
-      {
-        step: '05',
-        title: 'Quality Checks & Coordination',
-        description:
-          'Regular inspections and coordination across teams to maintain consistency and workmanship standards.',
-      },
-      {
-        step: '06',
-        title: 'Handover & Completion',
-        description:
-          'Final finishing, detailing, and project delivery — ready for immediate use.',
-      },
-    ],
-
-    cta: 'Start Turnkey Project',
-  },
-  {
     slug: 'interiors',
     icon: Palette,
     title: 'Interiors',
@@ -474,6 +382,98 @@ export const services = [
     ],
 
     cta: 'Create Custom Furniture',
+  },
+  {
+    slug: 'turnkey-projects',
+    icon: KeyRound,
+    title: 'Turnkey Projects',
+    description: 'End-to-end project delivery.',
+
+    banner: '/assets/banners/services_turnkey.jpeg',
+
+    intro: `
+      We provide complete turnkey solutions, managing everything from concept
+      to completion. You get a fully finished, ready-to-use space without the stress.
+    `,
+
+    offerings: [
+      {
+        title: 'End-to-End Project Execution',
+        description:
+          'A single point of responsibility managing design, coordination, and on-site execution from start to finish.',
+      },
+      {
+        title: 'Civil & Structural Work',
+        description:
+          'Execution of core construction with a focus on strength, accuracy, and long-term durability.',
+      },
+      {
+        title: 'Interior Fit-Outs',
+        description:
+          'Complete interior development including furniture, finishes, and detailing — delivered as a cohesive whole.',
+      },
+      {
+        title: 'MEP Services (Mechanical, Electrical, Plumbing)',
+        description:
+          'Integrated planning and execution of all technical systems to ensure efficiency and reliability.',
+      },
+      {
+        title: 'Material Procurement & Management',
+        description:
+          'Sourcing and managing quality materials with control over timelines, costs, and consistency.',
+      },
+      {
+        title: 'Vendor & Site Coordination',
+        description:
+          'Handling multiple vendors, timelines, and workflows to maintain smooth and organized execution.',
+      },
+      {
+        title: 'Quality Control & Supervision',
+        description:
+          'Continuous on-site monitoring to ensure every detail is built as designed.',
+      },
+    ],
+
+    process: [
+      {
+        step: '01',
+        title: 'Project Understanding & Scope Definition',
+        description:
+          'We define the project scope, timelines, and execution strategy based on design intent and site conditions.',
+      },
+      {
+        step: '02',
+        title: 'Budgeting & Planning',
+        description:
+          'Detailed cost planning and resource allocation to align expectations with execution realities.',
+      },
+      {
+        step: '03',
+        title: 'Design Finalization & Detailing',
+        description:
+          'All drawings, materials, and specifications are locked before execution begins to avoid on-site changes.',
+      },
+      {
+        step: '04',
+        title: 'Execution & Site Management',
+        description:
+          'End-to-end execution with dedicated supervision, ensuring work progresses as per plan.',
+      },
+      {
+        step: '05',
+        title: 'Quality Checks & Coordination',
+        description:
+          'Regular inspections and coordination across teams to maintain consistency and workmanship standards.',
+      },
+      {
+        step: '06',
+        title: 'Handover & Completion',
+        description:
+          'Final finishing, detailing, and project delivery — ready for immediate use.',
+      },
+    ],
+
+    cta: 'Start Turnkey Project',
   },
 ];
 export const teamMembers = [

@@ -42,20 +42,31 @@ const FullBleedImage = ({ src, alt = 'Project image', className = '' }) => {
   );
 };
 
-const TextBlock = ({ title, children }) => {
-  if (!children && !title) return null;
+const TextBlock = ({ title, meta, children }) => {
+  if (!children && !title && !meta) return null;
 
   return (
     <section className="py-[35px] px-[35px] md:px-[35px]">
-      <div className="max-w-5xl">
-        {title && (
-          <h2 className="text-4xl md:text-6xl font-light leading-tight mb-8 text-black">
-            {title}
-          </h2>
+      {/* REMOVE max-w-5xl constraint */}
+      <div className="w-full">
+        {(title || meta) && (
+          <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-6 mb-8">
+            {title && (
+              <h2 className="text-4xl md:text-6xl font-light leading-tight text-black">
+                {title}
+              </h2>
+            )}
+
+            {meta && (
+              <div className="flex flex-nowrap gap-x-10 gap-y-0 text-sm md:text-base md:text-right md:justify-end md:max-w-[420px] overflow-hidden">
+                {meta}
+              </div>
+            )}
+          </div>
         )}
 
         {children && (
-          <div className="text-lg md:text-xl leading-relaxed text-gray-700 whitespace-pre-line">
+          <div className="max-w-5xl text-lg md:text-xl leading-relaxed text-gray-700 whitespace-pre-line">
             {children}
           </div>
         )}
@@ -63,7 +74,6 @@ const TextBlock = ({ title, children }) => {
     </section>
   );
 };
-
 export default function ProjectDetailPage() {
   const params = useParams();
   const slug = params?.slug;
@@ -131,7 +141,7 @@ export default function ProjectDetailPage() {
   return (
     <main className="bg-white overflow-x-hidden">
       {/* HERO */}
-      <section className="relative w-full h-[75vh]">
+      <section className="relative w-full h-[80vh]">
         <Image
           src={project.banner || getImageSrc(images[0]) || '/placeholder.jpg'}
           alt={project.title}
@@ -142,58 +152,57 @@ export default function ProjectDetailPage() {
           className="object-cover"
         />
       </section>
+      <TextBlock
+        title={project.title}
+        meta={
+          <>
+            {project.location && (
+              <div>
+                <span className="block text-[#d9af61] uppercase tracking-[3px] text-[10px] mb-1">
+                  Location
+                </span>
+                {project.location}
+              </div>
+            )}
 
-      {/* TITLE + DESCRIPTION */}
-      <TextBlock title={project.title}>{project.description}</TextBlock>
-
-      {/* PROJECT META */}
-      <section className="px-[35px] pb-[35px]">
-        <div className="flex flex-wrap gap-x-10 gap-y-5 text-sm md:text-base">
-          {project.location && (
             <div>
               <span className="block text-[#d9af61] uppercase tracking-[3px] text-[10px] mb-1">
-                Location
+                Year
               </span>
-              {project.location}
+              {project.year || new Date(project.createdAt).getFullYear()}
             </div>
-          )}
 
-          <div>
-            <span className="block text-[#d9af61] uppercase tracking-[3px] text-[10px] mb-1">
-              Year
-            </span>
-            {project.year || new Date(project.createdAt).getFullYear()}
-          </div>
+            {project.area && (
+              <div>
+                <span className="block text-[#d9af61] uppercase tracking-[3px] text-[10px] mb-1">
+                  Area
+                </span>
+                {project.area}
+              </div>
+            )}
 
-          {project.area && (
-            <div>
-              <span className="block text-[#d9af61] uppercase tracking-[3px] text-[10px] mb-1">
-                Area
-              </span>
-              {project.area}
-            </div>
-          )}
+            {project.scope && (
+              <div>
+                <span className="block text-[#d9af61] uppercase tracking-[3px] text-[10px] mb-1">
+                  Scope
+                </span>
+                {project.scope}
+              </div>
+            )}
 
-          {project.scope && (
-            <div>
-              <span className="block text-[#d9af61] uppercase tracking-[3px] text-[10px] mb-1">
-                Scope
-              </span>
-              {project.scope}
-            </div>
-          )}
-
-          {project.category && (
-            <div>
-              <span className="block text-[#d9af61] uppercase tracking-[3px] text-[10px] mb-1">
-                Category
-              </span>
-              {project.category}
-            </div>
-          )}
-        </div>
-      </section>
-
+            {project.category && (
+              <div>
+                <span className="block text-[#d9af61] uppercase tracking-[3px] text-[10px] mb-1">
+                  Category
+                </span>
+                {project.category}
+              </div>
+            )}
+          </>
+        }
+      >
+        {project.description}
+      </TextBlock>
       {/* TWO BIG SQUARES - FULL BLEED */}
       <section className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 pb-[10px]">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-[10px]">
@@ -215,7 +224,7 @@ export default function ProjectDetailPage() {
         <FullBleedImage
           src={images[2]}
           alt={`${project.title} wide image 1`}
-          className="w-full h-[420px] md:h-[600px]"
+          className="w-full h-[420px] md:h-[800px]"
         />
       </section>
 
@@ -227,7 +236,7 @@ export default function ProjectDetailPage() {
         <FullBleedImage
           src={images[3]}
           alt={`${project.title} wide image 2`}
-          className="w-full h-[420px] md:h-[600px]"
+          className="w-full h-[420px] md:h-[800px]"
         />
       </section>
 
@@ -247,7 +256,7 @@ export default function ProjectDetailPage() {
         </div>
       </section>
       {/* IMAGE + TEXT */}
-      <section className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 pb-[10px]">
+      <section className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 pt-[6px] pb-[10px]">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-[10px] items-center">
           <FullBleedImage
             src={images[6]}
@@ -275,18 +284,9 @@ export default function ProjectDetailPage() {
         <FullBleedImage
           src={images[7]}
           alt={`${project.title} wide image 3`}
-          className="w-full h-[420px] md:h-[600px]"
+          className="w-full h-[420px] md:h-[800px]"
         />
       </section>
-
-      {/* DETAILS 4 */}
-      {(project.materials || project.closingNote) && (
-        <TextBlock
-          title={project.materials ? 'Materials & Atmosphere' : 'Summary'}
-        >
-          {project.materials || project.closingNote}
-        </TextBlock>
-      )}
 
       {/* RECOMMENDED PROJECTS */}
       {recommendedProjects.length > 0 && (

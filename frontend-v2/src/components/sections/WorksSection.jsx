@@ -29,17 +29,27 @@ const SKELETON_STYLES = `
     transform: scale(1.05) !important; 
   }
 
-  .sl-overlay {
-    position: absolute; 
-    inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,.75) 0%, rgba(0,0,0,0) 40%);
-    opacity: 0; 
-    transition: opacity .4s ease;
-    display: flex; 
-    flex-direction: column; 
-    justify-content: flex-end;
-    padding: 20px 18px;
-  }
+.sl-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.75) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
+
+  opacity: 0;
+  transition: opacity .4s ease;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px 18px;
+}
 
   .sl-card:hover .sl-overlay { 
     opacity: 1; 
@@ -96,36 +106,38 @@ const ProjectBlock = ({ project }) => {
           style={{ objectFit: 'cover' }}
         />
         <div className="sl-overlay">
-          <span
-            style={{
-              fontSize: '9px',
-              letterSpacing: '2.5px',
-              textTransform: 'uppercase',
-              color: 'rgba(255,255,255,.7)',
-              marginBottom: '4px',
-            }}
-          >
-            {project.category}
-          </span>
           <h3
             style={{
               color: '#fff',
-              margin: '0 0 8px',
-              fontSize: '17px',
+              margin: '0 0 10px',
+              fontSize: '22px', // was 17px
               fontWeight: 400,
               lineHeight: 1.2,
             }}
           >
             {project.title}
           </h3>
+
           <span
             style={{
-              fontSize: '9px',
-              letterSpacing: '2.5px',
+              fontSize: '11px', // was 9px
+              letterSpacing: '2px',
               textTransform: 'uppercase',
-              color: 'rgba(255,255,255,.7)',
+              color: 'rgba(255,255,255,.75)',
+              marginBottom: '6px',
+            }}
+          >
+            {project.category}
+          </span>
+
+          <span
+            style={{
+              fontSize: '11px', // was 9px
+              letterSpacing: '2px',
+              textTransform: 'uppercase',
+              color: 'rgba(255,255,255,.75)',
               borderBottom: '1px solid rgba(255,255,255,.4)',
-              paddingBottom: '2px',
+              paddingBottom: '3px',
             }}
           >
             View Project →

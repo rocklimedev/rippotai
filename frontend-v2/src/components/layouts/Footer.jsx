@@ -10,7 +10,7 @@ export const Footer = () => {
         id="footer"
         style={{
           backgroundColor: '#ffffff',
-          padding: '80px 24px 40px',
+          padding: '80px 8px 40px',
           borderTop: '1px solid rgba(26, 60, 52, 0.1)',
         }}
       >
