@@ -26,14 +26,23 @@ const sendResponse = (
 // ────────────────────────────────────────────────
 // TRANSFORMER - Handles banner logic (unchanged)
 // ────────────────────────────────────────────────
+// ────────────────────────────────────────────────
+// TRANSFORMER - Handles banner logic + snake_case → camelCase
+// ────────────────────────────────────────────────
 const transformProject = (project) => {
   if (!project) return project;
 
-  if (!project.banner && Array.isArray(project.images)) {
+  const transformed =
+    typeof project.toJSON === "function" ? project.toJSON() : { ...project };
+
+  transformed.moreDetails = transformed.more_details || "";
+  delete transformed.more_details;
+
+  if (!transformed.banner && Array.isArray(transformed.images)) {
     const filteredImages = [];
     let banner = null;
 
-    for (const img of project.images) {
+    for (const img of transformed.images) {
       if (typeof img === "string") {
         const fileName = img.split("/").pop().toLowerCase();
         const nameWithoutExt = fileName.replace(/\.(png|jpe?g|webp)$/i, "");
@@ -43,18 +52,18 @@ const transformProject = (project) => {
           continue;
         }
       }
+
       filteredImages.push(img);
     }
 
     if (banner) {
-      project.banner = banner;
-      project.images = filteredImages;
+      transformed.banner = banner;
+      transformed.images = filteredImages;
     }
   }
 
-  return project;
+  return transformed;
 };
-
 // ────────────────────────────────────────────────
 // COMMON PRIORITY SORT (Priority 0 = lowest → goes to bottom)
 // ────────────────────────────────────────────────
@@ -242,6 +251,7 @@ exports.createProject = async (req, res) => {
       category,
       description,
       details,
+      moreDetails, // ← from frontend (FormData)
       status,
       location,
       scope,
@@ -249,6 +259,7 @@ exports.createProject = async (req, res) => {
       priority,
     } = req.body;
 
+    // Validation
     if (!title?.trim())
       return sendResponse(res, 400, false, null, "Title is required");
     if (!category?.trim())
@@ -264,17 +275,21 @@ exports.createProject = async (req, res) => {
 
     const projectFolder = `rippotai_projects/${slugify(title.trim(), { lower: true, strict: true })}`;
 
+    // Upload Main Image
     const mainUpload = await uploadToFtp(
       req.files.image[0].buffer,
       req.files.image[0].originalname,
       projectFolder,
     );
+
+    // Upload Banner
     const bannerUpload = await uploadToFtp(
       req.files.banner[0].buffer,
       req.files.banner[0].originalname,
       projectFolder,
     );
 
+    // Upload Gallery Images
     const galleryUrls = [];
     if (req.files?.images?.length) {
       for (const file of req.files.images) {
@@ -291,17 +306,19 @@ exports.createProject = async (req, res) => {
       }
     }
 
+    // Create Project
     const project = await Project.create({
       title: title.trim(),
       category: category.trim(),
       description: description.trim(),
       details: details.trim(),
+      more_details: moreDetails?.trim() || null, // ← Proper mapping
       image: mainUpload.url,
       banner: bannerUpload.url,
       images: galleryUrls,
       status: status || "draft",
-      location: location?.trim(),
-      scope: scope?.trim(),
+      location: location?.trim() || null,
+      scope: scope?.trim() || null,
       featured: featured === "true" || featured === true,
       priority: parseInt(priority) || 0,
     });
@@ -314,11 +331,16 @@ exports.createProject = async (req, res) => {
       "Project created successfully",
     );
   } catch (error) {
-    console.error(error);
-    sendResponse(res, 500, false, null, error.message);
+    console.error("Create Project Error:", error);
+    sendResponse(
+      res,
+      500,
+      false,
+      null,
+      error.message || "Failed to create project",
+    );
   }
 };
-
 exports.updateProject = async (req, res) => {
   try {
     const existing = await Project.findOne({
@@ -336,6 +358,7 @@ exports.updateProject = async (req, res) => {
       "category",
       "description",
       "details",
+      "moreDetails",
       "status",
       "location",
       "scope",
@@ -345,17 +368,25 @@ exports.updateProject = async (req, res) => {
 
     fields.forEach((key) => {
       if (req.body[key] !== undefined) {
-        updateData[key] =
-          key === "priority"
-            ? parseInt(req.body[key]) || 0
-            : typeof req.body[key] === "string"
+        if (key === "priority") {
+          updateData.priority = parseInt(req.body[key]) || 0;
+        } else if (key === "featured") {
+          updateData.featured =
+            req.body[key] === "true" || req.body[key] === true;
+        } else if (key === "moreDetails") {
+          updateData.more_details = req.body.moreDetails?.trim() || null;
+        } else {
+          updateData[key] =
+            typeof req.body[key] === "string"
               ? req.body[key].trim()
               : req.body[key];
+        }
       }
     });
 
     const projectFolder = `rippotai_projects/${existing.slug}`;
 
+    // Main Image
     if (req.files?.image?.[0]) {
       const upload = await uploadToFtp(
         req.files.image[0].buffer,
@@ -365,6 +396,7 @@ exports.updateProject = async (req, res) => {
       updateData.image = upload.url;
     }
 
+    // Banner Image
     if (req.files?.banner?.[0]) {
       const upload = await uploadToFtp(
         req.files.banner[0].buffer,
@@ -374,6 +406,7 @@ exports.updateProject = async (req, res) => {
       updateData.banner = upload.url;
     }
 
+    // Gallery Images
     let finalImages = req.body.existingImages
       ? JSON.parse(req.body.existingImages)
       : existing.images || [];
@@ -400,7 +433,7 @@ exports.updateProject = async (req, res) => {
     });
 
     if (updatedCount === 0) {
-      return sendResponse(res, 404, false, null, "Project not found");
+      return sendResponse(res, 400, false, null, "No changes were made");
     }
 
     const updated = await Project.findOne({
@@ -419,7 +452,6 @@ exports.updateProject = async (req, res) => {
     sendResponse(res, 500, false, null, error.message);
   }
 };
-
 // ────────────────────────────────────────────────
 // SPECIAL FUNCTIONS
 // ────────────────────────────────────────────────

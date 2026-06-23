@@ -31,6 +31,7 @@ export default function EditProjectPage() {
     category: '',
     description: '',
     details: '',
+    moreDetails: '',
     location: '',
     scope: '',
     status: 'draft',
@@ -59,6 +60,7 @@ export default function EditProjectPage() {
         category: project.category || '',
         description: project.description || '',
         details: project.details || '',
+        moreDetails: project.moreDetails || project.more_details || '', // Support both formats
         location: project.location || '',
         scope: project.scope || '',
         status: project.status || 'draft',
@@ -378,7 +380,24 @@ export default function EditProjectPage() {
             required
           />
         </div>
-
+        {/* === NEW: More Details Field === */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            More Details / Additional Information
+          </label>
+          <textarea
+            name="moreDetails"
+            value={formValues.moreDetails}
+            onChange={handleChange}
+            rows={8}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            placeholder="Additional project information, specifications, materials used, etc."
+          />
+          <p className="mt-1 text-xs text-gray-500">
+            Optional. Use for extended content, technical specifications, or
+            long-form description.
+          </p>
+        </div>
         {/* Banner Image */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">

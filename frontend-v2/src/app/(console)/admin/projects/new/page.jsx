@@ -18,6 +18,7 @@ export default function NewProjectPage() {
     category: '',
     description: '',
     details: '',
+    moreDetails: '',
     location: '',
     scope: '',
     status: 'draft',
@@ -129,6 +130,7 @@ export default function NewProjectPage() {
       formDataToSend.append('category', formData.category.trim());
       formDataToSend.append('description', formData.description.trim());
       formDataToSend.append('details', formData.details.trim());
+      formDataToSend.append('moreDetails', formData.moreDetails.trim()); // ← New
       formDataToSend.append('status', formData.status);
       formDataToSend.append('priority', formData.priority);
       formDataToSend.append('featured', formData.featured);
@@ -341,7 +343,23 @@ export default function NewProjectPage() {
             required
           />
         </div>
-
+        {/* ==================== NEW FIELD ==================== */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            More Details / Specifications
+          </label>
+          <textarea
+            name="moreDetails"
+            value={formData.moreDetails}
+            onChange={handleInputChange}
+            rows={6}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            placeholder="Technical specifications, materials used, dimensions, client feedback, awards, etc."
+          />
+          <p className="text-xs text-gray-500 mt-1">
+            Optional: Extra information that doesn't fit in the main description
+          </p>
+        </div>
         {/* Banner Image */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">

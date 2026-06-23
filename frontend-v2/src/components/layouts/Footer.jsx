@@ -9,9 +9,10 @@ export const Footer = () => {
       <footer
         id="footer"
         style={{
+          width: '100%',
           backgroundColor: '#ffffff',
-          padding: '80px 8px 40px',
           borderTop: '1px solid rgba(26, 60, 52, 0.1)',
+          padding: '80px 24px 40px',
         }}
       >
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>

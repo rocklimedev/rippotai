@@ -360,7 +360,10 @@ footer {
   align-items: flex-start;
   gap: 64px;
 }
-
+.footer-wrapper {
+  width: 100%;
+  max-width: none !important;
+}
 /* Contact */
 .footer-contact {
   display: flex;

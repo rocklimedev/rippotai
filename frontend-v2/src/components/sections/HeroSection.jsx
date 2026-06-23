@@ -1,18 +1,14 @@
 'use client';
+
 import { useState, useEffect, useCallback } from 'react';
 import { heroImages } from '@/lib/config';
 
 export const HeroSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [loadedImages, setLoadedImages] = useState(new Set());
 
-  // Preload images
   useEffect(() => {
-    heroImages.forEach((src, idx) => {
+    heroImages.forEach((src) => {
       const img = new Image();
-      img.onload = () => {
-        setLoadedImages((prev) => new Set([...prev, idx]));
-      };
       img.src = src;
     });
   }, []);
@@ -22,93 +18,90 @@ export const HeroSection = () => {
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(nextSlide, 7000);
+    const interval = setInterval(nextSlide, 4000); // was 7000
     return () => clearInterval(interval);
   }, [nextSlide]);
-
   return (
-    <section
-      style={{
-        position: 'relative',
-        width: '100%',
-        height: '75vh',
-        marginTop: '64px',
-        minHeight: '420px',
-        maxHeight: '900px',
-        overflow: 'hidden',
-        backgroundColor: '#0a0a0a',
-      }}
-    >
-      {/* Slideshow images */}
+    <section className="hero-section">
       {heroImages.map((src, idx) => (
         <img
           key={idx}
           src={src}
           alt=""
+          className="hero-image"
           style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover', // 🔥 important fix
             opacity: idx === currentIndex ? 1 : 0,
-            transition: 'opacity 2s ease-in-out',
           }}
         />
       ))}
 
-      {/* Dark overlay */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.4)',
-          zIndex: 1,
-        }}
-      />
+      <div className="overlay" />
 
-      {/* Centered Tagline */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          zIndex: 2,
-          textAlign: 'center',
-          width: '100%',
-          padding: '0 16px',
-        }}
-      >
-        <p
-          style={{
-            fontFamily: "'Lato', sans-serif",
-            fontSize: 'clamp(20px, 5vw, 40px)', // better mobile scaling
-            fontWeight: 300,
-            color: '#fff',
-            letterSpacing: '0.5px',
-            margin: 0,
-            fontStyle: 'italic',
-            lineHeight: 1.3,
-          }}
-        >
-          Its all about the perspective
-        </p>
+      <div className="content">
+        <p className="tagline">It's all about the perspective</p>
       </div>
 
-      {/* Mobile height adjustment */}
       <style jsx>{`
+        .hero-section {
+          position: relative;
+          width: 100%;
+          height: calc(100dvh - 64px);
+          margin-top: 64px;
+          overflow: hidden;
+          background: #0a0a0a;
+        }
+
+        .hero-image {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: opacity 0.5s ease-in-out;
+        }
+
+        .overlay {
+          position: absolute;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.4);
+          z-index: 1;
+        }
+
+        .content {
+          position: absolute;
+          inset: 0;
+          z-index: 2;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0 24px;
+          text-align: center;
+        }
+
+        .tagline {
+          margin: 0;
+          color: #fff;
+          font-family: 'Lato', sans-serif;
+          font-style: italic;
+          font-weight: 300;
+          font-size: clamp(1.5rem, 4vw, 3rem);
+          line-height: 1.3;
+        }
+
         @media (max-width: 768px) {
-          section {
-            height: 60vh;
-            min-height: 380px;
+          .hero-section {
+            height: calc(100dvh - 64px);
+          }
+
+          .tagline {
+            font-size: clamp(1.25rem, 6vw, 2rem);
+            padding: 0 12px;
           }
         }
 
         @media (max-width: 480px) {
-          section {
-            height: 55vh;
+          .tagline {
+            font-size: clamp(1.1rem, 7vw, 1.75rem);
           }
         }
       `}</style>
