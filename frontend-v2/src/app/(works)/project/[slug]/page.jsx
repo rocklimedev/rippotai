@@ -195,24 +195,28 @@ export default function ProjectDetailPage() {
         {project.description}
       </TextBlock>
 
-      {/* TWO SQUARES */}
+      {/* RECTANGLE + SQUARE */}
       {images.length >= 2 && (
-        <FullBleed className="pb-[10px]">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-[10px]">
-            <FullBleedImage
-              src={images[0]}
-              alt={`${project.title} image 1`}
-              className="aspect-square w-full"
-            />
+        <FullBleed className="py-6 md:py-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-[12px] md:gap-[16px]">
+            {/* A - Rectangle */}
+            <div className="md:col-span-2">
+              <FullBleedImage
+                src={images[0]}
+                alt={`${project.title} image 1`}
+                className="w-full h-[320px] md:h-[420px] object-cover"
+              />
+            </div>
+
+            {/* B - Square */}
             <FullBleedImage
               src={images[1]}
               alt={`${project.title} image 2`}
-              className="aspect-square w-full"
+              className="aspect-square w-full object-cover"
             />
           </div>
         </FullBleed>
       )}
-
       {/* WIDE RECTANGLE 1 */}
       {images.length >= 3 && (
         <FullBleed className="pb-[10px]">
@@ -238,60 +242,50 @@ export default function ProjectDetailPage() {
         </FullBleed>
       )}
 
-      {/* TWO SQUARES AGAIN */}
       {images.length >= 6 && (
-        <FullBleed>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-[10px]">
-            <FullBleedImage
-              src={images[4]}
-              alt={`${project.title} image 3`}
-              className="aspect-square w-full"
-            />
-            <FullBleedImage
-              src={images[5]}
-              alt={`${project.title} image 4`}
-              className="aspect-square w-full"
-            />
-          </div>
-        </FullBleed>
-      )}
-
-      {/* MIXED LAYOUT (Portrait + Text + Square) */}
-      {images.length >= 7 && (
-        <FullBleed className="pt-[6px] pb-[10px]">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-[10px]">
-            {/* Portrait */}
-            <div className="md:row-span-2">
+        <FullBleed className="py-6 md:py-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-[12px] md:gap-[16px]">
+            {/* A */}
+            <div className="md:col-span-2">
               <FullBleedImage
-                src={images[6]}
-                alt={`${project.title} portrait image`}
-                className="w-full h-[500px] md:h-full"
+                src={images[0]}
+                alt={`${project.title} image A`}
+                className="w-full h-[320px] md:h-[420px] object-cover"
               />
             </div>
 
-            {/* Text */}
-            <div className="px-5 py-10 md:px-12 md:py-8 flex items-center">
+            {/* B */}
+            <FullBleedImage
+              src={images[1]}
+              alt={`${project.title} image B`}
+              className="aspect-square w-full object-cover"
+            />
+
+            {/* C */}
+            <FullBleedImage
+              src={images[2]}
+              alt={`${project.title} image C`}
+              className="aspect-square w-full object-cover"
+            />
+
+            {/* T */}
+            <div className="flex items-center px-6 py-10 md:px-12 md:py-16 bg-white">
               <AnimateIn>
-                <div>
-                  <p className="text-base md:text-xl leading-relaxed text-gray-700 whitespace-pre-line">
-                    {project.moreDetails}
-                  </p>
-                </div>
+                <p className="text-base md:text-xl leading-relaxed text-gray-700 whitespace-pre-line">
+                  {project.moreDetails}
+                </p>
               </AnimateIn>
             </div>
 
-            {/* Square */}
-            {images.length >= 8 && (
-              <FullBleedImage
-                src={images[7]}
-                alt={`${project.title} square image`}
-                className="aspect-square w-full"
-              />
-            )}
+            {/* D */}
+            <FullBleedImage
+              src={images[3]}
+              alt={`${project.title} image D`}
+              className="aspect-square w-full object-cover"
+            />
           </div>
         </FullBleed>
       )}
-
       {/* RECOMMENDED PROJECTS */}
       {recommendedProjects.length > 0 && (
         <section className="pt-14 pb-20 md:pt-20 md:pb-32 px-5 md:px-12">
