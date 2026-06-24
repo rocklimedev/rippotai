@@ -24,13 +24,27 @@ const getImageSrc = (image) => {
   );
 };
 
-// ─── Full-bleed image ────────────────────────────────────────────────────────
-const FullBleedImage = ({ src, alt = 'Project image', className = '' }) => {
-  const finalSrc = getImageSrc(src);
+const getImageAspectRatio = (image) => {
+  if (!image) return 1.5; // fallback
+  if (typeof image === 'string') return 1.5;
+
+  const width = image.width || image.w || 1200;
+  const height = image.height || image.h || 800;
+  return width / height;
+};
+
+// ─── Image Component that respects aspect ratio ─────────────────────────────
+const ProjectImage = ({ src, alt, className = '' }) => {
+  const imageSrc = getImageSrc(src);
+  const aspectRatio = getImageAspectRatio(src);
+
   return (
-    <div className={`relative overflow-hidden bg-[#f3f0eb] ${className}`}>
+    <div
+      className={`relative overflow-hidden bg-[#f3f0eb] ${className}`}
+      style={{ aspectRatio: aspectRatio.toFixed(4) }}
+    >
       <Image
-        src={finalSrc}
+        src={imageSrc}
         alt={alt}
         fill
         sizes="(max-width: 768px) 100vw, 50vw"
@@ -41,14 +55,14 @@ const FullBleedImage = ({ src, alt = 'Project image', className = '' }) => {
   );
 };
 
-// ─── Full-bleed wrapper ───────────────────────────────────────────────────────
+// ─── Full-bleed wrapper ─────────────────────────────────────────────────────
 const FullBleed = ({ children, className = '' }) => (
   <div className={`w-screen relative left-1/2 -translate-x-1/2 ${className}`}>
     {children}
   </div>
 );
 
-// ─── Text Block ──────────────────────────────────────────────────────────────
+// ─── Text Block (unchanged) ─────────────────────────────────────────────────
 const TextBlock = ({ title, meta, children }) => {
   if (!children && !title && !meta) return null;
 
@@ -93,11 +107,7 @@ export default function ProjectDetailPage() {
 
   const { data: projectsList = [] } = useGetPublicProjectsQuery(
     { page: 1, limit: 100 },
-    {
-      selectFromResult: ({ data }) => ({
-        data: data?.data || [],
-      }),
-    },
+    { selectFromResult: ({ data }) => ({ data: data?.data || [] }) },
   );
 
   if (isProjectLoading) return <ProjectDetailSkeleton />;
@@ -122,9 +132,7 @@ export default function ProjectDetailPage() {
     );
   }
 
-  const images = Array.from(
-    new Set((project.images || []).map((img) => getImageSrc(img))),
-  );
+  const images = project.images || [];
 
   const currentIndex = projectsList.findIndex((p) => p.slug === slug);
   const recommendedProjects = projectsList
@@ -136,7 +144,7 @@ export default function ProjectDetailPage() {
       {/* HERO */}
       <section className="relative w-full h-[55vh] sm:h-[70vh] md:h-[85vh]">
         <Image
-          src={project.banner || images[0] || '/placeholder.jpg'}
+          src={project.banner || getImageSrc(images[0]) || '/placeholder.jpg'}
           alt={project.title}
           fill
           priority
@@ -145,103 +153,83 @@ export default function ProjectDetailPage() {
           className="object-cover"
         />
       </section>
+
       {/* TITLE + META + DESCRIPTION */}
       <TextBlock
         title={project.title}
         meta={
           <>
             {project.location && (
-              <div className="min-w-[80px]">
-                <span className="block text-[#d9af61] uppercase tracking-[3px] text-[10px] mb-1">
-                  Location
-                </span>
-                {project.location}
-              </div>
+              <MetaItem label="Location" value={project.location} />
             )}
-            <div className="min-w-[50px]">
-              <span className="block text-[#d9af61] uppercase tracking-[3px] text-[10px] mb-1">
-                Year
-              </span>
-              {project.year || new Date(project.createdAt).getFullYear()}
-            </div>
-            {project.area && (
-              <div className="min-w-[60px]">
-                <span className="block text-[#d9af61] uppercase tracking-[3px] text-[10px] mb-1">
-                  Area
-                </span>
-                {project.area}
-              </div>
-            )}
-            {project.scope && (
-              <div className="min-w-[60px]">
-                <span className="block text-[#d9af61] uppercase tracking-[3px] text-[10px] mb-1">
-                  Scope
-                </span>
-                {project.scope}
-              </div>
-            )}
+            <MetaItem
+              label="Year"
+              value={project.year || new Date(project.createdAt).getFullYear()}
+            />
+            {project.area && <MetaItem label="Area" value={project.area} />}
+            {project.scope && <MetaItem label="Scope" value={project.scope} />}
             {project.category && (
-              <div className="min-w-[70px]">
-                <span className="block text-[#d9af61] uppercase tracking-[3px] text-[10px] mb-1">
-                  Category
-                </span>
-                {project.category}
-              </div>
+              <MetaItem label="Category" value={project.category} />
             )}
           </>
         }
       >
         {project.description}
       </TextBlock>
+
       {/* TWO SQUARES */}
       {images.length >= 2 && (
         <FullBleed className="pb-[10px]">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-[10px]">
-            <FullBleedImage
+            <ProjectImage
               src={images[0]}
               alt={`${project.title} image 1`}
               className="aspect-square w-full"
             />
-            <FullBleedImage
+            <ProjectImage
               src={images[1]}
               alt={`${project.title} image 2`}
               className="aspect-square w-full"
             />
           </div>
         </FullBleed>
-      )}{' '}
+      )}
+
       {/* WIDE RECTANGLE 1 */}
       {images.length >= 3 && (
         <FullBleed className="pb-[10px]">
-          <FullBleedImage
+          <ProjectImage
             src={images[2]}
             alt={`${project.title} wide image 1`}
             className="w-full h-[260px] sm:h-[420px] md:h-[800px]"
           />
         </FullBleed>
       )}
+
       {/* DETAILS */}
       {project.details && <TextBlock>{project.details}</TextBlock>}
+
       {/* WIDE RECTANGLE 2 */}
       {images.length >= 4 && (
         <FullBleed className="pb-[10px]">
-          <FullBleedImage
+          <ProjectImage
             src={images[3]}
             alt={`${project.title} wide image 2`}
             className="w-full h-[260px] sm:h-[420px] md:h-[800px]"
           />
         </FullBleed>
       )}
+
       {/* TWO SQUARES AGAIN */}
       {images.length >= 6 && (
         <FullBleed>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-[10px]">
-            <FullBleedImage
+            <ProjectImage
               src={images[4]}
               alt={`${project.title} image 3`}
               className="aspect-square w-full"
             />
-            <FullBleedImage
+            <ProjectImage
               src={images[5]}
               alt={`${project.title} image 4`}
               className="aspect-square w-full"
@@ -249,33 +237,32 @@ export default function ProjectDetailPage() {
           </div>
         </FullBleed>
       )}
-      {/* MIXED LAYOUT (Portrait + Text + Square) */}
+
+      {/* MIXED LAYOUT (Portrait + Text + Square) - now supports more images */}
       {images.length >= 7 && (
         <FullBleed className="pt-[6px] pb-[10px]">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-[10px]">
             {/* Portrait */}
             <div className="md:row-span-2">
-              <FullBleedImage
+              <ProjectImage
                 src={images[6]}
                 alt={`${project.title} portrait image`}
                 className="w-full h-[500px] md:h-full"
               />
             </div>
 
-            {/* Text */}
-            {/* Text (Square) */}
-            <div className="w-full aspect-square p-5 md:p-12 flex items-center justify-center">
+            {/* Text Block */}
+            <div className="w-full aspect-square p-5 md:p-12 flex items-center justify-center bg-[#f3f0eb]">
               <AnimateIn>
-                <div className="w-full h-full flex items-center justify-center">
-                  <p className="text-base md:text-xl leading-relaxed text-gray-700 whitespace-pre-line text-center">
-                    {project.moreDetails}
-                  </p>
-                </div>
+                <p className="text-base md:text-xl leading-relaxed text-gray-700 whitespace-pre-line text-center">
+                  {project.moreDetails}
+                </p>
               </AnimateIn>
             </div>
+
             {/* Square */}
             {images.length >= 8 && (
-              <FullBleedImage
+              <ProjectImage
                 src={images[7]}
                 alt={`${project.title} square image`}
                 className="aspect-square w-full"
@@ -283,7 +270,23 @@ export default function ProjectDetailPage() {
             )}
           </div>
         </FullBleed>
-      )}{' '}
+      )}
+
+      {/* EXTRA IMAGES (New) - Continue the layout rhythm for images beyond 8 */}
+      {images.length > 8 && (
+        <div className="space-y-[10px] pb-12">
+          {images.slice(8).map((img, idx) => (
+            <FullBleed key={idx}>
+              <ProjectImage
+                src={img}
+                alt={`${project.title} image ${idx + 9}`}
+                className="w-full"
+              />
+            </FullBleed>
+          ))}
+        </div>
+      )}
+
       {/* RECOMMENDED PROJECTS */}
       {recommendedProjects.length > 0 && (
         <section className="pt-14 pb-20 md:pt-20 md:pb-32 px-5 md:px-12">
@@ -310,7 +313,6 @@ export default function ProjectDetailPage() {
                       className="object-cover transition duration-700 group-hover:scale-105"
                     />
                   </div>
-
                   <h3 className="text-lg md:text-2xl font-light mb-1 group-hover:text-[#d9af61] transition">
                     {item.title}
                   </h3>
@@ -326,3 +328,12 @@ export default function ProjectDetailPage() {
     </main>
   );
 }
+
+const MetaItem = ({ label, value }) => (
+  <div className="min-w-[70px]">
+    <span className="block text-[#d9af61] uppercase tracking-[3px] text-[10px] mb-1">
+      {label}
+    </span>
+    {value}
+  </div>
+);
