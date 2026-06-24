@@ -72,7 +72,7 @@ const TEXTS = [
 ];
 
 const ProjectBlock = ({ project }) => {
-  if (!project) return null; // ← Important: Return null instead of skeleton
+  if (!project) return null;
 
   const version = project.updatedAt ? `?v=${project.updatedAt}` : '';
   const imageSrc = project.image
@@ -80,6 +80,7 @@ const ProjectBlock = ({ project }) => {
     : project.images?.[0]
       ? `${project.images[0]}${version}`
       : '/placeholder.jpg';
+
   const altText = project.title
     ? `${project.title} - ${project.category || 'Project'} by Rippotai`
     : 'Architectural interior project';
@@ -177,12 +178,12 @@ export const WorksSection = ({ mode = 'home', limit = 20 }) => {
 
   // ====================== HOME MODE ======================
   if (mode === 'home') {
-    // Fallback to simple grid if we have fewer than 8 projects
+    // Fallback for fewer projects
     if (sortedProjects.length < 8) {
       return (
         <>
           {styles}
-          <section style={{ padding: '15px', backgroundColor: '#fff' }}>
+          <section style={{ backgroundColor: '#fff' }}>
             <div
               style={{
                 display: 'grid',
@@ -203,13 +204,8 @@ export const WorksSection = ({ mode = 'home', limit = 20 }) => {
       );
     }
 
-    // Fancy layout for 8+ projects
-    const chunkSize = 9;
-    const projectChunks = [];
-
-    for (let i = 0; i < sortedProjects.length; i += chunkSize) {
-      projectChunks.push(sortedProjects.slice(i, i + chunkSize));
-    }
+    // Dynamic assignment - first projects fill the layout positions
+    const getProject = (index) => sortedProjects[index] || null;
 
     return (
       <>
@@ -224,174 +220,158 @@ export const WorksSection = ({ mode = 'home', limit = 20 }) => {
           }}
         >
           <div style={{ width: '100%', margin: '0 auto' }}>
-            {projectChunks.map((chunk, chunkIndex) => {
-              const getProject = (slug, fallbackIndex) =>
-                chunk.find((proj) => proj.slug === slug) ||
-                chunk[fallbackIndex];
+            {Array.from({ length: Math.ceil(sortedProjects.length / 9) }).map(
+              (_, chunkIndex) => {
+                const base = chunkIndex * 9;
 
-              const p = {
-                tropical: getProject('guptas-residence-ii', 0),
-                innerHouse: getProject('the-inner-house', 1),
-                khannaLaw: getProject(
-                  'vinay-khanna-law-chambers-panchsheel-park',
-                  2,
-                ),
-                cmShowroom: getProject(
-                  'chhabra-marble-and-sanitary-showroom',
-                  3,
-                ),
-                skyView: getProject('sky-view-restaurant-lucknow', 4),
-                goel: getProject('goels-residence-gurugram', 5),
-                pitampura: getProject('nagpals-residence-pitampura', 6),
-                sehaj: getProject('sehaj', 7),
-                geetanjali: getProject('khannas-residence-geetanjali-marg', 8),
-              };
+                return (
+                  <div
+                    key={chunkIndex}
+                    style={{ marginTop: chunkIndex > 0 ? `${GAP}px` : 0 }}
+                  >
+                    {isMobile ? (
+                      <div
+                        style={{
+                          display: 'grid',
+                          gap: GAP,
+                          gridTemplateColumns: '1fr',
+                        }}
+                      >
+                        {getProject(base + 0) && (
+                          <div style={{ aspectRatio: '2 / 1' }}>
+                            <ProjectBlock project={getProject(base + 0)} />
+                          </div>
+                        )}
+                        {getProject(base + 1) && (
+                          <div style={{ aspectRatio: '1 / 1.4' }}>
+                            <ProjectBlock project={getProject(base + 1)} />
+                          </div>
+                        )}
 
-              return (
-                <div
-                  key={chunkIndex}
-                  style={{
-                    marginTop: chunkIndex > 0 ? `${GAP}px` : 0,
-                  }}
-                >
-                  {isMobile ? (
-                    <div
-                      style={{
-                        display: 'grid',
-                        gap: GAP,
-                        gridTemplateColumns: '1fr',
-                      }}
-                    >
-                      {p.tropical && (
-                        <div style={{ aspectRatio: '2 / 1' }}>
-                          <ProjectBlock project={p.tropical} />
+                        <div className="text-block">
+                          <p>{TEXTS[0]}</p>
                         </div>
-                      )}
-                      {p.innerHouse && (
-                        <div style={{ aspectRatio: '1 / 1.4' }}>
-                          <ProjectBlock project={p.innerHouse} />
-                        </div>
-                      )}
 
-                      <div className="text-block">
-                        <p>{TEXTS[0]}</p>
+                        {getProject(base + 2) && (
+                          <div style={{ aspectRatio: '1 / 1' }}>
+                            <ProjectBlock project={getProject(base + 2)} />
+                          </div>
+                        )}
+                        {getProject(base + 3) && (
+                          <div style={{ aspectRatio: '2 / 1' }}>
+                            <ProjectBlock project={getProject(base + 3)} />
+                          </div>
+                        )}
+                        {getProject(base + 4) && (
+                          <div style={{ aspectRatio: '1 / 1' }}>
+                            <ProjectBlock project={getProject(base + 4)} />
+                          </div>
+                        )}
+                        {getProject(base + 5) && (
+                          <div style={{ aspectRatio: '2 / 1' }}>
+                            <ProjectBlock project={getProject(base + 5)} />
+                          </div>
+                        )}
+
+                        <div className="text-block">
+                          <p>{TEXTS[1]}</p>
+                        </div>
+
+                        {getProject(base + 6) && (
+                          <div style={{ aspectRatio: '1 / 1.4' }}>
+                            <ProjectBlock project={getProject(base + 6)} />
+                          </div>
+                        )}
+                        {getProject(base + 7) && (
+                          <div style={{ aspectRatio: '1 / 1.4' }}>
+                            <ProjectBlock project={getProject(base + 7)} />
+                          </div>
+                        )}
+
+                        <div className="text-block">
+                          <p>{TEXTS[2]}</p>
+                        </div>
+
+                        {getProject(base + 8) && (
+                          <div style={{ aspectRatio: '2 / 1' }}>
+                            <ProjectBlock project={getProject(base + 8)} />
+                          </div>
+                        )}
                       </div>
+                    ) : (
+                      <div
+                        style={{
+                          display: 'grid',
+                          gap: GAP,
+                          gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+                          gridTemplateRows: 'repeat(7, minmax(0, 1fr))',
+                          aspectRatio: '3 / 7',
+                        }}
+                      >
+                        {getProject(base + 0) && (
+                          <div style={{ gridColumn: 'span 2' }}>
+                            <ProjectBlock project={getProject(base + 0)} />
+                          </div>
+                        )}
+                        {getProject(base + 1) && (
+                          <div style={{ gridRow: 'span 2' }}>
+                            <ProjectBlock project={getProject(base + 1)} />
+                          </div>
+                        )}
+                        <div className="text-block">
+                          <p>{TEXTS[0]}</p>
+                        </div>
 
-                      {p.khannaLaw && (
-                        <div style={{ aspectRatio: '1 / 1' }}>
-                          <ProjectBlock project={p.khannaLaw} />
-                        </div>
-                      )}
-                      {p.cmShowroom && (
-                        <div style={{ aspectRatio: '2 / 1' }}>
-                          <ProjectBlock project={p.cmShowroom} />
-                        </div>
-                      )}
-                      {p.skyView && (
-                        <div style={{ aspectRatio: '1 / 1' }}>
-                          <ProjectBlock project={p.skyView} />
-                        </div>
-                      )}
-                      {p.goel && (
-                        <div style={{ aspectRatio: '2 / 1' }}>
-                          <ProjectBlock project={p.goel} />
-                        </div>
-                      )}
+                        {getProject(base + 2) && (
+                          <ProjectBlock project={getProject(base + 2)} />
+                        )}
 
-                      <div className="text-block">
-                        <p>{TEXTS[1]}</p>
+                        {getProject(base + 3) && (
+                          <div style={{ gridColumn: 'span 2' }}>
+                            <ProjectBlock project={getProject(base + 3)} />
+                          </div>
+                        )}
+                        {getProject(base + 4) && (
+                          <ProjectBlock project={getProject(base + 4)} />
+                        )}
+
+                        {getProject(base + 5) && (
+                          <div style={{ gridColumn: 'span 2' }}>
+                            <ProjectBlock project={getProject(base + 5)} />
+                          </div>
+                        )}
+                        <div className="text-block">
+                          <p>{TEXTS[1]}</p>
+                        </div>
+
+                        {getProject(base + 6) && (
+                          <div style={{ gridRow: 'span 2' }}>
+                            <ProjectBlock project={getProject(base + 6)} />
+                          </div>
+                        )}
+
+                        {getProject(base + 7) && (
+                          <div
+                            style={{ gridColumn: 'span 2', gridRow: 'span 2' }}
+                          >
+                            <ProjectBlock project={getProject(base + 7)} />
+                          </div>
+                        )}
+                        <div className="text-block">
+                          <p>{TEXTS[2]}</p>
+                        </div>
+
+                        {getProject(base + 8) && (
+                          <div style={{ gridColumn: 'span 2' }}>
+                            <ProjectBlock project={getProject(base + 8)} />
+                          </div>
+                        )}
                       </div>
-
-                      {p.pitampura && (
-                        <div style={{ aspectRatio: '1 / 1.4' }}>
-                          <ProjectBlock project={p.pitampura} />
-                        </div>
-                      )}
-                      {p.sehaj && (
-                        <div style={{ aspectRatio: '1 / 1.4' }}>
-                          <ProjectBlock project={p.sehaj} />
-                        </div>
-                      )}
-
-                      <div className="text-block">
-                        <p>{TEXTS[2]}</p>
-                      </div>
-
-                      {p.geetanjali && (
-                        <div style={{ aspectRatio: '2 / 1' }}>
-                          <ProjectBlock project={p.geetanjali} />
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <div
-                      style={{
-                        display: 'grid',
-                        gap: GAP,
-                        gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-                        gridTemplateRows: 'repeat(7, minmax(0, 1fr))',
-                        aspectRatio: '3 / 7',
-                      }}
-                    >
-                      {p.tropical && (
-                        <div style={{ gridColumn: 'span 2' }}>
-                          <ProjectBlock project={p.tropical} />
-                        </div>
-                      )}
-                      {p.innerHouse && (
-                        <div style={{ gridRow: 'span 2' }}>
-                          <ProjectBlock project={p.innerHouse} />
-                        </div>
-                      )}
-                      <div className="text-block">
-                        <p>{TEXTS[0]}</p>
-                      </div>
-
-                      {p.khannaLaw && <ProjectBlock project={p.khannaLaw} />}
-
-                      {p.cmShowroom && (
-                        <div style={{ gridColumn: 'span 2' }}>
-                          <ProjectBlock project={p.cmShowroom} />
-                        </div>
-                      )}
-                      {p.skyView && <ProjectBlock project={p.skyView} />}
-
-                      {p.goel && (
-                        <div style={{ gridColumn: 'span 2' }}>
-                          <ProjectBlock project={p.goel} />
-                        </div>
-                      )}
-                      <div className="text-block">
-                        <p>{TEXTS[1]}</p>
-                      </div>
-
-                      {p.pitampura && (
-                        <div style={{ gridRow: 'span 2' }}>
-                          <ProjectBlock project={p.pitampura} />
-                        </div>
-                      )}
-
-                      {p.sehaj && (
-                        <div
-                          style={{ gridColumn: 'span 2', gridRow: 'span 2' }}
-                        >
-                          <ProjectBlock project={p.sehaj} />
-                        </div>
-                      )}
-                      <div className="text-block">
-                        <p>{TEXTS[2]}</p>
-                      </div>
-
-                      {p.geetanjali && (
-                        <div style={{ gridColumn: 'span 2' }}>
-                          <ProjectBlock project={p.geetanjali} />
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+                    )}
+                  </div>
+                );
+              },
+            )}
           </div>
         </section>
       </>
@@ -410,6 +390,8 @@ export const WorksSection = ({ mode = 'home', limit = 20 }) => {
             gap: GAP * 1.5,
             maxWidth: '1400px',
             margin: '0 auto',
+            alignContent: 'start',
+            gridAutoRows: 'min-content',
           }}
         >
           {sortedProjects.map((project) => (
