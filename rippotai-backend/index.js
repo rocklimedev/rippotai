@@ -50,6 +50,7 @@ const allowedOrigins = [
   "https://rippotai.vercel.app",
   "https://cmtradingco.com",
   "https://www.cmtradingco.com",
+  "https://frontend-v3-five-tan.vercel.app",
 ];
 
 const corsOptions = {
