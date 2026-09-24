@@ -4,7 +4,7 @@ export default function About() {
       <div className="wrap">
         <div className="about-grid">
           <div>
-            <p className="eyebrow" data-n="1.0" data-rev="">
+            <p className="eyebrow" data-rev="">
               Where it began
             </p>
             <h2 data-rev="mask">About Us</h2>
@@ -27,7 +27,6 @@ export default function About() {
           </div>
           <div className="figure" data-rev="img">
             <img src="/images/about.webp" alt="Rippotai project" />
-            <span className="tag">The Practice</span>
           </div>
         </div>
         <div className="stats">

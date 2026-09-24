@@ -90,7 +90,7 @@ export default function EndZone({ id = "endz", image, imageAlt, title, href, lab
           <div className="rule" />
           <div className="mark">
             <Monogram />
-            <div className="word">{site.wordmark}</div>
+            <img className="wordmark" src="/assets/logos/logo_white_word_mark.png" alt="Rippotai" />
           </div>
           <div className="bottom">
             <span>{site.copyright}</span>

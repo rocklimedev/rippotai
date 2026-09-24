@@ -302,8 +302,8 @@ export default function SiteChrome({ nav, services, site }: Props) {
               Contact
             </Link>
             <button className="burger" id="burger" aria-label="Menu">
-              <span>Menu</span>
               <i>
+                <b />
                 <b />
                 <b />
               </i>
