@@ -6,16 +6,34 @@
 export type ProjectCategory = "residential" | "commercial" | "hospitality" | "institutional";
 
 export interface Project {
+  /** URL segment: /projects/[slug] (matches the live site) */
   slug: string;
   name: string;
   category: ProjectCategory | string;
+  /** display label for the category */
   type: string;
+  location: string;
+  scope: string;
+  status: string;
+  /** grid / card image */
   cover: string;
+  /** wide image for the project page banner */
+  banner: string;
   shape?: "F" | "W" | "H" | "V" | string;
   featured?: boolean;
+  /** one-paragraph lead */
+  summary: string;
+  /** body paragraphs, interleaved with the gallery */
+  details: string[];
+  /** images shown on the project page, in order */
+  gallery: string[];
+  /** extra source photographs not shown by default */
+  archive?: string[];
 }
 
 export interface ShowcaseSlide {
+  /** project page this slide opens */
+  slug?: string;
   name: string;
   type: string;
   image: string;

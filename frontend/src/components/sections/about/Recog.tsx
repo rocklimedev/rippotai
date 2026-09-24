@@ -6,11 +6,7 @@ export default function Recog() {
           Architectural Digest <i>●</i> 2025
         </span>{" "}
         <span className="it">
-          <img
-            src="https://rippotaiarchitecture.com/assets/achievements/awards_1.png"
-            alt={"GROHE Bath & Design Awards 2025"}
-            data-fallback="remove"
-          />
+          <img src="/assets/achievements/awards_1.png" alt={"GROHE Bath & Design Awards 2025"} data-fallback="remove" />
           {"GROHE Bath & Design Awards "}
           <i>●</i> 2025
         </span>{" "}
@@ -18,11 +14,7 @@ export default function Recog() {
           Architectural Digest <i>●</i> 2025
         </span>{" "}
         <span className="it">
-          <img
-            src="https://rippotaiarchitecture.com/assets/achievements/awards_2.png"
-            alt={"GROHE Bath & Design Awards 2025"}
-            data-fallback="remove"
-          />
+          <img src="/assets/achievements/awards_2.png" alt={"GROHE Bath & Design Awards 2025"} data-fallback="remove" />
           {"GROHE Bath & Design Awards "}
           <i>●</i> 2025
         </span>

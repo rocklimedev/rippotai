@@ -15,12 +15,7 @@ export default function Team() {
           <button className="mem" data-g="studio" data-m="" style={{ "--d": "0.0s" }}>
             <span className="flip">
               <span className="fr">
-                <img
-                  src="https://rippotaiarchitecture.com/assets/team/sagar_chhabra.png"
-                  alt="Sagar Chhabra"
-                  loading="lazy"
-                  data-fallback="remove"
-                />
+                <img src="/assets/team/sagar_chhabra.png" alt="Sagar Chhabra" loading="lazy" data-fallback="remove" />
                 <i className="ini">SC</i>
                 <span className="ab-tag">Studio</span>
               </span>{" "}
@@ -53,12 +48,7 @@ export default function Team() {
           <button className="mem" data-g="studio" data-m="" style={{ "--d": "0.08s" }}>
             <span className="flip">
               <span className="fr">
-                <img
-                  src="https://rippotaiarchitecture.com/assets/team/saarthi.jpeg"
-                  alt="Sarthi"
-                  loading="lazy"
-                  data-fallback="remove"
-                />
+                <img src="/assets/team/saarthi.jpeg" alt="Sarthi" loading="lazy" data-fallback="remove" />
                 <i className="ini">S</i>
                 <span className="ab-tag">Studio</span>
               </span>{" "}
@@ -84,12 +74,7 @@ export default function Team() {
           <button className="mem" data-g="studio" data-m="" style={{ "--d": "0.16s" }}>
             <span className="flip">
               <span className="fr">
-                <img
-                  src="https://rippotaiarchitecture.com/assets/team/dhairya.jpeg"
-                  alt="Dhairya Soni"
-                  loading="lazy"
-                  data-fallback="remove"
-                />
+                <img src="/assets/team/dhairya.jpeg" alt="Dhairya Soni" loading="lazy" data-fallback="remove" />
                 <i className="ini">DS</i>
                 <span className="ab-tag">Studio</span>
               </span>{" "}
@@ -146,12 +131,7 @@ export default function Team() {
           <button className="mem" data-g="studio" data-m="" style={{ "--d": "0.0s" }}>
             <span className="flip">
               <span className="fr">
-                <img
-                  src="https://rippotaiarchitecture.com/assets/team/megha.PNG"
-                  alt="Megha Chhabra"
-                  loading="lazy"
-                  data-fallback="remove"
-                />
+                <img src="/assets/team/megha.PNG" alt="Megha Chhabra" loading="lazy" data-fallback="remove" />
                 <i className="ini">MC</i>
                 <span className="ab-tag">Studio</span>
               </span>{" "}
@@ -177,12 +157,7 @@ export default function Team() {
           <button className="mem" data-g="studio" data-m="" style={{ "--d": "0.08s" }}>
             <span className="flip">
               <span className="fr">
-                <img
-                  src="https://rippotaiarchitecture.com/assets/team/Bhav.jpg"
-                  alt="Bhav Lamba"
-                  loading="lazy"
-                  data-fallback="remove"
-                />
+                <img src="/assets/team/Bhav.jpg" alt="Bhav Lamba" loading="lazy" data-fallback="remove" />
                 <i className="ini">BL</i>
                 <span className="ab-tag">Studio</span>
               </span>{" "}
@@ -211,12 +186,7 @@ export default function Team() {
           <button className="mem" data-g="collab" data-m="" style={{ "--d": "0.16s" }}>
             <span className="flip">
               <span className="fr">
-                <img
-                  src="https://rippotaiarchitecture.com/assets/team/CM.png"
-                  alt="Chhavi"
-                  loading="lazy"
-                  data-fallback="remove"
-                />
+                <img src="/assets/team/CM.png" alt="Chhavi" loading="lazy" data-fallback="remove" />
                 <i className="ini">C</i>
                 <span className="ab-tag">Collaborator</span>
               </span>{" "}
@@ -242,12 +212,7 @@ export default function Team() {
           <button className="mem" data-g="alumni" data-m="" style={{ "--d": "0.24s" }}>
             <span className="flip">
               <span className="fr">
-                <img
-                  src="https://rippotaiarchitecture.com/assets/team/Jayant.jpg"
-                  alt="Jayant Vijay Nath"
-                  loading="lazy"
-                  data-fallback="remove"
-                />
+                <img src="/assets/team/Jayant.jpg" alt="Jayant Vijay Nath" loading="lazy" data-fallback="remove" />
                 <i className="ini">JV</i>
                 <span className="ab-tag">Alumni</span>
               </span>{" "}
@@ -273,12 +238,7 @@ export default function Team() {
           <button className="mem" data-g="alumni" data-m="" style={{ "--d": "0.0s" }}>
             <span className="flip">
               <span className="fr">
-                <img
-                  src="https://rippotaiarchitecture.com/assets/team/aniket.png"
-                  alt="Aniket"
-                  loading="lazy"
-                  data-fallback="remove"
-                />
+                <img src="/assets/team/aniket.png" alt="Aniket" loading="lazy" data-fallback="remove" />
                 <i className="ini">A</i>
                 <span className="ab-tag">Alumni</span>
               </span>{" "}
@@ -304,12 +264,7 @@ export default function Team() {
           <button className="mem" data-g="alumni" data-m="" style={{ "--d": "0.08s" }}>
             <span className="flip">
               <span className="fr">
-                <img
-                  src="https://rippotaiarchitecture.com/assets/team/shivam.png"
-                  alt="Shivam"
-                  loading="lazy"
-                  data-fallback="remove"
-                />
+                <img src="/assets/team/shivam.png" alt="Shivam" loading="lazy" data-fallback="remove" />
                 <i className="ini">S</i>
                 <span className="ab-tag">Alumni</span>
               </span>{" "}
@@ -335,12 +290,7 @@ export default function Team() {
           <button className="mem" data-g="alumni" data-m="" style={{ "--d": "0.16s" }}>
             <span className="flip">
               <span className="fr">
-                <img
-                  src="https://rippotaiarchitecture.com/assets/team/shivani.png"
-                  alt="Shivani"
-                  loading="lazy"
-                  data-fallback="remove"
-                />
+                <img src="/assets/team/shivani.png" alt="Shivani" loading="lazy" data-fallback="remove" />
                 <i className="ini">S</i>
                 <span className="ab-tag">Alumni</span>
               </span>{" "}

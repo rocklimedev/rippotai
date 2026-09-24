@@ -28,6 +28,13 @@ export const getFooterNav = () => footerNav;
 export const getProjects = (): Project[] => projects;
 export const getProject = (slug: string) => projects.find((p) => p.slug === slug);
 export const getFeaturedProjects = () => projects.filter((p) => p.featured);
+export const projectHref = (slug: string) => `/projects/${slug}`;
+/** Previous / next project in portfolio order (wraps around). */
+export function getAdjacentProjects(slug: string) {
+  const i = projects.findIndex((p) => p.slug === slug);
+  const n = projects.length;
+  return { index: i, total: n, prev: projects[(i - 1 + n) % n], next: projects[(i + 1) % n] };
+}
 
 export const getServices = (): Service[] => services;
 export const getService = (slug: string) => services.find((s) => s.slug === slug);

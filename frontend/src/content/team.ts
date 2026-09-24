@@ -1,6 +1,6 @@
 import type { TeamMember, Value } from "./types";
 
-const S = "https://rippotaiarchitecture.com/assets/team/";
+const S = "/assets/team/";
 
 export const team: TeamMember[] = [
   { name: "Sagar Chhabra", role: "Founder & Principal Architect", photo: S + "sagar_chhabra.png", group: "studio" },

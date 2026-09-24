@@ -22,7 +22,9 @@ export default function AdminProjects() {
               <TableHead className="w-16">Cover</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Type</TableHead>
+              <TableHead>Location</TableHead>
               <TableHead>Grid tile</TableHead>
+              <TableHead>Images</TableHead>
               <TableHead>Slug</TableHead>
             </TableRow>
           </TableHeader>
@@ -33,11 +35,22 @@ export default function AdminProjects() {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={p.cover} alt="" className="h-10 w-14 rounded object-cover" loading="lazy" />
                 </TableCell>
-                <TableCell className="font-medium text-primary">{p.name}</TableCell>
+                <TableCell className="font-medium text-primary">
+                  <a href={`/projects/${p.slug}`} className="hover:underline">
+                    {p.name}
+                  </a>
+                  {p.featured ? (
+                    <Badge variant="accent" className="ml-2">
+                      featured
+                    </Badge>
+                  ) : null}
+                </TableCell>
                 <TableCell>
                   <Badge variant="secondary">{p.type}</Badge>
                 </TableCell>
+                <TableCell className="text-muted-foreground">{p.location}</TableCell>
                 <TableCell className="text-muted-foreground">{SHAPE[p.shape ?? ""] ?? "—"}</TableCell>
+                <TableCell className="text-muted-foreground">{p.gallery.length}</TableCell>
                 <TableCell className="font-mono text-xs text-muted-foreground">{p.slug}</TableCell>
               </TableRow>
             ))}

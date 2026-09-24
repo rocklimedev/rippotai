@@ -5,11 +5,7 @@ export default function Banner() {
     <section className="pg-banner" id="top-anchor">
       <div className="bimg">
         <img src="/images/about.webp" alt="" />
-        <img
-          src="https://rippotaiarchitecture.com/assets/banners/team.jpg"
-          alt="The Rippotai team"
-          data-fallback="remove"
-        />
+        <img src="/assets/banners/team.jpg" alt="The Rippotai team" data-fallback="remove" />
       </div>
       <div className="bin">
         <div className="wrap">

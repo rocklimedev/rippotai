@@ -10,7 +10,12 @@ export const metadata = { title: "Overview" };
 export default function AdminHome() {
   const stats = getContentStats();
   const cards = [
-    { label: "Projects", value: stats.projects, hint: `${stats.featured} with local covers`, href: "/admin/projects" },
+    {
+      label: "Projects",
+      value: stats.projects,
+      hint: `${stats.featured} featured · each has a page`,
+      href: "/admin/projects",
+    },
     { label: "Services", value: stats.services, hint: "Drive header rotator + accordion", href: "/admin/services" },
     { label: "Team", value: stats.team, hint: "Shown on /about", href: "/admin" },
     { label: "Landing pages", value: stats.landingPages, hint: "Under /lp/[slug]", href: "/admin/landing" },

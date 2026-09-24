@@ -3,11 +3,7 @@ export default function Founder() {
     <section className="founder">
       <div className="wrap">
         <figure className="fd-img" id="fdimg">
-          <img
-            src="https://rippotaiarchitecture.com/assets/team/sagar_chhabra.png"
-            alt="Sagar Chhabra"
-            data-fallback="remove"
-          />
+          <img src="/assets/team/sagar_chhabra.png" alt="Sagar Chhabra" data-fallback="remove" />
           <svg className="mono" viewBox="150 -10 1360 1400" aria-hidden="true">
             <polyline className="gl" points="510,135 817,5 1150,137" />
             <ellipse className="gd" cx="830" cy="295" rx="165" ry="82" />
