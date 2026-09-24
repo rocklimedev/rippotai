@@ -12,7 +12,7 @@ export interface Project {
 
   title: string;
   slug: string;
-
+  description: string;
   category?: string;
   location?: string;
   scope?: string;
