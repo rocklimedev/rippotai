@@ -1,0 +1,38 @@
+/*
+ * Admin console + landing-page stylesheet (Tailwind + shadcn/ui tokens).
+ * Imported ONLY by the (admin) and (landing) root layouts — never by the public site.
+ * Palette mirrors the brand: forest green primary, gold accent, no black.
+ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 157 23% 14%; /* #1B2B25 */
+    --card: 0 0% 100%;
+    --card-foreground: 157 23% 14%;
+    --primary: 162 59% 15%; /* #103E31 */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 43 29% 95%; /* #F7F5F0 */
+    --secondary-foreground: 162 59% 15%;
+    --muted: 43 29% 95%;
+    --muted-foreground: 75 3% 42%; /* #6C6F68 */
+    --accent: 41 60% 62%; /* #D8B062 */
+    --accent-foreground: 162 59% 15%;
+    --destructive: 4 62% 45%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 162 59% 15% / 0.14;
+    --input: 162 59% 15% / 0.2;
+    --ring: 41 60% 62%;
+    --gold: 41 60% 62%;
+    --radius: 0.5rem;
+  }
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}
