@@ -52,7 +52,7 @@ const allowedOrigins = [
   "https://www.cmtradingco.com",
   "https://frontend-v3-five-tan.vercel.app",
 ];
-
+/** */
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
