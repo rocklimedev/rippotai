@@ -27,8 +27,12 @@ jobs:
 
       - name: Build & push backend image
         run: |
-          docker build -t ghcr.io/rocklimedev/rippotai-backend:latest ./rippotai-backend
-          docker push ghcr.io/rocklimedev/rippotai-backend:latest
+          docker build \
+            -t ghcr.io/rocklimedev/rippotai-backend:latest \
+            ./rippotai-backend
+
+          docker push \
+            ghcr.io/rocklimedev/rippotai-backend:latest
 
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v0.1.10
@@ -39,13 +43,48 @@ jobs:
           port: 22
           script: |
             set -e
-            cd /root/rippotai-backend
 
+            APP_DIR="/opt/apps/rippotai-backend"
+            COMPOSE_FILE="$APP_DIR/docker-compose.yml"
+
+            echo "======================================"
+            echo "Rippotai Backend Deployment"
+            echo "======================================"
+
+            echo "==> Checking deployment directory"
+            test -d "$APP_DIR"
+            test -f "$COMPOSE_FILE"
+
+            cd "$APP_DIR"
+
+            echo "==> Current directory:"
+            pwd
+
+            echo "==> Compose file:"
+            ls -la "$COMPOSE_FILE"
+
+            echo "==> Logging into GHCR"
             echo "${{ secrets.RIPPOTAI_GHCR_TOKEN }}" | docker login ghcr.io \
-              -u rocklimedev --password-stdin
+              -u rocklimedev \
+              --password-stdin
 
-            docker compose down
-            docker compose pull
-            docker compose up -d --force-recreate
+            echo "==> Pulling latest backend image"
+            docker compose -f "$COMPOSE_FILE" pull
 
+            echo "==> Recreating backend containers"
+            docker compose -f "$COMPOSE_FILE" up -d --force-recreate
+
+            echo "==> Backend container status"
+            docker compose -f "$COMPOSE_FILE" ps
+
+            echo "==> Running backend containers"
+            docker ps \
+              --filter "name=rippotai-backend" \
+              --format "table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}"
+
+            echo "==> Cleaning unused Docker images"
             docker image prune -f
+
+            echo "======================================"
+            echo "Deployment completed successfully"
+            echo "======================================"
