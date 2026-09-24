@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { useGetPublicProjectsQuery } from "@/api/projectsApi";
 
@@ -7,7 +8,31 @@ const FALLBACK_IMAGE = "/images/p_tropical.webp";
 
 const CARD_STYLES = ["sF", "sV", "sW", "sH", "sH", "sW", "sV", "sV", "sV", "sV", "sF", "sV", "sW", "sH", "sH", "sF"];
 
-function ProjectCard({ project, index }) {
+/**
+
+* Public project shape returned by the projects API.
+*
+* Add more fields here later if the API exposes them.
+  */
+interface PublicProject {
+  projectId: string | number;
+  title?: string | null;
+  category?: string | null;
+  image?: string | null;
+  slug?: string | null;
+}
+
+interface ProjectCardProps {
+  project: PublicProject;
+  index: number;
+}
+
+interface ProjectRowProps {
+  project: PublicProject;
+  index: number;
+}
+
+function ProjectCard({ project, index }: ProjectCardProps) {
   const number = String(index + 1).padStart(2, "0");
   const title = project.title || "Untitled project";
   const category = project.category || "";
@@ -17,10 +42,11 @@ function ProjectCard({ project, index }) {
 
   const content = (
     <>
+      {" "}
       <figure>
-        <img src={image} alt={title} loading="lazy" />
+        {" "}
+        <img src={image} alt={title} loading="lazy" />{" "}
       </figure>
-
       <div className="pj-meta">
         <span className="i">{number}</span>
         <span className="nm">{title}</span>
@@ -32,7 +58,7 @@ function ProjectCard({ project, index }) {
   if (!slug) {
     return (
       <div className={`pj-card ${cardStyle}`} data-c={category.toLowerCase()} data-m="" data-rev="">
-        {content}
+        {content}{" "}
       </div>
     );
   }
@@ -45,12 +71,12 @@ function ProjectCard({ project, index }) {
       data-m=""
       data-rev=""
     >
-      {content}
+      {content}{" "}
     </Link>
   );
 }
 
-function ProjectRow({ project, index }) {
+function ProjectRow({ project, index }: ProjectRowProps) {
   const number = String(index + 1).padStart(2, "0");
   const title = project.title || "Untitled project";
   const category = project.category || "";
@@ -59,9 +85,8 @@ function ProjectRow({ project, index }) {
 
   const content = (
     <>
-      <span className="i">{number}</span>
-      <span className="nm">{title}</span>
-      <span className="ty">{category}</span>
+      {" "}
+      <span className="i">{number}</span> <span className="nm">{title}</span> <span className="ty">{category}</span>{" "}
       <span className="ar">→</span>
     </>
   );
@@ -69,14 +94,14 @@ function ProjectRow({ project, index }) {
   if (!slug) {
     return (
       <div className="pj-row" data-c={category.toLowerCase()} data-img={image} data-m="">
-        {content}
+        {content}{" "}
       </div>
     );
   }
 
   return (
     <Link href={`/projects/${slug}`} className="pj-row" data-c={category.toLowerCase()} data-img={image} data-m="">
-      {content}
+      {content}{" "}
     </Link>
   );
 }
@@ -91,30 +116,27 @@ export default function WorksWrap() {
     limit: 100,
   });
 
-  /*
-   * IMPORTANT:
-   *
-   * getPublicProjects transforms the API response into:
-   *
-   * {
-   *   success: true,
-   *   data: Project[]
-   * }
-   *
-   * Therefore:
-   *
-   * response.data
-   *
-   * is already the projects array.
-   */
-  const projects = response?.data ?? [];
+  /**
+
+* getPublicProjects transforms the API response into:
+*
+* {
+* success: true,
+* data: Project[]
+* }
+*
+* Therefore response.data is already the projects array.
+  */
+  const projects: PublicProject[] = response?.data ?? [];
 
   if (isLoading) {
     return (
       <section className="works-wrap" id="pjwrap">
+        {" "}
         <div className="pj-grid" id="pjgrid">
-          <div className="pj-loading">Loading projects...</div>
-        </div>
+          {" "}
+          <div className="pj-loading">Loading projects...</div>{" "}
+        </div>{" "}
       </section>
     );
   }
@@ -122,38 +144,20 @@ export default function WorksWrap() {
   if (isError || !projects.length) {
     return (
       <section className="works-wrap" id="pjwrap">
+        {" "}
         <div className="pj-grid" id="pjgrid">
-          <div className="pj-loading">No projects available.</div>
-        </div>
+          {" "}
+          <div className="pj-loading">No projects available.</div>{" "}
+        </div>{" "}
       </section>
     );
   }
 
-  /*
-   * Build the exact same visual order as the original
-   * hardcoded component.
-   *
-   * 01
-   * 02
-   * 03
-   * 04
-   * 05
-   * 06
-   * 07
-   * INTERLUDE
-   * 08
-   * 09
-   * 10
-   * 11
-   * INTERLUDE
-   * 12
-   * 13
-   * 14
-   * 15
-   * INTERLUDE
-   * 16
-   */
-  const gridItems = [];
+  /**
+
+* Build the same visual order as the original hardcoded component.
+  */
+  const gridItems: ReactNode[] = [];
 
   projects.forEach((project, index) => {
     gridItems.push(<ProjectCard key={project.projectId} project={project} index={index} />);
@@ -188,10 +192,10 @@ export default function WorksWrap() {
 
   return (
     <section className="works-wrap" id="pjwrap">
+      {" "}
       <div className="pj-grid" id="pjgrid">
-        {gridItems}
+        {gridItems}{" "}
       </div>
-
       <div className="wrap">
         <nav className="pj-list" id="pjlist">
           {projects.map((project, index) => (
