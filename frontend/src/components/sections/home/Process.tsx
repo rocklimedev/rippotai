@@ -4,7 +4,7 @@ export default function Process() {
       <div className="wrap">
         <div className="proc-grid">
           <div className="proc-sticky">
-            <p className="eyebrow" data-n="3.0" data-rev="">
+            <p className="eyebrow" data-rev="">
               How we work
             </p>
             <h2 data-rev="mask">Our Process</h2>
@@ -17,21 +17,21 @@ export default function Process() {
             </div>
           </div>
           <div className="steps">
-            <div className="step" data-n="01" data-rev="">
+            <div className="step" data-rev="">
               <h3>Consultation</h3>
               <p>Understanding context, constraints, and client vision to define architectural direction.</p>
             </div>
-            <div className="step" data-n="02" data-rev="">
+            <div className="step" data-rev="">
               <h3>Design</h3>
               <p>Translating vision into spatial concepts through rigorous design exploration and iteration.</p>
             </div>
-            <div className="step" data-n="03" data-rev="">
+            <div className="step" data-rev="">
               <h3>Execution</h3>
               <p>
                 Precise realization of design intent through meticulous material selection and construction oversight.
               </p>
             </div>
-            <div className="step" data-n="04" data-rev="">
+            <div className="step" data-rev="">
               <h3>Handover</h3>
               <p>Final delivery ensuring every detail meets the uncompromising standard of our practice.</p>
             </div>

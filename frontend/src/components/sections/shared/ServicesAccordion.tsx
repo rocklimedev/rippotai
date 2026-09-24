@@ -8,7 +8,7 @@ export default function ServicesAccordion() {
     <>
       <section className="services" id="services">
         <div className="wrap">
-          <p className="eyebrow" data-n="4.0" data-rev="">
+          <p className="eyebrow" data-rev="">
             What we do
           </p>
           <h2 data-rev="mask">Services</h2>

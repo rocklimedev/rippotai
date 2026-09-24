@@ -1,14 +1,48 @@
+"use client";
+
 import Link from "next/link";
-import { getShowcase } from "@/lib/content";
+import { useGetFeaturedProjectsQuery } from "@/api/projectsApi";
 import ShowcaseBehavior from "./ShowcaseBehavior";
 
-/**
- * Motion-poster showcase (autoplay loop, zig-zag slivers, tight gaps).
- * Data-driven so the admin console / landing pages can reuse it with any slide list.
- * One instance per page (the behaviour binds to fixed ids).
- */
-export default function Showcase({ slides = getShowcase() }: { slides?: ReturnType<typeof getShowcase> }) {
-  const firstSlide = slides[0];
+export default function Showcase() {
+  const { data: projects = [], isLoading, isError } = useGetFeaturedProjectsQuery(6);
+
+  if (isLoading) {
+    return (
+      <section className="works" id="works">
+        <div className="ms-top">
+          <div className="wrap">
+            <Link href="/projects" data-m="" style={{ color: "var(--green)" }}>
+              All projects →
+            </Link>
+
+            <span className="c">Loading</span>
+          </div>
+        </div>
+
+        <div className="ms-stage" id="msstage" />
+      </section>
+    );
+  }
+
+  if (isError || !projects.length) {
+    return (
+      <section className="works" id="works">
+        <div className="ms-top">
+          <div className="wrap">
+            <Link href="/projects" data-m="" style={{ color: "var(--green)" }}>
+              All projects →
+            </Link>
+
+            <span className="c">Projects</span>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  const firstProject = projects[0];
+
   return (
     <section className="works" id="works">
       <div className="ms-top">
@@ -16,33 +50,50 @@ export default function Showcase({ slides = getShowcase() }: { slides?: ReturnTy
           <Link href="/projects" data-m="" style={{ color: "var(--green)" }}>
             All projects →
           </Link>
+
           <span className="c" id="mstype">
-            {firstSlide.type}
-          </span>
-          <span className="r">
-            <b id="msn">01</b> / <span id="mst">{String(slides.length).padStart(2, "0")}</span>
+            {firstProject.category ?? ""}
           </span>
         </div>
       </div>
+
       <div className="ms-stage" id="msstage">
-        {slides.map((s, i) => (
-          <figure key={i} className="ms-card" data-name={s.name} data-type={s.type}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={s.image} alt={s.name} />
-          </figure>
-        ))}
+        {projects.map((project) => {
+          const name = project.title ?? "Untitled project";
+
+          return (
+            <figure
+              key={project.projectId}
+              className="ms-card"
+              data-name={name}
+              data-type={project.category ?? ""}
+              data-slug={project.slug ?? ""}
+              data-location={project.location ?? ""}
+              data-scope={project.scope ?? ""}
+            >
+              {project.image && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={project.image} alt={name} />
+              )}
+            </figure>
+          );
+        })}
       </div>
+
       <div className="ms-cap" id="mscap">
         <span className="nm" id="msname">
-          {firstSlide.name}
+          {firstProject.title ?? "Untitled project"}
         </span>
+
         <span className="ty" id="msty">
-          {firstSlide.type}
+          {firstProject.category ?? ""}
         </span>
       </div>
+
       <div className="ms-timer">
         <i id="mstimer" />
       </div>
+
       <ShowcaseBehavior />
     </section>
   );
