@@ -1,31 +1,32 @@
-// src/api/rolesApi.ts
-
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_URL } from "@/lib/config";
 
-// ────────────────────────────────────────────────
-// TYPES
-// ────────────────────────────────────────────────
-
-export interface Role {
-  _id: string;
-  name: string;
-  description?: string;
-  permissions: string[] | Permission[];
-  createdAt?: string;
-  updatedAt?: string;
-
-  [key: string]: unknown;
-}
-
 export interface Permission {
-  _id?: string;
+  id?: string;
   name: string;
   description?: string;
   resource?: string;
   action?: string;
 
   [key: string]: unknown;
+}
+
+export interface Role {
+  id: string;
+  name: string;
+  description?: string;
+  permissions: string[] | Permission[] | null;
+  createdAt?: string;
+  updatedAt?: string;
+  userCount?: number;
+
+  [key: string]: unknown;
+}
+
+export interface RolesResponse {
+  success: boolean;
+  count?: number;
+  data: Role[];
 }
 
 export interface CreateRoleRequest {
@@ -41,10 +42,6 @@ export interface UpdateRoleRequest {
   permissions: string[] | Permission[];
 }
 
-// ────────────────────────────────────────────────
-// API
-// ────────────────────────────────────────────────
-
 export const rolesApi = createApi({
   reducerPath: "rolesApi",
 
@@ -54,10 +51,12 @@ export const rolesApi = createApi({
     prepareHeaders: (headers) => {
       headers.set("Content-Type", "application/json");
 
-      const token = localStorage.getItem("adminToken");
+      if (typeof window !== "undefined") {
+        const token = localStorage.getItem("adminToken");
 
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
+        if (token) {
+          headers.set("Authorization", `Bearer ${token}`);
+        }
       }
 
       return headers;
@@ -67,19 +66,19 @@ export const rolesApi = createApi({
   tagTypes: ["Roles"],
 
   endpoints: (builder) => ({
-    // ────────────────────────────────────────────────
-    // GET ALL ROLES
-    // ────────────────────────────────────────────────
-
     getAllRoles: builder.query<Role[], void>({
       query: () => "/roles",
+
+      transformResponse: (response: RolesResponse): Role[] => {
+        return response.data ?? [];
+      },
 
       providesTags: (result) =>
         Array.isArray(result)
           ? [
-              ...result.map(({ _id }) => ({
+              ...result.map(({ id }) => ({
                 type: "Roles" as const,
-                id: _id,
+                id,
               })),
               {
                 type: "Roles" as const,
@@ -94,12 +93,10 @@ export const rolesApi = createApi({
             ],
     }),
 
-    // ────────────────────────────────────────────────
-    // GET ROLE BY ID
-    // ────────────────────────────────────────────────
-
     getRoleById: builder.query<Role, string>({
       query: (id) => `/roles/${id}`,
+
+      transformResponse: (response: { success: boolean; data: Role }) => response.data,
 
       providesTags: (result, error, id) => [
         {
@@ -109,20 +106,14 @@ export const rolesApi = createApi({
       ],
     }),
 
-    // ────────────────────────────────────────────────
-    // CREATE ROLE
-    // ────────────────────────────────────────────────
-
     createRole: builder.mutation<Role, CreateRoleRequest>({
-      query: ({ name, description, permissions }) => ({
+      query: (body) => ({
         url: "/roles",
         method: "POST",
-        body: {
-          name,
-          description,
-          permissions,
-        },
+        body,
       }),
+
+      transformResponse: (response: { success: boolean; data: Role }) => response.data,
 
       invalidatesTags: [
         {
@@ -132,20 +123,14 @@ export const rolesApi = createApi({
       ],
     }),
 
-    // ────────────────────────────────────────────────
-    // UPDATE ROLE
-    // ────────────────────────────────────────────────
-
     updateRole: builder.mutation<Role, UpdateRoleRequest>({
-      query: ({ id, name, description, permissions }) => ({
+      query: ({ id, ...body }) => ({
         url: `/roles/${id}`,
         method: "PUT",
-        body: {
-          name,
-          description,
-          permissions,
-        },
+        body,
       }),
+
+      transformResponse: (response: { success: boolean; data: Role }) => response.data,
 
       invalidatesTags: (result, error, { id }) => [
         {
@@ -158,10 +143,6 @@ export const rolesApi = createApi({
         },
       ],
     }),
-
-    // ────────────────────────────────────────────────
-    // DELETE ROLE
-    // ────────────────────────────────────────────────
 
     deleteRole: builder.mutation<unknown, string>({
       query: (id) => ({
@@ -181,25 +162,20 @@ export const rolesApi = createApi({
       ],
     }),
 
-    // ────────────────────────────────────────────────
-    // GET AVAILABLE PERMISSIONS
-    // ────────────────────────────────────────────────
-
     getAvailablePermissions: builder.query<Permission[], void>({
       query: () => "/roles/permissions",
+
+      transformResponse: (response: { success: boolean; data: Permission[] }) => response.data ?? [],
 
       providesTags: [
         {
           type: "Roles",
+          id: "PERMISSIONS",
         },
       ],
     }),
   }),
 });
-
-// ────────────────────────────────────────────────
-// HOOKS
-// ────────────────────────────────────────────────
 
 export const {
   useGetAllRolesQuery,

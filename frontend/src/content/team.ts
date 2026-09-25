@@ -6,12 +6,6 @@ export const team: TeamMember[] = [
   { name: "Sagar Chhabra", role: "Founder & Principal Architect", photo: S + "sagar_chhabra.png", group: "studio" },
   { name: "Sarthi", role: "Senior Architect", photo: S + "saarthi.jpeg", group: "studio" },
   { name: "Dhairya Soni", role: "Junior Interior Designer", photo: S + "dhairya.jpeg", group: "studio" },
-  {
-    name: "Priyanka",
-    role: "Administration",
-    photo: "https://media.cmtradingco.com/rippotai_projects/rippotai_images/priyanka.jpeg",
-    group: "studio",
-  },
   { name: "Megha Chhabra", role: "Interior Decor and Styling Head", photo: S + "megha.PNG", group: "studio" },
   { name: "Bhav Lamba", role: "Content Strategist & Creative Lead", photo: S + "Bhav.jpg", group: "studio" },
   { name: "Chhavi", role: "Interior Designer", photo: S + "CM.png", group: "collab" },

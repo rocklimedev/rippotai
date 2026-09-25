@@ -24,7 +24,7 @@
   --maxw: 1440px;
   --gut: clamp(20px, 5vw, 72px);
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --serif: Georgia, "Times New Roman", serif;
+  --serif: Lato, Arial, Helvetica, sans-serif;
   --sans: Lato, Arial, Helvetica, sans-serif;
   --label: Arial, Helvetica, sans-serif;
 }
@@ -286,7 +286,7 @@ header.hide {
   transition: transform 0.7s var(--ease);
 }
 .brand:hover .mono {
-  transform: rotate(-8deg) scale(1.05);
+  transform: scale(1.05);
 }
 .wedo {
   display: flex;
@@ -1447,20 +1447,30 @@ footer.glass .rule {
   margin: clamp(40px, 6vw, 80px) 0 clamp(24px, 3vw, 40px);
 }
 footer.glass .mark {
+  position: relative;
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 30px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 240px;
+  padding: 40px 0;
 }
+
 footer.glass .mark .mono {
-  width: clamp(70px, 8vw, 120px);
+  position: absolute;
+  left: 0;
+  width: clamp(100px, 10vw, 160px);
+  height: auto;
   --mono-dk: #ffffff;
 }
+
 footer.glass .mark .wordmark {
   display: block;
-  width: 180px;
+  width: clamp(380px, 45vw, 650px);
   height: auto;
-  margin-left: 24px;
+  max-height: 140px;
+  margin: 0;
+  object-fit: contain;
 }
 footer.glass .word {
   font-family: var(--sans);

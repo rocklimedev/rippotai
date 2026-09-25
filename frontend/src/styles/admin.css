@@ -1,38 +1,79 @@
 /*
- * Admin console + landing-page stylesheet (Tailwind + shadcn/ui tokens).
- * Imported ONLY by the (admin) and (landing) root layouts — never by the public site.
- * Palette mirrors the brand: forest green primary, gold accent, no black.
+ * Admin console + landing-page stylesheet.
+ * Tailwind + shadcn/ui design tokens.
+ *
+ * Imported only by the (admin) and (landing) root layouts.
+ * Never imported by the public site.
+ *
+ * Brand palette:
+ * - Forest green primary
+ * - Warm gold accent
+ * - Soft warm neutrals
+ * - No pure black
  */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
+    /* Base */
     --background: 0 0% 100%;
-    --foreground: 157 23% 14%; /* #1B2B25 */
+    --foreground: 157 23% 14%;
+
+    /* Surfaces */
     --card: 0 0% 100%;
     --card-foreground: 157 23% 14%;
-    --primary: 162 59% 15%; /* #103E31 */
+
+    /* Brand */
+    --primary: 162 59% 15%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 43 29% 95%; /* #F7F5F0 */
+
+    /* Secondary / soft surface */
+    --secondary: 43 29% 95%;
     --secondary-foreground: 162 59% 15%;
+
+    /* Muted */
     --muted: 43 29% 95%;
-    --muted-foreground: 75 3% 42%; /* #6C6F68 */
-    --accent: 41 60% 62%; /* #D8B062 */
+    --muted-foreground: 75 3% 42%;
+
+    /* Accent / gold */
+    --accent: 41 60% 62%;
     --accent-foreground: 162 59% 15%;
+    --gold: 41 60% 62%;
+
+    /* Feedback */
     --destructive: 4 62% 45%;
     --destructive-foreground: 0 0% 100%;
+
+    /* Borders / inputs */
     --border: 162 59% 15% / 0.14;
     --input: 162 59% 15% / 0.2;
+
+    /* Focus */
     --ring: 41 60% 62%;
-    --gold: 41 60% 62%;
+
+    /* Components */
     --radius: 0.5rem;
   }
+
   * {
     @apply border-border;
   }
+
+  html {
+    @apply bg-background;
+  }
+
   body {
     @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    @apply font-sans;
   }
 }

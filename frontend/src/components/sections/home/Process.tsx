@@ -4,10 +4,7 @@ export default function Process() {
       <div className="wrap">
         <div className="proc-grid">
           <div className="proc-sticky">
-            <p className="eyebrow" data-rev="">
-              How we work
-            </p>
-            <h2 data-rev="mask">Our Process</h2>
+            <h2 data-rev="mask"> How we work</h2>
             <p data-rev="">
               Four gates, no shortcuts. Every project moves through the same discipline — from the first conversation to
               the final handover.
@@ -18,11 +15,11 @@ export default function Process() {
           </div>
           <div className="steps">
             <div className="step" data-rev="">
-              <h3>Consultation</h3>
+              <h3>Understanding</h3>
               <p>Understanding context, constraints, and client vision to define architectural direction.</p>
             </div>
             <div className="step" data-rev="">
-              <h3>Design</h3>
+              <h3>Creation</h3>
               <p>Translating vision into spatial concepts through rigorous design exploration and iteration.</p>
             </div>
             <div className="step" data-rev="">

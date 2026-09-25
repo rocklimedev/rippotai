@@ -1,22 +1,32 @@
-// src/api/applicationsApi.ts
-
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_URL } from "@/lib/config";
 
-type ApplicationStatus = "PENDING" | "REVIEWING" | "SHORTLISTED" | "REJECTED" | "HIRED";
+export type ApplicationStatus = "PENDING" | "REVIEWING" | "SHORTLISTED" | "REJECTED" | "HIRED";
 
 export interface Application {
-  _id: string;
+  id?: string;
+  _id?: string;
+
   name: string;
   email: string;
   designation: string;
   interestedIn: string;
   phone: string;
-  resume?: string;
-  coverLetter?: string;
-  status: ApplicationStatus;
+
+  resume?: string | null;
+  coverLetter?: string | null;
+
+  status: ApplicationStatus | string;
+
   createdAt?: string;
   updatedAt?: string;
+}
+
+export interface ApplicationsResponse {
+  applications: Application[];
+  total: number;
+  page: number;
+  limit: number;
 }
 
 export interface CreateApplicationRequest {
@@ -56,10 +66,12 @@ export const applicationsApi = createApi({
         headers.set("Content-Type", "application/json");
       }
 
-      const token = localStorage.getItem("adminToken");
+      if (typeof window !== "undefined") {
+        const token = localStorage.getItem("adminToken");
 
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
+        if (token) {
+          headers.set("Authorization", `Bearer ${token}`);
+        }
       }
 
       return headers;
@@ -94,18 +106,23 @@ export const applicationsApi = createApi({
         };
       },
 
-      invalidatesTags: [{ type: "Applications", id: "LIST" }],
+      invalidatesTags: [
+        {
+          type: "Applications",
+          id: "LIST",
+        },
+      ],
     }),
 
-    getApplications: builder.query<Application[], void>({
+    getApplications: builder.query<ApplicationsResponse, void>({
       query: () => "/careers/applications",
 
       providesTags: (result) =>
-        Array.isArray(result)
+        result?.applications
           ? [
-              ...result.map(({ _id }) => ({
+              ...result.applications.map(({ id, _id }) => ({
                 type: "Applications" as const,
-                id: _id,
+                id: id ?? _id,
               })),
               {
                 type: "Applications" as const,
@@ -124,7 +141,9 @@ export const applicationsApi = createApi({
       query: ({ id, status }) => ({
         url: `/careers/applications/${id}`,
         method: "PUT",
-        body: { status },
+        body: {
+          status,
+        },
       }),
 
       invalidatesTags: (result, error, { id }) => [

@@ -10,8 +10,7 @@ export default function Banner() {
       <div className="bin">
         <div className="wrap">
           <div>
-            <span className="k">Who we are</span>
-            <SplitHeading id="h1" text={"We think in cubes"} step={0.1} />
+            <SplitHeading id="h1" text={"Who we are"} step={0.1} />
           </div>
           <div className="bmeta">
             <b>The Rippotai team</b>New Delhi

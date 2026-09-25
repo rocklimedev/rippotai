@@ -1,22 +1,35 @@
-// src/api/usersApi.ts
-
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_URL } from "@/lib/config";
 
-// ────────────────────────────────────────────────
-// TYPES
-// ────────────────────────────────────────────────
+export interface UserRole {
+  id: string;
+  name: string;
+}
 
 export interface User {
-  _id: string;
+  id: string;
   name?: string;
   email: string;
-  role?: string | Record<string, unknown>;
+
+  roleId?: string | null;
+
+  role?: UserRole | string | null;
+
   roles?: string[];
+
+  isActive?: boolean;
+
+  lastLogin?: string | null;
+
   createdAt?: string;
   updatedAt?: string;
 
   [key: string]: unknown;
+}
+
+export interface UsersResponse {
+  success: boolean;
+  data: User[];
 }
 
 export interface CreateUserRequest {
@@ -24,9 +37,6 @@ export interface CreateUserRequest {
   email: string;
   password?: string;
   role?: string;
-  roles?: string[];
-
-  [key: string]: unknown;
 }
 
 export interface UpdateUserRequest {
@@ -35,19 +45,12 @@ export interface UpdateUserRequest {
   email?: string;
   password?: string;
   role?: string;
-  roles?: string[];
-
-  [key: string]: unknown;
 }
 
 export interface AssignRolesRequest {
   id: string;
   roles: string[];
 }
-
-// ────────────────────────────────────────────────
-// API
-// ────────────────────────────────────────────────
 
 export const usersApi = createApi({
   reducerPath: "usersApi",
@@ -58,10 +61,12 @@ export const usersApi = createApi({
     prepareHeaders: (headers) => {
       headers.set("Content-Type", "application/json");
 
-      const token = localStorage.getItem("adminToken");
+      if (typeof window !== "undefined") {
+        const token = localStorage.getItem("adminToken");
 
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
+        if (token) {
+          headers.set("Authorization", `Bearer ${token}`);
+        }
       }
 
       return headers;
@@ -71,19 +76,19 @@ export const usersApi = createApi({
   tagTypes: ["Users"],
 
   endpoints: (builder) => ({
-    // ────────────────────────────────────────────────
-    // GET ALL USERS
-    // ────────────────────────────────────────────────
-
     getAllUsers: builder.query<User[], void>({
       query: () => "/users",
+
+      transformResponse: (response: UsersResponse): User[] => {
+        return response.data ?? [];
+      },
 
       providesTags: (result) =>
         Array.isArray(result)
           ? [
-              ...result.map(({ _id }) => ({
+              ...result.map(({ id }) => ({
                 type: "Users" as const,
-                id: _id,
+                id,
               })),
               {
                 type: "Users" as const,
@@ -98,12 +103,10 @@ export const usersApi = createApi({
             ],
     }),
 
-    // ────────────────────────────────────────────────
-    // GET USER BY ID
-    // ────────────────────────────────────────────────
-
     getUserById: builder.query<User, string>({
       query: (id) => `/users/${id}`,
+
+      transformResponse: (response: { success: boolean; data: User }) => response.data,
 
       providesTags: (result, error, id) => [
         {
@@ -113,16 +116,14 @@ export const usersApi = createApi({
       ],
     }),
 
-    // ────────────────────────────────────────────────
-    // CREATE USER
-    // ────────────────────────────────────────────────
-
     createUser: builder.mutation<User, CreateUserRequest>({
       query: (userData) => ({
         url: "/users",
         method: "POST",
         body: userData,
       }),
+
+      transformResponse: (response: { success: boolean; data: User }) => response.data,
 
       invalidatesTags: [
         {
@@ -132,16 +133,14 @@ export const usersApi = createApi({
       ],
     }),
 
-    // ────────────────────────────────────────────────
-    // UPDATE USER
-    // ────────────────────────────────────────────────
-
     updateUser: builder.mutation<User, UpdateUserRequest>({
       query: ({ id, ...updates }) => ({
         url: `/users/${id}`,
         method: "PUT",
         body: updates,
       }),
+
+      transformResponse: (response: { success: boolean; data: User }) => response.data,
 
       invalidatesTags: (result, error, { id }) => [
         {
@@ -154,10 +153,6 @@ export const usersApi = createApi({
         },
       ],
     }),
-
-    // ────────────────────────────────────────────────
-    // DELETE USER
-    // ────────────────────────────────────────────────
 
     deleteUser: builder.mutation<unknown, string>({
       query: (id) => ({
@@ -177,10 +172,6 @@ export const usersApi = createApi({
       ],
     }),
 
-    // ────────────────────────────────────────────────
-    // ASSIGN ROLES
-    // ────────────────────────────────────────────────
-
     assignRoles: builder.mutation<User, AssignRolesRequest>({
       query: ({ id, roles }) => ({
         url: `/users/${id}/roles`,
@@ -189,6 +180,8 @@ export const usersApi = createApi({
           roles,
         },
       }),
+
+      transformResponse: (response: { success: boolean; data: User }) => response.data,
 
       invalidatesTags: (result, error, { id }) => [
         {
@@ -203,10 +196,6 @@ export const usersApi = createApi({
     }),
   }),
 });
-
-// ────────────────────────────────────────────────
-// HOOKS
-// ────────────────────────────────────────────────
 
 export const {
   useGetAllUsersQuery,

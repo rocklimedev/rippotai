@@ -238,18 +238,11 @@ export default function Talk() {
               <small>Write</small>
               <span className="v">sagar@rippotai.in</span>
               <span className="act">Copy</span>
-              <span className="toast">Copied ✓</span>
             </button>{" "}
             <a className="card" href="tel:+919911080605" data-m="">
               <small>Call</small>
               <span className="v">+91 99110 80605</span>
-              <span className="act">Call ↗</span>
             </a>{" "}
-            <a className="card" href="https://wa.me/919911080605" target="_blank" rel="noopener" data-m="">
-              <small>WhatsApp</small>
-              <span className="v">Message the studio</span>
-              <span className="act">Open ↗</span>
-            </a>
           </aside>
         </div>
       </div>

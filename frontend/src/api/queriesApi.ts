@@ -127,9 +127,13 @@ export const queriesApi = createApi({
     getQueries: builder.query<QueryItem[], string | undefined>({
       query: (branch) => ({
         url: "/",
-        params: {
-          branch,
-        },
+        ...(branch
+          ? {
+              params: {
+                branch,
+              },
+            }
+          : {}),
       }),
 
       providesTags: (result) =>

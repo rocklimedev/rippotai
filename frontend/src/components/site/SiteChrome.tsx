@@ -118,18 +118,28 @@ export default function SiteChrome({ nav, services, site }: Props) {
     function place() {
       items.forEach((a, k) => {
         let d = (((k - mi) % MN) + MN) % MN;
+
         if (d > MN / 2) d -= MN;
+
         const pd = a.dataset.d === undefined ? d : +a.dataset.d;
+
         if (Math.abs(d - pd) > 1) {
           a.classList.add("jump");
           requestAnimationFrame(() => requestAnimationFrame(() => a.classList.remove("jump")));
         }
+
         a.dataset.d = String(d);
+
+        a.style.transition = "transform 1.2s cubic-bezier(.16,1,.3,1), opacity 1.2s cubic-bezier(.16,1,.3,1)";
+
         a.style.transform = `translateY(calc(-50% + ${d * 1.3}em))`;
+
         a.style.opacity = String(d === 0 ? 1 : Math.abs(d) === 1 ? 0.3 : Math.abs(d) === 2 ? 0.1 : 0);
+
         a.style.pointerEvents = Math.abs(d) <= 2 ? "auto" : "none";
         a.classList.toggle("on", d === 0);
       });
+
       pimgs.forEach((im, k) => im.classList.toggle("on", k === mi));
     }
     const stopAuto = () => {
@@ -154,7 +164,7 @@ export default function SiteChrome({ nav, services, site }: Props) {
             mi = (mi + 1) % MN;
             place();
           }
-        }, 1900);
+        }, 2800);
       }
     }
     burger.onclick = () => openMenu(!menu.classList.contains("open"));
@@ -295,12 +305,6 @@ export default function SiteChrome({ nav, services, site }: Props) {
             </span>
           </Link>
           <div className="nav-r">
-            <Link className="lnk" href="/projects" data-m="">
-              Projects
-            </Link>
-            <Link className="lnk" href="/contact" data-m="">
-              Contact
-            </Link>
             <button className="burger" id="burger" aria-label="Menu">
               <i>
                 <b />

@@ -10,14 +10,6 @@ export default function AbHero() {
             An architecture and interiors studio in New Delhi. Every project starts where geometry starts — with the
             simplest, most honest form.
           </p>
-          <div className="kanji" data-rev="">
-            <b>立方体</b>
-            <span>
-              <i>rippōtai</i> · Japanese
-              <br />
-              “cube” — the primary shape
-            </span>
-          </div>
         </div>
         <div data-rev="">
           <div className="cube-wrap" id="cw">

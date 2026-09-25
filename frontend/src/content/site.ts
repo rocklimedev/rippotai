@@ -33,8 +33,8 @@ export const nav: NavItem[] = [
 /** Footer "Menu" column. */
 export const footerNav = [
   { label: "About", href: "/about" },
-  { label: "Works", href: "/#works" },
-  { label: "All projects", href: "/projects" },
+  { label: "Works", href: "/projects" },
+  { label: "Contact", href: "/contact" },
   { label: "Process", href: "/#process" },
   { label: "Services", href: "/services" },
   { label: "Career", href: "/career" },
