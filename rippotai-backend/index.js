@@ -47,6 +47,7 @@ const allowedOrigins = [
   "https://cmtradingco.vercel.app",
   "https://dashboard-cmtradingco.vercel.app",
   "https://rippotaiarchitecture.com",
+  "https://rippotai.in",
   "https://rippotai.vercel.app",
   "https://cmtradingco.com",
   "https://www.cmtradingco.com",
