@@ -12,6 +12,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AdminGroupLayout({ children }: { children: ReactNode }) {
-  return children;
+export default function RootLayout({ children }: { children: ReactNode }) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
 }

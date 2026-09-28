@@ -1,22 +1,21 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_URL } from "@/lib/config";
 
-export type ApplicationStatus = "PENDING" | "REVIEWING" | "SHORTLISTED" | "REJECTED" | "HIRED";
+export type ApplicationStatus = "Pending" | "Reviewed" | "Shortlisted" | "Rejected";
 
 export interface Application {
-  id?: string;
-  _id?: string;
+  id: string;
 
   name: string;
   email: string;
-  designation: string;
+  designation: string | null;
   interestedIn: string;
-  phone: string;
+  phone: string | null;
 
-  resume?: string | null;
-  coverLetter?: string | null;
+  resume: string | null;
+  coverLetter: string | null;
 
-  status: ApplicationStatus | string;
+  status: ApplicationStatus;
 
   createdAt?: string;
   updatedAt?: string;
@@ -35,7 +34,7 @@ export interface CreateApplicationRequest {
   designation: string;
   interestedIn: string;
   phone: string;
-  resume?: File | null;
+  resume: File;
   coverLetter?: string;
 }
 
@@ -45,12 +44,9 @@ export interface UpdateApplicationStatusRequest {
 }
 
 export interface DashboardStats {
-  total: number;
-  pending: number;
-  reviewing: number;
-  shortlisted: number;
-  rejected: number;
-  hired: number;
+  totalApplications: number;
+  pendingApplications: number;
+  shortlistedApplications: number;
 }
 
 export const applicationsApi = createApi({
@@ -60,8 +56,10 @@ export const applicationsApi = createApi({
     baseUrl: API_URL,
 
     prepareHeaders: (headers, { endpoint }) => {
-      // Do not manually set Content-Type for FormData.
-      // The browser must set multipart/form-data with its boundary.
+      // IMPORTANT:
+      // Do NOT set Content-Type for createApplication.
+      // fetchBaseQuery/browser will automatically generate:
+      // multipart/form-data; boundary=...
       if (endpoint !== "createApplication") {
         headers.set("Content-Type", "application/json");
       }
@@ -81,7 +79,18 @@ export const applicationsApi = createApi({
   tagTypes: ["Applications"],
 
   endpoints: (builder) => ({
-    createApplication: builder.mutation<unknown, CreateApplicationRequest>({
+    // =========================================================
+    // PUBLIC APPLICATION SUBMISSION
+    // POST /careers/apply
+    // multipart/form-data
+    // =========================================================
+    createApplication: builder.mutation<
+      {
+        message: string;
+        applicationId: string;
+      },
+      CreateApplicationRequest
+    >({
       query: ({ name, email, designation, interestedIn, phone, resume, coverLetter }) => {
         const formData = new FormData();
 
@@ -91,13 +100,11 @@ export const applicationsApi = createApi({
         formData.append("interestedIn", interestedIn);
         formData.append("phone", phone);
 
-        if (coverLetter) {
-          formData.append("coverLetter", coverLetter);
+        if (coverLetter?.trim()) {
+          formData.append("coverLetter", coverLetter.trim());
         }
 
-        if (resume) {
-          formData.append("resume", resume);
-        }
+        formData.append("resume", resume);
 
         return {
           url: "/careers/apply",
@@ -114,15 +121,52 @@ export const applicationsApi = createApi({
       ],
     }),
 
-    getApplications: builder.query<ApplicationsResponse, void>({
-      query: () => "/careers/applications",
+    // =========================================================
+    // ADMIN APPLICATION LIST
+    // GET /careers/applications
+    // =========================================================
+    getApplications: builder.query<
+      ApplicationsResponse,
+      {
+        status?: ApplicationStatus;
+        search?: string;
+        page?: number;
+        limit?: number;
+      } | void
+    >({
+      query: (params) => {
+        const searchParams = new URLSearchParams();
+
+        if (params?.status) {
+          searchParams.set("status", params.status);
+        }
+
+        if (params?.search) {
+          searchParams.set("search", params.search);
+        }
+
+        if (params?.page) {
+          searchParams.set("page", String(params.page));
+        }
+
+        if (params?.limit) {
+          searchParams.set("limit", String(params.limit));
+        }
+
+        const queryString = searchParams.toString();
+
+        return {
+          url: `/careers/applications${queryString ? `?${queryString}` : ""}`,
+          method: "GET",
+        };
+      },
 
       providesTags: (result) =>
         result?.applications
           ? [
-              ...result.applications.map(({ id, _id }) => ({
+              ...result.applications.map((application) => ({
                 type: "Applications" as const,
-                id: id ?? _id,
+                id: application.id,
               })),
               {
                 type: "Applications" as const,
@@ -137,7 +181,32 @@ export const applicationsApi = createApi({
             ],
     }),
 
-    updateApplicationStatus: builder.mutation<Application, UpdateApplicationStatusRequest>({
+    // =========================================================
+    // GET SINGLE APPLICATION
+    // GET /careers/applications/:id
+    // =========================================================
+    getApplicationById: builder.query<Application, string>({
+      query: (id) => `/careers/applications/${id}`,
+
+      providesTags: (result, error, id) => [
+        {
+          type: "Applications",
+          id,
+        },
+      ],
+    }),
+
+    // =========================================================
+    // UPDATE APPLICATION STATUS
+    // PUT /careers/applications/:id
+    // =========================================================
+    updateApplicationStatus: builder.mutation<
+      {
+        message: string;
+        application: Application;
+      },
+      UpdateApplicationStatusRequest
+    >({
       query: ({ id, status }) => ({
         url: `/careers/applications/${id}`,
         method: "PUT",
@@ -158,7 +227,16 @@ export const applicationsApi = createApi({
       ],
     }),
 
-    deleteApplication: builder.mutation<unknown, string>({
+    // =========================================================
+    // DELETE APPLICATION
+    // DELETE /careers/applications/:id
+    // =========================================================
+    deleteApplication: builder.mutation<
+      {
+        message: string;
+      },
+      string
+    >({
       query: (id) => ({
         url: `/careers/applications/${id}`,
         method: "DELETE",
@@ -176,6 +254,10 @@ export const applicationsApi = createApi({
       ],
     }),
 
+    // =========================================================
+    // DASHBOARD STATS
+    // GET /careers/dashboard-stats
+    // =========================================================
     getDashboardStats: builder.query<DashboardStats, void>({
       query: () => "/careers/dashboard-stats",
 
@@ -192,6 +274,7 @@ export const applicationsApi = createApi({
 export const {
   useCreateApplicationMutation,
   useGetApplicationsQuery,
+  useGetApplicationByIdQuery,
   useUpdateApplicationStatusMutation,
   useDeleteApplicationMutation,
   useGetDashboardStatsQuery,
