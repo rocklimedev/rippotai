@@ -115,7 +115,7 @@ export default function SiteChrome({ nav, services, site }: Props) {
     let mi = 0,
       userTook = false,
       wheelTimer = 0;
-    function place() {
+    function place(duration = 1.2) {
       items.forEach((a, k) => {
         let d = (((k - mi) % MN) + MN) % MN;
 
@@ -130,7 +130,7 @@ export default function SiteChrome({ nav, services, site }: Props) {
 
         a.dataset.d = String(d);
 
-        a.style.transition = "transform 1.2s cubic-bezier(.16,1,.3,1), opacity 1.2s cubic-bezier(.16,1,.3,1)";
+        a.style.transition = `transform ${duration}s cubic-bezier(.16,1,.3,1), opacity ${duration}s cubic-bezier(.16,1,.3,1)`;
 
         a.style.transform = `translateY(calc(-50% + ${d * 1.3}em))`;
 
@@ -173,7 +173,7 @@ export default function SiteChrome({ nav, services, site }: Props) {
         stopAuto();
         if (mi !== k) {
           mi = k;
-          place();
+          place(3.5);
         }
       });
       a.addEventListener("click", () => openMenu(false));

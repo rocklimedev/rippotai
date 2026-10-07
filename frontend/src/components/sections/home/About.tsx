@@ -4,9 +4,6 @@ export default function About() {
       <div className="wrap">
         <div className="about-grid">
           <div>
-            <p className="eyebrow" data-rev="">
-              Where it began
-            </p>
             <h2 data-rev="mask">About Us</h2>
             <p data-rev="">
               “Rippotai,” is inspired by the Japanese term for “cube,” symbolizing the fundamental form of objects and
@@ -27,32 +24,6 @@ export default function About() {
           </div>
           <div className="figure" data-rev="img">
             <img src="/images/about.webp" alt="Rippotai project" />
-          </div>
-        </div>
-        <div className="stats">
-          <div data-rev="">
-            <b className="num" data-to="120">
-              0
-            </b>
-            <span>Projects delivered</span>
-          </div>
-          <div data-rev="">
-            <b className="num" data-to="12">
-              0
-            </b>
-            <span>Years of practice</span>
-          </div>
-          <div data-rev="">
-            <b className="num" data-to="4">
-              0
-            </b>
-            <span>Service verticals</span>
-          </div>
-          <div data-rev="">
-            <b className="num" data-to="98" data-suf="%">
-              0
-            </b>
-            <span>On-time handover</span>
           </div>
         </div>
       </div>

@@ -128,24 +128,6 @@ export default function init(W: Scope) {
     f();
   })();
 
-  /* team tiles: tilt toward cursor, tap-to-flip on touch */
-  document.querySelectorAll(".mem").forEach((m) => {
-    const fl = m.querySelector(".flip");
-    m.addEventListener("mousemove", (e) => {
-      if (m.matches(":hover")) {
-        const r = m.getBoundingClientRect(),
-          x = (e.clientX - r.left) / r.width - 0.5;
-        fl.style.transform = `rotateY(${180 + x * -14}deg)`;
-      }
-    });
-    m.addEventListener("mouseleave", () => {
-      fl.style.transform = "";
-    });
-    m.addEventListener("click", () => {
-      if (matchMedia("(hover:none)").matches) m.classList.toggle("on");
-    });
-  });
-
   document.querySelectorAll('a[href^="#"]').forEach((a) =>
     a.addEventListener("click", (ev) => {
       const t = document.querySelector(a.getAttribute("href"));

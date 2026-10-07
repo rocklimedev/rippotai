@@ -24,7 +24,7 @@ export const nav: NavItem[] = [
   { label: "Home", href: "/", preview: "/images/hero1.webp" },
   { label: "About", href: "/about", preview: "/images/about.webp" },
   { label: "Works", href: "/projects", preview: "/images/L1.webp" },
-  { label: "Process", href: "/#process", preview: "/images/fb1.webp" },
+
   { label: "Services", href: "/services", preview: "/images/d10.webp" },
   { label: "Contact", href: "/contact", preview: "/images/fb4.webp" },
   { label: "Career", href: "/career", preview: "/images/L2.webp" },
@@ -35,7 +35,7 @@ export const footerNav = [
   { label: "About", href: "/about" },
   { label: "Works", href: "/projects" },
   { label: "Contact", href: "/contact" },
-  { label: "Process", href: "/#process" },
+
   { label: "Services", href: "/services" },
   { label: "Career", href: "/career" },
 ];

@@ -9,7 +9,6 @@ export default function Banner() {
       <div className="bin">
         <div className="wrap">
           <div>
-            <span className="k">Contact us</span>
             <SplitHeading id="h1" text={"Let's talk."} step={0.1} />
           </div>
           <div className="bmeta">

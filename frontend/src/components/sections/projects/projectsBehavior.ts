@@ -180,29 +180,18 @@ export default function init(W: Scope) {
   const pimg = document.getElementById("pjpeekimg") as HTMLImageElement | null;
 
   if (peek && pimg) {
-    rows.forEach((row) => {
-      W.on(
-        "mouseenter",
-        () => {
-          const image = row.dataset.img;
+    W.doc("mouseover", (e) => {
+      const row = (e.target as HTMLElement | null)?.closest<HTMLElement>(".pj-row");
+      if (!row || !wrap.contains(row) || !row.dataset.img) return;
+      pimg.src = row.dataset.img;
+      peek.classList.add("on");
+    });
 
-          if (!image) {
-            return;
-          }
-
-          pimg.src = image;
-          peek.classList.add("on");
-        },
-        row,
-      );
-
-      W.on(
-        "mouseleave",
-        () => {
-          peek.classList.remove("on");
-        },
-        row,
-      );
+    W.doc("mouseout", (e) => {
+      const row = (e.target as HTMLElement | null)?.closest<HTMLElement>(".pj-row");
+      if (!row || !wrap.contains(row)) return;
+      if (e.relatedTarget instanceof Node && row.contains(e.relatedTarget)) return;
+      peek.classList.remove("on");
     });
 
     /* =======================================================

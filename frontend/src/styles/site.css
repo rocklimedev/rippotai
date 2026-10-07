@@ -1216,11 +1216,11 @@ body.menu-on #cursor-dot {
 #srvpeek {
   position: fixed;
   width: 260px;
-  height: 330px;
+  height: 0;
   pointer-events: none;
   z-index: 640;
   opacity: 0;
-  transform: translate(-50%, -50%) scale(0.9);
+  transform: translate(-50%, -50%);
   transition:
     opacity 0.4s var(--ease),
     transform 0.5s var(--ease);
@@ -1229,7 +1229,7 @@ body.menu-on #cursor-dot {
 }
 #srvpeek.on {
   opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
+  transform: translate(-50%, -50%);
 }
 #srvpeek img {
   width: 100%;
@@ -3091,7 +3091,7 @@ footer.glass .bottom {
   font-style: italic;
 }
 
-/* team: flip tiles */
+/* team portraits */
 .team {
   padding: clamp(80px, 11vw, 150px) 0;
 }
@@ -3165,10 +3165,17 @@ footer.glass .bottom {
   transform-style: preserve-3d;
   transition: transform 1s var(--ease);
 }
-.mem:hover .flip,
-.mem.on .flip,
-.mem:focus-visible .flip {
-  transform: rotateY(180deg);
+.mem {
+  cursor: default;
+  perspective: none;
+}
+.mem .flip {
+  transform: none;
+  transform-style: flat;
+  transition: none;
+}
+.mem .bk {
+  display: none;
 }
 .fr,
 .bk {
@@ -3310,41 +3317,79 @@ footer.glass .bottom {
 
 /* recognition */
 .recog {
-  padding: clamp(60px, 8vw, 110px) 0;
+  padding: clamp(70px, 9vw, 130px) 0;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  overflow: hidden;
 }
-.recog .row {
-  display: flex;
-  gap: clamp(40px, 6vw, 90px);
-  align-items: center;
-  white-space: nowrap;
-  width: max-content;
-  animation: slide 30s linear infinite;
+.recog-head { margin-bottom: clamp(32px, 5vw, 64px); }
+.recog-label {
+  font-family: var(--label);
+  font-size: 11px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--gold);
 }
-.recog:hover .row {
-  animation-play-state: paused;
-}
-.recog .it {
-  display: flex;
-  align-items: center;
-  gap: 22px;
+.recog-head h2 {
+  margin-top: 18px;
   font-family: var(--sans);
   font-weight: 300;
-  font-size: clamp(26px, 3.2vw, 48px);
+  font-size: clamp(36px, 5vw, 72px);
+  line-height: 1.1;
   color: var(--green);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.025em;
 }
-.recog .it img {
-  height: clamp(60px, 6vw, 90px);
-  width: auto;
+.recog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 44px);
+}
+.recog-card { min-width: 0; }
+.recog-art {
+  aspect-ratio: 4/3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(24px, 3vw, 44px);
+  background: var(--off);
+}
+.recog-art img {
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
-.recog .it i {
-  font-style: normal;
+.recog-publication {
+  display: block;
+  align-content: center;
+  font-family: Georgia, serif;
+  font-size: clamp(28px, 3vw, 48px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  text-align: center;
+  color: var(--green);
+}
+.recog-caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+.recog-caption h3 {
+  font-family: var(--sans);
+  font-size: clamp(17px, 1.5vw, 22px);
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--green);
+}
+.recog-caption > span {
+  font-family: var(--label);
+  font-size: 11px;
   color: var(--gold);
-  font-size: 0.6em;
+}
+@media (max-width: 700px) {
+  .recog-grid { grid-template-columns: 1fr; gap: 36px; }
 }
 @keyframes slide {
   to {
