@@ -47,7 +47,16 @@ export default function AdminShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-secondary/30 text-foreground">
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen flex-col md:flex-row">
+        <nav aria-label="Mobile admin navigation" className="flex shrink-0 gap-1 overflow-x-auto border-b bg-background p-3 md:hidden">
+          {NAV.map((item) => (
+            <Link key={item.href} href={item.href} aria-current={isActive(item.href) ? "page" : undefined}
+              className={cn("shrink-0 rounded-md px-3 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring", isActive(item.href) ? "bg-primary/10 text-primary" : "text-muted-foreground")}>
+              {item.label}
+            </Link>
+          ))}
+          <Link href="/" className="shrink-0 px-3 py-3 text-sm text-muted-foreground">Public site</Link>
+        </nav>
         {/* Sidebar */}
         <aside className="hidden w-64 shrink-0 border-r bg-background md:flex md:flex-col">
           {/* Brand */}

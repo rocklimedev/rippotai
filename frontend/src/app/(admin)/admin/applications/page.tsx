@@ -27,40 +27,62 @@ import {
   type ApplicationStatus,
 } from "@/api/applicationsApi";
 
-const STATUS_OPTIONS: ApplicationStatus[] = ["PENDING", "REVIEWING", "SHORTLISTED", "REJECTED", "HIRED"];
+/**
+ * Application statuses must exactly match ApplicationStatus
+ * from applicationsApi.ts.
+ */
+const STATUS_OPTIONS: ApplicationStatus[] = ["Pending", "Reviewed", "Shortlisted", "Rejected"];
 
-function normalizeStatus(status?: string) {
-  return status?.toUpperCase() || "PENDING";
+type StatusFilter = "ALL" | ApplicationStatus;
+
+/**
+ * Normalizes any API value to the application's actual
+ * ApplicationStatus union.
+ *
+ * This also protects the UI if an older API record contains
+ * uppercase values such as PENDING or REVIEWED.
+ */
+function normalizeStatus(status?: string): ApplicationStatus {
+  switch (status?.trim().toLowerCase()) {
+    case "reviewed":
+    case "reviewing":
+      return "Reviewed";
+
+    case "shortlisted":
+      return "Shortlisted";
+
+    case "rejected":
+      return "Rejected";
+
+    case "pending":
+    default:
+      return "Pending";
+  }
 }
 
 function formatStatus(status?: string) {
-  const normalized = normalizeStatus(status);
-
-  return normalized.charAt(0) + normalized.slice(1).toLowerCase();
+  return normalizeStatus(status);
 }
 
 function getStatusVariant(status?: string): "default" | "secondary" | "outline" | "accent" {
   switch (normalizeStatus(status)) {
-    case "HIRED":
+    case "Reviewed":
       return "default";
 
-    case "REJECTED":
-      return "accent";
-
-    case "SHORTLISTED":
+    case "Shortlisted":
       return "secondary";
 
-    case "REVIEWING":
-      return "outline";
+    case "Rejected":
+      return "accent";
 
-    case "PENDING":
+    case "Pending":
     default:
       return "outline";
   }
 }
 
 function getApplicationId(application: Application) {
-  return application.id ?? application._id ?? "";
+  return application.id ?? "";
 }
 
 function formatDate(date?: string) {
@@ -83,7 +105,7 @@ function formatDate(date?: string) {
 
 export default function ApplicationsPage() {
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("ALL");
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("ALL");
 
   const { data, isLoading, isFetching, isError, refetch } = useGetApplicationsQuery();
 
@@ -170,22 +192,16 @@ export default function ApplicationsPage() {
       </header>
 
       {/* STATS */}
-      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <StatCard
           label="Total"
-          value={dashboardStats?.total ?? data?.total ?? applications.length}
+          value={dashboardStats?.totalApplications ?? data?.total ?? applications.length}
           loading={statsLoading}
         />
 
-        <StatCard label="Pending" value={dashboardStats?.pending ?? 0} loading={statsLoading} />
+        <StatCard label="Pending" value={dashboardStats?.pendingApplications ?? 0} loading={statsLoading} />
 
-        <StatCard label="Reviewing" value={dashboardStats?.reviewing ?? 0} loading={statsLoading} />
-
-        <StatCard label="Shortlisted" value={dashboardStats?.shortlisted ?? 0} loading={statsLoading} />
-
-        <StatCard label="Rejected" value={dashboardStats?.rejected ?? 0} loading={statsLoading} />
-
-        <StatCard label="Hired" value={dashboardStats?.hired ?? 0} loading={statsLoading} />
+        <StatCard label="Shortlisted" value={dashboardStats?.shortlistedApplications ?? 0} loading={statsLoading} />
       </section>
 
       {/* APPLICATIONS */}
@@ -222,7 +238,7 @@ export default function ApplicationsPage() {
               />
             </div>
 
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value as StatusFilter)}>
               <SelectTrigger className="w-full md:w-[200px]">
                 <SelectValue placeholder="Filter status" />
               </SelectTrigger>
@@ -369,6 +385,7 @@ export default function ApplicationsPage() {
                                 <DropdownMenuTrigger asChild>
                                   <Button variant="ghost" size="icon" className="size-8">
                                     <MoreHorizontal className="size-4" />
+
                                     <span className="sr-only">Open actions</span>
                                   </Button>
                                 </DropdownMenuTrigger>

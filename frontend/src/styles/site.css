@@ -4853,6 +4853,102 @@ footer.glass .bottom {
   color: var(--gold);
 }
 
+/* Responsive layouts shared by the public pages. */
+@media (max-width: 900px) {
+  .wrap > *, .ct-stage > *, .wz > *, .pd-text > *, footer.glass .top > * {
+    min-width: 0;
+  }
+  h1, h2, h3, .ct-side .v, .pd-facts dd, .summary, footer.glass p {
+    overflow-wrap: anywhere;
+  }
+  .madlib .fld { max-width: 100%; }
+  .madlib input, .madlib select { max-width: 100%; }
+  footer.glass, footer.glass > .wrap { min-height: auto; }
+  footer.glass { background: var(--green); }
+  footer.glass .rule { margin-top: 40px !important; }
+  footer.glass .mark { gap: 24px; min-height: 0; padding: 28px 0; }
+  footer.glass .mark .mono { position: static; width: 72px; }
+  footer.glass .mark .wordmark { width: 100%; max-width: 650px; }
+  .pd-lb-btn { display: block; top: auto; bottom: 70px; transform: none; min-width: 48px; min-height: 48px; }
+  .pd-lb img { max-height: calc(100dvh - 190px); }
+  .pd-lb-bar { gap: 16px; }
+  .pd-lb-bar .nm { min-width: 0; overflow-wrap: anywhere; }
+  .pd-lb-bar .ct { flex-shrink: 0; }
+}
+
+@media (max-width: 860px) {
+  #menu { overflow-y: auto; overscroll-behavior: contain; }
+  .menu-grid { height: auto; min-height: 100%; padding-top: 100px; align-content: start; }
+  .wheel { height: auto; overflow: visible; mask-image: none; -webkit-mask-image: none; }
+  .wheel a {
+    position: relative;
+    top: auto;
+    width: 100%;
+    min-height: 56px;
+    padding: 12px 0;
+    font-size: 32px;
+    letter-spacing: 0;
+    white-space: normal;
+    transform: none !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transition: none !important;
+  }
+  .wheel a .t { min-width: 0; overflow-wrap: anywhere; }
+  .wheel a .n { flex-shrink: 0; }
+  .wheel a .ar { flex-shrink: 0; margin-left: auto; }
+  .burger { width: 44px; height: 44px; justify-content: center; flex-shrink: 0; }
+  .brand { min-width: 0; }
+  .brand .mono { flex-shrink: 0; }
+  .wedo { min-width: 0; }
+  .wedo .rot { font-size: 13px; }
+  .wedo .rot li { overflow: hidden; text-overflow: ellipsis; }
+}
+
+@media (max-width: 600px) {
+  :root { --gut: 20px; }
+  body { font-size: 16px; }
+  h1, h2, h3, h4 { letter-spacing: 0; }
+  .nav { gap: 12px; }
+  .brand { gap: 10px; }
+  .wedo { padding-left: 10px; }
+  .hero { min-height: 640px; height: 100svh; }
+  .hero-in { padding: 110px 0 140px; }
+  .hero h1, .pg-banner h1, .pd-banner h1 { font-size: 40px; letter-spacing: 0; }
+  .hero-meta .wrap { flex-wrap: wrap; gap: 12px; }
+  .hero-meta .scrollcue { display: none; }
+  .hero-cap { flex: 1; min-width: 0; }
+  .dots { flex-wrap: wrap; max-width: 120px; }
+  .dots button { height: 24px; background-clip: content-box; padding: 11px 0; }
+  .pg-banner { min-height: 560px; height: 85svh; }
+  .pj-bar .wrap { gap: 16px; }
+  .pj-meta { grid-template-columns: auto minmax(0, 1fr); }
+  .pj-meta .ty { grid-column: 2; }
+  .pj-filters { flex-wrap: wrap; }
+  .pj-row { gap: 10px; grid-template-columns: 28px minmax(0, 1fr) 26px; }
+  .send-row, .nav-row, .pd-next-row { flex-wrap: wrap; }
+  .wz-card { padding: 24px 18px; }
+  .nxt, .send, .go { max-width: 100%; padding: 16px 22px; }
+  .chip, .pick, .dchips span { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+  .pick { font-size: 15px; padding: 12px 16px; }
+  .madlib { font-size: 24px; }
+  .srv-body div { padding: 0 20px 24px; }
+  .srv-row.open .srv-body { max-height: 600px; }
+  .cube { --s: 180px; }
+  .dept { grid-template-columns: 28px minmax(0, 1fr) auto; gap: 10px; }
+  .dept .t { font-size: 24px; }
+  .dept .a { opacity: 1; transform: none; font-size: 12px; }
+  .uf-grid, .tgrid, .tgrid.five, footer.glass .top { grid-template-columns: 1fr; }
+  .pd-facts div { grid-template-columns: 90px minmax(0, 1fr); gap: 12px; }
+  .pd-next-band b { font-size: 36px; letter-spacing: 0; overflow-wrap: anywhere; }
+  .ms-cap { padding: 0 var(--gut); }
+  #top { right: 16px; bottom: max(16px, env(safe-area-inset-bottom)); }
+}
+
+@media (hover: none) {
+  .ct-side .act, .dept .a { opacity: 1; transform: none; }
+}
+
 /* showcase: the active poster opens its project */
 .ms-card .ms-go {
   position: absolute;
@@ -4894,6 +4990,6 @@ footer.glass .bottom {
     font-size: 64px;
   }
   .pd-lb-btn {
-    display: none;
+    display: block;
   }
 }

@@ -106,6 +106,7 @@ export default function SiteChrome({ nav, services, site }: Props) {
 
     /* MENU: rolling wheel with live preview */
     const menu = document.getElementById("menu")!;
+    const mobileMenu = matchMedia("(max-width: 860px)");
     const burger = document.getElementById("burger")!;
     const hdr = document.getElementById("hdr")!;
     const wheel = document.getElementById("wheel")!;
@@ -155,11 +156,13 @@ export default function SiteChrome({ nav, services, site }: Props) {
       const lbl = burger.querySelector("span");
       if (lbl) lbl.textContent = o ? "Close" : "Menu";
       menu.setAttribute("aria-hidden", String(!o));
+      burger.setAttribute("aria-expanded", String(o));
+      burger.setAttribute("aria-label", o ? "Close menu" : "Open menu");
       clearInterval(wheelTimer);
       if (o) {
         userTook = false;
         place();
-        wheelTimer = window.setInterval(() => {
+        if (!mobileMenu.matches) wheelTimer = window.setInterval(() => {
           if (!userTook) {
             mi = (mi + 1) % MN;
             place();
@@ -170,6 +173,7 @@ export default function SiteChrome({ nav, services, site }: Props) {
     burger.onclick = () => openMenu(!menu.classList.contains("open"));
     items.forEach((a, k) => {
       a.addEventListener("mouseenter", () => {
+        if (mobileMenu.matches) return;
         stopAuto();
         if (mi !== k) {
           mi = k;
@@ -183,6 +187,7 @@ export default function SiteChrome({ nav, services, site }: Props) {
       wheel,
       "wheel",
       ((e: WheelEvent) => {
+        if (mobileMenu.matches) return;
         e.preventDefault();
         stopAuto();
         const now = Date.now();
@@ -280,10 +285,14 @@ export default function SiteChrome({ nav, services, site }: Props) {
   return (
     <>
       <div id="loader">
-        <div>
-          <Monogram />
-          <div className="load-word">{site.wordmark}</div>
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/loader.gif"
+          alt={site.wordmark}
+          width={320}
+          height={320}
+          style={{ display: "block", width: "min(320px, 70vw)", height: "auto" }}
+        />
       </div>
       <div id="cursor" />
       <div id="cursor-dot" />
@@ -305,7 +314,7 @@ export default function SiteChrome({ nav, services, site }: Props) {
             </span>
           </Link>
           <div className="nav-r">
-            <button className="burger" id="burger" aria-label="Menu">
+            <button className="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu">
               <i>
                 <b />
                 <b />
