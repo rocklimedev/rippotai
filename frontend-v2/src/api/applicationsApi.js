@@ -29,6 +29,7 @@ export const applicationsApi = createApi({
         coverLetter,
       }) => {
         const formData = new FormData();
+        formData.append('source', 'frontend-v2');
         formData.append('name', name);
         formData.append('email', email);
         formData.append('designation', designation);

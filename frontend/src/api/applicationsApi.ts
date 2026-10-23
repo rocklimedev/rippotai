@@ -93,6 +93,7 @@ export const applicationsApi = createApi({
     >({
       query: ({ name, email, designation, interestedIn, phone, resume, coverLetter }) => {
         const formData = new FormData();
+        formData.append("source", "frontend");
 
         formData.append("name", name);
         formData.append("email", email);
