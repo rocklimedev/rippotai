@@ -104,6 +104,7 @@ export const queriesApi = createApi({
         url: "/",
         method: "POST",
         body: {
+          source: "frontend",
           branch,
           name,
           email,

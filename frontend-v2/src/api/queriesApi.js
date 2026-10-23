@@ -29,7 +29,7 @@ export const queriesApi = createApi({
       query: ({ branch, name, email, subject, message }) => ({
         url: `/`,
         method: 'POST',
-        body: { branch, name, email, subject, message },
+        body: { branch, name, email, subject, message, source: 'frontend-v2' },
       }),
       invalidatesTags: [{ type: 'Queries', id: 'LIST' }],
     }),

@@ -1,5 +1,6 @@
 const { Application, Sequelize } = require("../models");
 const { Op } = Sequelize;
+const { notifySubmission } = require("../utils/zohoCliq");
 
 const { v4: uuidv4 } = require("uuid");
 const ftp = require("basic-ftp");
@@ -84,6 +85,8 @@ exports.createApplication = async (req, res) => {
       html: adminJobApplicationNotificationEmail(name, email),
     });
     */
+
+    await notifySubmission("application", application, req.body.source);
 
     return res.status(201).json({
       message: "Application submitted successfully",

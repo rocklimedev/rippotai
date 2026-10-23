@@ -563,7 +563,7 @@ export const teamMembers = [
 export const API_URL =
   process.env.NODE_ENV === 'production'
     ? 'https://api-v2.rippotaiarchitecture.com/api'
-    : 'http://localhost:5000/api';
+    : 'http://localhost:3001/api';
 
 export const STATUS_LABELS = {
   all: 'All Projects',

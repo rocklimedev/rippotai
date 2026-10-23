@@ -1,5 +1,6 @@
 const { Query, User, Sequelize } = require("../models");
 const { Op } = Sequelize;
+const { notifySubmission } = require("../utils/zohoCliq");
 
 const {
   emailer,
@@ -25,6 +26,8 @@ exports.createQuery = async (req, res) => {
       message,
       branch,
     });
+
+    await notifySubmission("query", query, req.body.source);
 
     return res.status(201).json({
       message: "Query created successfully",
